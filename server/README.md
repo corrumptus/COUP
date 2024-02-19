@@ -1,0 +1,1 @@
+COUP base server made with [node.js](https://nodejs.org) and [typescript](https://www.typescriptlang.org)
