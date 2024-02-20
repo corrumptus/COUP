@@ -1,0 +1,117 @@
+{
+    "quantidadeMoedasIniciais": 3,
+    "renda": 1,
+    "ajudaExterna": 2,
+    "quantidadeMinimaGolpeEstado": 7,
+    "quantidadeMaximaGolpeEstado": 10,
+    "religiao": false,
+    "quantidadeTrocarPropriaReligiao": 1,
+    "quantidadeTrocarReligiaoOutroJogador": 2,
+    "deveresMesmaReligiao":
+        {
+            "golpeEstado": false,
+            "assassinar": false,
+            "extorquir": false,
+            "taxar": false
+        },
+    "tiposCartas":
+        {
+            "duque":
+                {
+                    "taxar": true,
+                    "extorquir": false,
+                    "assassinar": false,
+                    "trocar": false,
+                    "investigar": false,
+                    "quantidadeTaxar": 3,
+                    "quantidadeExtorquir": 0,
+                    "quantidadeTrocar": 0,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": false,
+                    "bloqueiaAssassinar": false,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                },
+            "capitao":
+                {
+                    "taxar": false,
+                    "extorquir": true,
+                    "assassinar": false,
+                    "trocar": false,
+                    "investigar": false,
+                    "quantidadeTaxar": 0,
+                    "quantidadeExtorquir": 2,
+                    "quantidadeTrocar": 0,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": true,
+                    "bloqueiaAssassinar": false,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                },
+            "assassino":
+                {
+                    "taxar": false,
+                    "extorquir": false,
+                    "assassinar": true,
+                    "trocar": false,
+                    "investigar": false,
+                    "quantidadeTaxar": 0,
+                    "quantidadeExtorquir": 0,
+                    "quantidadeTrocar": 0,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": false,
+                    "bloqueiaAssassinar": false,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                },
+            "condessa":
+                {
+                    "taxar": false,
+                    "extorquir": false,
+                    "assassinar": false,
+                    "trocar": false,
+                    "investigar": false,
+                    "quantidadeTaxar": 0,
+                    "quantidadeExtorquir": 0,
+                    "quantidadeTrocar": 0,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": false,
+                    "bloqueiaAssassinar": true,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                },
+            "embaixador":
+                {
+                    "taxar": false,
+                    "extorquir": false,
+                    "assassinar": false,
+                    "trocar": true,
+                    "investigar": false,
+                    "quantidadeTaxar": 0,
+                    "quantidadeExtorquir": 0,
+                    "quantidadeTrocar": 2,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": true,
+                    "bloqueiaAssassinar": false,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                },
+            "inquisidor":
+                {
+                    "taxar": false,
+                    "extorquir": false,
+                    "assassinar": false,
+                    "trocar": true,
+                    "investigar": true,
+                    "quantidadeTaxar": 0,
+                    "quantidadeExtorquir": 0,
+                    "quantidadeTrocar": 1,
+                    "bloqueiaTaxar": false,
+                    "bloqueiaExtorquir": true,
+                    "bloqueiaAssassinar": false,
+                    "bloqueiaTrocar": false,
+                    "bloqueiaInvestigar": false
+                }
+        },
+    "preçoAssassinato": 3
+}
