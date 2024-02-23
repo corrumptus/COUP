@@ -3,6 +3,10 @@ import http from 'http'
 import { Server, Socket } from 'socket.io';
 import User from './entity/User';
 import UserService from './service/UserService';
+import PlayerService from './service/PlayerService';
+import LobbyService from './service/LobbyService';
+import GameService from './service/GameService';
+import ModifiedSocket from './utils/ModifiedSocket';
 
 require('dotenv').config();
 
@@ -53,5 +57,11 @@ const server: http.Server = http.createServer(api);
 const serverSocket: Server = new Server(server);
 
 serverSocket.on("connection", (socket: Socket) => {
-    console.log(`${socket.id} connected`);
+    const modifiedSocket: ModifiedSocket = new ModifiedSocket(socket);
+
+    PlayerService.setListeners(modifiedSocket);
+
+    LobbyService.setListeners(modifiedSocket);
+
+    GameService.setListeners(modifiedSocket);
 });
