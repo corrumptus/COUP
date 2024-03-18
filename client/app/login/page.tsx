@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import Form from "../components/Form";
+import Form from "../components/loginForm/Form";
 
 export default function Login() {
   const router = useRouter();
