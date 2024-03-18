@@ -6,7 +6,7 @@ export default function Header() {
   const coupLogoLength = 50;
 
   return (
-    <header className="bg-sky-400 flex justify-between items-center p-2.5">
+    <header className="bg-[#eac58e] flex justify-between items-center p-2.5">
       <div>
         <Image
           src="/coup-logo.png"
