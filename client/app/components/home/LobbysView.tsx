@@ -1,7 +1,12 @@
-import Lobby from "@/app/entitys/Lobby";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
+
+type Lobby = {
+  id: number,
+  quantidadePlayers: number,
+  aberto: boolean
+}
 
 export default function LobbysView({
   closeView
@@ -46,14 +51,18 @@ export default function LobbysView({
 
 async function LobbyRepresentation() {
   const router = useRouter();
-  // const lobbys: Lobby[] = await (await fetch("http://localhost:5000/lobby")).json();
-  const [ lobbys ] = useState<Lobby[]>([
-    {id: 1, quantidadePlayers: 1, aberto: false},
-    {id: 1, quantidadePlayers: 1, aberto: false},
-    {id: 1, quantidadePlayers: 1, aberto: false},
-    {id: 1, quantidadePlayers: 1, aberto: false},
-  ]);
+  const [ lobbys, setLobbys ] = useState<Lobby[]>([]);
   const [ selected, setSelected ] = useState(-1);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("http://localhost:5000/lobby");
+
+      const lobbys = await response.json();
+
+      setLobbys(lobbys)
+    })
+  });
   
   const tdCss = (i: number) => selected === i ?
     " lobbys_table_td_selected"
@@ -86,6 +95,7 @@ async function LobbyRepresentation() {
           <tbody>
             {lobbys.map((lobby, i) =>
               <tr
+                key={lobby.id}
                 onClick={() => handleClick(i)}
                 onDoubleClick={() => handleDClick(i)}
               >
