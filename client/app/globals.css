@@ -6,7 +6,7 @@ body {
   height: 100vh;
 }
 
-div:has(> input:is(:focus, :not(:placeholder-shown))) label {
+.form_input:has(> input:is(:focus, :not(:placeholder-shown))) label {
   transform: translate(2px, -30px);
 }
 
@@ -33,5 +33,59 @@ div:has(> input:is(:focus, :not(:placeholder-shown))) label {
 
   .lobbys_table_td_selected {
     @apply bg-stone-400
+  }
+
+
+
+  .config_outer_div {
+    @apply w-full flex flex-col
+  }
+
+  .config_outer_div > input[type="number"] {
+    @apply bg-transparent border-b border-black
+  }
+
+  .config_checkbox {
+    @apply flex flex-row-reverse gap-2
+  }
+
+  .config_cartas p {
+    @apply text-2xl
+  }
+
+  .config_diferenciation {
+    @apply bg-gradient-to-r from-[#bf7f3f]
+  }
+
+  .config_not_editable_cartas {
+    @apply config_outer_div
+  }
+
+  .config_not_editable_cartas > div {
+    @apply border-black border-y
+  }
+
+  .config_not_editable_cartas > div > div {
+    @apply flex flex-col gap-1
+  }
+
+  .config_not_editable_cartas > div > p {
+    @apply text-2xl
+  }
+
+  .config_not_editable_cartas > div > div > div:nth-child(even) {
+    @apply config_diferenciation
+  }
+
+  .config_not_editable_cartas div div div p:nth-child(1) {
+    @apply text-xl
+  }
+
+  .config_not_editable_cartas div div div p:nth-child(2) {
+    @apply text-lg
+  }
+
+  .game_scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
