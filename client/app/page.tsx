@@ -11,6 +11,29 @@ export default function Home() {
   const [ isServersVisible, setServersVisibility ] = useState(false);
   const [ isRulesVisible, setRulesVisibility ] = useState(false);
 
+  async function createServer() {
+    if (localStorage.getItem("coup-token") === null) {
+      router.push("/sign-up");
+      return;
+    }
+
+    const response = await fetch("http://localhost:5000/lobby", {
+      headers: {
+        Authorization: localStorage.getItem("coup-token") as string
+      },
+      method: "POST"
+    });
+
+    const result: { error: string } | number = await response.json();
+
+    if (!response.ok) {
+      console.log((result as { error: string}).error);
+      return;
+    }
+
+    router.push("/jogar/" + (result as number).toString());
+  }
+
   function openServers() {
     setRulesVisibility(false);
     setServersVisibility(true);
@@ -31,7 +54,7 @@ export default function Home() {
 
   return (
     <div
-      className="h-full bg-[url(../public/home-coup-image.webp)] bg-center bg-no-repeat bg-cover flex flex-col"
+      className="h-full bg-[url(../public/home-page.png)] bg-center bg-no-repeat bg-cover flex flex-col"
     >
       <Header />
       <main className="grid content-center h-full justify-items-start gap-1 pl-2.5 relative">
@@ -41,7 +64,7 @@ export default function Home() {
         {isRulesVisible &&
           <RulesView closeView={closeRules}/>
         }
-        <button className="home_button" onClick={() => router.push("/jogar")}>Jogar</button>
+        <button className="home_button" onClick={createServer}>Jogar</button>
         <button className="home_button" onClick={openServers}>Servidores</button>
         <button className="home_button" onClick={openRules}>Regras</button>
         <button className="home_button" onClick={() => router.push("/tutorial")}>Tutorial</button>
