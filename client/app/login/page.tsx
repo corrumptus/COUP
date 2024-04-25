@@ -33,13 +33,10 @@ export default function Login() {
   }
 
   return (
-    <div
-      style={{backgroundImage: "url(./login-page.jpeg)"}}
-      className="h-full bg-center bg-no-repeat bg-cover flex flex-col items-center justify-center"
-    >
+    <div className="h-full bg-[url(../public/login-page.png)] bg-bottom bg-no-repeat bg-cover flex flex-col items-center justify-center">
       <Form
         type="Entrar"
-        clickHandler={clickHandler}
+        loginHandler={clickHandler}
       />
     </div>
   )

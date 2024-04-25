@@ -43,13 +43,10 @@ export default function SignUp() {
   }
 
   return (
-    <div
-      style={{backgroundImage: "url(./signup-page.jpeg)"}}
-      className="h-full bg-center bg-no-repeat bg-cover flex flex-col items-center justify-center"
-    >
+    <div className="h-full bg-[url(../public/signup-page.png)] bg-center bg-no-repeat bg-cover flex flex-col items-center justify-center">
       <Form
         type="Inscrever-se"
-        clickHandler={clickHandler}
+        loginHandler={clickHandler}
       />
     </div>
   )
