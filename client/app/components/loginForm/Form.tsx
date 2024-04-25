@@ -1,16 +1,14 @@
-import { useRouter } from "next/navigation"
 import FormInput from "./FormInput";
 import { useRef } from "react";
+import Link from "next/link";
 
 export default function Form({
   type,
-  clickHandler
+  loginHandler
 }: {
   type: "Entrar" | "Inscrever-se",
-  clickHandler: (name: string, password: string, confirmPassword?: string) => void
+  loginHandler: (name: string, password: string, confirmPassword?: string) => void
 }) {
-  const router = useRouter();
-
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const cPasswordRef = useRef<HTMLInputElement>(null);
@@ -19,8 +17,18 @@ export default function Form({
   items-center justify-center border border-white/20 p-6 rounded-3xl gap-3`;
 
   if (type === "Entrar") return (
-    <form className={formClassName + " text-black"}>
-      <h1 className="text-4xl font-bold">{type}</h1>
+    <form
+      className={formClassName + " text-black"}
+      onSubmit={e => {
+        e.preventDefault();
+
+        loginHandler(
+          nameRef.current?.value || "",
+          passwordRef.current?.value || ""
+        );
+      }}
+    >
+      <h1 className="text-4xl font-bold">Entrar</h1>
       <FormInput
         text="Nome"
         ref={nameRef}
@@ -32,24 +40,31 @@ export default function Form({
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
-        onClick={() => clickHandler(
-          nameRef.current?.value || "",
-          passwordRef.current?.value || ""
-        )}
       >Entrar</button>
       <div className="flex gap-1.5">
         Não está cadastrado? 
-        <button
-          onClick={() => router.push("/sign-up")}
+        <Link
+          href="/sign-up"
           className="font-bold"
-        >Inscreva-se</button>
+        >Inscreva-se</Link>
       </div>
     </form>
   );
 
   return (
-    <form className={formClassName + " text-white"}>
-      <h1 className="text-4xl font-bold">{type}</h1>
+    <form
+      className={formClassName + " text-white"}
+      onSubmit={e => {
+        e.preventDefault;
+
+        loginHandler(
+          nameRef.current?.value || "",
+          passwordRef.current?.value || "",
+          cPasswordRef.current?.value
+        )
+      }}
+    >
+      <h1 className="text-4xl font-bold">Inscrever-se</h1>
       <FormInput
         text="Nome"
         ref={nameRef}
@@ -66,18 +81,13 @@ export default function Form({
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
-        onClick={() => clickHandler(
-          nameRef.current?.value || "",
-          passwordRef.current?.value || "",
-          cPasswordRef.current?.value
-        )}
       >Inscrever-se</button>
       <div className="flex gap-1.5">
         Já está cadastrado? 
-        <button
-          onClick={() => router.push("/login")}
+        <Link
+          href="/login"
           className="font-bold"
-        >Entrar</button>
+        >Entrar</Link>
       </div>
     </form>
   );
