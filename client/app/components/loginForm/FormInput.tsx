@@ -19,12 +19,13 @@ const FormInput = forwardRef(({ text, isPassword }: {
   }
 
   return (
-    <div className="relative mt-4">
+    <div className="relative mt-4 form_input">
       <label
-        className="absolute bottom-[0.3rem] left-2.5 z-[-1]"
+        className="absolute bottom-[0.3rem] left-2.5 z-[-1] duration-500"
         htmlFor={id}
       >{text}</label>
       <input
+        id={id}
         className="bg-transparent border rounded-3xl border-white p-1 outline-none pl-3 pr-8"
         type={isPassVisible ? "text" : "password"}
         placeholder=" "
@@ -38,5 +39,7 @@ const FormInput = forwardRef(({ text, isPassword }: {
     </div>
   )
 });
+
+FormInput.displayName = "FormInput"
 
 export default FormInput;
