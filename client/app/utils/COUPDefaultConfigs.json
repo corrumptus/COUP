@@ -122,7 +122,6 @@
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 0,
                     "quantidadeAssassinar": 0,
-                    "quantidadeTrocar": 1,
                     "quantidadeTrocarPropria": 1,
                     "quantidadeTrocarOutroJogador": 1,
                     "bloquearTaxar": false,
