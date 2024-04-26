@@ -3,7 +3,7 @@ import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json"
 import Image from "next/image";
 import { useState } from "react";
 import { GameState } from "../game/GameView";
-import Player from "../game/Player";
+import Player from "./Player";
 import Configuracoes from "./Configuracoes";
 
 export type LobbyState = {
