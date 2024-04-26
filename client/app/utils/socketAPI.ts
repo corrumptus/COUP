@@ -96,17 +96,21 @@ export function initSocket(url: string) {
   });
 }
 
-export function configDiff(configs: Config): Partial<Config> {
+export type Differ<T> = {
+  [ P in keyof T]: T[P] | T[P][]
+}
+
+export function configDiff(configs: Config): Partial<Differ<Config>> {
   return objectDiff(COUPDefaultConfigs, configs);
 }
 
-function objectDiff<T extends Record<string, any>>(base: T, differ: T): Record<string, any> {
+function objectDiff<T extends Record<string, any>>(base: T, differ: T): Partial<Differ<Config>> {
   const diff: Record<string, any> = {};
 
   for (let key in base) {
     if (typeof base[key] !== "object") {
       if (base[key] !== differ[key])
-        diff[key] = differ[key];
+        diff[key] = [base[key], differ[key]];
     } else {
       let diffDeep = objectDiff(base[key], differ[key]);
 
