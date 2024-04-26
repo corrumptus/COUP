@@ -2,6 +2,7 @@ import { Socket, io } from "socket.io-client"
 import { LobbyState } from "../components/playPages/lobby/LobbyView";
 import { Card, GameState } from "../components/playPages/game/GameView";
 import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json";
+import { Differ, objectDiff } from "./utils";
 
 type Carta = {
   taxar: boolean,
@@ -96,30 +97,8 @@ export function initSocket(url: string) {
   });
 }
 
-export type Differ<T> = {
-  [ P in keyof T]: T[P] | T[P][]
-}
+export default socket;
 
 export function configDiff(configs: Config): Partial<Differ<Config>> {
   return objectDiff(COUPDefaultConfigs, configs);
 }
-
-function objectDiff<T extends Record<string, any>>(base: T, differ: T): Partial<Differ<Config>> {
-  const diff: Record<string, any> = {};
-
-  for (let key in base) {
-    if (typeof base[key] !== "object") {
-      if (base[key] !== differ[key])
-        diff[key] = [base[key], differ[key]];
-    } else {
-      let diffDeep = objectDiff(base[key], differ[key]);
-
-      if (Object.keys(diffDeep).length !== 0)
-        diff[key] = diffDeep;
-    }
-  }
-
-  return diff;
-}
-
-export default socket;
