@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useDeviceWidth from "@/app/utils/utils";
 import GameMobileMenu from "./GameMobileMenu";
 import ConfigDiff from "./ConfigDiff";
+import { useRouter } from "next/navigation";
 
 export enum Religion {
   PROTESTANTE = "PROTESTANTE",
@@ -66,6 +67,7 @@ export default function GameView({ gameState }: { gameState: GameState }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
+  const router = useRouter();
 
   function getCardsCanBeChoosed(): Card[] {
     return Object.entries(gameState.game.configs.tiposCartas)
@@ -97,7 +99,10 @@ export default function GameView({ gameState }: { gameState: GameState }) {
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
         <div
           className="flex items-center gap-3 cursor-pointer"
-          onClick={() => socket.emit("quit")}
+          onClick={() => {
+            socket.disconnect();
+            router.push("/");
+          }}
         >
           <Image
             src="/sair-lobby.png"
@@ -161,7 +166,10 @@ export default function GameView({ gameState }: { gameState: GameState }) {
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
         <div
           className="flex items-center gap-3 cursor-pointer"
-          onClick={() => socket.emit("quit")}
+          onClick={() => {
+            socket.disconnect();
+            router.push("/");
+          }}
         >
           <Image
             src="/sair-lobby.png"
@@ -173,7 +181,7 @@ export default function GameView({ gameState }: { gameState: GameState }) {
           <span>Sair</span>
         </div>
       </header>
-      <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.webp)] bg-cover bg-bottom">
+      <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         {gameState.player.religion && gameState.player.religion === Religion.CATOLICA ?
           <Image
             src="/catolico-icon.png"

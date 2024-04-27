@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GameState } from "../game/GameView";
 import Player from "./Player";
 import Configuracoes from "./Configuracoes";
+import { useRouter } from "next/navigation";
 
 export type LobbyState = {
   player: {
@@ -32,6 +33,8 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
   });
 
   const canEdit = lobbyState.player.name !== "" && lobbyState.player.name === lobbyState.lobby.owner;
+
+  const router = useRouter();
 
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
@@ -73,7 +76,10 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
         <div
           className="flex items-center cursor-pointer"
-          onClick={() => socket.emit("quit")}
+          onClick={() => {
+            socket.disconnect();
+            router.push("/");
+          }}
         >
           <Image
             src="/sair-lobby.png"
