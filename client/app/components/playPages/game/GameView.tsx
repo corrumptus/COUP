@@ -4,7 +4,7 @@ import Players from "./Players";
 import GamePcFooter from "./GamePcFooter";
 import GameActionMenu, { MenuTypes } from "./GameActionMenu";
 import { useEffect, useState } from "react";
-import useDeviceWidth from "@/app/utils/utils";
+import { useDeviceWidth } from "@/app/utils/utils";
 import GameMobileMenu from "./GameMobileMenu";
 import ConfigDiff from "./ConfigDiff";
 import { useRouter } from "next/navigation";
