@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Card } from "./GameView";
 import { useEffect, useState } from "react";
+import { Card } from "./GameView";
 
 export default function InfluenceCard({
   card,
