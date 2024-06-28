@@ -1,11 +1,11 @@
-import { Config, useSocket } from "@/app/utils/socketAPI";
-import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json"
-import Image from "next/image";
 import { useState } from "react";
-import { GameState } from "../game/GameView";
-import Player from "./Player";
-import Configuracoes from "./Configuracoes";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Player from "@components/Player";
+import Configuracoes from "@components/Configuracoes";
+import { GameState } from "../game/GameView";
+import { Config, useSocket } from "@utils/socketAPI";
+import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
 export type LobbyState = {
   player: {

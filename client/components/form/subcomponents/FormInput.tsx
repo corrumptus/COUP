@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import FormInputImage from './FormInputImage';
+import FormInputImage from '@components/FormInputImage';
 
 export default function FormInput({
   text,
