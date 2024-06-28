@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { initSocket } from "@/app/utils/socketAPI";
 import LobbyView from "@/app/components/playPages/lobby/LobbyView";
 import GameView, { GameState } from "@/app/components/playPages/game/GameView";
@@ -22,8 +22,8 @@ async function getURL(lobbyID: number): Promise<string> {
 }
 
 export default function EntrarLobby({ params: { id } }: { params: { id: number } }) {
-  const [ isGameInited, setGameInited ] = useState(false);
-  const inGameStateRef = useRef<GameState>();
+  const [ isGameInited, setIsGameInited ] = useState(false);
+  const [ gameState, setGameState ] = useState<GameState>();
 
   useEffect(() => {
     (async ()=> {
@@ -32,13 +32,13 @@ export default function EntrarLobby({ params: { id } }: { params: { id: number }
   }, [id]);
 
   function gameInitHandler(gameState: GameState) {
-    inGameStateRef.current = gameState;
+    setGameState(gameState);
 
-    setGameInited(true);
+    setIsGameInited(true);
   }
 
   return !isGameInited ?
     <LobbyView initGame={gameInitHandler} id={id}/>
     :
-    <GameView gameState={inGameStateRef.current as GameState}/>
+    <GameView gameState={gameState as GameState}/>
 }
