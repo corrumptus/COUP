@@ -1,6 +1,6 @@
-import FormInput from "./FormInput";
 import { useRef } from "react";
 import Link from "next/link";
+import FormInput from "@components/loginForm/subcomponents/FormInput";
 
 export default function Form({
   type,
