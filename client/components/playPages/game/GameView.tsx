@@ -1,13 +1,13 @@
-import socket, { Config, configDiff } from "@/app/utils/socketAPI";
-import Image from "next/image";
-import Players from "./Players";
-import GamePcFooter from "./subcomponents/GamePcFooter";
-import GameActionMenu, { MenuTypes } from "./subcomponents/GameActionMenu";
 import { useEffect, useState } from "react";
-import { useDeviceWidth } from "@/app/utils/utils";
-import GameMobileMenu from "./subcomponents/GameMobileMenu";
-import ConfigDiff from "./subcomponents/ConfigDiff";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Players from "@components/Players";
+import GamePcFooter from "@components/GamePcFooter";
+import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
+import GameMobileMenu from "@components/GameMobileMenu";
+import ConfigDiff from "@components/ConfigDiff";
+import socket, { Config, configDiff } from "@utils/socketAPI";
+import { useDeviceWidth } from "@utils/utils";
 
 export enum Religion {
   PROTESTANTE = "PROTESTANTE",
