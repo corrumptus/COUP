@@ -1,6 +1,6 @@
 import Image from "next/image";
 import CardGameInfos from "./CardGameInfos";
-import { Player } from "./GameView";
+import { Player } from "../GameView";
 import InfluenceCard from "./InfluenceCard";
 import { Dispatch, SetStateAction } from "react";
 import { MenuTypes } from "./GameActionMenu";

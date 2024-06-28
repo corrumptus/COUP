@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Player, Religion } from "./GameView";
+import { Player, Religion } from "../GameView";
 import socket, { Config } from "@/app/utils/socketAPI";
 import CardGameInfos from "./CardGameInfos";
 import InfluenceCard from "./InfluenceCard";

@@ -1,6 +1,6 @@
 import socket, { Config } from "@/app/utils/socketAPI";
 import Image from "next/image";
-import { Action, Card } from "./GameView";
+import { Action, Card } from "../GameView";
 import InfluenceCard from "./InfluenceCard";
 import { Dispatch, SetStateAction } from "react";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Action, Player, Religion } from "./GameView";
+import { Action, Player, Religion } from "../GameView";
 import InfluenceCard from "./InfluenceCard";
 import Image from "next/image";
 import { CardColors, generateColorCard } from "@/app/utils/utils";

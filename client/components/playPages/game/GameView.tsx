@@ -1,12 +1,12 @@
 import socket, { Config, configDiff } from "@/app/utils/socketAPI";
 import Image from "next/image";
 import Players from "./Players";
-import GamePcFooter from "./GamePcFooter";
-import GameActionMenu, { MenuTypes } from "./GameActionMenu";
+import GamePcFooter from "./subcomponents/GamePcFooter";
+import GameActionMenu, { MenuTypes } from "./subcomponents/GameActionMenu";
 import { useEffect, useState } from "react";
 import { useDeviceWidth } from "@/app/utils/utils";
-import GameMobileMenu from "./GameMobileMenu";
-import ConfigDiff from "./ConfigDiff";
+import GameMobileMenu from "./subcomponents/GameMobileMenu";
+import ConfigDiff from "./subcomponents/ConfigDiff";
 import { useRouter } from "next/navigation";
 
 export enum Religion {
