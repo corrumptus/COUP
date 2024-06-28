@@ -19,7 +19,18 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./components/*"],
+      "@pages/*": [
+        "./components/home/*",
+        "./components/form/*",
+        "./components/playPages/lobby/*",
+        "./components/playPages/game/*",
+      ],
+      "@components/*": [
+        "./components/home/subcomponents/*",
+        "./components/form/subcomponents/*",
+        "./components/playPages/lobby/subcomponents/*",
+        "./components/playPages/game/subcomponents/*",
+      ],
       "@utils/*": ["./utils/*"],
       "@types/*": ["./types/*"]
     }
