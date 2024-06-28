@@ -1,8 +1,9 @@
 import { Socket, io } from "socket.io-client"
-import { LobbyState } from "../components/playPages/lobby/LobbyView";
-import { Card, GameState } from "../components/playPages/game/GameView";
+import { LobbyState } from "../../components/playPages/lobby/LobbyView";
+import { Card, GameState } from "../../components/playPages/game/GameView";
 import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json";
 import { Differ, objectDiff } from "./utils";
+import { useEffect, useState } from "react";
 
 type Carta = {
   taxar: boolean,
@@ -49,55 +50,59 @@ export type Config = {
 };
 
 type ResponseSocketEmitEvents = {
-  "quit": () => void;
+  "enterLobby": (lobbyID: number) => void;
+
   "updateConfigs": (keys: string[], value: number | boolean) => void;
   "newOwner": (name: string) => void;
   "removePlayer": (name: string) => void;
-  "beginMatch": () => void;
+  "beginMatch": (customConfigs?: Config) => void;
 
   "renda": () => void;
   "ajudaExterna": () => void;
-  "taxar": (carta: Card) => void;
+  "taxar": (card: Card) => void;
 
-  "extorquir": (carta: Card, player: string) => void;
+  "extorquir": (card: Card, targetName: string) => void;
 
-  "assassinar": (carta: Card, player: string, playerCard: number) => void;
-  "investigar": (carta: Card, player: string, playerCard: number) => void;
-  "golpeEstado": (player: string, playerCard: number) => void;
+  "assassinar": (card: Card, targetName: string, playerCard: number) => void;
+  "investigar": (card: Card, targetName: string, playerCard: number) => void;
+  "golpeEstado": (targetName: string, playerCard: number) => void;
 
-  "trocarReligiaoOutro": (player: string) => void;
+  "trocarReligiaoOutro": (targetName: string) => void;
   "trocarReligiaoPropria": () => void;
 
-  "trocar": (carta: Card, player: string, playerCard?: number) => void;
+  "trocar": (card: Card, targetName?: string, playerCard?: number) => void;
   "manter": () => void;
 
-  "contestar": () => void;
-  "bloquear": () => void;
+  "contestar": (targetName: string) => void;
+  "bloquear": (card: Card, targetName: string) => void;
   "aceitar": () => void;
 }
 
 type RequestSocketOnEvents = {
   "playerConnected": (gameState: LobbyState) => void;
-  "configsUpdate": (change: { keys: string[], value: any }) => void;
+  "configsUpdate": (keys: string[], value: number | boolean) => void;
   "newPlayer": (player: string) => void;
   "leavingPlayer": (index: number) => void;
   "gameInit": (gameState: GameState) => void;
 }
 
-let socket!: Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
+export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export function initSocket(url: string) {
-  if (socket !== undefined)
-    return;
+export function useSocket(url: string) {
+  const [ socket, setSocket ] = useState<COUPSocket>();
 
-  socket = io(url, {
-    auth: {
-      token: localStorage.getItem("coup-token")
-    }
-  });
+  useEffect(() => {
+    setSocket(io(url, {
+      auth: {
+        token: localStorage.getItem("coup-token")
+      }
+    }));
+
+    return () => {(socket as COUPSocket).disconnect()};
+  }, []);
+
+  return socket as COUPSocket;
 }
-
-export default socket;
 
 export function configDiff(configs: Config): Partial<Differ<Config>> {
   return objectDiff(COUPDefaultConfigs, configs);
