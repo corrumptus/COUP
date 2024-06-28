@@ -49,7 +49,8 @@ export default function PlayerCard({
               onClick={() => socket.emit("trocarReligiaoOutro", player.name)}
               width={40}
               height={40}
-            />)
+            />
+          )
         }
       </header>
       <p className={`w-full flex items-center justify-center gap-2 text-xl ${colors?.coinColor || ""}`}>

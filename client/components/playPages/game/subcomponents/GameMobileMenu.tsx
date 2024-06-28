@@ -32,26 +32,28 @@ export default function GameMobileMenu({
             height={35}
           />
         </span>
-        {player.religion && player.religion === Religion.CATOLICA ?
-          <Image
-            src="/catolico-icon.png"
-            alt="cruz católica"
-            title="católico"
-            onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
-              && socket.emit("trocarReligiaoPropria")}
-            width={40}
-            height={40}
-          />
-          :
-          <Image
-            src="/protestante-icon.png"
-            alt="biblia"
-            title="protestante"
-            onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
-              && socket.emit("trocarReligiaoPropria")}
-            width={40}
-            height={40}
-          />
+        {player.religion && (
+          player.religion === Religion.CATOLICA ?
+            <Image
+              src="/catolico-icon.png"
+              alt="cruz católica"
+              title="católico"
+              onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
+                && socket.emit("trocarReligiaoPropria")}
+              width={40}
+              height={40}
+            />
+            :
+            <Image
+              src="/protestante-icon.png"
+              alt="biblia"
+              title="protestante"
+              onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
+                && socket.emit("trocarReligiaoPropria")}
+              width={40}
+              height={40}
+            />
+          )
         }
       </div>
       <InfluenceCard

@@ -183,28 +183,30 @@ export function GameViewComp({
         </div>
       </header>
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
-        {gameState.player.religion && gameState.player.religion === Religion.CATOLICA ?
-          <Image
-            src="/catolico-icon.png"
-            alt="cruz católica"
-            title="católico"
-            className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-            onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
-              && socket.emit("trocarReligiaoPropria")}
-            width={40}
-            height={40}
-          />
-          :
-          <Image
-            src="/protestante-icon.png"
-            alt="biblia"
-            title="protestante"
-            className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-            onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
-              && socket.emit("trocarReligiaoPropria")}
-            width={40}
-            height={40}
-          />
+        {gameState.player.religion && (
+          gameState.player.religion === Religion.CATOLICA ?
+            <Image
+              src="/catolico-icon.png"
+              alt="cruz católica"
+              title="católico"
+              className="absolute top-0 left-0 cursor-pointer hover:scale-110"
+              onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
+                && socket.emit("trocarReligiaoPropria")}
+              width={40}
+              height={40}
+            />
+            :
+            <Image
+              src="/protestante-icon.png"
+              alt="biblia"
+              title="protestante"
+              className="absolute top-0 left-0 cursor-pointer hover:scale-110"
+              onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
+                && socket.emit("trocarReligiaoPropria")}
+              width={40}
+              height={40}
+            />
+          )
         }
         {isDiffsVisible &&
           <ConfigDiff
