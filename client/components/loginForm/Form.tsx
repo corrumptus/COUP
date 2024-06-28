@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import FormInput from "@components/loginForm/subcomponents/FormInput";
 
@@ -9,9 +9,9 @@ export default function Form({
   type: "Entrar" | "Inscrever-se",
   loginHandler: (name: string, password: string, confirmPassword?: string) => void
 }) {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const cPasswordRef = useRef<HTMLInputElement>(null);
+  const [ name, setName ] = useState("");
+  const [ password, setPassword ] = useState("");
+  const [ cPassword, setCPassword ] = useState("");
 
   const formClassName: string = `bg-[#afafaf]/5 backdrop-blur-xl flex flex-col
   items-center justify-center border border-white/20 p-6 rounded-3xl gap-3`;
@@ -22,21 +22,18 @@ export default function Form({
       onSubmit={e => {
         e.preventDefault();
 
-        loginHandler(
-          nameRef.current?.value || "",
-          passwordRef.current?.value || ""
-        );
+        loginHandler(name, password);
       }}
     >
       <h1 className="text-4xl font-bold">Entrar</h1>
       <FormInput
         text="Nome"
-        ref={nameRef}
+        changeText={t => setName(t)}
       />
       <FormInput
         text="Senha"
         isPassword
-        ref={passwordRef}
+        changeText={t => setPassword(t)}
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
@@ -57,27 +54,23 @@ export default function Form({
       onSubmit={e => {
         e.preventDefault;
 
-        loginHandler(
-          nameRef.current?.value || "",
-          passwordRef.current?.value || "",
-          cPasswordRef.current?.value
-        )
+        loginHandler(name, password, cPassword);
       }}
     >
       <h1 className="text-4xl font-bold">Inscrever-se</h1>
       <FormInput
         text="Nome"
-        ref={nameRef}
+        changeText={t => setName(t)}
       />
       <FormInput
         text="Senha"
         isPassword
-        ref={passwordRef}
+        changeText={t => setPassword(t)}
       />
       <FormInput
         text="Confirmar Senha"
         isPassword
-        ref={cPasswordRef}
+        changeText={t => setCPassword(t)}
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
