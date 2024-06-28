@@ -21,15 +21,15 @@ async function getURL(lobbyID: number): Promise<string> {
   return (result as { url: string }).url;
 }
 
-export default function EntrarLobby({ params }: { params: {id: number } }) {
+export default function EntrarLobby({ params: { id } }: { params: { id: number } }) {
   const [ isGameInited, setGameInited ] = useState(false);
   const inGameStateRef = useRef<GameState>();
 
   useEffect(() => {
     (async ()=> {
-      initSocket(await getURL(params.id));
+      initSocket(await getURL(id));
     })();
-  }, [params.id]);
+  }, [id]);
 
   function gameInitHandler(gameState: GameState) {
     inGameStateRef.current = gameState;
@@ -38,7 +38,7 @@ export default function EntrarLobby({ params }: { params: {id: number } }) {
   }
 
   return !isGameInited ?
-    <LobbyView initGame={gameInitHandler} id={params.id}/>
+    <LobbyView initGame={gameInitHandler} id={id}/>
     :
     <GameView gameState={inGameStateRef.current as GameState}/>
 }
