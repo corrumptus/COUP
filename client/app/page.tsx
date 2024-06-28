@@ -1,15 +1,13 @@
 "use client"
 
-import { useRouter } from "next/navigation";
-import Header from "./components/home/Header";
 import { useState } from "react";
-import RulesView from "./components/home/RulesView";
-import ServersView from "./components/home/LobbysView";
+import { useRouter } from "next/navigation";
+import Header from "@components/home/Header";
+import ServersView from "@components/home/LobbysView";
 
 export default function Home() {
   const router = useRouter();
   const [ isServersVisible, setServersVisibility ] = useState(false);
-  const [ isRulesVisible, setRulesVisibility ] = useState(false);
 
   async function createServer() {
     if (localStorage.getItem("coup-token") === null) {
@@ -27,29 +25,11 @@ export default function Home() {
     const result: { error: string } | number = await response.json();
 
     if (!response.ok) {
-      console.log((result as { error: string}).error);
+      console.log((result as { error: string }).error); // TODO: Toaster
       return;
     }
 
     router.push("/jogar/" + (result as number).toString());
-  }
-
-  function openServers() {
-    setRulesVisibility(false);
-    setServersVisibility(true);
-  }
-
-  function closeServers() {
-    setServersVisibility(false);
-  }
-
-  function openRules() {
-    setServersVisibility(false);
-    setRulesVisibility(true);
-  }
-
-  function closeRules() {
-    setRulesVisibility(false);
   }
 
   return (
@@ -59,14 +39,11 @@ export default function Home() {
       <Header />
       <main className="grid content-center h-full justify-items-start gap-1 pl-2.5 relative">
         {isServersVisible &&
-          <ServersView closeView={closeServers}/>
-        }
-        {isRulesVisible &&
-          <RulesView closeView={closeRules}/>
+          <ServersView closeView={() => setServersVisibility(false)}/>
         }
         <button className="home_button" onClick={createServer}>Jogar</button>
-        <button className="home_button" onClick={openServers}>Servidores</button>
-        <button className="home_button" onClick={openRules}>Regras</button>
+        <button className="home_button" onClick={() => setServersVisibility(true)}>Servidores</button>
+        <button className="home_button" onClick={() => router.push("/regras")}>Regras</button>
         <button className="home_button" onClick={() => router.push("/tutorial")}>Tutorial</button>
         <button className="home_button" onClick={() => router.push("/stats")}>Estatísticas</button>
         <button className="home_button" onClick={() => router.push("/creditos")}>Créditos</button>
