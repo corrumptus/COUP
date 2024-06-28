@@ -11,13 +11,16 @@ export default function InfluenceCard({
   customStyle?: string,
   onClick?: () => void
 }) {
-  const [ randomCard, setRandomCard ] = useState(1)
+  const [ randomCard, setRandomCard ] = useState(1);
 
   const imageStyle = "" + (customStyle || "");
 
   useEffect(() => {
     setRandomCard(Math.floor(Math.random() * 3) + 1)
-  })
+  });
+
+  const cardWidth = 100;
+  const cardHeight = 130;
 
   if (card === Card.DUQUE && randomCard === 1) return (
     <Image
@@ -26,8 +29,8 @@ export default function InfluenceCard({
       title="duque"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.DUQUE && randomCard === 2) return (
@@ -37,8 +40,8 @@ export default function InfluenceCard({
       title="duque"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.DUQUE && randomCard === 3) return (
@@ -48,8 +51,8 @@ export default function InfluenceCard({
       title="duque"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -60,8 +63,8 @@ export default function InfluenceCard({
       title="capitao"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.CAPITAO && randomCard === 2) return (
@@ -71,8 +74,8 @@ export default function InfluenceCard({
       title="capitao"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.CAPITAO && randomCard === 3) return (
@@ -82,8 +85,8 @@ export default function InfluenceCard({
       title="capitao"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -94,8 +97,8 @@ export default function InfluenceCard({
       title="assassino"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.ASSASSINO && randomCard === 2) return (
@@ -105,8 +108,8 @@ export default function InfluenceCard({
       title="assassino"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.ASSASSINO && randomCard === 3) return (
@@ -116,8 +119,8 @@ export default function InfluenceCard({
       title="assassino"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -128,8 +131,8 @@ export default function InfluenceCard({
       title="condessa"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.CONDESSA && randomCard === 2) return (
@@ -139,8 +142,8 @@ export default function InfluenceCard({
       title="condessa"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.CONDESSA && randomCard === 3) return (
@@ -150,8 +153,8 @@ export default function InfluenceCard({
       title="condessa"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -162,8 +165,8 @@ export default function InfluenceCard({
       title="embaixador"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.EMBAIXADOR && randomCard === 2) return (
@@ -173,8 +176,8 @@ export default function InfluenceCard({
       title="embaixador"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.EMBAIXADOR && randomCard === 3) return (
@@ -184,8 +187,8 @@ export default function InfluenceCard({
       title="embaixador"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -196,8 +199,8 @@ export default function InfluenceCard({
       title="inquisidor"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.INQUISIDOR && randomCard === 2) return (
@@ -207,8 +210,8 @@ export default function InfluenceCard({
       title="inquisidor"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
   if (card === Card.INQUISIDOR && randomCard === 3) return (
@@ -218,8 +221,8 @@ export default function InfluenceCard({
       title="inquisidor"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 
@@ -230,8 +233,8 @@ export default function InfluenceCard({
       title="desconhecida"
       className={imageStyle}
       onClick={onClick}
-      width={40}
-      height={70}
+      width={cardWidth}
+      height={cardHeight}
     />
   )
 }

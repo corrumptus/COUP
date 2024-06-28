@@ -1,7 +1,12 @@
-import socket, { Config } from "@/app/utils/socketAPI";
+import { Config, useSocket } from "@/app/utils/socketAPI";
 
 export default function Configuracoes({ configs, canEdit }: { configs: Config, canEdit: boolean }) {
-  const configStyles = "flex flex-col gap-4 overflow-auto px-[3%]";  
+  const configStyles = "flex flex-col gap-4 overflow-auto px-[3%]";
+
+  const socket = useSocket("http://localhost:5000");
+
+  if (socket === undefined)
+      return;
 
   if (canEdit)
     return (

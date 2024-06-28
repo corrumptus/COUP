@@ -1,4 +1,4 @@
-import socket, { Config } from "@/app/utils/socketAPI";
+import { Config, useSocket } from "@/app/utils/socketAPI";
 import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json"
 import Image from "next/image";
 import { useState } from "react";
@@ -36,19 +36,23 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
 
   const router = useRouter();
 
+  const socket = useSocket("http://localhost:5000");
+
+  if (socket === undefined)
+    return null;
+
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
   });
 
-  socket.on("configsUpdate", (change: { keys: string[], value: any }) => {
+  socket.on("configsUpdate", (keys: string[], value: number | boolean) => {
     const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
     let configParam: any = newLobbyState.lobby.configs;
-    let i;
 
-    for (i = 0; i < change.keys.length-1; i++)
-      configParam = configParam[change.keys[i]];
+    for (let i = 0; i < keys.length-1; i++)
+      configParam = configParam[keys[i]];
 
-    configParam[change.keys[i]] = change.value;
+    configParam[keys.at(-1) as string] = value;
 
     setLobbyState(newLobbyState);
   });

@@ -44,23 +44,24 @@ export type Player = {
   religion?: Religion
 }
 
-export type Turn = {
-  player: Player;
-  target?: Player;
-  actions: Action[];
-}
-
 export type GameState = {
   player: Player;
   game: {
     players: Player[];
-    currentPlayer: Player;
-    currentTurn: Turn;
+    currentPlayer: string;
     configs: Config;
   }
 }
 
 export default function GameView({ gameState }: { gameState: GameState }) {
+  return <GameViewComp gameState={gameState} />
+}
+
+export function GameViewComp({
+  gameState
+}: {
+  gameState: GameState
+}) {
   const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
   const [ action, setAction ] = useState<Action | undefined>(undefined);
   const [ requeriments, setRequeriments ] = useState<{[key: string]: any}>({});
