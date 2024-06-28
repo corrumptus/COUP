@@ -1,21 +1,23 @@
-import { ForwardedRef, MutableRefObject, forwardRef, useId, useState } from 'react'
+import { useId, useState } from 'react';
 import FormInputImage from './FormInputImage';
 
-const FormInput = forwardRef(({ text, isPassword }: {
+export default function FormInput({
+  text,
+  changeText,
+  isPassword
+}: {
   text: string,
+  changeText: (newText: string) => void,
   isPassword?: boolean
-}, ref: ForwardedRef<HTMLInputElement>) => {
+}) {
   const id = useId();
-  const [ isPassVisible, setIsVisible ] = useState(!isPassword);
+  const [ isPassVisible, setIsPassVisible ] = useState(!isPassword);
 
   function passwordImageClickHandler() {
     if (!isPassword)
       return;
 
-    setIsVisible(prev => !prev);
-
-    (ref as MutableRefObject<HTMLInputElement>).current.type =
-      isPassVisible ? "text" : "password";
+    setIsPassVisible(prev => !prev);
   }
 
   return (
@@ -29,7 +31,8 @@ const FormInput = forwardRef(({ text, isPassword }: {
         className="bg-transparent border rounded-3xl border-white p-1 outline-none pl-3 pr-8"
         type={isPassVisible ? "text" : "password"}
         placeholder=" "
-        ref={ref}
+        value={text}
+        onChange={e => changeText(e.target.value)}
       />
       <FormInputImage
         type={isPassword ? "password" : "name"}
@@ -38,8 +41,4 @@ const FormInput = forwardRef(({ text, isPassword }: {
       />
     </div>
   )
-});
-
-FormInput.displayName = "FormInput"
-
-export default FormInput;
+}
