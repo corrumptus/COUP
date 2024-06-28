@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { initSocket } from "@/app/utils/socketAPI";
-import LobbyView from "@/app/components/playPages/lobby/LobbyView";
-import GameView, { GameState } from "@/app/components/playPages/game/GameView";
+import LobbyView from "@components/playPages/lobby/LobbyView";
+import GameView, { GameState } from "@components/playPages/game/GameView";
+import { initSocket } from "@utils/socketAPI";
 
 async function getURL(lobbyID: number): Promise<string> {
   const response = await fetch("http://localhost:5000/lobby/" + lobbyID.toString(), {
