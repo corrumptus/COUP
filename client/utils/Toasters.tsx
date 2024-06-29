@@ -1,33 +1,29 @@
-import { Dispatch, SetStateAction, useId, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
-let externalToasters: ReturnType<typeof Toaster>[];
 let externalSetState: Dispatch<SetStateAction<ReturnType<typeof Toaster>[]>>;
 
 export function newToaster(children: string | JSX.Element) {
-  const newId = useId();
-  const newToast = <Toaster children={children} percentage={100} key={newId}/>
+  const id = JSON.stringify(children) + Math.floor(Math.random() * 100);
 
-  if (externalToasters.length === 3)
-    externalToasters.shift();
+  function removeToaster() {
+    externalSetState(prev => prev.filter(t => t.key !== id));
+  }
 
-  setTimeout(() => {
-    const index = externalToasters.findIndex(t => t.key === newId);
+  externalSetState(prev => {
+    const toasters = [...prev];
+    
+    if (prev.length === 3)
+      toasters.splice(0, 1);
 
-    if (index === -1)
-      return;
+    return [...toasters, <Toaster children={children} key={id} removeToaster={removeToaster}/>];
+  });
 
-    externalToasters.splice(index, 1);
-
-    externalSetState(externalToasters);
-  }, 3000);
-
-  externalSetState([...externalToasters, newToast]);
+  setTimeout(removeToaster, 3000);
 }
 
 export default function Toasters() {
   const [ toasters, setToasters ] = useState<ReturnType<typeof Toaster>[]>([]);
 
-  externalToasters = [...toasters];
   externalSetState = setToasters;
 
   return (
@@ -39,17 +35,20 @@ export default function Toasters() {
 
 function Toaster({
   children,
-  percentage
+  removeToaster
 }: {
   children: string | JSX.Element,
-  percentage: number
+  removeToaster: () => void
 }) {
   return (
-    <div className="flex items-end">
-      <div className={`h-[${percentage}%] w-1 bg-green-400 animate-shrink`}></div>
-      <div className="w-[200px] h-[70px] p-4">
+    <div
+      className="bg-white rounded-2xl overflow-hidden cursor-pointer relative"
+      onClick={removeToaster}
+    >
+      <div className="w-full max-w-[300px] p-4">
         {children}
       </div>
+      <div className="w-full h-0.5 bg-green-400 animate-shrink animate-green-to-red absolute bottom-0"></div>
     </div>
   )
 }
