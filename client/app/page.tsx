@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@pages/Header";
 import LobbysView from "@pages/LobbysView";
+import Toasters, { newToaster } from "@/utils/Toasters";
 
 export default function Home() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function Home() {
     const result: { error: string } | number = await response.json();
 
     if (!response.ok) {
-      console.log((result as { error: string }).error); // TODO: Toaster
+      newToaster((result as { error: string }).error);
       return;
     }
 
@@ -38,6 +39,7 @@ export default function Home() {
     >
       <Header />
       <main className="grid content-center h-full justify-items-start gap-1 pl-2.5 relative">
+        <Toasters />
         {isServersVisible &&
           <LobbysView closeView={() => setServersVisibility(false)}/>
         }
@@ -47,6 +49,7 @@ export default function Home() {
         <button className="home_button" onClick={() => router.push("/tutorial")}>Tutorial</button>
         <button className="home_button" onClick={() => router.push("/stats")}>Estatísticas</button>
         <button className="home_button" onClick={() => router.push("/creditos")}>Créditos</button>
+        <button className="home_button" onClick={() => newToaster("NEW TOASTER")}>NEW TOASTER</button>
       </main>
     </div>
   );
