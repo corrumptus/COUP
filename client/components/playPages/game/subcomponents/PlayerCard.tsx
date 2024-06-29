@@ -8,13 +8,13 @@ import { DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
 export default function PlayerCard({
   player,
-  setAction,
-  setMenuType,
+  changeAction,
+  changeMenuType,
   setRequeriments
 }: {
   player: Player,
-  setAction: (action: Action) => void,
-  setMenuType: (menuType: MenuTypes | undefined) => void,
+  changeAction: (action: Action | undefined) => void,
+  changeMenuType: (menuType: MenuTypes | undefined) => void,
   setRequeriments: (requeriment: {[key: string]: any;}) => void
 }) {
   const socket = useSocket(DEFAULT_SOCKET_URL);
@@ -62,9 +62,9 @@ export default function PlayerCard({
           title="extorquir"
           className={`rounded-[100%] ${colors?.minusColor || ""} cursor-pointer hover:scale-110`}
           onClick={() => {
-            setAction(Action.EXTORQUIR)
-            setMenuType("cardChooser")
-            setRequeriments({ "player": player.name })
+            changeAction(Action.EXTORQUIR);
+            changeMenuType("cardChooser");
+            setRequeriments({ "player": player.name });
           }}
           width={24}
           height={24}
@@ -78,8 +78,8 @@ export default function PlayerCard({
             if (player.cards[0].isDead)
               return;
 
-            setMenuType("othersCard")
-            setRequeriments({ "player": player.name, "playerCard": 0 })
+            changeMenuType("othersCard");
+            setRequeriments({ "player": player.name, "playerCard": 0 });
           }}
         />
         <InfluenceCard
@@ -89,8 +89,8 @@ export default function PlayerCard({
             if (player.cards[1].isDead)
               return;
 
-            setMenuType("othersCard")
-            setRequeriments({ "player": player.name, "playerCard": 1 })
+            changeMenuType("othersCard");
+            setRequeriments({ "player": player.name, "playerCard": 1 });
           }}
         />
       </div>

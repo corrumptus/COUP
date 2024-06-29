@@ -7,24 +7,24 @@ export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "d
 
 export default function GameActionMenu({
   type,
-  setMenuType,
+  changeMenuType,
   action,
-  setAction,
+  changeAction,
   requeriments,
   setRequeriments,
   configs,
-  cardsCanBeChoosed,
+  choosableCards,
   investigatedCard,
   playerMoney
 }: {
   type: MenuTypes,
-  setMenuType: Dispatch<SetStateAction<MenuTypes | undefined>>,
+  changeMenuType: (menuType: MenuTypes | undefined) => void,
   action: Action | undefined,
-  setAction: Dispatch<SetStateAction<Action | undefined>>,
+  changeAction: (action: Action | undefined) => void,
   requeriments: {[key: string]: any},
   setRequeriments: Dispatch<SetStateAction<{[key: string]: any}>>,
   configs: Config,
-  cardsCanBeChoosed?: Card[]
+  choosableCards?: Card[]
   investigatedCard?: Card,
   playerMoney?: number
 }) {
@@ -52,8 +52,6 @@ export default function GameActionMenu({
       socket.emit("trocar", carta, requeriments["player"], requeriments["playerCard"])
       return;
     }
-
-
   }
 
   if (type === "money") children = (
@@ -75,8 +73,8 @@ export default function GameActionMenu({
       <div
         className={optionStyles}
         onClick={() => {
-          setAction(Action.TAXAR)
-          setMenuType("cardChooser")
+          changeAction(Action.TAXAR)
+          changeMenuType("cardChooser")
         }}
       >
         <h4>Taxar</h4>
@@ -92,8 +90,8 @@ export default function GameActionMenu({
           if (playerMoney! >= configs.quantidadeMaximaGolpeEstado)
             return;
 
-          setAction(Action.ASSASSINAR)
-          setMenuType("cardChooser")
+          changeAction(Action.ASSASSINAR)
+          changeMenuType("cardChooser")
         }}
       >
         <h4>Assassinar</h4>
@@ -104,8 +102,8 @@ export default function GameActionMenu({
           if (playerMoney! >= configs.quantidadeMaximaGolpeEstado)
             return;
 
-          setAction(Action.INVESTIGAR)
-          setMenuType("cardChooser")
+          changeAction(Action.INVESTIGAR)
+          changeMenuType("cardChooser")
         }}
       >
         <h4>Investigar</h4>
@@ -125,8 +123,8 @@ export default function GameActionMenu({
       <div
         className={optionStyles}
         onClick={() => {
-          setAction(Action.TROCAR)
-          setMenuType("cardChooser")
+          changeAction(Action.TROCAR)
+          changeMenuType("cardChooser")
         }}
       >
         <h4>Trocar 1</h4>
@@ -134,9 +132,9 @@ export default function GameActionMenu({
       <div
         className={optionStyles}
         onClick={() => {
-          setAction(Action.TROCAR)
+          changeAction(Action.TROCAR)
           setRequeriments(prev => ({ "player": prev["player"] }))
-          setMenuType("cardChooser")
+          changeMenuType("cardChooser")
         }}
       >
         <h4>Trocar 2</h4>
@@ -146,37 +144,37 @@ export default function GameActionMenu({
 
   if (type === "cardChooser") children = (
     <>
-      {cardsCanBeChoosed?.includes(Card.DUQUE) &&
+      {choosableCards?.includes(Card.DUQUE) &&
         <InfluenceCard
           card={Card.DUQUE}
           onClick={() => cardChooserClickHandler(Card.DUQUE)}
         />
       }
-      {cardsCanBeChoosed?.includes(Card.CAPITAO) &&
+      {choosableCards?.includes(Card.CAPITAO) &&
         <InfluenceCard
           card={Card.CAPITAO}
           onClick={() => cardChooserClickHandler(Card.CAPITAO)}
         />
       }
-      {cardsCanBeChoosed?.includes(Card.ASSASSINO) &&
+      {choosableCards?.includes(Card.ASSASSINO) &&
         <InfluenceCard
           card={Card.ASSASSINO}
           onClick={() => cardChooserClickHandler(Card.ASSASSINO)}
         />
       }
-      {cardsCanBeChoosed?.includes(Card.CONDESSA) &&
+      {choosableCards?.includes(Card.CONDESSA) &&
         <InfluenceCard
           card={Card.CONDESSA}
           onClick={() => cardChooserClickHandler(Card.CONDESSA)}
         />
       }
-      {cardsCanBeChoosed?.includes(Card.EMBAIXADOR) &&
+      {choosableCards?.includes(Card.EMBAIXADOR) &&
         <InfluenceCard
           card={Card.EMBAIXADOR}
           onClick={() => cardChooserClickHandler(Card.EMBAIXADOR)}
         />
       }
-      {cardsCanBeChoosed?.includes(Card.INQUISIDOR) &&
+      {choosableCards?.includes(Card.INQUISIDOR) &&
         <InfluenceCard
           card={Card.INQUISIDOR}
           onClick={() => cardChooserClickHandler(Card.INQUISIDOR)}
@@ -239,7 +237,7 @@ export default function GameActionMenu({
         if (type === "defense")
           socket.emit("aceitar")
 
-        setMenuType(undefined)
+        changeMenuType(undefined)
       }}
     >
       {children}

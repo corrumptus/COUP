@@ -8,13 +8,13 @@ import { Config, DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
 export default function GameMobileMenu({
   player,
-  setMenuType,
+  changeMenuType,
   setRequeriments,
   configs,
   isOpen
 }: {
   player: Player,
-  setMenuType: Dispatch<SetStateAction<MenuTypes | undefined>>,
+  changeMenuType: (menuType: MenuTypes | undefined) => void,
   setRequeriments: Dispatch<SetStateAction<{[key: string]: any}>>,
   configs: Config,
   isOpen: boolean
@@ -65,8 +65,8 @@ export default function GameMobileMenu({
           if (player.cards[0].isDead)
             return;
 
-          setMenuType("selfCard")
-          setRequeriments({ "player": player.name, "playerCard": 0 })
+          changeMenuType("selfCard");
+          setRequeriments({ "player": player.name, "playerCard": 0 });
         }}
       />
       <InfluenceCard
@@ -76,8 +76,8 @@ export default function GameMobileMenu({
           if (player.cards[1].isDead)
             return;
 
-          setMenuType("selfCard")
-          setRequeriments({ "player": player.name, "playerCard": 1 })
+          changeMenuType("selfCard");
+          setRequeriments({ "player": player.name, "playerCard": 1 });
         }}
       />
       <CardGameInfos configs={configs}/>

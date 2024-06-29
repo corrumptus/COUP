@@ -8,12 +8,12 @@ import { Config } from "@utils/socketAPI";
 
 export default function GamePcFooter({
   player,
-  setMenuType,
+  changeMenuType,
   setRequeriments,
   configs
 }: {
   player: Player,
-  setMenuType: Dispatch<SetStateAction<MenuTypes | undefined>>,
+  changeMenuType: (menuType: MenuTypes | undefined) => void,
   setRequeriments: Dispatch<SetStateAction<{[key: string]: any}>>,
   configs: Config
 }) {
@@ -22,7 +22,7 @@ export default function GamePcFooter({
       <div className="flex items-end relative z-[3]">
         <button
           className="bg-[#27b127] border-green-800 border-t-[3px] border-r-[3px] rounded-tr-full aspect-square p-3 hover:scale-110 origin-bottom-left"
-          onClick={() => setMenuType("money")}
+          onClick={() => changeMenuType("money")}
         >
           <Image
             src="/openBank.png"
@@ -44,8 +44,8 @@ export default function GamePcFooter({
             if (player.cards[0].isDead)
               return;
 
-            setMenuType("selfCard")
-            setRequeriments({ "player": player.name, "playerCard": 0 })
+            changeMenuType("selfCard");
+            setRequeriments({ "player": player.name, "playerCard": 0 });
           }}
         />
         <InfluenceCard
@@ -55,8 +55,8 @@ export default function GamePcFooter({
             if (player.cards[1].isDead)
               return;
 
-            setMenuType("selfCard")
-            setRequeriments({ "player": player.name, "playerCard": 1 })
+            changeMenuType("selfCard");
+            setRequeriments({ "player": player.name, "playerCard": 1 });
           }}
         />
       </div>

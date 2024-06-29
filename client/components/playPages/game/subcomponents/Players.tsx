@@ -5,13 +5,13 @@ import PlayerCard from "@components/PlayerCard";
 
 export default function Players({
   players,
-  setAction,
-  setMenuType,
+  changeAction,
+  changeMenuType,
   setRequeriments
 }: {
   players: Player[],
-  setAction: (action: Action) => void,
-  setMenuType: (menuType: MenuTypes | undefined) => void,
+  changeAction: (action: Action | undefined) => void,
+  changeMenuType: (menuType: MenuTypes | undefined) => void,
   setRequeriments: (requeriment: {[key: string]: any;}) => void
 }) {
   const [ isMouseDown, setIsMouseDown ] = useState(false);
@@ -43,8 +43,8 @@ export default function Players({
         <PlayerCard
           key={p.name}
           player={p}
-          setAction={setAction}
-          setMenuType={setMenuType}
+          changeAction={changeAction}
+          changeMenuType={changeMenuType}
           setRequeriments={setRequeriments}
         />
       )}
