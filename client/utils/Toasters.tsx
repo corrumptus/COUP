@@ -27,7 +27,7 @@ export default function Toasters() {
   externalSetState = setToasters;
 
   return (
-    <div className="absolute top-0 right-0">
+    <div className="flex flex-col gap-2 absolute top-1 right-1">
       {toasters}
     </div>
   )
@@ -45,10 +45,10 @@ function Toaster({
       className="bg-white rounded-2xl overflow-hidden cursor-pointer relative"
       onClick={removeToaster}
     >
-      <div className="w-full max-w-[300px] p-4">
+      <div className="w-full max-w-[250px] max-h-[150px] m-3 overflow-hidden text">
         {children}
       </div>
-      <div className="w-full h-0.5 bg-green-400 animate-shrink animate-green-to-red absolute bottom-0"></div>
+      <div className="h-0.5 absolute bottom-0 animate-toast"></div>
     </div>
   )
 }

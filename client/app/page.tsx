@@ -49,7 +49,6 @@ export default function Home() {
         <button className="home_button" onClick={() => router.push("/tutorial")}>Tutorial</button>
         <button className="home_button" onClick={() => router.push("/stats")}>Estatísticas</button>
         <button className="home_button" onClick={() => router.push("/creditos")}>Créditos</button>
-        <button className="home_button" onClick={() => newToaster("NEW TOASTER")}>NEW TOASTER</button>
       </main>
     </div>
   );
