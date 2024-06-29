@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { Player, Religion } from "../GameView";
-import socket, { Config } from "@/app/utils/socketAPI";
-import CardGameInfos from "./CardGameInfos";
-import InfluenceCard from "./InfluenceCard";
 import { Dispatch, SetStateAction } from "react";
-import { MenuTypes } from "./GameActionMenu";
+import Image from "next/image";
+import { Player, Religion } from "@pages/GameView";
+import CardGameInfos from "@components/CardGameInfos";
+import InfluenceCard from "@components/InfluenceCard";
+import { MenuTypes } from "@components/GameActionMenu";
+import { Config, DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
 export default function GameMobileMenu({
   player,
@@ -19,6 +19,8 @@ export default function GameMobileMenu({
   configs: Config,
   isOpen: boolean
 }) {
+  const socket = useSocket(DEFAULT_SOCKET_URL);
+
   return (
     <aside className={`h-full p-3 flex flex-col items-center gap-6 absolute ${isOpen ? "right-0" : "-right-full"} z-[4] ease-linear duration-1000 bg-slate-700`}>
       <div className="flex justify-between w-full">

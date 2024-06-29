@@ -1,5 +1,5 @@
-import { Config } from "@/app/utils/socketAPI";
-import { Differ } from "@/app/utils/utils";
+import { Config } from "@utils/socketAPI";
+import { Differ } from "@utils/utils";
 
 const COUPConfigToText = {
   "quantidadeMoedasIniciais": (diff: number) => `Moedas iniciais: 3 -> ${diff}`,

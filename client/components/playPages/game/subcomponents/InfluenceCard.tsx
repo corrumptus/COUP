@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Card } from "./GameView";
+import Image from "next/image";
+import { Card } from "@pages/GameView";
 
 export default function InfluenceCard({
   card,
@@ -17,7 +17,7 @@ export default function InfluenceCard({
 
   useEffect(() => {
     setRandomCard(Math.floor(Math.random() * 3) + 1)
-  });
+  }, []);
 
   const cardWidth = 100;
   const cardHeight = 130;

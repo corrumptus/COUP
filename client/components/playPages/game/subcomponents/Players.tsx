@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Action, Player } from "./GameView";
-import PlayerCard from "./PlayerCard";
-import { MenuTypes } from "./GameActionMenu";
+import { Action, Player } from "@pages/GameView";
+import { MenuTypes } from "@components/GameActionMenu";
+import PlayerCard from "@components/PlayerCard";
 
 export default function Players({
   players,

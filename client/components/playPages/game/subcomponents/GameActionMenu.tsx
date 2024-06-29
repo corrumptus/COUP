@@ -1,8 +1,7 @@
-import socket, { Config } from "@/app/utils/socketAPI";
-import Image from "next/image";
-import { Action, Card } from "../GameView";
-import InfluenceCard from "./InfluenceCard";
 import { Dispatch, SetStateAction } from "react";
+import { Action, Card } from "@pages/GameView";
+import InfluenceCard from "@components/InfluenceCard";
+import { Config, useSocket, DEFAULT_SOCKET_URL } from "@utils/socketAPI";
 
 export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating"
 
@@ -29,6 +28,7 @@ export default function GameActionMenu({
   investigatedCard?: Card,
   playerMoney?: number
 }) {
+  const socket = useSocket(DEFAULT_SOCKET_URL);
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
 

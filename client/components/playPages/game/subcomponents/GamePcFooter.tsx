@@ -1,10 +1,10 @@
-import Image from "next/image";
-import CardGameInfos from "./CardGameInfos";
-import { Player } from "../GameView";
-import InfluenceCard from "./InfluenceCard";
 import { Dispatch, SetStateAction } from "react";
-import { MenuTypes } from "./GameActionMenu";
-import { Config } from "@/app/utils/socketAPI";
+import Image from "next/image";
+import { Player } from "@pages/GameView";
+import CardGameInfos from "@components/CardGameInfos";
+import InfluenceCard from "@components/InfluenceCard";
+import { MenuTypes } from "@components/GameActionMenu";
+import { Config } from "@utils/socketAPI";
 
 export default function GamePcFooter({
   player,

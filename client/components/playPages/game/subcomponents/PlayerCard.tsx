@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Action, Player, Religion } from "../GameView";
-import InfluenceCard from "./InfluenceCard";
 import Image from "next/image";
-import { CardColors, generateColorCard } from "@/app/utils/utils";
-import { MenuTypes } from "./GameActionMenu";
-import socket from "@/app/utils/socketAPI";
+import { Action, Player, Religion } from "@pages/GameView";
+import InfluenceCard from "@components/InfluenceCard";
+import { MenuTypes } from "@components/GameActionMenu";
+import { CardColors, generateColorCard } from "@utils/utils";
+import { DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
 export default function PlayerCard({
   player,
@@ -17,10 +17,11 @@ export default function PlayerCard({
   setMenuType: (menuType: MenuTypes | undefined) => void,
   setRequeriments: (requeriment: {[key: string]: any;}) => void
 }) {
+  const socket = useSocket(DEFAULT_SOCKET_URL);
   const [ colors, setColors ] = useState<CardColors>()
 
   useEffect(() => {
-    setColors(generateColorCard())
+    setColors(generateColorCard());
   }, []);
 
   return (

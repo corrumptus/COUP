@@ -1,9 +1,15 @@
-import { Config } from "@/app/utils/socketAPI";
 import { useState } from "react"
+import { Config } from "@utils/socketAPI";
 
 type InfoType = "duque" | "capitão" | "assassino" | "condessa" | "embaixador" | "inquisidor" | "ações" | "contra-ações" | "açõesCartas" | "religião"
 
-export default function CardGameInfos({ configs, customStyles }: { configs: Config, customStyles?: string }) {
+export default function CardGameInfos({
+  configs,
+  customStyles
+}: {
+  configs: Config,
+  customStyles?: string
+}) {
   const [ infoType, setInfoType ] = useState<InfoType>("ações");
   let children: JSX.Element | null = null;
 
