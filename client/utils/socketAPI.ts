@@ -1,7 +1,7 @@
 import { Socket, io } from "socket.io-client"
-import { LobbyState } from "../../components/playPages/lobby/LobbyView";
-import { Card, GameState } from "../../components/playPages/game/GameView";
-import COUPDefaultConfigs from "@/app/utils/COUPDefaultConfigs.json";
+import { LobbyState } from "@pages/LobbyView";
+import { Card, GameState } from "@pages/GameView";
+import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { Differ, objectDiff } from "./utils";
 import { useEffect, useState } from "react";
 
