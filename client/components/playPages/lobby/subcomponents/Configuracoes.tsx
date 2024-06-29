@@ -1,12 +1,9 @@
-import { Config, useSocket } from "@/app/utils/socketAPI";
+import { Config, DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
 export default function Configuracoes({ configs, canEdit }: { configs: Config, canEdit: boolean }) {
   const configStyles = "flex flex-col gap-4 overflow-auto px-[3%]";
 
-  const socket = useSocket("http://localhost:5000");
-
-  if (socket === undefined)
-      return;
+  const socket = useSocket(DEFAULT_SOCKET_URL);
 
   if (canEdit)
     return (
