@@ -19,12 +19,18 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       animation: {
-        "shrink": "shrink 3s linear"
+        "shrink": "shrink 3s linear",
+        "green-to-red": "green-to-red 3s linear"
       },
       keyframes: {
         "shrink": {
-          "0%": { height: "100%" },
-          "100%": { height: "0%" }
+          "0%": { width: "100%" },
+          "100%": { width: "0%" }
+        },
+        "green-to-red": {
+          "0%": { backgroundColor: "green" },
+          "33%": { backgroundColor: "orange" },
+          "66%": { backgroundColor: "red" }
         }
       }
     }
