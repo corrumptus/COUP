@@ -38,9 +38,6 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
 
   const socket = useSocket("http://localhost:5000");
 
-  if (socket === undefined)
-    return null;
-
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
   });
