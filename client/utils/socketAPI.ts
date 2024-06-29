@@ -99,7 +99,7 @@ export function useSocket(url: string) {
     }));
 
     return () => {(socket as COUPSocket).disconnect()};
-  }, []);
+  }, [url]);
 
   return socket as COUPSocket;
 }
@@ -107,5 +107,3 @@ export function useSocket(url: string) {
 export function configDiff(configs: Config): Partial<Differ<Config>> {
   return objectDiff(COUPDefaultConfigs, configs);
 }
-
-export const DEFAULT_SOCKET_URL = "http://localhost:5000";
