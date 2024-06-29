@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Action, Card } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
-import { Config, useSocket, DEFAULT_SOCKET_URL } from "@utils/socketAPI";
+import { Config, COUPSocket } from "@utils/socketAPI";
 
 export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating"
 
@@ -15,7 +15,8 @@ export default function GameActionMenu({
   configs,
   choosableCards,
   investigatedCard,
-  playerMoney
+  playerMoney,
+  socket
 }: {
   type: MenuTypes,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
@@ -26,9 +27,9 @@ export default function GameActionMenu({
   configs: Config,
   choosableCards?: Card[]
   investigatedCard?: Card,
-  playerMoney?: number
+  playerMoney?: number,
+  socket: COUPSocket
 }) {
-  const socket = useSocket(DEFAULT_SOCKET_URL);
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
 

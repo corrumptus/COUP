@@ -6,7 +6,7 @@ import ConfigDiff from "@components/ConfigDiff";
 import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
-import { DEFAULT_SOCKET_URL, configDiff, useSocket } from "@utils/socketAPI";
+import { COUPSocket, configDiff } from "@utils/socketAPI";
 
 export default function GamePCView({
   isDiffsVisible,
@@ -18,7 +18,8 @@ export default function GamePCView({
   changeMenuType,
   requeriments,
   setRequeriments,
-  getChoosableCards
+  getChoosableCards,
+  socket
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
@@ -29,9 +30,9 @@ export default function GamePCView({
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   requeriments: {[key: string]: any},
   setRequeriments: Dispatch<SetStateAction<{ [key: string]: any;}>>,
-  getChoosableCards: () => Card[]
+  getChoosableCards: () => Card[],
+  socket: COUPSocket
 }) {
-  const socket = useSocket(DEFAULT_SOCKET_URL);
   const router = useRouter();
 
   return (
@@ -91,6 +92,7 @@ export default function GamePCView({
           changeAction={changeAction}
           changeMenuType={changeMenuType}
           setRequeriments={setRequeriments}
+          socket={socket}
         />
         <GamePcFooter
           player={gameState.player}
@@ -111,6 +113,7 @@ export default function GamePCView({
             investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
               ?.cards[requeriments["playerCard"]].card as Card}
             playerMoney={gameState.player.money}
+            socket={socket}
           />
         }
       </main>

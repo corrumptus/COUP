@@ -1,9 +1,15 @@
+import { COUPSocket } from "@/utils/socketAPI";
 import Image from "next/image";
-import { DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
 
-export default function Player({ name, canEdit }: { name: string; canEdit: boolean; }) {
-  const socket = useSocket(DEFAULT_SOCKET_URL);
-  
+export default function Player({
+  name,
+  canEdit,
+  socket
+}: {
+  name: string,
+  canEdit: boolean,
+  socket: COUPSocket
+}) {
   return (
     <li className="flex items-center gap-2 border-b border-[#4f4f4f] pt-px">
       <span className="text-lg flex-1 text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>

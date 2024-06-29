@@ -4,20 +4,21 @@ import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { MenuTypes } from "@components/GameActionMenu";
 import { CardColors, generateColorCard } from "@utils/utils";
-import { DEFAULT_SOCKET_URL, useSocket } from "@utils/socketAPI";
+import { COUPSocket } from "@utils/socketAPI";
 
 export default function PlayerCard({
   player,
   changeAction,
   changeMenuType,
-  setRequeriments
+  setRequeriments,
+  socket
 }: {
   player: Player,
   changeAction: (action: Action | undefined) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
-  setRequeriments: (requeriment: {[key: string]: any;}) => void
+  setRequeriments: (requeriment: {[key: string]: any;}) => void,
+  socket: COUPSocket
 }) {
-  const socket = useSocket(DEFAULT_SOCKET_URL);
   const [ colors, setColors ] = useState<CardColors>()
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
 import { MenuTypes } from "@components/GameActionMenu";
-import { Config } from "@utils/socketAPI";
+import { COUPSocket, Config } from "@utils/socketAPI";
 import { useDeviceWidth } from "@utils/utils";
 
 export enum Religion {
@@ -49,7 +49,13 @@ export type GameState = {
   }
 }
 
-export default function GameView({ gameState }: { gameState: GameState }) {
+export default function GameView({
+  gameState,
+  socket
+}: {
+  gameState: GameState,
+  socket: COUPSocket
+}) {
   const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
   const [ action, setAction ] = useState<Action | undefined>(undefined);
   const [ requeriments, setRequeriments ] = useState<{[key: string]: any}>({});
@@ -94,6 +100,7 @@ export default function GameView({ gameState }: { gameState: GameState }) {
       requeriments={requeriments}
       setRequeriments={setRequeriments}
       getChoosableCards={getChoosableCards}
+      socket={socket}
     />
     :
     <GamePCView
@@ -107,5 +114,6 @@ export default function GameView({ gameState }: { gameState: GameState }) {
       requeriments={requeriments}
       setRequeriments={setRequeriments}
       getChoosableCards={getChoosableCards}
+      socket={socket}
     />
 }

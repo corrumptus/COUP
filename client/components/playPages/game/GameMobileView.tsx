@@ -6,7 +6,7 @@ import ConfigDiff from "@components/ConfigDiff";
 import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
-import { DEFAULT_SOCKET_URL, configDiff, useSocket } from "@utils/socketAPI";
+import { COUPSocket, configDiff } from "@utils/socketAPI";
 
 export default function GameMobileView({
   isDiffsVisible,
@@ -18,7 +18,8 @@ export default function GameMobileView({
   changeMenuType,
   requeriments,
   setRequeriments,
-  getChoosableCards
+  getChoosableCards,
+  socket
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
@@ -29,10 +30,10 @@ export default function GameMobileView({
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   requeriments: {[key: string]: any},
   setRequeriments: Dispatch<SetStateAction<{ [key: string]: any;}>>,
-  getChoosableCards: () => Card[]
+  getChoosableCards: () => Card[],
+  socket: COUPSocket
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
-  const socket = useSocket(DEFAULT_SOCKET_URL);
   const router = useRouter();
 
   return (
@@ -76,12 +77,14 @@ export default function GameMobileView({
           setRequeriments={setRequeriments}
           configs={gameState.game.configs}
           isOpen={isMobileMenuOpen}
+          socket={socket}
         />
         <Players
           players={gameState.game.players}
           changeAction={changeAction}
           changeMenuType={changeMenuType}
           setRequeriments={setRequeriments}
+          socket={socket}
         />
         {menuType !== undefined &&
           <GameActionMenu
@@ -96,6 +99,7 @@ export default function GameMobileView({
             investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
               ?.cards[requeriments["playerCard"]].card as Card}
             playerMoney={gameState.player.money}
+            socket={socket}
           />
         }
       </main>

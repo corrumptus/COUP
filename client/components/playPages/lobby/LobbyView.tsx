@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Player from "@components/Player";
 import Configuracoes from "@components/Configuracoes";
 import { GameState } from "../game/GameView";
-import { Config, useSocket } from "@utils/socketAPI";
+import { COUPSocket, Config } from "@utils/socketAPI";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
 export type LobbyState = {
@@ -12,20 +12,24 @@ export type LobbyState = {
     name: string
   },
   lobby: {
-    id: number,
     players: string[],
     owner: string,
     configs: Config
   }
 }
 
-export default function LobbyView({ id, initGame }: { id: number, initGame: (gameState: GameState) => void }) {
+export default function LobbyView({
+  initGame,
+  socket
+}: {
+  initGame: (gameState: GameState) => void,
+  socket: COUPSocket
+}) {
   const [ lobbyState, setLobbyState ] = useState<LobbyState>({
     player: {
       name: ""
     },
     lobby: {
-      id: id,
       players: [],
       owner: "",
       configs: COUPDefaultConfigs
@@ -35,8 +39,6 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
   const canEdit = lobbyState.player.name !== "" && lobbyState.player.name === lobbyState.lobby.owner;
 
   const router = useRouter();
-
-  const socket = useSocket("http://localhost:5000");
 
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
@@ -106,6 +108,7 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
                 key={p}
                 name={p}
                 canEdit={canEdit}
+                socket={socket}
               />
             )}
           </ul>
@@ -115,6 +118,7 @@ export default function LobbyView({ id, initGame }: { id: number, initGame: (gam
           <Configuracoes
             configs={lobbyState.lobby.configs}
             canEdit={canEdit}
+            socket={socket}
           />
         </div>
       </main>
