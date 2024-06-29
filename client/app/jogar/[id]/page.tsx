@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GameView, { GameState } from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
-import initSocket from "@utils/socketAPI";
+import { useSocket } from "@utils/socketAPI";
 
 async function getURL(lobbyID: number): Promise<string> {
   const response = await fetch("http://localhost:5000/lobby/" + lobbyID.toString(), {
@@ -21,15 +21,10 @@ async function getURL(lobbyID: number): Promise<string> {
   return (result as { url: string }).url;
 }
 
-export default function EntrarLobby({ params: { id } }: { params: { id: number } }) {
+export default async function EntrarLobby({ params: { id } }: { params: { id: number } }) {
   const [ isGameInited, setIsGameInited ] = useState(false);
   const [ gameState, setGameState ] = useState<GameState>();
-
-  useEffect(() => {
-    (async ()=> {
-      initSocket(await getURL(id));
-    })();
-  }, [id]);
+  const socket = useSocket(await getURL(id));
 
   function gameInitHandler(gameState: GameState) {
     setGameState(gameState);
@@ -38,7 +33,7 @@ export default function EntrarLobby({ params: { id } }: { params: { id: number }
   }
 
   return !isGameInited ?
-    <LobbyView initGame={gameInitHandler} id={id}/>
+    <LobbyView initGame={gameInitHandler} socket={socket} />
     :
-    <GameView gameState={gameState as GameState}/>
+    <GameView gameState={gameState as GameState} socket={socket} />
 }
