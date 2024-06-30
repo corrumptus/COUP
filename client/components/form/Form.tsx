@@ -27,13 +27,15 @@ export default function Form({
     >
       <h1 className="text-4xl font-bold">Entrar</h1>
       <FormInput
-        text="Nome"
-        changeText={t => setName(t)}
+        value={name}
+        changeValue={name => setName(name)}
+        label="Nome"
       />
       <FormInput
-        text="Senha"
+        value={password}
+        changeValue={password => setPassword(password)}
         isPassword
-        changeText={t => setPassword(t)}
+        label="Senha"
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
@@ -59,18 +61,21 @@ export default function Form({
     >
       <h1 className="text-4xl font-bold">Inscrever-se</h1>
       <FormInput
-        text="Nome"
-        changeText={t => setName(t)}
+        value={name}
+        changeValue={name => setName(name)}
+        label="Nome"
       />
       <FormInput
-        text="Senha"
+        value={password}
+        changeValue={password => setPassword(password)}
         isPassword
-        changeText={t => setPassword(t)}
+        label="Senha"
       />
       <FormInput
-        text="Confirmar Senha"
+        value={cPassword}
+        changeValue={cPassword => setCPassword(cPassword)}
         isPassword
-        changeText={t => setCPassword(t)}
+        label="Confirmar Senha"
       />
       <button
         className="bg-white text-black w-full py-1.5 rounded-3xl mt-2"
