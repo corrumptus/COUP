@@ -10,13 +10,14 @@ export default function FormInputImage({
   passwordImageClickHandler: () => void
 }) {
   const imageSize: number = 25;
-  const className: string = "absolute right-2 top-1 invert";
+  const className: string = "absolute right-2 top-1 invert" +
+    (type === "password" ? " cursor-pointer" : "");
 
   if (type === "name")
     return (
       <Image
         src="/name-image.png"
-        alt=""
+        alt="user icon"
         width={imageSize}
         height={imageSize}
         className={className}
@@ -28,7 +29,7 @@ export default function FormInputImage({
     return (
       <Image
         src="/password-viewing-image.png"
-        alt=""
+        alt="locker with an eye in the middle icon"
         width={imageSize}
         height={imageSize}
         className={className}
@@ -39,7 +40,7 @@ export default function FormInputImage({
   return (
     <Image
       src="/password-secret-image.png"
-      alt=""
+      alt="locker icon"
       width={imageSize}
       height={imageSize}
       className={className}
