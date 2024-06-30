@@ -2,12 +2,14 @@ import { useId, useState } from 'react';
 import FormInputImage from '@components/FormInputImage';
 
 export default function FormInput({
-  text,
-  changeText,
+  value,
+  changeValue,
+  label,
   isPassword
 }: {
-  text: string,
-  changeText: (newText: string) => void,
+  value: string,
+  changeValue: (newText: string) => void,
+  label: string,
   isPassword?: boolean
 }) {
   const id = useId();
@@ -25,14 +27,14 @@ export default function FormInput({
       <label
         className="absolute bottom-[0.3rem] left-2.5 z-[-1] duration-500"
         htmlFor={id}
-      >{text}</label>
+      >{label}</label>
       <input
         id={id}
         className="bg-transparent border rounded-3xl border-white p-1 outline-none pl-3 pr-8"
         type={isPassVisible ? "text" : "password"}
         placeholder=" "
-        value={text}
-        onChange={e => changeText(e.target.value)}
+        value={value}
+        onChange={e => changeValue(e.target.value)}
       />
       <FormInputImage
         type={isPassword ? "password" : "name"}
