@@ -5,6 +5,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./utils/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     screens: {
@@ -20,7 +21,8 @@ const config: Config = {
       },
       animation: {
         "shrink": "shrink 3s linear",
-        "green-to-red": "green-to-red 3s linear"
+        "green-to-red": "green-to-red 3s linear",
+        "toast": "toast 3s linear"
       },
       keyframes: {
         "shrink": {
@@ -31,6 +33,28 @@ const config: Config = {
           "0%": { backgroundColor: "green" },
           "33%": { backgroundColor: "orange" },
           "66%": { backgroundColor: "red" }
+        },
+        "toast": {
+          "0%": {
+            width: "100%",
+            backgroundColor: "green"
+          },
+          "25%": {
+            backgroundColor: "green"
+          },
+          "33%": {
+            backgroundColor: "orange"
+          },
+          "66%": {
+            backgroundColor: "orange"
+          },
+          "75%": {
+            backgroundColor: "red"
+          },
+          "100%": {
+            width: "0%",
+            backgroundColor: "red"
+          }
         }
       }
     }
