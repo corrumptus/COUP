@@ -18,7 +18,6 @@ export default function GameMobileView({
   changeMenuType,
   requeriments,
   setRequeriments,
-  getChoosableCards,
   socket
 }: {
   isDiffsVisible: boolean,
@@ -30,7 +29,6 @@ export default function GameMobileView({
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   requeriments: {[key: string]: any},
   setRequeriments: Dispatch<SetStateAction<{ [key: string]: any;}>>,
-  getChoosableCards: () => Card[],
   socket: COUPSocket
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
@@ -95,7 +93,6 @@ export default function GameMobileView({
             requeriments={requeriments}
             setRequeriments={setRequeriments}
             configs={gameState.game.configs}
-            choosableCards={getChoosableCards()}
             investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
               ?.cards[requeriments["playerCard"]].card as Card}
             playerMoney={gameState.player.money}

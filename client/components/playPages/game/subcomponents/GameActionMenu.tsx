@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Action, Card } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { Config, COUPSocket } from "@utils/socketAPI";
+import { getChoosableCards } from "@utils/utils";
 
 export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating"
 
@@ -13,7 +14,6 @@ export default function GameActionMenu({
   requeriments,
   setRequeriments,
   configs,
-  choosableCards,
   investigatedCard,
   playerMoney,
   socket
@@ -25,7 +25,6 @@ export default function GameActionMenu({
   requeriments: {[key: string]: any},
   setRequeriments: Dispatch<SetStateAction<{[key: string]: any}>>,
   configs: Config,
-  choosableCards?: Card[]
   investigatedCard?: Card,
   playerMoney?: number,
   socket: COUPSocket
@@ -145,37 +144,37 @@ export default function GameActionMenu({
 
   if (type === "cardChooser") children = (
     <>
-      {choosableCards?.includes(Card.DUQUE) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.DUQUE) &&
         <InfluenceCard
           card={Card.DUQUE}
           onClick={() => cardChooserClickHandler(Card.DUQUE)}
         />
       }
-      {choosableCards?.includes(Card.CAPITAO) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.CAPITAO) &&
         <InfluenceCard
           card={Card.CAPITAO}
           onClick={() => cardChooserClickHandler(Card.CAPITAO)}
         />
       }
-      {choosableCards?.includes(Card.ASSASSINO) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.ASSASSINO) &&
         <InfluenceCard
           card={Card.ASSASSINO}
           onClick={() => cardChooserClickHandler(Card.ASSASSINO)}
         />
       }
-      {choosableCards?.includes(Card.CONDESSA) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.CONDESSA) &&
         <InfluenceCard
           card={Card.CONDESSA}
           onClick={() => cardChooserClickHandler(Card.CONDESSA)}
         />
       }
-      {choosableCards?.includes(Card.EMBAIXADOR) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.EMBAIXADOR) &&
         <InfluenceCard
           card={Card.EMBAIXADOR}
           onClick={() => cardChooserClickHandler(Card.EMBAIXADOR)}
         />
       }
-      {choosableCards?.includes(Card.INQUISIDOR) &&
+      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.INQUISIDOR) &&
         <InfluenceCard
           card={Card.INQUISIDOR}
           onClick={() => cardChooserClickHandler(Card.INQUISIDOR)}
@@ -188,19 +187,19 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("contestar")}  
+        // onClick={() => socket.emit("contestar")}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("bloquear")}  
+        // onClick={() => socket.emit("bloquear")}
       >
         <h4>Bloquear</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("aceitar")}  
+        onClick={() => socket.emit("aceitar")}
       >
         <h4>Aceitar</h4>
       </div>
