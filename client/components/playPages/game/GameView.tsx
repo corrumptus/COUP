@@ -62,27 +62,6 @@ export default function GameView({
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
 
-  function getChoosableCards(): Card[] {
-    return Object.entries(gameState.game.configs.tiposCartas)
-      .filter(([ _, cardInfos ]) => {
-        const canAct = cardInfos[action as keyof typeof cardInfos] as boolean;
-
-        let canTrocar = true;
-        let quantidadeTrocar = requeriments["playerCard"] !== undefined ? 1 : 2;
-
-        if (action === Action.TROCAR)
-          canTrocar = quantidadeTrocar >= cardInfos[
-            menuType === "selfCard" ?
-              "quantidadeTrocarPropria"
-              :
-              "quantidadeTrocarOutroJogador"
-          ];
-
-        return canAct && canTrocar;
-      })
-      .map(([ card, _ ]) => card) as Card[];
-  }
-
   useEffect(() => {
     if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && menuType !== "othersCard")
       setMenuType(undefined)
@@ -99,7 +78,6 @@ export default function GameView({
       changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
       requeriments={requeriments}
       setRequeriments={setRequeriments}
-      getChoosableCards={getChoosableCards}
       socket={socket}
     />
     :
@@ -113,7 +91,6 @@ export default function GameView({
       changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
       requeriments={requeriments}
       setRequeriments={setRequeriments}
-      getChoosableCards={getChoosableCards}
       socket={socket}
     />
 }

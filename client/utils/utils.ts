@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import { Action, Card } from "@pages/GameView";
+import { MenuTypes } from "@components/GameActionMenu";
+import { Config } from "@utils/socketAPI";
 
 export interface CardColors {
     cardColor: string
@@ -107,7 +110,7 @@ export function useDeviceWidth() {
 }
 
 export type Differ<T> = {
-    [ P in keyof T]: Partial<Differ<T[P]>> | T[P][]
+    [P in keyof T]: Partial<Differ<T[P]>> | T[P][]
 }
 
 export function objectDiff<T extends Record<string, any>>(base: T, differ: T): Partial<Differ<T>> {
@@ -126,4 +129,30 @@ export function objectDiff<T extends Record<string, any>>(base: T, differ: T): P
     }
 
     return diff;
+}
+
+export function getChoosableCards(
+    configs: Config,
+    action: Action,
+    menuType: MenuTypes,
+    requeriments: { [key in string]: any }
+): Card[] {
+    return Object.entries(configs.tiposCartas)
+        .filter(([_, cardInfos]) => {
+            const canAct = cardInfos[action as keyof typeof cardInfos] as boolean;
+
+            let canTrocar = true;
+            let quantidadeTrocar = requeriments["playerCard"] !== undefined ? 1 : 2;
+
+            if (action === Action.TROCAR)
+                canTrocar = quantidadeTrocar >= cardInfos[
+                    menuType === "selfCard" ?
+                        "quantidadeTrocarPropria"
+                        :
+                        "quantidadeTrocarOutroJogador"
+                ];
+
+            return canAct && canTrocar;
+        })
+        .map(([card, _]) => card) as Card[];
 }
