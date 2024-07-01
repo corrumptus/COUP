@@ -88,20 +88,47 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export function useSocket(url: string) {
-  const [ socket, setSocket ] = useState<COUPSocket>();
+async function getURL(lobbyID: number): Promise<string | undefined> {
+  if (typeof localStorage === undefined)
+    return "";
 
-  useEffect(() => {
-    setSocket(io(url, {
-      auth: {
-        token: localStorage.getItem("coup-token")
+  try {
+    const response = await fetch("http://localhost:5000/lobby/" + lobbyID.toString(), {
+      method: "PUT",
+      headers: {
+        Authorization: localStorage.getItem("coup-token") as string
       }
-    }));
+    });
 
-    return () => {(socket as COUPSocket).disconnect()};
-  }, [url]);
+    const result = await response.json();
+  
+    if (!response.ok)
+      throw new Error((result as { error: string }).error);
+  
+    return (result as { url: string }).url;
+  } catch (error) {
+    return undefined;
+  }
+}
 
-  return socket as COUPSocket;
+let socket: COUPSocket;
+
+export async function enterLobby(lobbyID: number) {
+  if (socket !== undefined)
+    return { socket: socket };
+
+  const url = await getURL(lobbyID);
+
+  if (url === undefined)
+    return { error: "Cannot access the server" };
+
+  socket = io(url, {
+    auth: {
+      token: localStorage.getItem("coup-token")
+    }
+  });
+
+  return { socket: socket };
 }
 
 export function configDiff(configs: Config): Partial<Differ<Config>> {
