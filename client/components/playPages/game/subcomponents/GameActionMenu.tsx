@@ -31,6 +31,7 @@ export default function GameActionMenu({
 }) {
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
+  const choosableCards = getChoosableCards(configs, action as Action, type, requeriments);
 
   function cardChooserClickHandler(carta: Card) {
     if (action === Action.TAXAR) {
@@ -144,37 +145,37 @@ export default function GameActionMenu({
 
   if (type === "cardChooser") children = (
     <>
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.DUQUE) &&
+      {choosableCards.includes(Card.DUQUE) &&
         <InfluenceCard
           card={Card.DUQUE}
           onClick={() => cardChooserClickHandler(Card.DUQUE)}
         />
       }
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.CAPITAO) &&
+      {choosableCards.includes(Card.CAPITAO) &&
         <InfluenceCard
           card={Card.CAPITAO}
           onClick={() => cardChooserClickHandler(Card.CAPITAO)}
         />
       }
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.ASSASSINO) &&
+      {choosableCards.includes(Card.ASSASSINO) &&
         <InfluenceCard
           card={Card.ASSASSINO}
           onClick={() => cardChooserClickHandler(Card.ASSASSINO)}
         />
       }
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.CONDESSA) &&
+      {choosableCards.includes(Card.CONDESSA) &&
         <InfluenceCard
           card={Card.CONDESSA}
           onClick={() => cardChooserClickHandler(Card.CONDESSA)}
         />
       }
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.EMBAIXADOR) &&
+      {choosableCards.includes(Card.EMBAIXADOR) &&
         <InfluenceCard
           card={Card.EMBAIXADOR}
           onClick={() => cardChooserClickHandler(Card.EMBAIXADOR)}
         />
       }
-      {getChoosableCards(configs, action as Action, type, requeriments)?.includes(Card.INQUISIDOR) &&
+      {choosableCards.includes(Card.INQUISIDOR) &&
         <InfluenceCard
           card={Card.INQUISIDOR}
           onClick={() => cardChooserClickHandler(Card.INQUISIDOR)}
