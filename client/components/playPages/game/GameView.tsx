@@ -30,7 +30,8 @@ export enum Action {
   INVESTIGAR = "inventigar",
   TROCAR_RELIGIAO = "trocarReligiao",
   CONTESTAR = "contestar",
-  BLOQUEAR = "bloquear"
+  BLOQUEAR = "bloquear",
+  CORRUPCAO = "CORRUPCAO"
 }
 
 export type Player = {
@@ -45,6 +46,7 @@ export type GameState = {
   game: {
     players: Player[];
     currentPlayer: string;
+    asylum: number;
     configs: Config;
   }
 }

@@ -60,6 +60,7 @@ type ResponseSocketEmitEvents = {
   "renda": () => void;
   "ajudaExterna": () => void;
   "taxar": (card: Card) => void;
+  "corrupcao": () => void;
 
   "extorquir": (card: Card, targetName: string) => void;
 

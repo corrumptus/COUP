@@ -4,7 +4,7 @@ import InfluenceCard from "@components/InfluenceCard";
 import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
 
-export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating"
+export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating";
 
 export default function GameActionMenu({
   type,
@@ -16,6 +16,7 @@ export default function GameActionMenu({
   configs,
   investigatedCard,
   playerMoney,
+  asylum,
   socket
 }: {
   type: MenuTypes,
@@ -27,6 +28,7 @@ export default function GameActionMenu({
   configs: Config,
   investigatedCard?: Card,
   playerMoney?: number,
+  asylum: number,
   socket: COUPSocket
 }) {
   let children: JSX.Element | null = null;
@@ -80,6 +82,18 @@ export default function GameActionMenu({
       >
         <h4>Taxar</h4>
       </div>
+      {configs.religiao &&
+        <div
+          className={optionStyles}
+          onClick={() => {
+            changeAction(Action.CORRUPCAO);
+            // TODO: escolher a carta que deve ser apostada como uma carta que pode pegar dinheiro do asilo
+          }}
+        >
+          <h4>Corrupção</h4>
+          <p>${asylum}</p>
+        </div>
+      }
     </>
   )
 

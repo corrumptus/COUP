@@ -33,6 +33,16 @@ export default function GamePCView({
 }) {
   const router = useRouter();
 
+  function changeReligion() {
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+      return;
+
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+      return;
+
+    socket.emit("trocarReligiaoPropria")
+  }
+
   return (
     <div className="w-full h-full flex flex-col">
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
@@ -61,8 +71,7 @@ export default function GamePCView({
               alt="cruz católica"
               title="católico"
               className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
-                && socket.emit("trocarReligiaoPropria")}
+              onClick={changeReligion}
               width={40}
               height={40}
             />
@@ -72,8 +81,7 @@ export default function GamePCView({
               alt="biblia"
               title="protestante"
               className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
-                && socket.emit("trocarReligiaoPropria")}
+              onClick={changeReligion}
               width={40}
               height={40}
             />
@@ -110,6 +118,7 @@ export default function GamePCView({
             investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
               ?.cards[requeriments["playerCard"]].card as Card}
             playerMoney={gameState.player.money}
+            asylum={gameState.game.asylum}
             socket={socket}
           />
         }

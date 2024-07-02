@@ -96,6 +96,7 @@ export default function GameMobileView({
             investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
               ?.cards[requeriments["playerCard"]].card as Card}
             playerMoney={gameState.player.money}
+            asylum={gameState.game.asylum}
             socket={socket}
           />
         }
