@@ -28,10 +28,11 @@ export enum Action {
   EXTORQUIR = "extorquir",
   TROCAR = "trocar",
   INVESTIGAR = "inventigar",
-  TROCAR_RELIGIAO = "trocarReligiao",
+  TROCAR_PROPRIA_RELIGIAO = "trocarPropriaReligiao",
+  TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
+  CORRUPCAO = "corrupcao",
   CONTESTAR = "contestar",
-  BLOQUEAR = "bloquear",
-  CORRUPCAO = "CORRUPCAO"
+  BLOQUEAR = "bloquear"
 }
 
 export type Player = {
