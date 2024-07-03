@@ -1,20 +1,20 @@
-import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import { Player } from "@pages/GameView";
 import CardGameInfos from "@components/CardGameInfos";
 import InfluenceCard from "@components/InfluenceCard";
-import { MenuTypes } from "@components/GameActionMenu";
+import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 
 export default function GamePcFooter({
   player,
   changeMenuType,
-  setRequeriments,
+  addRequeriment,
   configs
 }: {
   player: Player,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
-  setRequeriments: Dispatch<SetStateAction<{[key: string]: any}>>,
+  addRequeriment: <K extends keyof ActionRequeriments>
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
   configs: Config
 }) {
   return (
@@ -44,8 +44,9 @@ export default function GamePcFooter({
             if (player.cards[0].isDead)
               return;
 
+            addRequeriment("target", player.name);
+            addRequeriment("choosedTargetCard", 0);
             changeMenuType("selfCard");
-            setRequeriments({ "player": player.name, "playerCard": 0 });
           }}
         />
         <InfluenceCard
@@ -55,8 +56,9 @@ export default function GamePcFooter({
             if (player.cards[1].isDead)
               return;
 
+            addRequeriment("target", player.name);
+            addRequeriment("choosedTargetCard", 1);
             changeMenuType("selfCard");
-            setRequeriments({ "player": player.name, "playerCard": 1 });
           }}
         />
       </div>

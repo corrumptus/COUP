@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
-import { MenuTypes } from "@components/GameActionMenu";
+import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { COUPSocket, Config } from "@utils/socketAPI";
 import { useDeviceWidth } from "@utils/utils";
 
@@ -60,27 +60,31 @@ export default function GameView({
   socket: COUPSocket
 }) {
   const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
-  const [ action, setAction ] = useState<Action | undefined>(undefined);
-  const [ requeriments, setRequeriments ] = useState<{[key: string]: any}>({});
+  const [ requeriments, setRequeriments ] = useState<ActionRequeriments>({});
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
 
   useEffect(() => {
     if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && menuType !== "othersCard")
       setMenuType(undefined)
-  }, [menuType, action, requeriments]);
+  }, [menuType, requeriments]);
+
+  function addRequeriment<K extends keyof ActionRequeriments>(
+    requerimentType: K,
+    requeriment: ActionRequeriments[K]
+  ) {
+    setRequeriments(prev => ({ ...prev, [requerimentType]: requeriment }));
+  }
 
   return width < 800 ?
     <GameMobileView
       isDiffsVisible={isDiffsVisible}
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
-      action={action}
-      changeAction={(action: Action | undefined) => setAction(action)}
       menuType={menuType}
       changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
       requeriments={requeriments}
-      setRequeriments={setRequeriments}
+      addRequeriment={addRequeriment}
       socket={socket}
     />
     :
@@ -88,12 +92,10 @@ export default function GameView({
       isDiffsVisible={isDiffsVisible}
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
-      action={action}
-      changeAction={(action: Action | undefined) => setAction(action)}
       menuType={menuType}
       changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
       requeriments={requeriments}
-      setRequeriments={setRequeriments}
+      addRequeriment={addRequeriment}
       socket={socket}
     />
 }

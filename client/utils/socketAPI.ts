@@ -3,7 +3,6 @@ import { LobbyState } from "@pages/LobbyView";
 import { Card, GameState } from "@pages/GameView";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { Differ, objectDiff } from "./utils";
-import { useEffect, useState } from "react";
 
 type Carta = {
   taxar: boolean,

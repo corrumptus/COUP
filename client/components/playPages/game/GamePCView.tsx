@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Action, Card, GameState, Religion } from "@pages/GameView";
+import { Card, GameState, Religion } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
 import { COUPSocket, configDiff } from "@utils/socketAPI";
@@ -12,23 +11,20 @@ export default function GamePCView({
   isDiffsVisible,
   closeDiffs,
   gameState,
-  action,
-  changeAction,
   menuType,
   changeMenuType,
   requeriments,
-  setRequeriments,
+  addRequeriment,
   socket
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
   gameState: GameState,
-  action: Action | undefined,
-  changeAction: (action: Action | undefined) => void,
   menuType: MenuTypes | undefined,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
-  requeriments: {[key: string]: any},
-  setRequeriments: Dispatch<SetStateAction<{ [key: string]: any;}>>,
+  requeriments: ActionRequeriments,
+  addRequeriment: <K extends keyof ActionRequeriments>
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
   socket: COUPSocket
 }) {
   const router = useRouter();
@@ -40,7 +36,7 @@ export default function GamePCView({
     if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
       return;
 
-    socket.emit("trocarReligiaoPropria")
+    socket.emit("trocarReligiaoPropria");
   }
 
   return (
@@ -95,28 +91,25 @@ export default function GamePCView({
         }
         <Players
           players={gameState.game.players}
-          changeAction={changeAction}
           changeMenuType={changeMenuType}
-          setRequeriments={setRequeriments}
+          addRequeriment={addRequeriment}
           socket={socket}
         />
         <GamePcFooter
           player={gameState.player}
           changeMenuType={changeMenuType}
-          setRequeriments={setRequeriments}
+          addRequeriment={addRequeriment}
           configs={gameState.game.configs}
         />
         {menuType !== undefined &&
           <GameActionMenu
             type={menuType}
             changeMenuType={changeMenuType}
-            action={action}
-            changeAction={changeAction}
             requeriments={requeriments}
-            setRequeriments={setRequeriments}
+            addRequeriment={addRequeriment}
             configs={gameState.game.configs}
-            investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
-              ?.cards[requeriments["playerCard"]].card as Card}
+            investigatedCard={gameState.game.players.find(p => p.name === requeriments.target)
+              ?.cards[requeriments.choosedTargetCard as number].card as Card}
             playerMoney={gameState.player.money}
             asylum={gameState.game.asylum}
             socket={socket}

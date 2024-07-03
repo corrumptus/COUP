@@ -2,21 +2,20 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
-import { MenuTypes } from "@components/GameActionMenu";
+import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { CardColors, generateColorCard } from "@utils/utils";
 import { COUPSocket } from "@utils/socketAPI";
 
 export default function PlayerCard({
   player,
-  changeAction,
   changeMenuType,
-  setRequeriments,
+  addRequeriment,
   socket
 }: {
   player: Player,
-  changeAction: (action: Action | undefined) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
-  setRequeriments: (requeriment: {[key: string]: any;}) => void,
+  addRequeriment: <K extends keyof ActionRequeriments>
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
   socket: COUPSocket
 }) {
   const [ colors, setColors ] = useState<CardColors>()
@@ -63,9 +62,9 @@ export default function PlayerCard({
           title="extorquir"
           className={`rounded-[100%] ${colors?.minusColor || ""} cursor-pointer hover:scale-110`}
           onClick={() => {
-            changeAction(Action.EXTORQUIR);
+            addRequeriment("action", Action.EXTORQUIR);
+            addRequeriment("target", player.name);
             changeMenuType("cardChooser");
-            setRequeriments({ "player": player.name });
           }}
           width={24}
           height={24}
@@ -79,8 +78,9 @@ export default function PlayerCard({
             if (player.cards[0].isDead)
               return;
 
+            addRequeriment("target", player.name);
+            addRequeriment("choosedTargetCard", 0);
             changeMenuType("othersCard");
-            setRequeriments({ "player": player.name, "playerCard": 0 });
           }}
         />
         <InfluenceCard
@@ -90,8 +90,9 @@ export default function PlayerCard({
             if (player.cards[1].isDead)
               return;
 
+            addRequeriment("target", player.name);
+            addRequeriment("choosedTargetCard", 1);
             changeMenuType("othersCard");
-            setRequeriments({ "player": player.name, "playerCard": 1 });
           }}
         />
       </div>

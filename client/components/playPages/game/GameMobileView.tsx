@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Action, Card, GameState } from "@pages/GameView";
+import { Card, GameState } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
 import { COUPSocket, configDiff } from "@utils/socketAPI";
@@ -12,23 +12,20 @@ export default function GameMobileView({
   isDiffsVisible,
   closeDiffs,
   gameState,
-  action,
-  changeAction,
   menuType,
   changeMenuType,
   requeriments,
-  setRequeriments,
+  addRequeriment,
   socket
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
   gameState: GameState,
-  action: Action | undefined,
-  changeAction: (action: Action | undefined) => void,
   menuType: MenuTypes | undefined,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
-  requeriments: {[key: string]: any},
-  setRequeriments: Dispatch<SetStateAction<{ [key: string]: any;}>>,
+  requeriments: ActionRequeriments,
+  addRequeriment: <K extends keyof ActionRequeriments>
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
   socket: COUPSocket
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
@@ -72,29 +69,26 @@ export default function GameMobileView({
         <GameMobileMenu
           player={gameState.player}
           changeMenuType={changeMenuType}
-          setRequeriments={setRequeriments}
+          addRequeriment={addRequeriment}
           configs={gameState.game.configs}
           isOpen={isMobileMenuOpen}
           socket={socket}
         />
         <Players
           players={gameState.game.players}
-          changeAction={changeAction}
           changeMenuType={changeMenuType}
-          setRequeriments={setRequeriments}
+          addRequeriment={addRequeriment}
           socket={socket}
         />
         {menuType !== undefined &&
           <GameActionMenu
             type={menuType}
             changeMenuType={changeMenuType}
-            action={action}
-            changeAction={changeAction}
             requeriments={requeriments}
-            setRequeriments={setRequeriments}
+            addRequeriment={addRequeriment}
             configs={gameState.game.configs}
-            investigatedCard={gameState.game.players.find(p => p.name === requeriments["player"])
-              ?.cards[requeriments["playerCard"]].card as Card}
+            investigatedCard={gameState.game.players.find(p => p.name === requeriments.target)
+              ?.cards[requeriments.choosedTargetCard as number].card as Card}
             playerMoney={gameState.player.money}
             asylum={gameState.game.asylum}
             socket={socket}
