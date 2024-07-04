@@ -35,20 +35,30 @@ export enum Action {
   BLOQUEAR = "bloquear"
 }
 
+export enum PlayerState {
+  WAITING_TURN = "waitingTurn",
+  THINKING = "thinking",
+  WAITING_REPLY = "waitingReply",
+  BEING_ATTACKED = "beingAttacked",
+  INVESTIGATING = "investigating",
+  BEING_BLOCKED = "beingBlocked"
+}
+
 export type Player = {
-  name: string;
-  cards: { card: Card | undefined, isDead: boolean }[];
-  money: number;
-  religion?: Religion
+  name: string,
+  cards: { card: Card | undefined, isDead: boolean }[],
+  money: number,
+  religion?: Religion,
+  playerState: PlayerState
 }
 
 export type GameState = {
-  player: Player;
+  player: Player,
   game: {
-    players: Player[];
-    currentPlayer: string;
-    asylum: number;
-    configs: Config;
+    players: Player[],
+    currentPlayer: string,
+    asylum: number,
+    configs: Config
   }
 }
 
