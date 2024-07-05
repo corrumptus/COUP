@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { COUPSocket, Config } from "@utils/socketAPI";
-import { useDeviceWidth } from "@utils/utils";
+import { menuTypeFrom, useDeviceWidth } from "@utils/utils";
 
 export enum Religion {
   PROTESTANTE = "PROTESTANTE",
@@ -41,7 +41,8 @@ export enum PlayerState {
   WAITING_REPLY = "waitingReply",
   BEING_ATTACKED = "beingAttacked",
   INVESTIGATING = "investigating",
-  BEING_BLOCKED = "beingBlocked"
+  BEING_BLOCKED = "beingBlocked",
+  NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
 }
 
 export type Player = {
@@ -49,7 +50,7 @@ export type Player = {
   cards: { card: Card | undefined, isDead: boolean }[],
   money: number,
   religion?: Religion,
-  playerState: PlayerState
+  state: PlayerState
 }
 
 export type GameState = {
@@ -69,15 +70,21 @@ export default function GameView({
   gameState: GameState,
   socket: COUPSocket
 }) {
-  const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
+  const initialMenuType = menuTypeFrom(gameState.player.state);
+  const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(initialMenuType);
   const [ requeriments, setRequeriments ] = useState<ActionRequeriments>({});
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
 
-  useEffect(() => {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && menuType !== "othersCard")
-      setMenuType(undefined)
-  }, [menuType, requeriments]);
+  function changeMenuType(menuType: MenuTypes | undefined) {
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+      return;
+
+    if (initialMenuType !== undefined)
+      return;
+
+    setMenuType(menuType);
+  }
 
   function addRequeriment<K extends keyof ActionRequeriments>(
     requerimentType: K,
@@ -92,7 +99,7 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
-      changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
+      changeMenuType={changeMenuType}
       requeriments={requeriments}
       addRequeriment={addRequeriment}
       socket={socket}
@@ -103,7 +110,7 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
-      changeMenuType={(menuType: MenuTypes | undefined) => setMenuType(menuType)}
+      changeMenuType={changeMenuType}
       requeriments={requeriments}
       addRequeriment={addRequeriment}
       socket={socket}
