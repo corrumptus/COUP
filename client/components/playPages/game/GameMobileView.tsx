@@ -32,6 +32,19 @@ export default function GameMobileView({
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
   const router = useRouter();
 
+  function changeReligion() {
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+      return;
+
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+      return;
+
+    if (menuTypeFrom(gameState.player.state) !== undefined)
+      return;
+
+    socket.emit("trocarReligiaoPropria");
+  }
+
   function changeOthersReligion(name: string) {
     if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
       return;
@@ -82,6 +95,7 @@ export default function GameMobileView({
         }
         <GameMobileMenu
           player={gameState.player}
+          changeReligion={changeReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
           configs={gameState.game.configs}

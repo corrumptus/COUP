@@ -7,6 +7,7 @@ import { Config, COUPSocket } from "@utils/socketAPI";
 
 export default function GameMobileMenu({
   player,
+  changeReligion,
   changeMenuType,
   addRequeriment,
   configs,
@@ -14,6 +15,7 @@ export default function GameMobileMenu({
   socket
 }: {
   player: Player,
+  changeReligion: () => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   addRequeriment: <K extends keyof ActionRequeriments>
     (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
@@ -40,8 +42,7 @@ export default function GameMobileMenu({
               src="/catolico-icon.png"
               alt="cruz católica"
               title="católico"
-              onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
-                && socket.emit("trocarReligiaoPropria")}
+              onClick={changeReligion}
               width={40}
               height={40}
             />
@@ -50,8 +51,7 @@ export default function GameMobileMenu({
               src="/protestante-icon.png"
               alt="biblia"
               title="protestante"
-              onClick={() => player.money < configs.quantidadeMinimaGolpeEstado
-                && socket.emit("trocarReligiaoPropria")}
+              onClick={changeReligion}
               width={40}
               height={40}
             />
