@@ -6,6 +6,7 @@ import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameA
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
 import { COUPSocket, configDiff } from "@utils/socketAPI";
+import Toasters, { newToaster } from "@utils/Toasters";
 import { menuTypeFrom } from "@utils/utils";
 
 export default function GamePCView({
@@ -31,27 +32,39 @@ export default function GamePCView({
   const router = useRouter();
 
   function changeReligion() {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado) {
+      newToaster("Você só pode dar um golpe de estado neste turno.");
       return;
+    }
 
-    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao) {
+      newToaster("Você não tem dinheiro suficiente para trocar sua religião.");
       return;
+    }
 
-    if (menuTypeFrom(gameState.player.state) !== undefined)
+    if (menuTypeFrom(gameState.player.state) !== undefined) {
+      newToaster("Você não pode sair deste menu no momento");
       return;
+    }
 
     socket.emit("trocarReligiaoPropria");
   }
 
   function changeOthersReligion(name: string) {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado) {
+      newToaster("Você só pode dar um golpe de estado neste turno.");
       return;
+    }
 
-    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarReligiaoOutroJogador) {
+      newToaster("Você não tem dinheiro suficiente para trocar a religião de outro jogador.");
       return;
+    }
 
-    if (menuTypeFrom(gameState.player.state) !== undefined)
+    if (menuTypeFrom(gameState.player.state) !== undefined) {
+      newToaster("Você não pode sair deste menu no momento");
       return;
+    }
 
     socket.emit("trocarReligiaoOutro", name);
   }
@@ -77,6 +90,7 @@ export default function GamePCView({
         </div>
       </header>
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
+        <Toasters />
         {gameState.player.religion && (
           gameState.player.religion === Religion.CATOLICA ?
             <Image

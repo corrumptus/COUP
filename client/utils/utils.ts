@@ -146,7 +146,7 @@ export function getChoosableCards(
 
             if (action === Action.TROCAR)
                 canTrocar = quantidadeTrocar >= cardInfos[
-                    menuType === "selfCard" ?
+                    menuType === MenuTypes.CHANGE_CARDS ? // TODO: melhorar isso
                         "quantidadeTrocarPropria"
                         :
                         "quantidadeTrocarOutroJogador"
