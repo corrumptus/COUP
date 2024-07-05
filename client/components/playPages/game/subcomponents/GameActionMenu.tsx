@@ -3,7 +3,15 @@ import InfluenceCard from "@components/InfluenceCard";
 import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
 
-export type MenuTypes = "money" | "othersCard" | "selfCard" | "cardChooser" | "defense" | "investigating";
+export enum MenuTypes {
+  MONEY = "money",
+  OTHERS_CARD = "othersCard",
+  SELF_CARD = "selfCard",
+  CARD_CHOOSER = "cardChooser",
+  INVESTIGATING = "investigating",
+  DEFENSE = "defense",
+  BLOCK_DEFENSE = "blockDefense"
+}
 
 export type ActionRequeriments = {
   action?: Action,
@@ -81,7 +89,7 @@ export default function GameActionMenu({
         className={optionStyles}
         onClick={() => {
           addRequeriment("action", Action.TAXAR);
-          changeMenuType("cardChooser");
+          changeMenuType(MenuTypes.CARD_CHOOSER);
         }}
       >
         <h4>Taxar</h4>
@@ -110,7 +118,7 @@ export default function GameActionMenu({
             return;
 
           addRequeriment("action", Action.ASSASSINAR);
-          changeMenuType("cardChooser");
+          changeMenuType(MenuTypes.CARD_CHOOSER);
         }}
       >
         <h4>Assassinar</h4>
@@ -122,7 +130,7 @@ export default function GameActionMenu({
             return;
 
           addRequeriment("action", Action.INVESTIGAR);
-          changeMenuType("cardChooser");
+          changeMenuType(MenuTypes.CARD_CHOOSER);
         }}
       >
         <h4>Investigar</h4>
@@ -143,7 +151,7 @@ export default function GameActionMenu({
         className={optionStyles}
         onClick={() => {
           addRequeriment("action", Action.TROCAR);
-          changeMenuType("cardChooser");
+          changeMenuType(MenuTypes.CARD_CHOOSER);
         }}
       >
         <h4>Trocar 1</h4>
@@ -153,7 +161,7 @@ export default function GameActionMenu({
         onClick={() => {
           addRequeriment("action", Action.TROCAR);
           addRequeriment("choosedTargetCard", undefined);
-          changeMenuType("cardChooser");
+          changeMenuType(MenuTypes.CARD_CHOOSER);
         }}
       >
         <h4>Trocar 2</h4>
