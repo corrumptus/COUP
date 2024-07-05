@@ -56,7 +56,7 @@ export type Player = {
 export type GameState = {
   player: Player,
   game: {
-    players: Player[],
+    players: Omit<Player, "state">[],
     currentPlayer: string,
     asylum: number,
     configs: Config

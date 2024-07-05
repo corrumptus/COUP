@@ -67,7 +67,7 @@ export default function GameMobileMenu({
 
           addRequeriment("target", player.name);
           addRequeriment("choosedTargetCard", 0);
-          changeMenuType("selfCard");
+          changeMenuType(MenuTypes.SELF_CARD);
         }}
       />
       <InfluenceCard
@@ -79,7 +79,7 @@ export default function GameMobileMenu({
 
           addRequeriment("target", player.name);
           addRequeriment("choosedTargetCard", 1);
-          changeMenuType("selfCard");
+          changeMenuType(MenuTypes.SELF_CARD);
         }}
       />
       <CardGameInfos configs={configs}/>

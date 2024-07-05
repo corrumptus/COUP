@@ -3,16 +3,18 @@ import Image from "next/image";
 import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
-import { CardColors, generateColorCard } from "@utils/utils";
+import { CardColors, generateColorCard, menuTypeFrom } from "@utils/utils";
 import { COUPSocket } from "@utils/socketAPI";
 
 export default function PlayerCard({
   player,
+  changeReligion,
   changeMenuType,
   addRequeriment,
   socket
 }: {
-  player: Player,
+  player: Omit<Player, "state">,
+  changeReligion: (playerName: string) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   addRequeriment: <K extends keyof ActionRequeriments>
     (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
@@ -37,7 +39,7 @@ export default function PlayerCard({
               alt="biblia"
               title="protestante"
               className="absolute -right-4 translate-x-[50%] -top-4 -translate-y-[50%]"
-              onClick={() => socket.emit("trocarReligiaoOutro", player.name)}
+              onClick={() => changeReligion(player.name)}
               width={40}
               height={40}
             />
@@ -47,7 +49,7 @@ export default function PlayerCard({
               alt="cruz catolica"
               title="católico"
               className="absolute -right-4 translate-x-[50%] -top-4 -translate-y-[50%]"
-              onClick={() => socket.emit("trocarReligiaoOutro", player.name)}
+              onClick={() => changeReligion(player.name)}
               width={40}
               height={40}
             />
@@ -64,7 +66,7 @@ export default function PlayerCard({
           onClick={() => {
             addRequeriment("action", Action.EXTORQUIR);
             addRequeriment("target", player.name);
-            changeMenuType("cardChooser");
+            changeMenuType(MenuTypes.CARD_CHOOSER);
           }}
           width={24}
           height={24}
@@ -80,7 +82,7 @@ export default function PlayerCard({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 0);
-            changeMenuType("othersCard");
+            changeMenuType(MenuTypes.OTHERS_CARD);
           }}
         />
         <InfluenceCard
@@ -92,7 +94,7 @@ export default function PlayerCard({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 1);
-            changeMenuType("othersCard");
+            changeMenuType(MenuTypes.OTHERS_CARD);
           }}
         />
       </div>

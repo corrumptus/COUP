@@ -7,6 +7,7 @@ import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameA
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
 import { COUPSocket, configDiff } from "@utils/socketAPI";
+import { menuTypeFrom } from "@utils/utils";
 
 export default function GameMobileView({
   isDiffsVisible,
@@ -30,6 +31,19 @@ export default function GameMobileView({
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
   const router = useRouter();
+
+  function changeOthersReligion(name: string) {
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+      return;
+
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+      return;
+
+    if (menuTypeFrom(gameState.player.state) !== undefined)
+      return;
+
+    socket.emit("trocarReligiaoOutro", name);
+  }
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -76,6 +90,7 @@ export default function GameMobileView({
         />
         <Players
           players={gameState.game.players}
+          changeReligion={changeOthersReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
           socket={socket}

@@ -6,6 +6,7 @@ import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameA
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
 import { COUPSocket, configDiff } from "@utils/socketAPI";
+import { menuTypeFrom } from "@utils/utils";
 
 export default function GamePCView({
   isDiffsVisible,
@@ -36,7 +37,23 @@ export default function GamePCView({
     if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
       return;
 
+    if (menuTypeFrom(gameState.player.state) !== undefined)
+      return;
+
     socket.emit("trocarReligiaoPropria");
+  }
+
+  function changeOthersReligion(name: string) {
+    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
+      return;
+
+    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao)
+      return;
+
+    if (menuTypeFrom(gameState.player.state) !== undefined)
+      return;
+
+    socket.emit("trocarReligiaoOutro", name);
   }
 
   return (
@@ -91,6 +108,7 @@ export default function GamePCView({
         }
         <Players
           players={gameState.game.players}
+          changeReligion={changeOthersReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
           socket={socket}

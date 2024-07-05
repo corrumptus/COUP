@@ -6,11 +6,13 @@ import { COUPSocket } from "@utils/socketAPI";
 
 export default function Players({
   players,
+  changeReligion,
   changeMenuType,
   addRequeriment,
   socket
 }: {
-  players: Player[],
+  players: Omit<Player, "state">[],
+  changeReligion: (playerName: string) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   addRequeriment: <K extends keyof ActionRequeriments>
     (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
@@ -45,6 +47,7 @@ export default function Players({
         <PlayerCard
           key={p.name}
           player={p}
+          changeReligion={changeReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
           socket={socket}

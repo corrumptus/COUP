@@ -22,7 +22,7 @@ export default function GamePcFooter({
       <div className="flex items-end relative z-[3]">
         <button
           className="bg-[#27b127] border-green-800 border-t-[3px] border-r-[3px] rounded-tr-full aspect-square p-3 hover:scale-110 origin-bottom-left"
-          onClick={() => changeMenuType("money")}
+          onClick={() => changeMenuType(MenuTypes.MONEY)}
         >
           <Image
             src="/openBank.png"
@@ -46,7 +46,7 @@ export default function GamePcFooter({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 0);
-            changeMenuType("selfCard");
+            changeMenuType(MenuTypes.SELF_CARD);
           }}
         />
         <InfluenceCard
@@ -58,7 +58,7 @@ export default function GamePcFooter({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 1);
-            changeMenuType("selfCard");
+            changeMenuType(MenuTypes.SELF_CARD);
           }}
         />
       </div>
