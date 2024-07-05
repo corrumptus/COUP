@@ -2,6 +2,7 @@ import { Action, Card } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
+import { newToaster } from "@utils/Toasters";
 
 export enum MenuTypes {
   MONEY = "money",
@@ -114,8 +115,10 @@ export default function GameActionMenu({
       <div
         className={`${playerMoney! >= configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
         onClick={() => {
-          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado)
+          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado) {
+            newToaster("Você só pode dar golpe de estado neste turno.");
             return;
+          }
 
           addRequeriment("action", Action.ASSASSINAR);
           changeMenuType(MenuTypes.CARD_CHOOSER);
@@ -126,8 +129,10 @@ export default function GameActionMenu({
       <div
         className={`${playerMoney! >= configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
         onClick={() => {
-          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado)
+          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado) {
+            newToaster("Você só pode dar golpe de estado neste turno.");
             return;
+          }
 
           addRequeriment("action", Action.INVESTIGAR);
           changeMenuType(MenuTypes.CARD_CHOOSER);

@@ -4,6 +4,7 @@ import CardGameInfos from "@components/CardGameInfos";
 import InfluenceCard from "@components/InfluenceCard";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
+import { newToaster } from "@utils/Toasters";
 
 export default function GamePcFooter({
   player,
@@ -41,8 +42,10 @@ export default function GamePcFooter({
           card={player.cards[0].card}
           customStyle={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " opacity-80" : ""} duration-700 cursor-pointer`}
           onClick={() => {
-            if (player.cards[0].isDead)
+            if (player.cards[0].isDead) {
+              newToaster("Está carta está morta.");
               return;
+            }
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 0);
@@ -53,8 +56,10 @@ export default function GamePcFooter({
           card={player.cards[1].card}
           customStyle={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " opacity-80" : ""} duration-700 cursor-pointer`}
           onClick={() => {
-            if (player.cards[1].isDead)
+            if (player.cards[1].isDead) {
+              newToaster("Está carta está morta.");
               return;
+            }
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 1);

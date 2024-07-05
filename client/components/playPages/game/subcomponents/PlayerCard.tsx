@@ -5,6 +5,7 @@ import InfluenceCard from "@components/InfluenceCard";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { CardColors, generateColorCard, menuTypeFrom } from "@utils/utils";
 import { COUPSocket } from "@utils/socketAPI";
+import { newToaster } from "@utils/Toasters";
 
 export default function PlayerCard({
   player,
@@ -77,8 +78,10 @@ export default function PlayerCard({
           card={player.cards[0].card}
           customStyle={`cursor-pointer${player.cards[0].isDead ? " opacity-80" : ""} hover:scale-110`}
           onClick={() => {
-            if (player.cards[0].isDead)
+            if (player.cards[0].isDead) {
+              newToaster("Está carta está morta.");
               return;
+            }
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 0);
@@ -89,8 +92,10 @@ export default function PlayerCard({
           card={player.cards[1].card}
           customStyle={`cursor-pointer${player.cards[1].isDead ? " opacity-80" : ""} hover:scale-110`}
           onClick={() => {
-            if (player.cards[1].isDead)
+            if (player.cards[1].isDead) {
+              newToaster("Está carta está morta.");
               return;
+            }
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 1);
