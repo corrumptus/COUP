@@ -69,7 +69,7 @@ export default function GameActionMenu({
     }
   }
 
-  if (type === "money") children = (
+  if (type === MenuTypes.MONEY) children = (
     <>
       <div
         className={optionStyles}
@@ -169,7 +169,7 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === "cardChooser") children = (
+  if (type === MenuTypes.CARD_CHOOSER) children = (
     <>
       {choosableCards.includes(Card.DUQUE) &&
         <InfluenceCard
@@ -210,17 +210,34 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === "defense") children = (
+  if (type === MenuTypes.BLOCK_DEFENSE) children = (
     <>
       <div
         className={optionStyles}
-        // onClick={() => socket.emit("contestar")}
+        onClick={() => socket.emit("contestar", requeriments.target as string)}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        // onClick={() => socket.emit("bloquear")}
+        onClick={() => socket.emit("aceitar")}
+      >
+        <h4>Aceitar</h4>
+      </div>
+    </>
+  )
+
+  if (type === MenuTypes.DEFENSE) children = (
+    <>
+      <div
+        className={optionStyles}
+        onClick={() => socket.emit("contestar", requeriments.target as string)}
+      >
+        <h4>Contestar</h4>
+      </div>
+      <div
+        className={optionStyles}
+        onClick={() => socket.emit("bloquear", requeriments.choosedCardType as Card, requeriments.target as string)}
       >
         <h4>Bloquear</h4>
       </div>
@@ -233,7 +250,7 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === "investigating") children = (
+  if (type === MenuTypes.INVESTIGATING) children = (
     <>
       <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
         <InfluenceCard card={investigatedCard}/>
