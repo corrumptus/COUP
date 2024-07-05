@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Action, Card } from "@pages/GameView";
+import { Action, Card, PlayerState } from "@pages/GameView";
 import { MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 
@@ -155,4 +155,17 @@ export function getChoosableCards(
             return canAct && canTrocar;
         })
         .map(([card, _]) => card) as Card[];
+}
+
+export function menuTypeFrom(playerState: PlayerState): MenuTypes | undefined {
+    if (playerState === PlayerState.BEING_ATTACKED)
+        return MenuTypes.DEFENSE;
+
+    if (playerState === PlayerState.BEING_BLOCKED)
+        return MenuTypes.BLOCK_DEFENSE;
+
+    if (playerState === PlayerState.INVESTIGATING)
+        return MenuTypes.INVESTIGATING;
+
+    return undefined;
 }
