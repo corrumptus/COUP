@@ -5,8 +5,8 @@ import { getChoosableCards } from "@utils/utils";
 
 export enum MenuTypes {
   MONEY = "money",
-  OTHERS_CARD = "othersCard",
-  SELF_CARD = "selfCard",
+  ATTACK = "attack",
+  CHANGE_CARDS = "changeCards",
   CARD_CHOOSER = "cardChooser",
   INVESTIGATING = "investigating",
   DEFENSE = "defense",
@@ -109,7 +109,7 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === "othersCard") children = (
+  if (type === MenuTypes.ATTACK) children = (
     <>
       <div
         className={`${playerMoney! >= configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
@@ -145,7 +145,7 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === "selfCard") children = (
+  if (type === MenuTypes.CHANGE_CARDS) children = (
     <>
       <div
         className={optionStyles}

@@ -82,7 +82,7 @@ export default function PlayerCard({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 0);
-            changeMenuType(MenuTypes.OTHERS_CARD);
+            changeMenuType(MenuTypes.ATTACK);
           }}
         />
         <InfluenceCard
@@ -94,7 +94,7 @@ export default function PlayerCard({
 
             addRequeriment("target", player.name);
             addRequeriment("choosedTargetCard", 1);
-            changeMenuType(MenuTypes.OTHERS_CARD);
+            changeMenuType(MenuTypes.ATTACK);
           }}
         />
       </div>
