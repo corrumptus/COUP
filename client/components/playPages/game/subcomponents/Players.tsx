@@ -2,21 +2,18 @@ import { useState } from "react";
 import { Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import PlayerCard from "@components/PlayerCard";
-import { COUPSocket } from "@utils/socketAPI";
 
 export default function Players({
   players,
   changeReligion,
   changeMenuType,
-  addRequeriment,
-  socket
+  addRequeriment
 }: {
   players: Omit<Player, "state">[],
   changeReligion: (playerName: string) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   addRequeriment: <K extends keyof ActionRequeriments>
-    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
-  socket: COUPSocket
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void
 }) {
   const [ isMouseDown, setIsMouseDown ] = useState(false);
   const [ startX, setStartX ] = useState(0);
@@ -50,7 +47,6 @@ export default function Players({
           changeReligion={changeReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
-          socket={socket}
         />
       )}
     </div>

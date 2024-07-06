@@ -121,7 +121,6 @@ export default function GameMobileView({
           changeReligion={changeOthersReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
-          socket={socket}
         />
         {menuType !== undefined &&
           <GameActionMenu

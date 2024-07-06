@@ -125,7 +125,6 @@ export default function GamePCView({
           changeReligion={changeOthersReligion}
           changeMenuType={changeMenuType}
           addRequeriment={addRequeriment}
-          socket={socket}
         />
         <GamePcFooter
           player={gameState.player}

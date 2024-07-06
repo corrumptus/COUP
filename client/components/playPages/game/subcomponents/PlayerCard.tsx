@@ -3,23 +3,20 @@ import Image from "next/image";
 import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
-import { CardColors, generateColorCard, menuTypeFrom } from "@utils/utils";
-import { COUPSocket } from "@utils/socketAPI";
+import { CardColors, generateColorCard } from "@utils/utils";
 import { newToaster } from "@utils/Toasters";
 
 export default function PlayerCard({
   player,
   changeReligion,
   changeMenuType,
-  addRequeriment,
-  socket
+  addRequeriment
 }: {
   player: Omit<Player, "state">,
   changeReligion: (playerName: string) => void,
   changeMenuType: (menuType: MenuTypes | undefined) => void,
   addRequeriment: <K extends keyof ActionRequeriments>
-    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
-  socket: COUPSocket
+    (requerimentType: K, requeriment: ActionRequeriments[K]) => void
 }) {
   const [ colors, setColors ] = useState<CardColors>()
 
