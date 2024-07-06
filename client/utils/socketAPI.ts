@@ -2,7 +2,7 @@ import { Socket, io } from "socket.io-client"
 import { LobbyState } from "@pages/LobbyView";
 import { Card, GameState } from "@pages/GameView";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import { Differ, objectDiff } from "./utils";
+import { Differ, objectDiff } from "@utils/utils";
 
 type Carta = {
   taxar: boolean,
@@ -24,19 +24,30 @@ type Carta = {
 }
 
 export type Config = {
-  quantidadeMoedasIniciais: number,
+  moedasIniciais: number,
   renda: number,
   ajudaExterna: number,
   quantidadeMinimaGolpeEstado: number,
   quantidadeMaximaGolpeEstado: number,
-  religiao: boolean,
-  quantidadeTrocarPropriaReligiao: number,
-  quantidadeTrocarReligiaoOutroJogador: number,
-  deveresMesmaReligiao: {
-    golpeEstado: boolean,
-    assassinar: boolean,
-    extorquir: boolean,
-    taxar: boolean
+  religiao: {
+    reforma: boolean,
+    corrupcao: boolean,
+    deveres: {
+      golpeEstado: boolean,
+      assassinar: boolean,
+      extorquir: boolean,
+      taxar: boolean
+    },
+    quantidadeTrocarPropria: number,
+    quantidadeTrocarOutro: number,
+    cartasParaCorrupcao: {
+      duque: boolean,
+      capitao: boolean,
+      assassino: boolean,
+      condessa: boolean,
+      embaixador: boolean,
+      inquisidor: boolean
+    }
   },
   tiposCartas: {
     duque: Carta,
@@ -131,6 +142,6 @@ export async function enterLobby(lobbyID: number) {
   return { socket: socket };
 }
 
-export function configDiff(configs: Config): Partial<Differ<Config>> {
+export function configDiff(configs: Config): Differ<Config> {
   return objectDiff(COUPDefaultConfigs, configs);
 }

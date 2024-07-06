@@ -110,11 +110,11 @@ export function useDeviceWidth() {
 }
 
 export type Differ<T> = {
-    [P in keyof T]: Partial<Differ<T[P]>> | T[P][]
+    [P in keyof T]?: Differ<T[P]> | T[P][];
 }
 
-export function objectDiff<T extends Record<string, any>>(base: T, differ: T): Partial<Differ<T>> {
-    const diff: Partial<Differ<T>> = {};
+export function objectDiff<T>(base: T, differ: T): Differ<T> {
+    const diff: Differ<T> = {};
 
     for (let key in base) {
         if (typeof base[key] !== "object") {

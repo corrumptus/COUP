@@ -128,7 +128,7 @@ const COUPConfigToText = {
   }
 }
 
-function diffsToString<T extends Partial<Differ<any>>>(diff: T, converter: Record<string, Function>): string[] {
+function diffsToString<T>(diff: T, converter: Record<string, Function>): string[] {
   const diffs: string[] = [];
 
   for (let key in diff) {

@@ -1,19 +1,29 @@
 {
-    "quantidadeMoedasIniciais": 3,
+    "moedasIniciais": 3,
     "renda": 1,
     "ajudaExterna": 2,
     "quantidadeMinimaGolpeEstado": 7,
     "quantidadeMaximaGolpeEstado": 10,
-    "religiao": false,
-    "quantidadeTrocarPropriaReligiao": 1,
-    "quantidadeTrocarReligiaoOutroJogador": 2,
-    "deveresMesmaReligiao":
-        {
+    "religiao": {
+        "reforma": false,
+        "corrupcao": false,
+        "deveres": {
             "golpeEstado": false,
             "assassinar": false,
             "extorquir": false,
             "taxar": false
         },
+        "quantidadeTrocarPropria": 1,
+        "quantidadeTrocarOutro": 2,
+        "cartasParaCorrupcao": {
+            "duque": true,
+            "capitao": false,
+            "assassino": false,
+            "condessa": false,
+            "embaixador": false,
+            "inquisidor": false
+          }
+    },
     "tiposCartas":
         {
             "duque":

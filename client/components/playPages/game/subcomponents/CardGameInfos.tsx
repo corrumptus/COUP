@@ -109,23 +109,23 @@ export default function CardGameInfos({
       <div className="pt-3">
         <h4 className="text-xl text-blue-700">Conversão</h4>
         <ul>
-          <li>Própria(<span className="text-red-500">-${configs.quantidadeTrocarPropriaReligiao}</span>)</li>
-          <li>Outro(<span className="text-red-500">-${configs.quantidadeTrocarReligiaoOutroJogador}</span>)</li>
+          <li>Própria(<span className="text-red-500">-${configs.religiao.quantidadeTrocarPropria}</span>)</li>
+          <li>Outro(<span className="text-red-500">-${configs.religiao.quantidadeTrocarOutro}</span>)</li>
         </ul>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-green-600">Impedimentos religiosos</h4>
         <ul>
-          {configs.deveresMesmaReligiao.taxar &&
+          {configs.religiao.deveres.taxar &&
             <li className="text-fuchsia-600">Taxar</li>
           }
-          {configs.deveresMesmaReligiao.extorquir &&
+          {configs.religiao.deveres.extorquir &&
             <li className="text-orange-500">Extorquir</li>
           }
-          {configs.deveresMesmaReligiao.assassinar &&
+          {configs.religiao.deveres.assassinar &&
             <li className="text-rose-600">Assassinar</li>
           }
-          {configs.deveresMesmaReligiao.golpeEstado &&
+          {configs.religiao.deveres.golpeEstado &&
             <li className="text-blue-700">Golpe de estado</li>
           }
         </ul>

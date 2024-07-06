@@ -20,10 +20,10 @@ export default function Configuracoes({
             <label>Moedas Iniciais</label>
             <input
               type="number"
-              value={configs.quantidadeMoedasIniciais}
+              value={configs.moedasIniciais}
               min={0}
               onChange={e => {
-                socket.emit("updateConfigs", ["quantidadeMoedasIniciais"], Number(e.target.value))
+                socket.emit("updateConfigs", ["moedasIniciais"], Number(e.target.value))
               }}
             />
           </div>
@@ -78,21 +78,21 @@ export default function Configuracoes({
             <label>Religião</label>
             <input
               type="checkbox"
-              checked={configs.religiao}
+              checked={configs.religiao.reforma}
               onChange={e =>
-                socket.emit("updateConfigs", ["religiao"], e.target.checked)
+                socket.emit("updateConfigs", ["religiao", "reforma"], e.target.checked)
               }
             />
           </div>
-          {configs.religiao && <div className="w-full">
+          {configs.religiao.reforma && <div className="w-full">
             <div className="config_outer_div">
               <label>Trocar Religião(Própria)</label>
               <input
                 type="number"
-                value={configs.quantidadeTrocarPropriaReligiao}
+                value={configs.religiao.quantidadeTrocarPropria}
                 min={0}
                 onChange={e =>
-                  socket.emit("updateConfigs", ["quantidadeTrocarPropriaReligiao"], Number(e.target.value))
+                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocarPropria"], Number(e.target.value))
                 }
               />
             </div>
@@ -100,10 +100,10 @@ export default function Configuracoes({
               <label>Trocar Religião(Inimigo)</label>
               <input
                 type="number"
-                value={configs.quantidadeTrocarReligiaoOutroJogador}
+                value={configs.religiao.quantidadeTrocarOutro}
                 min={0}
                 onChange={e =>
-                  socket.emit("updateConfigs", ["quantidadeTrocarReligiaoOutroJogador"], Number(e.target.value))
+                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocarOutro"], Number(e.target.value))
                 }
               />
             </div>
@@ -114,9 +114,9 @@ export default function Configuracoes({
                   <label>Golpe de Estado</label>
                   <input
                     type="checkbox"
-                    checked={configs.deveresMesmaReligiao.golpeEstado}
+                    checked={configs.religiao.deveres.golpeEstado}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["deveresMesmaReligiao", "golpeEstado"], e.target.checked)
+                      socket.emit("updateConfigs", ["religiao", "deveres", "golpeEstado"], e.target.checked)
                     }
                   />
                 </div>
@@ -124,9 +124,9 @@ export default function Configuracoes({
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
-                    checked={configs.deveresMesmaReligiao.assassinar}
+                    checked={configs.religiao.deveres.assassinar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["deveresMesmaReligiao", "assassinar"], e.target.checked)
+                      socket.emit("updateConfigs", ["religiao", "deveres", "assassinar"], e.target.checked)
                     }
                   />
                 </div>
@@ -134,9 +134,9 @@ export default function Configuracoes({
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
-                    checked={configs.deveresMesmaReligiao.extorquir}
+                    checked={configs.religiao.deveres.extorquir}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["deveresMesmaReligiao", "extorquir"], e.target.checked)
+                      socket.emit("updateConfigs", ["religiao", "deveres", "extorquir"], e.target.checked)
                     }
                   />
                 </div>
@@ -144,9 +144,9 @@ export default function Configuracoes({
                   <label>Taxar</label>
                   <input
                     type="checkbox"
-                    checked={configs.deveresMesmaReligiao.taxar}
+                    checked={configs.religiao.deveres.taxar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["deveresMesmaReligiao", "taxar"], e.target.checked)
+                      socket.emit("updateConfigs", ["religiao", "deveres", "taxar"], e.target.checked)
                     }
                   />
                 </div>
@@ -1190,7 +1190,7 @@ export default function Configuracoes({
         <h3 className="text-2xl font-bold text-center">Dinheiro</h3>
         <div className="config_outer_div ">
           <p className="text-xl">Moedas Iniciais</p>
-          <p className="text-lg">{configs.quantidadeMoedasIniciais}</p>
+          <p className="text-lg">{configs.moedasIniciais}</p>
         </div>
         <div className="config_outer_div config_diferenciation">
           <p className="text-xl">Renda</p>
@@ -1218,30 +1218,30 @@ export default function Configuracoes({
         {configs.religiao && <>
           <div className="config_diferenciation">
             <p className="text-xl">Trocar Religião(Própria)</p>
-            <p className="text-lg">{configs.quantidadeTrocarPropriaReligiao}</p>
+            <p className="text-lg">{configs.religiao.quantidadeTrocarPropria}</p>
           </div>
           <div>
             <p className="text-xl">Trocar Religião(Inimigo)</p>
-            <p className="text-lg">{configs.quantidadeTrocarReligiaoOutroJogador}</p>
+            <p className="text-lg">{configs.religiao.quantidadeTrocarOutro}</p>
           </div>
           <div className="config_diferenciation">
             <p className="text-xl">Mandamentos da Religião</p>
             <div>
               <div>
                 <p className="text-xl">Golpe de Estado</p>
-                <p className="text-lg">{configs.deveresMesmaReligiao.golpeEstado ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.golpeEstado ? "sim" : "não"}</p>
               </div>
               <div>
                 <p className="text-xl">Assassinar</p>
-                <p className="text-lg">{configs.deveresMesmaReligiao.assassinar ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.assassinar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p className="text-xl">Extorquir</p>
-                <p className="text-lg">{configs.deveresMesmaReligiao.extorquir ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.extorquir ? "sim" : "não"}</p>
               </div>
               <div>
                 <p className="text-xl">Taxar</p>
-                <p className="text-lg">{configs.deveresMesmaReligiao.taxar ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.taxar ? "sim" : "não"}</p>
               </div>
             </div>
           </div>

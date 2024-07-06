@@ -37,7 +37,7 @@ export default function GamePCView({
       return;
     }
 
-    if (gameState.player.money < gameState.game.configs.quantidadeTrocarPropriaReligiao) {
+    if (gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarPropria) {
       newToaster("Você não tem dinheiro suficiente para trocar sua religião.");
       return;
     }
@@ -56,7 +56,7 @@ export default function GamePCView({
       return;
     }
 
-    if (gameState.player.money < gameState.game.configs.quantidadeTrocarReligiaoOutroJogador) {
+    if (gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarOutro) {
       newToaster("Você não tem dinheiro suficiente para trocar a religião de outro jogador.");
       return;
     }
