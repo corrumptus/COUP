@@ -1,18 +1,30 @@
+"use client";
+
+import { useState } from "react";
 import { GameState } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 
-export const gameActuals: {
-    menuType: MenuTypes | undefined,
-    requeriments: ActionRequeriments
-} = {
-    menuType: undefined,
-    requeriments: {}
+export default function useUIChanger() {
+    const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
+    const [ requeriments, setRequeriments ] = useState<ActionRequeriments>({});
+
+    return [
+        menuType,
+        (gameState: GameState, newRequeriments?: ActionRequeriments) => {
+            const [ nextMenuType, currentRequeriments ] =
+                performUIChange(gameState, menuType, requeriments, newRequeriments);
+
+            setMenuType(nextMenuType);
+            setRequeriments(currentRequeriments);
+        }
+    ] as const;
 }
 
-export default function performUIChange(
+function performUIChange(
     gameState: GameState,
-    prevMenuType: MenuTypes | undefined,
-    requeriments?: ActionRequeriments,
-) {
+    menuType: MenuTypes | undefined,
+    requeriments: ActionRequeriments,
+    newRequeriments?: ActionRequeriments
+): readonly [MenuTypes | undefined, ActionRequeriments] {
     throw new Error("TODO: function not implemented");
 }
