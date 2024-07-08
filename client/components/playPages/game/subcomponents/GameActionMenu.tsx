@@ -1,8 +1,7 @@
-import { Action, Card } from "@pages/GameView";
+import { Action, Card, GameState } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
-import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
-import { newToaster } from "@utils/Toasters";
+import { ChangeRequest } from "@utils/UIChanger";
 
 export enum MenuTypes {
   MONEY = "money",
@@ -11,7 +10,8 @@ export enum MenuTypes {
   CARD_CHOOSER = "cardChooser",
   INVESTIGATING = "investigating",
   DEFENSE = "defense",
-  BLOCK_DEFENSE = "blockDefense"
+  BLOCK_DEFENSE = "blockDefense",
+  CLOSED = "closed"
 }
 
 export type ActionRequeriments = {
@@ -24,87 +24,46 @@ export type ActionRequeriments = {
 
 export default function GameActionMenu({
   type,
-  changeMenuType,
-  requeriments,
-  addRequeriment,
-  configs,
-  investigatedCard,
-  playerMoney,
-  asylum,
-  socket
+  gameState,
+  performChange,
 }: {
   type: MenuTypes,
-  changeMenuType: (menuType: MenuTypes | undefined) => void,
-  requeriments: ActionRequeriments,
-  addRequeriment: <K extends keyof ActionRequeriments>
-    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
-  configs: Config,
-  investigatedCard?: Card,
-  playerMoney?: number,
-  asylum: number,
-  socket: COUPSocket
+  gameState: GameState
+  performChange: (changeRequest: ChangeRequest) => void,
 }) {
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
-  const choosableCards = getChoosableCards(configs, requeriments.action as Action, type, requeriments);
-
-  function cardChooserClickHandler(carta: Card) {
-    if (requeriments.action === Action.TAXAR) {
-      socket.emit("taxar", carta);
-      return;
-    }
-
-    if (requeriments.action === Action.ASSASSINAR) {
-      socket.emit("assassinar", carta, requeriments.target as string, requeriments.choosedTargetCard as number);
-      return;
-    }
-
-    if (requeriments.action === Action.INVESTIGAR) {
-      socket.emit("investigar", carta, requeriments.target as string, requeriments.choosedTargetCard as number);
-      return;
-    }
-
-    if (requeriments.action === Action.TROCAR) {
-      socket.emit("trocar", carta, requeriments.target as string, requeriments.choosedTargetCard as number);
-      return;
-    }
-  }
+  const choosableCards = getChoosableCards(gameState.game.configs, requeriments.action as Action, type, requeriments);
 
   if (type === MenuTypes.MONEY) children = (
     <>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("renda")}
+        onClick={() => performChange({ action: Action.RENDA })}
       >
         <h4>Renda</h4>
-        <p>${configs.renda}</p>
+        <p>${gameState.game.configs.renda}</p>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("ajudaExterna")}
+        onClick={() => performChange({ action: Action.AJUDA_EXTERNA })}
       >
         <h4>Ajuda Externa</h4>
-        <p>${configs.ajudaExterna}</p>
+        <p>${gameState.game.configs.ajudaExterna}</p>
       </div>
       <div
         className={optionStyles}
-        onClick={() => {
-          addRequeriment("action", Action.TAXAR);
-          changeMenuType(MenuTypes.CARD_CHOOSER);
-        }}
+        onClick={() => performChange({ action: Action.TAXAR })}
       >
         <h4>Taxar</h4>
       </div>
-      {configs.religiao &&
+      {gameState.game.configs.religiao &&
         <div
           className={optionStyles}
-          onClick={() => {
-            addRequeriment("action", Action.CORRUPCAO);
-            // TODO: escolher a carta que deve ser apostada como uma carta que pode pegar dinheiro do asilo
-          }}
+          onClick={() => performChange({ action: Action.CORRUPCAO })}
         >
           <h4>Corrupção</h4>
-          <p>${asylum}</p>
+          <p>${gameState.game.asylum}</p>
         </div>
       }
     </>
@@ -113,39 +72,23 @@ export default function GameActionMenu({
   if (type === MenuTypes.ATTACK) children = (
     <>
       <div
-        className={`${playerMoney! >= configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => {
-          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado) {
-            newToaster("Você só pode dar golpe de estado neste turno.");
-            return;
-          }
-
-          addRequeriment("action", Action.ASSASSINAR);
-          changeMenuType(MenuTypes.CARD_CHOOSER);
-        }}
+        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
+        onClick={() => performChange({ action: Action.ASSASSINAR })}
       >
         <h4>Assassinar</h4>
       </div>
       <div
-        className={`${playerMoney! >= configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => {
-          if (playerMoney! >= configs.quantidadeMaximaGolpeEstado) {
-            newToaster("Você só pode dar golpe de estado neste turno.");
-            return;
-          }
-
-          addRequeriment("action", Action.INVESTIGAR);
-          changeMenuType(MenuTypes.CARD_CHOOSER);
-        }}
+        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
+        onClick={() => performChange({ action: Action.INVESTIGAR })}
       >
         <h4>Investigar</h4>
       </div>
       <div
-        className={`${playerMoney! < configs.quantidadeMinimaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => playerMoney! >= configs.quantidadeMinimaGolpeEstado && socket.emit("golpeEstado", requeriments.target as string, requeriments.choosedTargetCard as number)}
+        className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
+        onClick={() => performChange({ action: Action.GOLPE_ESTADO })}
       >
         <h4>Golpe de Estado</h4>
-        <p>${configs.quantidadeMinimaGolpeEstado}</p>
+        <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
       </div>
     </>
   )
@@ -154,20 +97,13 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => {
-          addRequeriment("action", Action.TROCAR);
-          changeMenuType(MenuTypes.CARD_CHOOSER);
-        }}
+        onClick={() => performChange({ action: Action.TROCAR })}
       >
         <h4>Trocar 1</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => {
-          addRequeriment("action", Action.TROCAR);
-          addRequeriment("choosedTargetCard", undefined);
-          changeMenuType(MenuTypes.CARD_CHOOSER);
-        }}
+        onClick={() => performChange({ action: Action.TROCAR })}
       >
         <h4>Trocar 2</h4>
       </div>
@@ -179,37 +115,37 @@ export default function GameActionMenu({
       {choosableCards.includes(Card.DUQUE) &&
         <InfluenceCard
           card={Card.DUQUE}
-          onClick={() => cardChooserClickHandler(Card.DUQUE)}
+          onClick={() => performChange({ choosedCardType: Card.DUQUE })}
         />
       }
       {choosableCards.includes(Card.CAPITAO) &&
         <InfluenceCard
           card={Card.CAPITAO}
-          onClick={() => cardChooserClickHandler(Card.CAPITAO)}
+          onClick={() => performChange({ choosedCardType: Card.CAPITAO })}
         />
       }
       {choosableCards.includes(Card.ASSASSINO) &&
         <InfluenceCard
           card={Card.ASSASSINO}
-          onClick={() => cardChooserClickHandler(Card.ASSASSINO)}
+          onClick={() => performChange({ choosedCardType: Card.ASSASSINO })}
         />
       }
       {choosableCards.includes(Card.CONDESSA) &&
         <InfluenceCard
           card={Card.CONDESSA}
-          onClick={() => cardChooserClickHandler(Card.CONDESSA)}
+          onClick={() => performChange({ choosedCardType: Card.CONDESSA })}
         />
       }
       {choosableCards.includes(Card.EMBAIXADOR) &&
         <InfluenceCard
           card={Card.EMBAIXADOR}
-          onClick={() => cardChooserClickHandler(Card.EMBAIXADOR)}
+          onClick={() => performChange({ choosedCardType: Card.EMBAIXADOR })}
         />
       }
       {choosableCards.includes(Card.INQUISIDOR) &&
         <InfluenceCard
           card={Card.INQUISIDOR}
-          onClick={() => cardChooserClickHandler(Card.INQUISIDOR)}
+          onClick={() => performChange({ choosedCardType: Card.INQUISIDOR })}
         />
       }
     </>
@@ -219,13 +155,13 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("contestar", requeriments.target as string)}
+        onClick={() => performChange({ action: Action.CONTESTAR })}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("aceitar")}
+        onClick={() => performChange({ action: Action.CONTINUAR })}
       >
         <h4>Aceitar</h4>
       </div>
@@ -236,19 +172,19 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("contestar", requeriments.target as string)}
+        onClick={() => performChange({ action: Action.CONTESTAR })}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("bloquear", requeriments.choosedCardType as Card, requeriments.target as string)}
+        onClick={() => performChange({ action: Action.BLOQUEAR })}
       >
         <h4>Bloquear</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => socket.emit("aceitar")}
+        onClick={() => performChange({ action: Action.CONTINUAR })}
       >
         <h4>Aceitar</h4>
       </div>
@@ -262,13 +198,13 @@ export default function GameActionMenu({
         <div className="flex gap-4 items-center">
           <div
             className={optionStyles}
-            onClick={() => socket.emit("trocar", requeriments.choosedCardType as Card, requeriments.target as string, requeriments.choosedTargetCard as number)}
+            onClick={() => performChange({ action: Action.TROCAR })}
           >
             <h4>Trocar</h4>
           </div>
           <div
             className={optionStyles}
-            onClick={() => socket.emit("manter")}
+            onClick={() => performChange({ action: Action.CONTINUAR })}
           >
             <h4>Manter</h4>
           </div>
@@ -280,14 +216,7 @@ export default function GameActionMenu({
   return (
     <div
       className="w-full h-full flex flex-wrap items-center justify-center gap-4 absolute bg-black/70"
-      onClick={() => {
-        if (type === "investigating")
-          socket.emit("manter")
-        if (type === "defense")
-          socket.emit("aceitar")
-
-        changeMenuType(undefined)
-      }}
+      onClick={() => performChange({ goTo: MenuTypes.CLOSED })}
     >
       {children}
     </div>

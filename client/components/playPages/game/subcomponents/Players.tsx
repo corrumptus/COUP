@@ -1,19 +1,14 @@
 import { useState } from "react";
 import { Player } from "@pages/GameView";
-import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import PlayerCard from "@components/PlayerCard";
+import { ChangeRequest } from "@utils/UIChanger";
 
 export default function Players({
   players,
-  changeReligion,
-  changeMenuType,
-  addRequeriment
+  performChange
 }: {
   players: Omit<Player, "state">[],
-  changeReligion: (playerName: string) => void,
-  changeMenuType: (menuType: MenuTypes | undefined) => void,
-  addRequeriment: <K extends keyof ActionRequeriments>
-    (requerimentType: K, requeriment: ActionRequeriments[K]) => void
+  performChange: (changeRequest: ChangeRequest) => void
 }) {
   const [ isMouseDown, setIsMouseDown ] = useState(false);
   const [ startX, setStartX ] = useState(0);
@@ -44,9 +39,7 @@ export default function Players({
         <PlayerCard
           key={p.name}
           player={p}
-          changeReligion={changeReligion}
-          changeMenuType={changeMenuType}
-          addRequeriment={addRequeriment}
+          performChange={performChange}
         />
       )}
     </div>

@@ -135,7 +135,7 @@ function diffsToString<T>(diff: T, converter: Record<string, Function>): string[
     if (typeof diff[key] !== "object")
       diffs.push(converter[key]((diff[key] as any)[1]));
     else {
-      diffs.push(...diffsToString(diff[key] as Partial<Differ<any>>, converter[key] as unknown as Record<string, Function>))
+      diffs.push(...diffsToString(diff[key], converter[key] as unknown as Record<string, Function>))
     }
   }
 
@@ -146,7 +146,7 @@ export default function ConfigDiff({
   configDiff,
   disappear
 }: {
-  configDiff: Partial<Differ<Config>>,
+  configDiff: Differ<Config>,
   disappear: () => void
 }) {
   setTimeout(() => {

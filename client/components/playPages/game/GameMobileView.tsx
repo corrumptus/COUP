@@ -1,85 +1,37 @@
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Card, GameState } from "@pages/GameView";
+import { GameState } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
-import { COUPSocket, configDiff } from "@utils/socketAPI";
-import Toasters, { newToaster } from "@utils/Toasters";
-import { menuTypeFrom } from "@utils/utils";
+import { configDiff } from "@utils/socketAPI";
+import Toasters from "@utils/Toasters";
+import { ChangeRequest } from "@utils/UIChanger";
 
 export default function GameMobileView({
   isDiffsVisible,
   closeDiffs,
   gameState,
   menuType,
-  changeMenuType,
-  requeriments,
-  addRequeriment,
-  socket
+  performChange,
+  leave
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
   gameState: GameState,
   menuType: MenuTypes | undefined,
-  changeMenuType: (menuType: MenuTypes | undefined) => void,
-  requeriments: ActionRequeriments,
-  addRequeriment: <K extends keyof ActionRequeriments>
-    (requerimentType: K, requeriment: ActionRequeriments[K]) => void,
-  socket: COUPSocket
+  performChange: (changeRequest: ChangeRequest) => void,
+  leave: () => void
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
-  const router = useRouter();
-
-  function changeReligion() {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado) {
-      newToaster("Você só pode dar um golpe de estado neste turno.");
-      return;
-    }
-
-    if (gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarPropria) {
-      newToaster("Você não tem dinheiro suficiente para trocar sua religião.");
-      return;
-    }
-
-    if (menuTypeFrom(gameState.player.state) !== undefined) {
-      newToaster("Você não pode sair deste menu no momento");
-      return;
-    }
-
-    socket.emit("trocarReligiaoPropria");
-  }
-
-  function changeOthersReligion(name: string) {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado) {
-      newToaster("Você só pode dar um golpe de estado neste turno.");
-      return;
-    }
-
-    if (gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarOutro) {
-      newToaster("Você não tem dinheiro suficiente para trocar a religião de outro jogador.");
-      return;
-    }
-
-    if (menuTypeFrom(gameState.player.state) !== undefined) {
-      newToaster("Você não pode sair deste menu no momento");
-      return;
-    }
-
-    socket.emit("trocarReligiaoOutro", name);
-  }
 
   return (
     <div className="w-full h-full flex flex-col">
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
         <div
           className="flex items-center gap-3 cursor-pointer"
-          onClick={() => {
-            socket.disconnect();
-            router.push("/");
-          }}
+          onClick={leave}
         >
           <Image
             src="/sair-lobby.png"
@@ -109,31 +61,19 @@ export default function GameMobileView({
         }
         <GameMobileMenu
           player={gameState.player}
-          changeReligion={changeReligion}
-          changeMenuType={changeMenuType}
-          addRequeriment={addRequeriment}
+          performChange={performChange}
           configs={gameState.game.configs}
           isOpen={isMobileMenuOpen}
-          socket={socket}
         />
         <Players
           players={gameState.game.players}
-          changeReligion={changeOthersReligion}
-          changeMenuType={changeMenuType}
-          addRequeriment={addRequeriment}
+          performChange={performChange}
         />
         {menuType !== undefined &&
           <GameActionMenu
             type={menuType}
-            changeMenuType={changeMenuType}
-            requeriments={requeriments}
-            addRequeriment={addRequeriment}
-            configs={gameState.game.configs}
-            investigatedCard={gameState.game.players.find(p => p.name === requeriments.target)
-              ?.cards[requeriments.choosedTargetCard as number].card as Card}
-            playerMoney={gameState.player.money}
-            asylum={gameState.game.asylum}
-            socket={socket}
+            gameState={gameState}
+            performChange={performChange}
           />
         }
       </main>

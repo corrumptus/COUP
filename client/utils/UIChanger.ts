@@ -4,13 +4,15 @@ import { useState } from "react";
 import { GameState } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 
+export type ChangeRequest = ActionRequeriments & { goTo?: MenuTypes };
+
 export default function useUIChanger() {
-    const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(undefined);
+    const [ menuType, setMenuType ] = useState<MenuTypes>(MenuTypes.CLOSED);
     const [ requeriments, setRequeriments ] = useState<ActionRequeriments>({});
 
     return [
         menuType,
-        (gameState: GameState, newRequeriments: ActionRequeriments & { goTo?: MenuTypes }) => {
+        (gameState: GameState, newRequeriments: ChangeRequest) => {
             const [ nextMenuType, currentRequeriments ] =
                 performUIChange(gameState, menuType, requeriments, newRequeriments);
 
@@ -22,9 +24,9 @@ export default function useUIChanger() {
 
 function performUIChange(
     gameState: GameState,
-    menuType: MenuTypes | undefined,
+    menuType: MenuTypes,
     requeriments: ActionRequeriments,
-    newRequeriments?: ActionRequeriments & { goTo?: MenuTypes }
-): readonly [MenuTypes | undefined, ActionRequeriments] {
+    newRequeriments?: ChangeRequest
+): readonly [MenuTypes, ActionRequeriments] {
     throw new Error("TODO: function not implemented");
 }

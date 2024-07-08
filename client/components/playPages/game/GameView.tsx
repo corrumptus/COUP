@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
-import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { COUPSocket, Config } from "@utils/socketAPI";
-import { menuTypeFrom, useDeviceWidth } from "@utils/utils";
+import { useDeviceWidth } from "@utils/utils";
+import useUIChanger from "@utils/UIChanger";
 
 export enum Religion {
   PROTESTANTE = "PROTESTANTE",
@@ -32,7 +33,8 @@ export enum Action {
   TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
   CORRUPCAO = "corrupcao",
   CONTESTAR = "contestar",
-  BLOQUEAR = "bloquear"
+  BLOQUEAR = "bloquear",
+  CONTINUAR = "continuar"
 }
 
 export enum PlayerState {
@@ -70,27 +72,14 @@ export default function GameView({
   gameState: GameState,
   socket: COUPSocket
 }) {
-  const initialMenuType = menuTypeFrom(gameState.player.state);
-  const [ menuType, setMenuType ] = useState<MenuTypes | undefined>(initialMenuType);
-  const [ requeriments, setRequeriments ] = useState<ActionRequeriments>({});
+  const [ menuType, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
+  const router = useRouter();
 
-  function changeMenuType(menuType: MenuTypes | undefined) {
-    if (gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado)
-      return;
-
-    if (initialMenuType !== undefined)
-      return;
-
-    setMenuType(menuType);
-  }
-
-  function addRequeriment<K extends keyof ActionRequeriments>(
-    requerimentType: K,
-    requeriment: ActionRequeriments[K]
-  ) {
-    setRequeriments(prev => ({ ...prev, [requerimentType]: requeriment }));
+  function leave() {
+    socket.disconnect();
+    router.push("/");
   }
 
   return width < 800 ?
@@ -99,10 +88,8 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
-      changeMenuType={changeMenuType}
-      requeriments={requeriments}
-      addRequeriment={addRequeriment}
-      socket={socket}
+      performChange={changeRequest => changeUI(gameState, changeRequest)}
+      leave={leave}
     />
     :
     <GamePCView
@@ -110,9 +97,7 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
-      changeMenuType={changeMenuType}
-      requeriments={requeriments}
-      addRequeriment={addRequeriment}
-      socket={socket}
+      performChange={changeRequest => changeUI(gameState, changeRequest)}
+      leave={leave}
     />
 }
