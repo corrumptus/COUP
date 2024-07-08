@@ -10,7 +10,7 @@ export default function useUIChanger() {
 
     return [
         menuType,
-        (gameState: GameState, newRequeriments?: ActionRequeriments) => {
+        (gameState: GameState, newRequeriments: ActionRequeriments & { goTo?: MenuTypes }) => {
             const [ nextMenuType, currentRequeriments ] =
                 performUIChange(gameState, menuType, requeriments, newRequeriments);
 
@@ -24,7 +24,7 @@ function performUIChange(
     gameState: GameState,
     menuType: MenuTypes | undefined,
     requeriments: ActionRequeriments,
-    newRequeriments?: ActionRequeriments
+    newRequeriments?: ActionRequeriments & { goTo?: MenuTypes }
 ): readonly [MenuTypes | undefined, ActionRequeriments] {
     throw new Error("TODO: function not implemented");
 }
