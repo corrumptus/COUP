@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { GameState } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
 import { configDiff } from "@utils/socketAPI";
@@ -14,13 +14,15 @@ export default function GameMobileView({
   closeDiffs,
   gameState,
   menuType,
+  requeriments,
   performChange,
   leave
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
   gameState: GameState,
-  menuType: MenuTypes | undefined,
+  menuType: MenuTypes,
+  requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
   leave: () => void
 }) {
@@ -69,10 +71,11 @@ export default function GameMobileView({
           players={gameState.game.players}
           performChange={performChange}
         />
-        {menuType !== undefined &&
+        {menuType !== MenuTypes.CLOSED &&
           <GameActionMenu
             type={menuType}
             gameState={gameState}
+            requeriments={requeriments}
             performChange={performChange}
           />
         }

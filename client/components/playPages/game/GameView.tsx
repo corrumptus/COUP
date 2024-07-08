@@ -72,7 +72,7 @@ export default function GameView({
   gameState: GameState,
   socket: COUPSocket
 }) {
-  const [ menuType, changeUI ] = useUIChanger();
+  const [ menuType, requeriments, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
   const router = useRouter();
@@ -88,6 +88,7 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
+      requeriments={requeriments}
       performChange={changeRequest => changeUI(gameState, changeRequest)}
       leave={leave}
     />
@@ -97,6 +98,7 @@ export default function GameView({
       closeDiffs={() => setIsDiffsVisible(false)}
       gameState={gameState}
       menuType={menuType}
+      requeriments={requeriments}
       performChange={changeRequest => changeUI(gameState, changeRequest)}
       leave={leave}
     />

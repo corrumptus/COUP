@@ -25,15 +25,19 @@ export type ActionRequeriments = {
 export default function GameActionMenu({
   type,
   gameState,
+  requeriments,
   performChange,
 }: {
   type: MenuTypes,
-  gameState: GameState
+  gameState: GameState,
+  requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
 }) {
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
-  const choosableCards = getChoosableCards(gameState.game.configs, requeriments.action as Action, type, requeriments);
+  const choosableCards = getChoosableCards(gameState.game.configs, type, requeriments);
+  const investigatedCard = gameState.game.players.find(p => p.name === requeriments.target)
+    ?.cards[requeriments.choosedTargetCard as number].card as Card;
 
   if (type === MenuTypes.MONEY) children = (
     <>
@@ -194,7 +198,7 @@ export default function GameActionMenu({
   if (type === MenuTypes.INVESTIGATING) children = (
     <>
       <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
-        <InfluenceCard card={investigatedCard}/>
+        <InfluenceCard card={investigatedCard} />
         <div className="flex gap-4 items-center">
           <div
             className={optionStyles}

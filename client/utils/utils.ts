@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Action, Card, PlayerState } from "@pages/GameView";
-import { MenuTypes } from "@components/GameActionMenu";
+import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 
 export interface CardColors {
@@ -133,18 +133,17 @@ export function objectDiff<T>(base: T, differ: T): Differ<T> {
 
 export function getChoosableCards(
     configs: Config,
-    action: Action,
     menuType: MenuTypes,
-    requeriments: { [key in string]: any }
+    requeriments: ActionRequeriments
 ): Card[] {
     return Object.entries(configs.tiposCartas)
         .filter(([_, cardInfos]) => {
-            const canAct = cardInfos[action as keyof typeof cardInfos] as boolean;
+            const canAct = cardInfos[requeriments.action as keyof typeof cardInfos] as boolean;
 
             let canTrocar = true;
-            let quantidadeTrocar = requeriments["playerCard"] !== undefined ? 1 : 2;
+            let quantidadeTrocar = requeriments.choosedSelfCard !== undefined ? 1 : 2;
 
-            if (action === Action.TROCAR)
+            if (requeriments.action === Action.TROCAR)
                 canTrocar = quantidadeTrocar >= cardInfos[
                     menuType === MenuTypes.CHANGE_CARDS ? // TODO: melhorar isso
                         "quantidadeTrocarPropria"

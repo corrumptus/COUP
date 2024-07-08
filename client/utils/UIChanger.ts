@@ -12,6 +12,7 @@ export default function useUIChanger() {
 
     return [
         menuType,
+        requeriments,
         (gameState: GameState, newRequeriments: ChangeRequest) => {
             const [ nextMenuType, currentRequeriments ] =
                 performUIChange(gameState, menuType, requeriments, newRequeriments);

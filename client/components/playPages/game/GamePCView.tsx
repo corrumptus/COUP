@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Action, GameState, Religion } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
 import { configDiff } from "@utils/socketAPI";
@@ -13,13 +13,15 @@ export default function GamePCView({
   closeDiffs,
   gameState,
   menuType,
+  requeriments,
   performChange,
   leave
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
   gameState: GameState,
-  menuType: MenuTypes | undefined,
+  menuType: MenuTypes,
+  requeriments: ActionRequeriments
   performChange: (changeRequest: ChangeRequest) => void,
   leave: () => void
 }) {
@@ -84,10 +86,11 @@ export default function GamePCView({
           performChange={performChange}
           configs={gameState.game.configs}
         />
-        {menuType !== undefined &&
+        {menuType !== MenuTypes.CLOSED &&
           <GameActionMenu
             type={menuType}
             gameState={gameState}
+            requeriments={requeriments}
             performChange={performChange}
           />
         }
