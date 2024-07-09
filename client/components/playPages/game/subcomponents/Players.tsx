@@ -21,7 +21,7 @@ export default function Players({
       onMouseUp={() => setIsMouseDown(false)}
       onMouseDown={e => {
         setIsMouseDown(true);
-        setStartX(e.pageX - -e.currentTarget.offsetLeft);
+        setStartX(e.pageX + e.currentTarget.offsetLeft);
         setScrollLeft(e.currentTarget.scrollLeft);
       }}
       onMouseMove={e => {

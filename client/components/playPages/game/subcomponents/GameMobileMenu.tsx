@@ -18,7 +18,7 @@ export default function GameMobileMenu({
   isOpen: boolean
 }) {
   return (
-    <aside className={`h-full p-3 flex flex-col items-center gap-6 absolute ${isOpen ? "right-0" : "-right-full"} z-[4] ease-linear duration-1000 bg-slate-700`}>
+    <aside className={`h-full p-3 flex flex-col items-center gap-6 absolute ${isOpen ? "right-0" : "-right-full"} z-[4] ease-linear duration-1000 bg-slate-700 overflow-auto`}>
       <div className="flex justify-between w-full">
         <span className="flex items-center gap-2 text-yellow-200 text-lg">
           {player.money}

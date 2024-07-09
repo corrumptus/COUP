@@ -64,8 +64,7 @@ export default function PlayerCard({
           className={`rounded-[100%] ${colors?.minusColor || ""} cursor-pointer hover:scale-110`}
           onClick={() => performChange({
             action: Action.EXTORQUIR,
-            target: player.name,
-            goTo: MenuTypes.CARD_CHOOSER
+            target: player.name
           })}
           width={24}
           height={24}
