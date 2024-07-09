@@ -1,16 +1,17 @@
-import { Action, Card, GameState } from "@pages/GameView";
+import { Action, Card, GameState, Player } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
 import { ChangeRequest } from "@utils/UIChanger";
 
 export enum MenuTypes {
-  MONEY = "money",
-  ATTACK = "attack",
-  CARD_CHOOSER = "cardChooser",
-  INVESTIGATING = "investigating",
-  DEFENSE = "defense",
-  BLOCK_DEFENSE = "blockDefense",
-  CLOSED = "closed"
+  CLOSED,
+  MONEY,
+  ATTACK,
+  CARD_CHOOSER,
+  CARD_PICKING,
+  INVESTIGATING,
+  DEFENSE,
+  BLOCK_DEFENSE
 }
 
 export type ActionRequeriments = {
@@ -173,6 +174,45 @@ export default function GameActionMenu({
           }}
         />
       }
+    </>
+  )
+
+  if (type === MenuTypes.CARD_PICKING) children = (
+    <>
+      <InfluenceCard
+        card={(requeriments.target !== undefined ?
+          (gameState.game.players.find(p => p.name === requeriments.target) as Player)
+            .cards[0]
+          :
+          gameState.player.cards[0]).card}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({
+            [requeriments.target !== undefined ?
+              "choosedTargetCard"
+              :
+              "choosedSelfCard"
+            ]: 0
+          });
+        }}
+      />
+      <InfluenceCard
+        card={(requeriments.target !== undefined ?
+          (gameState.game.players.find(p => p.name === requeriments.target) as Player)
+            .cards[1]
+          :
+          gameState.player.cards[1]).card}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({
+            [requeriments.target !== undefined ?
+              "choosedTargetCard"
+              :
+              "choosedSelfCard"
+            ]: 1
+          });
+        }}
+      />
     </>
   )
 

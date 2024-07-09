@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import Image from "next/image";
 import { Card } from "@pages/GameView";
 
@@ -7,9 +7,9 @@ export default function InfluenceCard({
   customStyle,
   onClick
 }: {
-  card?: Card,
+  card: Card | undefined,
   customStyle?: string,
-  onClick?: () => void
+  onClick?: MouseEventHandler<HTMLImageElement>
 }) {
   const [ randomCard, setRandomCard ] = useState(1);
 
