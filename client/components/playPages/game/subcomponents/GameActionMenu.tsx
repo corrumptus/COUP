@@ -9,6 +9,7 @@ export enum MenuTypes {
   ATTACK,
   CARD_CHOOSER,
   CARD_PICKING,
+  CARD_PICKING_CHANGE,
   INVESTIGATING,
   DEFENSE,
   BLOCK_DEFENSE
@@ -184,7 +185,8 @@ export default function GameActionMenu({
           (gameState.game.players.find(p => p.name === requeriments.target) as Player)
             .cards[0]
           :
-          gameState.player.cards[0]).card}
+          gameState.player.cards[0]).card
+        }
         onClick={e => {
           e.stopPropagation();
           performChange({
@@ -201,7 +203,8 @@ export default function GameActionMenu({
           (gameState.game.players.find(p => p.name === requeriments.target) as Player)
             .cards[1]
           :
-          gameState.player.cards[1]).card}
+          gameState.player.cards[1]).card
+        }
         onClick={e => {
           e.stopPropagation();
           performChange({
@@ -210,6 +213,29 @@ export default function GameActionMenu({
               :
               "choosedSelfCard"
             ]: 1
+          });
+        }}
+      />
+    </>
+  )
+
+  if (type === MenuTypes.CARD_PICKING_CHANGE) children = (
+    <>
+      <InfluenceCard
+        card={gameState.player.cards[0].card}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({
+            choosedTargetCard: 0
+          });
+        }}
+      />
+      <InfluenceCard
+        card={gameState.player.cards[1].card}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({
+            choosedTargetCard: 1
           });
         }}
       />
