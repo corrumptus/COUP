@@ -43,28 +43,40 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.RENDA })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.RENDA });
+        }}
       >
         <h4>Renda</h4>
         <p>${gameState.game.configs.renda}</p>
       </div>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.AJUDA_EXTERNA })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.AJUDA_EXTERNA });
+        }}
       >
         <h4>Ajuda Externa</h4>
         <p>${gameState.game.configs.ajudaExterna}</p>
       </div>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.TAXAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.TAXAR });
+        }}
       >
         <h4>Taxar</h4>
       </div>
       {gameState.game.configs.religiao &&
         <div
           className={optionStyles}
-          onClick={() => performChange({ action: Action.CORRUPCAO })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CORRUPCAO });
+          }}
         >
           <h4>Corrupção</h4>
           <p>${gameState.game.asylum}</p>
@@ -76,20 +88,29 @@ export default function GameActionMenu({
   if (type === MenuTypes.ATTACK) children = (
     <>
       <div
-        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => performChange({ action: Action.ASSASSINAR })}
+        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.ASSASSINAR });
+        }}
       >
         <h4>Assassinar</h4>
       </div>
       <div
-        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => performChange({ action: Action.INVESTIGAR })}
+        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.INVESTIGAR });
+        }}
       >
         <h4>Investigar</h4>
       </div>
       <div
-        className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-slate-500"} ${optionStyles}`}
-        onClick={() => performChange({ action: Action.GOLPE_ESTADO })}
+        className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.GOLPE_ESTADO });
+        }}
       >
         <h4>Golpe de Estado</h4>
         <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
@@ -119,37 +140,55 @@ export default function GameActionMenu({
       {choosableCards.includes(Card.DUQUE) &&
         <InfluenceCard
           card={Card.DUQUE}
-          onClick={() => performChange({ choosedCardType: Card.DUQUE })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.DUQUE });
+          }}
         />
       }
       {choosableCards.includes(Card.CAPITAO) &&
         <InfluenceCard
           card={Card.CAPITAO}
-          onClick={() => performChange({ choosedCardType: Card.CAPITAO })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.CAPITAO });
+          }}
         />
       }
       {choosableCards.includes(Card.ASSASSINO) &&
         <InfluenceCard
           card={Card.ASSASSINO}
-          onClick={() => performChange({ choosedCardType: Card.ASSASSINO })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.ASSASSINO });
+          }}
         />
       }
       {choosableCards.includes(Card.CONDESSA) &&
         <InfluenceCard
           card={Card.CONDESSA}
-          onClick={() => performChange({ choosedCardType: Card.CONDESSA })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.CONDESSA });
+          }}
         />
       }
       {choosableCards.includes(Card.EMBAIXADOR) &&
         <InfluenceCard
           card={Card.EMBAIXADOR}
-          onClick={() => performChange({ choosedCardType: Card.EMBAIXADOR })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.EMBAIXADOR });
+          }}
         />
       }
       {choosableCards.includes(Card.INQUISIDOR) &&
         <InfluenceCard
           card={Card.INQUISIDOR}
-          onClick={() => performChange({ choosedCardType: Card.INQUISIDOR })}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedCardType: Card.INQUISIDOR });
+          }}
         />
       }
     </>
@@ -159,13 +198,19 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.CONTESTAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTESTAR });
+        }}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.CONTINUAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTINUAR });
+        }}
       >
         <h4>Aceitar</h4>
       </div>
@@ -176,19 +221,28 @@ export default function GameActionMenu({
     <>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.CONTESTAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTESTAR });
+        }}
       >
         <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.BLOQUEAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.BLOQUEAR });
+        }}
       >
         <h4>Bloquear</h4>
       </div>
       <div
         className={optionStyles}
-        onClick={() => performChange({ action: Action.CONTINUAR })}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTINUAR });
+        }}
       >
         <h4>Aceitar</h4>
       </div>
@@ -202,13 +256,19 @@ export default function GameActionMenu({
         <div className="flex gap-4 items-center">
           <div
             className={optionStyles}
-            onClick={() => performChange({ action: Action.TROCAR })}
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ action: Action.TROCAR });
+            }}
           >
             <h4>Trocar</h4>
           </div>
           <div
             className={optionStyles}
-            onClick={() => performChange({ action: Action.CONTINUAR })}
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ action: Action.CONTINUAR });
+            }}
           >
             <h4>Manter</h4>
           </div>
