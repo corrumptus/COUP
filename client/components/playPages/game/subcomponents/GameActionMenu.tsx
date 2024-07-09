@@ -6,7 +6,6 @@ import { ChangeRequest } from "@utils/UIChanger";
 export enum MenuTypes {
   MONEY = "money",
   ATTACK = "attack",
-  CHANGE_CARDS = "changeCards",
   CARD_CHOOSER = "cardChooser",
   INVESTIGATING = "investigating",
   DEFENSE = "defense",
@@ -114,23 +113,6 @@ export default function GameActionMenu({
       >
         <h4>Golpe de Estado</h4>
         <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
-      </div>
-    </>
-  )
-
-  if (type === MenuTypes.CHANGE_CARDS) children = (
-    <>
-      <div
-        className={optionStyles}
-        onClick={() => performChange({ action: Action.TROCAR })}
-      >
-        <h4>Trocar 1</h4>
-      </div>
-      <div
-        className={optionStyles}
-        onClick={() => performChange({ action: Action.TROCAR })}
-      >
-        <h4>Trocar 2</h4>
       </div>
     </>
   )
