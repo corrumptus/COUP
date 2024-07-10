@@ -35,17 +35,17 @@ function performUIChange(
     if (goTo === MenuTypes.CLOSED)
         return [ goTo, {} ];
 
-    if (requerimentsOfRequest.action === Action.RENDA) {
+    if (requeriments.action === Action.RENDA) {
         //todo: socket.emit("renda");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.AJUDA_EXTERNA) {
+    if (requeriments.action === Action.AJUDA_EXTERNA) {
         //todo: socket.emit("ajudaExterna");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.TAXAR && menuType === MenuTypes.CARD_PICKING) {
+    if (requeriments.action === Action.TAXAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "taxar",
         //     requeriments.choosedCardType as Card,
@@ -54,7 +54,7 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_PICKING) {
+    if (requeriments.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "corrupcao",
         //     requeriments.choosedCardType as Card,
@@ -63,7 +63,7 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER) {
+    if (requeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER) {
         // todo: socket.emit(
         //     "extorquir",
         //     requeriments.choosedCardType as Card,
@@ -82,7 +82,7 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
     
-    if (requerimentsOfRequest.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_PICKING) {
+    if (requeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "assassinar",
         //     requeriments.choosedCardType as Card,
@@ -92,7 +92,7 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_PICKING) {
+    if (requeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "investigar",
         //     requeriments.choosedCardType as Card,
@@ -104,8 +104,8 @@ function performUIChange(
     }
 
     if (
-        requerimentsOfRequest.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, requerimentsOfRequest.choosedCardType as Card) === 2 &&
+        requeriments.action === Action.TROCAR &&
+        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 2 &&
         menuType === MenuTypes.CARD_PICKING
     ) {
         // todo: socket.emit(
@@ -117,8 +117,8 @@ function performUIChange(
     }
 
     if (
-        requerimentsOfRequest.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, requerimentsOfRequest.choosedCardType as Card) === 1 &&
+        requeriments.action === Action.TROCAR &&
+        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 1 &&
         menuType === MenuTypes.CARD_PICKING_CHANGE
     ) {
         // todo: socket.emit(
@@ -130,12 +130,12 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.TROCAR_PROPRIA_RELIGIAO) {
+    if (requeriments.action === Action.TROCAR_PROPRIA_RELIGIAO) {
         // todo: socket.emit("trocarPropriaReligiao");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requerimentsOfRequest.action === Action.TROCAR_RELIGIAO_OUTRO) {
+    if (requeriments.action === Action.TROCAR_RELIGIAO_OUTRO) {
         // todo: socket.emit("trocarReligiaoOutro", requeriments.target as string);
         return [ MenuTypes.CLOSED, {} ];
     }
@@ -147,39 +147,39 @@ function performUIChange(
 
     let newGoTo: MenuTypes = MenuTypes.CLOSED;
 
-    if (requerimentsOfRequest.action === Action.TAXAR && menuType === MenuTypes.MONEY)
+    if (newRequeriments.action === Action.TAXAR && menuType === MenuTypes.MONEY)
         newGoTo = MenuTypes.CARD_CHOOSER;
-    if (requerimentsOfRequest.action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
+    if (newRequeriments.action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
         newGoTo = MenuTypes.CARD_PICKING;
 
 
-    if (requerimentsOfRequest.action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
+    if (newRequeriments.action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
         newGoTo = MenuTypes.CARD_CHOOSER;
-    if (requerimentsOfRequest.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
+    if (newRequeriments.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
         newGoTo = MenuTypes.CARD_PICKING;
 
 
-    if (requerimentsOfRequest.action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
+    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
         newGoTo = MenuTypes.CARD_CHOOSER;
 
 
-    if (requerimentsOfRequest.action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
+    if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
         newGoTo = MenuTypes.CARD_CHOOSER;
-    if (requerimentsOfRequest.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
+    if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
         newGoTo = MenuTypes.CARD_PICKING;
 
 
-    if (requerimentsOfRequest.action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
+    if (newRequeriments.action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
         newGoTo = MenuTypes.CARD_CHOOSER;
-    if (requerimentsOfRequest.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
+    if (newRequeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
         newGoTo = MenuTypes.CARD_PICKING;
 
 
-    if (requerimentsOfRequest.action === Action.TROCAR && menuType === MenuTypes.CLOSED)
+    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CLOSED)
         newGoTo = MenuTypes.CARD_CHOOSER;
-    if (requerimentsOfRequest.action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
+    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
         newGoTo = MenuTypes.CARD_PICKING;
-    if (requerimentsOfRequest.action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
+    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
         newGoTo = MenuTypes.CARD_PICKING_CHANGE;
 
     return [ newGoTo, newRequeriments ];
