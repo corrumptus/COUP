@@ -65,7 +65,7 @@ function performUIChange(
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER) {
+    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "extorquir",
         //     newRequeriments.choosedCardType as Card,
@@ -161,6 +161,8 @@ function performUIChange(
 
     if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
         newGoTo = MenuTypes.CARD_CHOOSER;
+    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER)
+        newGoTo = MenuTypes.CARD_PICKING;
 
 
     if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
