@@ -28,7 +28,7 @@ export enum Action {
   ASSASSINAR = "assassinar",
   EXTORQUIR = "extorquir",
   TROCAR = "trocar",
-  INVESTIGAR = "inventigar",
+  INVESTIGAR = "investigar",
   TROCAR_PROPRIA_RELIGIAO = "trocarPropriaReligiao",
   TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
   CORRUPCAO = "corrupcao",
