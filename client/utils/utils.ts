@@ -133,19 +133,24 @@ export function objectDiff<T>(base: T, differ: T): Differ<T> {
 
 export function getChoosableCards(
     configs: Config,
-    menuType: MenuTypes,
     requeriments: ActionRequeriments
 ): Card[] {
     return Object.entries(configs.tiposCartas)
-        .filter(([_, cardInfos]) => {
+        .filter(([cardName, cardInfos]) => {
             const canAct = cardInfos[requeriments.action as keyof typeof cardInfos] as boolean;
+
+            const cartasParaCorrupcao = configs.religiao.cartasParaCorrupcao
+            const canCorrupt = cartasParaCorrupcao[cardName as keyof typeof cartasParaCorrupcao];
+
+            if (requeriments.action === Action.CORRUPCAO)
+                return canCorrupt;
 
             let canTrocar = true;
             let quantidadeTrocar = requeriments.choosedSelfCard !== undefined ? 1 : 2;
 
             if (requeriments.action === Action.TROCAR)
                 canTrocar = quantidadeTrocar >= cardInfos[
-                    menuType === MenuTypes.CHANGE_CARDS ? // TODO: melhorar isso
+                    requeriments.target === undefined ?
                         "quantidadeTrocarPropria"
                         :
                         "quantidadeTrocarOutroJogador"
