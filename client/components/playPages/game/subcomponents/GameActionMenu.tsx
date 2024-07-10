@@ -36,9 +36,6 @@ export default function GameActionMenu({
 }) {
   let children: JSX.Element | null = null;
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
-  const choosableCards = getChoosableCards(gameState.game.configs, type, requeriments);
-  const investigatedCard = gameState.game.players.find(p => p.name === requeriments.target)
-    ?.cards[requeriments.choosedTargetCard as number].card as Card;
 
   if (type === MenuTypes.MONEY) children = (
     <>
@@ -119,68 +116,78 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === MenuTypes.CARD_CHOOSER) children = (
-    <>
-      {choosableCards.includes(Card.DUQUE) &&
-        <InfluenceCard
-          card={Card.DUQUE}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.DUQUE });
-          }}
-        />
-      }
-      {choosableCards.includes(Card.CAPITAO) &&
-        <InfluenceCard
-          card={Card.CAPITAO}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.CAPITAO });
-          }}
-        />
-      }
-      {choosableCards.includes(Card.ASSASSINO) &&
-        <InfluenceCard
-          card={Card.ASSASSINO}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.ASSASSINO });
-          }}
-        />
-      }
-      {choosableCards.includes(Card.CONDESSA) &&
-        <InfluenceCard
-          card={Card.CONDESSA}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.CONDESSA });
-          }}
-        />
-      }
-      {choosableCards.includes(Card.EMBAIXADOR) &&
-        <InfluenceCard
-          card={Card.EMBAIXADOR}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.EMBAIXADOR });
-          }}
-        />
-      }
-      {choosableCards.includes(Card.INQUISIDOR) &&
-        <InfluenceCard
-          card={Card.INQUISIDOR}
-          onClick={e => {
-            e.stopPropagation();
-            performChange({ choosedCardType: Card.INQUISIDOR });
-          }}
-        />
-      }
-    </>
-  )
+  if (type === MenuTypes.CARD_CHOOSER) {
+    const choosableCards = getChoosableCards(gameState.game.configs, requeriments);
+    children = (
+      <>
+        {choosableCards.includes(Card.DUQUE) &&
+          <InfluenceCard
+            card={Card.DUQUE}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.DUQUE });
+            }}
+          />
+        }
+        {choosableCards.includes(Card.CAPITAO) &&
+          <InfluenceCard
+            card={Card.CAPITAO}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.CAPITAO });
+            }}
+          />
+        }
+        {choosableCards.includes(Card.ASSASSINO) &&
+          <InfluenceCard
+            card={Card.ASSASSINO}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.ASSASSINO });
+            }}
+          />
+        }
+        {choosableCards.includes(Card.CONDESSA) &&
+          <InfluenceCard
+            card={Card.CONDESSA}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.CONDESSA });
+            }}
+          />
+        }
+        {choosableCards.includes(Card.EMBAIXADOR) &&
+          <InfluenceCard
+            card={Card.EMBAIXADOR}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.EMBAIXADOR });
+            }}
+          />
+        }
+        {choosableCards.includes(Card.INQUISIDOR) &&
+          <InfluenceCard
+            card={Card.INQUISIDOR}
+            customStyle="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ choosedCardType: Card.INQUISIDOR });
+            }}
+          />
+        }
+      </>
+    )
+  }
 
   if (type === MenuTypes.CARD_PICKING) children = (
     <>
       <InfluenceCard
+          customStyle="cursor-pointer"
         card={(requeriments.target !== undefined ?
           (gameState.game.players.find(p => p.name === requeriments.target) as Player)
             .cards[0]
@@ -199,6 +206,7 @@ export default function GameActionMenu({
         }}
       />
       <InfluenceCard
+          customStyle="cursor-pointer"
         card={(requeriments.target !== undefined ?
           (gameState.game.players.find(p => p.name === requeriments.target) as Player)
             .cards[1]
@@ -297,33 +305,37 @@ export default function GameActionMenu({
     </>
   )
 
-  if (type === MenuTypes.INVESTIGATING) children = (
-    <>
-      <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
-        <InfluenceCard card={investigatedCard} />
-        <div className="flex gap-4 items-center">
-          <div
-            className={optionStyles}
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ action: Action.TROCAR });
-            }}
-          >
-            <h4>Trocar</h4>
-          </div>
-          <div
-            className={optionStyles}
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ action: Action.CONTINUAR });
-            }}
-          >
-            <h4>Manter</h4>
+  if (type === MenuTypes.INVESTIGATING) {
+    const investigatedCard = gameState.game.players.find(p => p.name === requeriments.target)
+      ?.cards[requeriments.choosedTargetCard as number].card as Card;
+    children = (
+      <>
+        <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
+          <InfluenceCard card={investigatedCard} />
+          <div className="flex gap-4 items-center">
+            <div
+              className={optionStyles}
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ action: Action.TROCAR });
+              }}
+            >
+              <h4>Trocar</h4>
+            </div>
+            <div
+              className={optionStyles}
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ action: Action.CONTINUAR });
+              }}
+            >
+              <h4>Manter</h4>
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  )
+      </>
+    )
+  }
 
   return (
     <div
