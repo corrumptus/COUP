@@ -32,115 +32,115 @@ function performUIChange(
 ): [MenuTypes, ActionRequeriments] {
     const { goTo, ...requerimentsOfRequest } = request;
 
+    const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
+
     if (goTo === MenuTypes.CLOSED)
         return [ goTo, {} ];
 
-    if (requeriments.action === Action.RENDA) {
+    if (newRequeriments.action === Action.RENDA) {
         //todo: socket.emit("renda");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.AJUDA_EXTERNA) {
+    if (newRequeriments.action === Action.AJUDA_EXTERNA) {
         //todo: socket.emit("ajudaExterna");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.TAXAR && menuType === MenuTypes.CARD_PICKING) {
+    if (newRequeriments.action === Action.TAXAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "taxar",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_PICKING) {
+    if (newRequeriments.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "corrupcao",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER) {
+    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER) {
         // todo: socket.emit(
         //     "extorquir",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number,
-        //     requeriments.target as string
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number,
+        //     newRequeriments.target as string
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.GOLPE_ESTADO) {
+    if (newRequeriments.action === Action.GOLPE_ESTADO) {
         // todo: socket.emit(
         //     "golpeEstado",
-        //     requeriments.target as string,
-        //     requeriments.choosedTargetCard as number
+        //     newRequeriments.target as string,
+        //     newRequeriments.choosedTargetCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
     
-    if (requeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_PICKING) {
+    if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "assassinar",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.target as string,
-        //     requeriments.choosedSelfCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.target as string,
+        //     newRequeriments.choosedSelfCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_PICKING) {
+    if (newRequeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_PICKING) {
         // todo: socket.emit(
         //     "investigar",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number,
-        //     requeriments.target as string,
-        //     requeriments.choosedTargetCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number,
+        //     newRequeriments.target as string,
+        //     newRequeriments.choosedTargetCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
     if (
-        requeriments.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 2 &&
+        newRequeriments.action === Action.TROCAR &&
+        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 2 &&
         menuType === MenuTypes.CARD_PICKING
     ) {
         // todo: socket.emit(
         //     "trocar",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
     if (
-        requeriments.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 1 &&
+        newRequeriments.action === Action.TROCAR &&
+        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 1 &&
         menuType === MenuTypes.CARD_PICKING_CHANGE
     ) {
         // todo: socket.emit(
         //     "trocar",
-        //     requeriments.choosedCardType as Card,
-        //     requeriments.choosedSelfCard as number,
-        //     requeriments.choosedTargetCard as number
+        //     newRequeriments.choosedCardType as Card,
+        //     newRequeriments.choosedSelfCard as number,
+        //     newRequeriments.choosedTargetCard as number
         // );
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.TROCAR_PROPRIA_RELIGIAO) {
+    if (newRequeriments.action === Action.TROCAR_PROPRIA_RELIGIAO) {
         // todo: socket.emit("trocarPropriaReligiao");
         return [ MenuTypes.CLOSED, {} ];
     }
 
-    if (requeriments.action === Action.TROCAR_RELIGIAO_OUTRO) {
-        // todo: socket.emit("trocarReligiaoOutro", requeriments.target as string);
+    if (newRequeriments.action === Action.TROCAR_RELIGIAO_OUTRO) {
+        // todo: socket.emit("trocarReligiaoOutro", newRequeriments.target as string);
         return [ MenuTypes.CLOSED, {} ];
     }
-
-    const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
 
     if (goTo !== undefined)
         return [ goTo, newRequeriments ];
