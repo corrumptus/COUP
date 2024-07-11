@@ -125,68 +125,71 @@ export default function GameActionMenu({
   if (type === MenuTypes.CARD_CHOOSER) {
     const choosableCards = getChoosableCards(gameState.game.configs, requeriments);
     children = (
-      <>
-        {choosableCards.includes(Card.DUQUE) &&
-          <InfluenceCard
-            card={Card.DUQUE}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.DUQUE });
-            }}
-          />
-        }
-        {choosableCards.includes(Card.CAPITAO) &&
-          <InfluenceCard
-            card={Card.CAPITAO}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.CAPITAO });
-            }}
-          />
-        }
-        {choosableCards.includes(Card.ASSASSINO) &&
-          <InfluenceCard
-            card={Card.ASSASSINO}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.ASSASSINO });
-            }}
-          />
-        }
-        {choosableCards.includes(Card.CONDESSA) &&
-          <InfluenceCard
-            card={Card.CONDESSA}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.CONDESSA });
-            }}
-          />
-        }
-        {choosableCards.includes(Card.EMBAIXADOR) &&
-          <InfluenceCard
-            card={Card.EMBAIXADOR}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.EMBAIXADOR });
-            }}
-          />
-        }
-        {choosableCards.includes(Card.INQUISIDOR) &&
-          <InfluenceCard
-            card={Card.INQUISIDOR}
-            customStyle="cursor-pointer"
-            onClick={e => {
-              e.stopPropagation();
-              performChange({ choosedCardType: Card.INQUISIDOR });
-            }}
-          />
-        }
-      </>
+      <div className="flex flex-col gap-4 items-center">
+        <h3 className="text-center text-2xl">Escolha que tipo de carta usar para {requeriments.action}</h3>
+        <div className="flex gap-4">
+          {choosableCards.includes(Card.DUQUE) &&
+            <InfluenceCard
+              card={Card.DUQUE}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.DUQUE });
+              }}
+            />
+          }
+          {choosableCards.includes(Card.CAPITAO) &&
+            <InfluenceCard
+              card={Card.CAPITAO}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.CAPITAO });
+              }}
+            />
+          }
+          {choosableCards.includes(Card.ASSASSINO) &&
+            <InfluenceCard
+              card={Card.ASSASSINO}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.ASSASSINO });
+              }}
+            />
+          }
+          {choosableCards.includes(Card.CONDESSA) &&
+            <InfluenceCard
+              card={Card.CONDESSA}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.CONDESSA });
+              }}
+            />
+          }
+          {choosableCards.includes(Card.EMBAIXADOR) &&
+            <InfluenceCard
+              card={Card.EMBAIXADOR}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.EMBAIXADOR });
+              }}
+            />
+          }
+          {choosableCards.includes(Card.INQUISIDOR) &&
+            <InfluenceCard
+              card={Card.INQUISIDOR}
+              customStyle="cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                performChange({ choosedCardType: Card.INQUISIDOR });
+              }}
+            />
+          }
+        </div>
+      </div>
     )
   }
 
