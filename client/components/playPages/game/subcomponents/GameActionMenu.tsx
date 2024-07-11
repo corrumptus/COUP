@@ -339,10 +339,15 @@ export default function GameActionMenu({
 
   return (
     <div
-      className="w-full h-full flex flex-wrap items-center justify-center gap-4 absolute bg-black/70"
+      className="w-full h-full flex items-center justify-center absolute bg-black/70 z-10"
       onClick={() => performChange({ goTo: MenuTypes.CLOSED })}
     >
-      {children}
+      <div
+        className="w-[70%] h-[60%] flex items-center justify-center gap-4 overflow-auto bg-stone-500 rounded-3xl"
+        onClick={e => e.stopPropagation()}
+      >
+        {children}
+      </div>
     </div>
   )
 }
