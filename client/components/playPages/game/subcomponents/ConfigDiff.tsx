@@ -2,144 +2,159 @@ import { Config } from "@utils/socketAPI";
 import { Differ } from "@utils/utils";
 
 const COUPConfigToText = {
-  "quantidadeMoedasIniciais": (diff: number) => `Moedas iniciais: 3 -> ${diff}`,
-  "renda": (diff: number) => `Renda: +$1 -> +$${diff}`,
-  "ajudaExterna": (diff: number) => `Ajuda externa: +$2 -> +$${diff}`,
-  "quantidadeMinimaGolpeEstado": (diff: number) => `Golpe de estado: -$7 -> -$${diff}`,
-  "quantidadeMaximaGolpeEstado": (diff: number) => `Golpe de estado(máximo): 10 -> ${diff}`,
-  "religiao": (diff: boolean) => `Religião: não -> sim`,
-  "quantidadeTrocarPropriaReligiao": (diff: number) => `Trocar Religião(própria): -$1 -> -$${diff}`,
-  "quantidadeTrocarReligiaoOutroJogador": (diff: number) => `Trocar Religião(outro): -$2 -> -$${diff}`,
-  "deveresMesmaReligiao": {
-    "golpeEstado": (diff: boolean) => `Golpe de estado(Religião): não -> sim`,
-    "assassinar": (diff: boolean) => `Assassinar(Religião): não -> sim`,
-    "extorquir": (diff: boolean) => `Extorquir(Religião): não -> sim`,
-    "taxar": (diff: boolean) => `Taxar(Religião): não -> sim`,
+  moedasIniciais: "Moedas iniciais",
+  renda: "Renda",
+  ajudaExterna: "Ajuda externa",
+  quantidadeMinimaGolpeEstado: "Golpe de estado(minimo)",
+  quantidadeMaximaGolpeEstado: "Golpe de estado(máxima)",
+  religiao: {
+    reforma: "religiao",
+    quantidadeTrocarPropria: "Trocar Religião(própria)",
+    quantidadeTrocarOutro: "Trocar Religião(inimigo)",
+    deveres: {
+      golpeEstado: "Golpe de estado(Religião)",
+      assassinar: "Assassinar(Religião)",
+      extorquir: "Extorquir(Religião)",
+      taxar: "Taxar(Religião)",
+    },
+    cartasParaCorrupcao: {
+      duque: "Duque(Corrupção)",
+      capitao: "Capitão(Corrupção)",
+      assassino: "Assassino(Corrupção)",
+      condessa: "Condessa(Corrupção)",
+      embaixador: "Embaixador(Corrupção)",
+      inquisidor: "Inquisidor(Corrupção)"
+    }
   },
-  "tiposCartas": {
-    "duque": {
-      "taxar": (diff: boolean) => `Taxar(Duque): sim -> não`,
-      "extorquir": (diff: boolean) => `Extorquir(Duque): não -> sim`,
-      "assassinar": (diff: boolean) => `Assassinar(Duque): não -> sim`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Duque): não -> sim`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Duque): não -> sim`,
-      "investigar": (diff: boolean) => `Investigar(Duque): não -> sim`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Duque): +$3 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Duque): 0 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `Quantidade Assassinar(Duque): 0 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Duque): 0 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Duque): 0 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Duque): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Duque): não -> sim`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Duque): não -> sim`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Duque): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Duque): não -> sim`
+  tiposCartas: {
+    duque: {
+      taxar: "Taxar(Duque)",
+      extorquir: "Extorquir(Duque)",
+      assassinar: "Assassinar(Duque)",
+      trocar: "Trocar(Duque)",
+      investigar: "Investigar(Duque)",
+      quantidadeTaxar: "Quantidade de taxar(Duque)",
+      quantidadeExtorquir: "Quantidade de extorquir(Duque)",
+      quantidadeAssassinar: "Quantidade para assassinar(Duque)",
+      quantidadeTrocar: "Quantidade de trocas(Duque)",
+      quantidadeInvestigar: "Quantidade de investigações(Duque)",
+      bloquearTaxar: "Bloquear taxar(Duque)",
+      bloquearExtorquir: "Bloquear extorquir(Duque)",
+      bloquearAssassinar: "Bloquear assassinar(Duque)",
+      bloquearTrocar: "Bloquear trocar(Duque)",
+      bloquearInvestigar: "Bloquear investigar(Duque)",
     },
-    "capitao": {
-      "taxar": (diff: boolean) => `Taxar(Capitão): não -> sim`,
-      "extorquir": (diff: boolean) => `Extorquir(Capitão): sim -> não`,
-      "assassinar": (diff: boolean) => `Assassinar(Capitão): não -> sim`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Capitão): não -> sim`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Capitão): não -> sim`,
-      "investigar": (diff: boolean) => `Investigar(Capitão): não -> sim`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Capitão): 0 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Capitão): +$2 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `Quantidade Assassinar(Capitão): 0 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Capitão): 0 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Capitão): 0 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Capitão): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Capitão): sim -> não`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Capitão): não -> sim`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Capitão): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Capitão): não -> sim`
+    capitao: {
+      taxar: "Taxar(Capitão)",
+      extorquir: "Extorquir(Capitão)",
+      assassinar: "Assassinar(Capitão)",
+      trocar: "Trocar(Capitão)",
+      investigar: "Investigar(Capitão)",
+      quantidadeTaxar: "Quantidade de taxar(Capitão)",
+      quantidadeExtorquir: "Quantidade de extorquir(Capitão)",
+      quantidadeAssassinar: "Quantidade para assassinar(Capitão)",
+      quantidadeTrocar: "Quantidade de trocas(Capitão)",
+      quantidadeInvestigar: "Quantidade de investigações(Capitão)",
+      bloquearTaxar: "Bloquear taxar(Capitão)",
+      bloquearExtorquir: "Bloquear extorquir(Capitão)",
+      bloquearAssassinar: "Bloquear assassinar(Capitão)",
+      bloquearTrocar: "Bloquear trocar(Capitão)",
+      bloquearInvestigar: "Bloquear investigar(Capitão)",
     },
-    "assassino": {
-      "taxar": (diff: boolean) => `Taxar(Assassino): não -> sim`,
-      "extorquir": (diff: boolean) => `Extorquir(Assassino): não -> sim`,
-      "assassinar": (diff: boolean) => `Assassinar(Assassino): sim -> não`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Assassino): não -> sim`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Assassino): não -> sim`,
-      "investigar": (diff: boolean) => `Investigar(Assassino): não -> sim`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Assassino): 0 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Assassino): 0 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `ReQuantidade Assassinar(Assassino)-$3 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Assassino): 0 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Assassino): 0 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Assassino): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Assassino): não -> sim`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Assassino): não -> sim`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Assassino): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Assassino): não -> sim`
+    assassino: {
+      taxar: "Taxar(Assassino)",
+      extorquir: "Extorquir(Assassino)",
+      assassinar: "Assassinar(Assassino)",
+      trocar: "Trocar(Assassino)",
+      investigar: "Investigar(Assassino)",
+      quantidadeTaxar: "Quantidade de taxar(Assassino)",
+      quantidadeExtorquir: "Quantidade de extorquir(Assassino)",
+      quantidadeAssassinar: "Quantidade para assassinar(Assassino)",
+      quantidadeTrocar: "Quantidade de trocas(Assassino)",
+      quantidadeInvestigar: "Quantidade de investigações(Assassino)",
+      bloquearTaxar: "Bloquear taxar(Assassino)",
+      bloquearExtorquir: "Bloquear extorquir(Assassino)",
+      bloquearAssassinar: "Bloquear assassinar(Assassino)",
+      bloquearTrocar: "Bloquear trocar(Assassino)",
+      bloquearInvestigar: "Bloquear investigar(Assassino)",
     },
-    "condessa": {
-      "taxar": (diff: boolean) => `Taxar(Condessa): não -> sim`,
-      "extorquir": (diff: boolean) => `Extorquir(Condessa): não -> sim`,
-      "assassinar": (diff: boolean) => `Assassinar(Condessa): não -> sim`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Condessa): não -> sim`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Condessa): não -> sim`,
-      "investigar": (diff: boolean) => `Investigar(Condessa): não -> sim`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Condessa): 0 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Condessa): 0 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `Quantidade Assassinar(Condessa): 0 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Condessa): 0 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Condessa): 0 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Condessa): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Condessa): não -> sim`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Condessa): sim -> não`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Condessa): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Condessa): não -> sim`
+    condessa: {
+      taxar: "Taxar(Condessa)",
+      extorquir: "Extorquir(Condessa)",
+      assassinar: "Assassinar(Condessa)",
+      trocar: "Trocar(Condessa)",
+      investigar: "Investigar(Condessa)",
+      quantidadeTaxar: "Quantidade de taxar(Condessa)",
+      quantidadeExtorquir: "Quantidade de extorquir(Condessa)",
+      quantidadeAssassinar: "Quantidade para assassinar(Condessa)",
+      quantidadeTrocar: "Quantidade de trocas(Condessa)",
+      quantidadeInvestigar: "Quantidade de investigações(Condessa)",
+      bloquearTaxar: "Bloquear taxar(Condessa)",
+      bloquearExtorquir: "Bloquear extorquir(Condessa)",
+      bloquearAssassinar: "Bloquear assassinar(Condessa)",
+      bloquearTrocar: "Bloquear trocar(Condessa)",
+      bloquearInvestigar: "Bloquear investigar(Condessa)",
     },
-    "embaixador": {
-      "taxar": (diff: boolean) => `Taxar(Embaixador): não -> sim`,
-      "extorquir": (diff: boolean) => `Extorquir(Embaixador): não -> sim`,
-      "assassinar": (diff: boolean) => `Assassinar(Embaixador): não -> sim`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Embaixador): sim -> não`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Embaixador): não -> sim`,
-      "investigar": (diff: boolean) => `Investigar(Embaixador): não -> sim`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Embaixador): 0 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Embaixador): 0 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `Quantidade Assassinar(Embaixador): 0 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Embaixador): 2 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Embaixador): 0 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Embaixador): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Embaixador): sim -> não`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Embaixador): não -> sim`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Embaixador): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Embaixador): não -> sim`
+    embaixador: {
+      taxar: "Taxar(Embaixador)",
+      extorquir: "Extorquir(Embaixador)",
+      assassinar: "Assassinar(Embaixador)",
+      trocar: "Trocar(Embaixador)",
+      investigar: "Investigar(Embaixador)",
+      quantidadeTaxar: "Quantidade de taxar(Embaixador)",
+      quantidadeExtorquir: "Quantidade de extorquir(Embaixador)",
+      quantidadeAssassinar: "Quantidade para assassinar(Embaixador)",
+      quantidadeTrocar: "Quantidade de trocas(Embaixador)",
+      quantidadeInvestigar: "Quantidade de investigações(Embaixador)",
+      bloquearTaxar: "Bloquear taxar(Embaixador)",
+      bloquearExtorquir: "Bloquear extorquir(Embaixador)",
+      bloquearAssassinar: "Bloquear assassinar(Embaixador)",
+      bloquearTrocar: "Bloquear trocar(Embaixador)",
+      bloquearInvestigar: "Bloquear investigar(Embaixador)",
     },
-    "inquisidor": {
-      "taxar": (diff: boolean) => `Taxar(Inquisidor): não -> sim`,
-      "extorquir": (diff: boolean) => `Extorquir(Inquisidor): não -> sim`,
-      "assassinar": (diff: boolean) => `Assassinar(Inquisidor): não -> sim`,
-      "trocarPropria": (diff: boolean) => `Trocar(própria)(Inquisidor): sim -> não`,
-      "trocarOutroJogador": (diff: boolean) => `Trocar(outro)(Inquisidor): sim -> não`,
-      "investigar": (diff: boolean) => `Investigar(Inquisidor): sim -> não`,
-      "quantidadeTaxar": (diff: number) => `Quantidade taxar(Inquisidor): 0 -> +$${diff}`,
-      "quantidadeExtorquir": (diff: number) => `Quantidade extorquir(Inquisidor): 0 -> +$${diff}`,
-      "quantidadeAssassinar": (diff: number) => `Quantidade Assassinar(Inquisidor): 0 -> -$${diff}`,
-      "quantidadeTrocarPropria": (diff: number) => `Quantidade trocar(própria)(Inquisidor): 1 -> ${diff}`,
-      "quantidadeTrocarOutroJogador": (diff: number) => `Quantidade trocar(outro)(Inquisidor): 1 -> ${diff}`,
-      "bloquearTaxar": (diff: boolean) => `Bloqueia taxar(Inquisidor): não -> sim`,
-      "bloquearExtorquir": (diff: boolean) => `Bloqueia Extorquir(Inquisidor): sim -> não`,
-      "bloquearAssassinar": (diff: boolean) => `Bloqueia Assassinar(Inquisidor): não -> sim`,
-      "bloquearTrocar": (diff: boolean) => `Bloqueia Trocar(Inquisidor): não -> sim`,
-      "bloquearInvestigar": (diff: boolean) => `Bloqueia investigar(Inquisidor): não -> sim`
+    inquisidor: {
+      taxar: "Taxar(Inquisidor)",
+      extorquir: "Extorquir(Inquisidor)",
+      assassinar: "Assassinar(Inquisidor)",
+      trocar: "Trocar(Inquisidor)",
+      investigar: "Investigar(Inquisidor)",
+      quantidadeTaxar: "Quantidade de taxar(Inquisidor)",
+      quantidadeExtorquir: "Quantidade de extorquir(Inquisidor)",
+      quantidadeAssassinar: "Quantidade para assassinar(Inquisidor)",
+      quantidadeTrocar: "Quantidade de trocas(Inquisidor)",
+      quantidadeInvestigar: "Quantidade de investigações(Inquisidor)",
+      bloquearTaxar: "Bloquear taxar(Inquisidor)",
+      bloquearExtorquir: "Bloquear extorquir(Inquisidor)",
+      bloquearAssassinar: "Bloquear assassinar(Inquisidor)",
+      bloquearTrocar: "Bloquear trocar(Inquisidor)",
+      bloquearInvestigar: "Bloquear investigar(Inquisidor)",
     }
   }
 }
 
-function diffsToString<T>(diff: T, converter: Record<string, Function>): string[] {
+type Converter<T> = {
+  [P in keyof T]: string | Converter<T[P]>
+}
+
+function diffsToString<T>(diff: Differ<T>, converter: Converter<T>): string[] {
   const diffs: string[] = [];
 
   for (let key in diff) {
-    if (typeof diff[key] !== "object")
-      diffs.push(converter[key]((diff[key] as any)[1]));
+    if (typeof diff[key] === "object" && !Array.isArray(diff[key]))
+      diffs.push(...diffsToString(diff[key], converter[key] as Converter<typeof diff[typeof key]>));
     else {
-      diffs.push(...diffsToString(diff[key], converter[key] as unknown as Record<string, Function>))
+      diffs.push(`${converter[key]}: ${ifBooleanYesOrNo((diff[key] as string[])[0])} -> ${ifBooleanYesOrNo((diff[key] as string[])[1])}`);
     }
   }
 
   return diffs;
+}
+
+function ifBooleanYesOrNo(val: any): string {
+  if (typeof val === "boolean")
+    return val ? "sim" : "não";
+
+  return String(val);
 }
 
 export default function ConfigDiff({
@@ -153,7 +168,7 @@ export default function ConfigDiff({
     disappear();
   }, 4000);
 
-  const getDiffs = diffsToString(configDiff, COUPConfigToText as unknown as Record<string, Function>);
+  const getDiffs = diffsToString(configDiff, COUPConfigToText);
 
   return (
     <div className="w-full max-h-[350px] absolute top-[50%] translate-y-[-50%] bg-neutral-400 flex flex-wrap px-[20%]">
