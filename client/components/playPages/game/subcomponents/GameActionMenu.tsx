@@ -87,36 +87,39 @@ export default function GameActionMenu({
   )
 
   if (type === MenuTypes.ATTACK) children = (
-    <>
-      <div
-        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.ASSASSINAR });
-        }}
-      >
-        <h4>Assassinar</h4>
+    <div className="flex flex-col gap-4 items-center">
+      <h3 className="text-center text-2xl">Escolha uma forma de atacar {requeriments.target}</h3>
+      <div className="flex gap-4">
+        <div
+          className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.ASSASSINAR });
+          }}
+        >
+          <h4>Assassinar</h4>
+        </div>
+        <div
+          className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.INVESTIGAR });
+          }}
+        >
+          <h4>Investigar</h4>
+        </div>
+        <div
+          className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.GOLPE_ESTADO });
+          }}
+        >
+          <h4>Golpe de Estado</h4>
+          <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
+        </div>
       </div>
-      <div
-        className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.INVESTIGAR });
-        }}
-      >
-        <h4>Investigar</h4>
-      </div>
-      <div
-        className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.GOLPE_ESTADO });
-        }}
-      >
-        <h4>Golpe de Estado</h4>
-        <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
-      </div>
-    </>
+    </div>
   )
 
   if (type === MenuTypes.CARD_CHOOSER) {
