@@ -30,14 +30,14 @@ export type Config = {
   quantidadeMaximaGolpeEstado: number,
   religiao: {
     reforma: boolean,
+    quantidadeTrocarPropria: number,
+    quantidadeTrocarOutro: number,
     deveres: {
       golpeEstado: boolean,
       assassinar: boolean,
       extorquir: boolean,
       taxar: boolean
     },
-    quantidadeTrocarPropria: number,
-    quantidadeTrocarOutro: number,
     cartasParaCorrupcao: {
       duque: boolean,
       capitao: boolean,
