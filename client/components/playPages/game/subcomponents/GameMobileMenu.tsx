@@ -56,23 +56,22 @@ export default function GameMobileMenu({
           )
         }
       </div>
+      <button
+        className="bg-red-600 p-2 rounded-full border-4 border-gray-800 hover:border-slate-500 font-bold"
+        onClick={() => performChange({
+          action: Action.TROCAR,
+          goTo: MenuTypes.CARD_CHOOSER
+        })}
+      >
+        Trocar Cartas
+      </button>
       <InfluenceCard
         card={player.cards[0].card}
-        customStyle={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " opacity-80" : ""} duration-700 cursor-pointer`}
-        onClick={() => performChange({
-          target: player.name,
-          choosedSelfCard: 0,
-          goTo: MenuTypes.CHANGE_CARDS
-        })}
+        customStyle={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
       />
       <InfluenceCard
         card={player.cards[1].card}
-        customStyle={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " opacity-80" : ""} duration-700 cursor-pointer`}
-        onClick={() => performChange({
-          target: player.name,
-          choosedSelfCard: 1,
-          goTo: MenuTypes.CHANGE_CARDS
-        })}
+        customStyle={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
       />
       <CardGameInfos configs={configs}/>
     </aside>
