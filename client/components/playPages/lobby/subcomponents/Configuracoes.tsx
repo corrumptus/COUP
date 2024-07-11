@@ -92,7 +92,7 @@ export default function Configuracoes({
                 value={configs.religiao.quantidadeTrocarPropria}
                 min={0}
                 onChange={e =>
-                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocarPropria"], Number(e.target.value))
+                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocar"], Number(e.target.value))
                 }
               />
             </div>
@@ -196,19 +196,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.duque.trocarPropria}
+                    checked={configs.tiposCartas.duque.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "duque", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.duque.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "duque", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "duque", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -259,21 +249,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.duque.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.duque.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "duque", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "duque", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.duque.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.duque.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "duque", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "duque", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -366,19 +356,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.capitao.trocarPropria}
+                    checked={configs.tiposCartas.capitao.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.capitao.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -429,21 +409,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.capitao.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.capitao.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.capitao.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.capitao.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -536,19 +516,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.assassino.trocarPropria}
+                    checked={configs.tiposCartas.assassino.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.assassino.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -599,21 +569,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.assassino.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.assassino.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.assassino.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.assassino.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -706,19 +676,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.condessa.trocarPropria}
+                    checked={configs.tiposCartas.condessa.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.condessa.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -769,21 +729,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.condessa.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.condessa.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.condessa.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.condessa.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -876,19 +836,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.embaixador.trocarPropria}
+                    checked={configs.tiposCartas.embaixador.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.embaixador.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -939,21 +889,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.embaixador.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.embaixador.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.embaixador.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.embaixador.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -1046,19 +996,9 @@ export default function Configuracoes({
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
-                    checked={configs.tiposCartas.inquisidor.trocarPropria}
+                    checked={configs.tiposCartas.inquisidor.trocar}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "trocarPropria"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-136px)]">
-                  <label>Trocar(Inimigo)</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.tiposCartas.inquisidor.trocarOutroJogador}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "trocarOutroJogador"], e.target.checked)
+                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "trocar"], e.target.checked)
                     }
                   />
                 </div>
@@ -1109,21 +1049,21 @@ export default function Configuracoes({
                   <label>Trocar Cartas(Própria)</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.inquisidor.quantidadeTrocarPropria}
+                    value={configs.tiposCartas.inquisidor.quantidadeTrocar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeTrocarPropria"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeTrocar"], Number(e.target.value))
                     }
                   />
                 </div>
                 <div className="config_outer_div">
-                  <label>Trocar Cartas(Inimigo)</label>
+                  <label>Investigar Cartas</label>
                   <input
                     type="number"
-                    value={configs.tiposCartas.inquisidor.quantidadeTrocarOutroJogador}
+                    value={configs.tiposCartas.inquisidor.quantidadeInvestigar}
                     min={0}
                     onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeTrocarOutroJogador"], Number(e.target.value))
+                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -1268,11 +1208,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.duque.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.duque.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.duque.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1292,11 +1228,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.duque.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.duque.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.duque.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.duque.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1337,11 +1273,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.capitao.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.capitao.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.capitao.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1361,11 +1293,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.capitao.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.capitao.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.capitao.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.capitao.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1406,11 +1338,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.assassino.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.assassino.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.assassino.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1430,11 +1358,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.assassino.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.assassino.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.assassino.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.assassino.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1475,11 +1403,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.condessa.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.condessa.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.condessa.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1499,11 +1423,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.condessa.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.condessa.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.condessa.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.condessa.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1544,11 +1468,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.embaixador.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.embaixador.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.embaixador.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1568,11 +1488,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.embaixador.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.embaixador.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.embaixador.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.embaixador.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1613,11 +1533,7 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar(Próprias)</p>
-                <p>{configs.tiposCartas.inquisidor.trocarPropria ? "sim" : "não"}</p>
-              </div>
-              <div>
-                <p>Trocar(Inimigo)</p>
-                <p>{configs.tiposCartas.inquisidor.trocarOutroJogador ? "sim" : "não"}</p>
+                <p>{configs.tiposCartas.inquisidor.trocar ? "sim" : "não"}</p>
               </div>
               <div>
                 <p>Investigar</p>
@@ -1637,11 +1553,11 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Trocar Cartas(Própria)</p>
-                <p>{configs.tiposCartas.inquisidor.quantidadeTrocarPropria}</p>
+                <p>{configs.tiposCartas.inquisidor.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Trocar Cartas(Inimigo)</p>
-                <p>{configs.tiposCartas.inquisidor.quantidadeTrocarOutroJogador}</p>
+                <p>Investigar Cartas</p>
+                <p>{configs.tiposCartas.inquisidor.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>

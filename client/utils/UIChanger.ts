@@ -188,5 +188,5 @@ function performUIChange(
 }
 
 function quantidadeTrocar(configs: Config, card: Card) {
-    return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocarPropria;
+    return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
 }

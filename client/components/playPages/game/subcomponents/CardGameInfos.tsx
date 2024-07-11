@@ -148,11 +148,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.duque.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.duque.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.duque.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.duque.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.duque.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.duque.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.duque.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.duque.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.duque.investigar &&
             <li className="text-orange-500">Investigar</li>
@@ -197,11 +194,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.capitao.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.capitao.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.capitao.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.capitao.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.capitao.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.capitao.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.capitao.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.capitao.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.capitao.investigar &&
             <li className="text-orange-500">Investigar</li>
@@ -246,11 +240,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.assassino.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.assassino.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.assassino.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.assassino.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.assassino.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.assassino.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.assassino.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.assassino.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.assassino.investigar &&
             <li className="text-orange-500">Investigar</li>
@@ -295,11 +286,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.condessa.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.condessa.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.condessa.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.condessa.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.condessa.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.condessa.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.condessa.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.condessa.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.condessa.investigar &&
             <li className="text-orange-500">Investigar</li>
@@ -344,11 +332,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.embaixador.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.embaixador.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.embaixador.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.embaixador.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.embaixador.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.embaixador.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.embaixador.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.embaixador.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.embaixador.investigar &&
             <li className="text-orange-500">Investigar</li>
@@ -393,11 +378,8 @@ export default function CardGameInfos({
           {configs.tiposCartas.inquisidor.assassinar &&
             <li className="text-rose-600">Assassinar(-${configs.tiposCartas.inquisidor.quantidadeAssassinar})</li>
           }
-          {configs.tiposCartas.inquisidor.trocarPropria &&
-            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.inquisidor.quantidadeTrocarPropria})</li>
-          }
-          {configs.tiposCartas.inquisidor.trocarOutroJogador &&
-            <li className="text-blue-700">Trocar(outro)({configs.tiposCartas.inquisidor.quantidadeTrocarOutroJogador})</li>
+          {configs.tiposCartas.inquisidor.trocar &&
+            <li className="text-blue-700">Trocar(própria)({configs.tiposCartas.inquisidor.quantidadeTrocar})</li>
           }
           {configs.tiposCartas.inquisidor.investigar &&
             <li className="text-orange-500">Investigar</li>
