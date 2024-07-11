@@ -194,46 +194,53 @@ export default function GameActionMenu({
   }
 
   if (type === MenuTypes.CARD_PICKING) children = (
-    <>
-      <InfluenceCard
-          customStyle="cursor-pointer"
-        card={(requeriments.target !== undefined ?
-          (gameState.game.players.find(p => p.name === requeriments.target) as Player)
-            .cards[0]
-          :
-          gameState.player.cards[0]).card
-        }
-        onClick={e => {
-          e.stopPropagation();
-          performChange({
-            [requeriments.target !== undefined ?
-              "choosedTargetCard"
-              :
-              "choosedSelfCard"
-            ]: 0
-          });
-        }}
-      />
-      <InfluenceCard
-          customStyle="cursor-pointer"
-        card={(requeriments.target !== undefined ?
-          (gameState.game.players.find(p => p.name === requeriments.target) as Player)
-            .cards[1]
-          :
-          gameState.player.cards[1]).card
-        }
-        onClick={e => {
-          e.stopPropagation();
-          performChange({
-            [requeriments.target !== undefined ?
-              "choosedTargetCard"
-              :
-              "choosedSelfCard"
-            ]: 1
-          });
-        }}
-      />
-    </>
+    <div className="flex flex-col gap-4 items-center">
+      <h3 className="text-center text-2xl">
+        Escolha qual das
+        {requeriments.target === undefined ? " suas cartas " : " cartas de " + requeriments.target + " "}
+        usar
+      </h3>
+      <div className="flex gap-4">
+        <InfluenceCard
+          customStyle="hover:scale-110 cursor-pointer"
+          card={(requeriments.target !== undefined ?
+            (gameState.game.players.find(p => p.name === requeriments.target) as Player)
+              .cards[0]
+            :
+            gameState.player.cards[0]).card
+          }
+          onClick={e => {
+            e.stopPropagation();
+            performChange({
+              [requeriments.target !== undefined ?
+                "choosedTargetCard"
+                :
+                "choosedSelfCard"
+              ]: 0
+            });
+          }}
+        />
+        <InfluenceCard
+          customStyle="hover:scale-110 cursor-pointer"
+          card={(requeriments.target !== undefined ?
+            (gameState.game.players.find(p => p.name === requeriments.target) as Player)
+              .cards[1]
+            :
+            gameState.player.cards[1]).card
+          }
+          onClick={e => {
+            e.stopPropagation();
+            performChange({
+              [requeriments.target !== undefined ?
+                "choosedTargetCard"
+                :
+                "choosedSelfCard"
+              ]: 1
+            });
+          }}
+        />
+      </div>
+    </div>
   )
 
   if (type === MenuTypes.CARD_PICKING_CHANGE) children = (
