@@ -137,26 +137,12 @@ export function getChoosableCards(
 ): Card[] {
     return Object.entries(configs.tiposCartas)
         .filter(([cardName, cardInfos]) => {
-            const canAct = cardInfos[requeriments.action as keyof typeof cardInfos] as boolean;
+            if (requeriments.action === Action.CORRUPCAO) {
+                const cartasParaCorrupcao = configs.religiao.cartasParaCorrupcao;
+                return cartasParaCorrupcao[cardName as keyof typeof cartasParaCorrupcao];
+            }
 
-            const cartasParaCorrupcao = configs.religiao.cartasParaCorrupcao
-            const canCorrupt = cartasParaCorrupcao[cardName as keyof typeof cartasParaCorrupcao];
-
-            if (requeriments.action === Action.CORRUPCAO)
-                return canCorrupt;
-
-            let canTrocar = true;
-            let quantidadeTrocar = requeriments.choosedSelfCard !== undefined ? 1 : 2;
-
-            if (requeriments.action === Action.TROCAR)
-                canTrocar = quantidadeTrocar >= cardInfos[
-                    requeriments.target === undefined ?
-                        "quantidadeTrocarPropria"
-                        :
-                        "quantidadeTrocarOutroJogador"
-                ];
-
-            return canAct && canTrocar;
+            return cardInfos[requeriments.action as keyof typeof cardInfos] as boolean;
         })
         .map(([card, _]) => card) as Card[];
 }
