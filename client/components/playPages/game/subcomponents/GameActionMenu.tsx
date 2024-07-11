@@ -38,49 +38,52 @@ export default function GameActionMenu({
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
 
   if (type === MenuTypes.MONEY) children = (
-    <>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.RENDA });
-        }}
-      >
-        <h4>Renda</h4>
-        <p>${gameState.game.configs.renda}</p>
-      </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.AJUDA_EXTERNA });
-        }}
-      >
-        <h4>Ajuda Externa</h4>
-        <p>${gameState.game.configs.ajudaExterna}</p>
-      </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.TAXAR });
-        }}
-      >
-        <h4>Taxar</h4>
-      </div>
-      {gameState.game.configs.religiao &&
+    <div className="flex flex-col gap-4 items-center">
+      <h3 className="text-center text-2xl">Escolha uma forma de conseguir dinheiro</h3>
+      <div className="flex gap-4">
         <div
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
-            performChange({ action: Action.CORRUPCAO });
+            performChange({ action: Action.RENDA });
           }}
         >
-          <h4>Corrupção</h4>
-          <p>${gameState.game.asylum}</p>
+          <h4>Renda</h4>
+          <p>${gameState.game.configs.renda}</p>
         </div>
-      }
-    </>
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.AJUDA_EXTERNA });
+          }}
+        >
+          <h4>Ajuda Externa</h4>
+          <p>${gameState.game.configs.ajudaExterna}</p>
+        </div>
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.TAXAR });
+          }}
+        >
+          <h4>Taxar</h4>
+        </div>
+        {gameState.game.configs.religiao &&
+          <div
+            className={optionStyles}
+            onClick={e => {
+              e.stopPropagation();
+              performChange({ action: Action.CORRUPCAO });
+            }}
+          >
+            <h4>Corrupção</h4>
+            <p>${gameState.game.asylum}</p>
+          </div>
+        }
+      </div>
+    </div>
   )
 
   if (type === MenuTypes.ATTACK) children = (
@@ -343,7 +346,7 @@ export default function GameActionMenu({
       onClick={() => performChange({ goTo: MenuTypes.CLOSED })}
     >
       <div
-        className="w-[70%] h-[60%] flex items-center justify-center gap-4 overflow-auto bg-stone-500 rounded-3xl"
+        className="w-[70%] h-[60%] flex items-center justify-center overflow-auto bg-stone-500 rounded-3xl"
         onClick={e => e.stopPropagation()}
       >
         {children}
