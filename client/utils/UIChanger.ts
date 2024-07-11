@@ -107,8 +107,8 @@ function performUIChange(
 
     if (
         newRequeriments.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 2 &&
-        menuType === MenuTypes.CARD_PICKING
+        menuType === MenuTypes.CARD_PICKING &&
+        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 2
     ) {
         // todo: socket.emit(
         //     "trocar",
@@ -120,8 +120,8 @@ function performUIChange(
 
     if (
         newRequeriments.action === Action.TROCAR &&
-        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 1 &&
-        menuType === MenuTypes.CARD_PICKING_CHANGE
+        menuType === MenuTypes.CARD_PICKING_CHANGE &&
+        quantidadeTrocar(gameState.game.configs, newRequeriments.choosedCardType as Card) === 1
     ) {
         // todo: socket.emit(
         //     "trocar",
