@@ -85,77 +85,141 @@ export default function Configuracoes({
             />
           </div>
           {configs.religiao.reforma && <div className="w-full">
-            <div className="config_outer_div">
-              <label>Trocar Religião(Própria)</label>
-              <input
-                type="number"
-                value={configs.religiao.quantidadeTrocarPropria}
-                min={0}
-                onChange={e =>
-                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocar"], Number(e.target.value))
-                }
-              />
-            </div>
-            <div className="config_outer_div">
-              <label>Trocar Religião(Inimigo)</label>
-              <input
-                type="number"
-                value={configs.religiao.quantidadeTrocarOutro}
-                min={0}
-                onChange={e =>
-                  socket.emit("updateConfigs", ["religiao", "quantidadeTrocarOutro"], Number(e.target.value))
-                }
-              />
-            </div>
-            <div className="w-full">
-              <p>Mandamentos da Religião</p>
+              <div className="config_outer_div">
+                <label>Trocar Religião(Própria)</label>
+                <input
+                  type="number"
+                  value={configs.religiao.quantidadeTrocarPropria}
+                  min={0}
+                  onChange={e =>
+                    socket.emit("updateConfigs", ["religiao", "quantidadeTrocar"], Number(e.target.value))
+                  }
+                />
+              </div>
+              <div className="config_outer_div">
+                <label>Trocar Religião(Inimigo)</label>
+                <input
+                  type="number"
+                  value={configs.religiao.quantidadeTrocarOutro}
+                  min={0}
+                  onChange={e =>
+                    socket.emit("updateConfigs", ["religiao", "quantidadeTrocarOutro"], Number(e.target.value))
+                  }
+                />
+              </div>
               <div className="w-full">
-                <div className="config_checkbox pr-[calc(100%-146px)]">
-                  <label>Golpe de Estado</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.religiao.deveres.golpeEstado}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["religiao", "deveres", "golpeEstado"], e.target.checked)
-                    }
-                  />
+                <p>Mandamentos da Religião</p>
+                <div className="w-full">
+                  <div className="config_checkbox pr-[calc(100%-146px)]">
+                    <label>Golpe de Estado</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.deveres.golpeEstado}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "deveres", "golpeEstado"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-103px)]">
+                    <label>Assassinar</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.deveres.assassinar}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "deveres", "assassinar"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-89px)]">
+                    <label>Extorquir</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.deveres.extorquir}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "deveres", "extorquir"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label>Taxar</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.deveres.taxar}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "deveres", "taxar"], e.target.checked)
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
-                  <label>Assassinar</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.religiao.deveres.assassinar}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["religiao", "deveres", "assassinar"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
-                  <label>Extorquir</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.religiao.deveres.extorquir}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["religiao", "deveres", "extorquir"], e.target.checked)
-                    }
-                  />
-                </div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
-                  <label>Taxar</label>
-                  <input
-                    type="checkbox"
-                    checked={configs.religiao.deveres.taxar}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["religiao", "deveres", "taxar"], e.target.checked)
-                    }
-                  />
+              </div>
+              <div>
+                <p>Cartas Para Corrupção</p>
+                <div className="w-full">
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Duque</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.duque}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "duque"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Capitão</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.capitao}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "capitao"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Assassino</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.assassino}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "assassino"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Condessa</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.condessa}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "condessa"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Embaixador</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.embaixador}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "embaixador"], e.target.checked)
+                      }
+                    />
+                  </div>
+                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                    <label htmlFor="">Inquisidor</label>
+                    <input
+                      type="checkbox"
+                      checked={configs.religiao.cartasParaCorrupcao.inquisidor}
+                      onChange={e =>
+                        socket.emit("updateConfigs", ["religiao", "cartasParaCorrupcao", "inquisidor"], e.target.checked)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
           }
         </div>
-        
         <div className="config_outer_div">
           <h3 className="text-2xl font-bold text-center">Cartas</h3>
           <div className="w-full flex flex-col gap-6 config_cartas">
@@ -1169,20 +1233,47 @@ export default function Configuracoes({
             <div>
               <div>
                 <p className="text-xl">Golpe de Estado</p>
-                <p className="text-lg">{configs.religiao.deveres.golpeEstado ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.golpeEstado ? "não" : "sim"}</p>
               </div>
               <div>
                 <p className="text-xl">Assassinar</p>
-                <p className="text-lg">{configs.religiao.deveres.assassinar ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.assassinar ? "não" : "sim"}</p>
               </div>
               <div>
                 <p className="text-xl">Extorquir</p>
-                <p className="text-lg">{configs.religiao.deveres.extorquir ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.extorquir ? "não" : "sim"}</p>
               </div>
               <div>
                 <p className="text-xl">Taxar</p>
-                <p className="text-lg">{configs.religiao.deveres.taxar ? "sim" : "não"}</p>
+                <p className="text-lg">{configs.religiao.deveres.taxar ? "não" : "sim"}</p>
               </div>
+            </div>
+          </div>
+          <div>
+            <p className="text-xl">Cartas para Corrupção</p>
+            <div>
+              <p className="text-xl">Duque</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.duque ? "sim" : "não"}</p>
+            </div>
+            <div>
+              <p className="text-xl">Capitão</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.capitao ? "sim" : "não"}</p>
+            </div>
+            <div>
+              <p className="text-xl">Assassino</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.assassino ? "sim" : "não"}</p>
+            </div>
+            <div>
+              <p className="text-xl">Condessa</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.condessa ? "sim" : "não"}</p>
+            </div>
+            <div>
+              <p className="text-xl">Embaixador</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.embaixador ? "sim" : "não"}</p>
+            </div>
+            <div>
+              <p className="text-xl">Inquisidor</p>
+              <p className="text-lg">{configs.religiao.cartasParaCorrupcao.inquisidor ? "sim" : "não"}</p>
             </div>
           </div>
         </>

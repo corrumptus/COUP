@@ -30,7 +30,6 @@ export type Config = {
   quantidadeMaximaGolpeEstado: number,
   religiao: {
     reforma: boolean,
-    corrupcao: boolean,
     deveres: {
       golpeEstado: boolean,
       assassinar: boolean,
@@ -56,7 +55,7 @@ export type Config = {
     embaixador: Carta,
     inquisidor: Carta
   }
-};
+}
 
 type ResponseSocketEmitEvents = {
   "enterLobby": (lobbyID: number) => void;

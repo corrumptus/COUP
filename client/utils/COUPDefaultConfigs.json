@@ -6,12 +6,11 @@
     "quantidadeMaximaGolpeEstado": 10,
     "religiao": {
         "reforma": false,
-        "corrupcao": false,
         "deveres": {
-            "golpeEstado": false,
-            "assassinar": false,
-            "extorquir": false,
-            "taxar": false
+            "golpeEstado": true,
+            "assassinar": true,
+            "extorquir": true,
+            "taxar": true
         },
         "quantidadeTrocarPropria": 1,
         "quantidadeTrocarOutro": 2,
