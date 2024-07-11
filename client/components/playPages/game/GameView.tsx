@@ -62,6 +62,12 @@ export type GameState = {
     currentPlayer: string,
     asylum: number,
     configs: Config
+  },
+  context?: {
+    attacker: string,
+    action: Action,
+    card: Card,
+    attackedCard?: number
   }
 }
 
