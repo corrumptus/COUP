@@ -36,9 +36,7 @@ export default function GameMobileMenu({
               src="/catolico-icon.png"
               alt="cruz católica"
               title="católico"
-              onClick={() => performChange({
-                action: Action.TROCAR_PROPRIA_RELIGIAO
-              })}
+              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
               width={40}
               height={40}
             />
@@ -47,9 +45,7 @@ export default function GameMobileMenu({
               src="/protestante-icon.png"
               alt="biblia"
               title="protestante"
-              onClick={() => performChange({
-                action: Action.TROCAR_PROPRIA_RELIGIAO
-              })}
+              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
               width={40}
               height={40}
             />

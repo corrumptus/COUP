@@ -51,9 +51,7 @@ export default function GamePCView({
               alt="cruz católica"
               title="católico"
               className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => performChange({
-                action: Action.TROCAR_PROPRIA_RELIGIAO
-              })}
+              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
               width={40}
               height={40}
             />
@@ -63,9 +61,7 @@ export default function GamePCView({
               alt="biblia"
               title="protestante"
               className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => performChange({
-                action: Action.TROCAR_PROPRIA_RELIGIAO
-              })}
+              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
               width={40}
               height={40}
             />
