@@ -265,6 +265,20 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
         gameState.game.asylum === 0
     )
         return "O asilo não possui moedas";
+    
+    if (
+        request.action === Action.TROCAR_PROPRIA_RELIGIAO
+        &&
+        gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarPropria
+    )
+        return "Você não tem dinheiro suficiente para trocar de religião";
+    
+    if (
+        request.action === Action.TROCAR_RELIGIAO_OUTRO
+        &&
+        gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarOutro
+    )
+        return "Você não tem dinheiro suficiente para trocar a religião de outro jogador";
 
     return undefined;
 }
