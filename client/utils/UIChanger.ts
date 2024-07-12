@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Action, Card, GameState } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
+import { getChoosableCards } from "@utils/utils";
 
 export type ChangeRequest = ActionRequeriments & { goTo?: MenuTypes };
 
@@ -35,7 +36,7 @@ function performUIChange(
     const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
 
     if (goTo === MenuTypes.CLOSED)
-        return [ goTo, {} ];
+        return [ MenuTypes.CLOSED, {} ];
 
     if (newRequeriments.action === Action.RENDA) {
         //todo: socket.emit("renda");
@@ -145,46 +146,55 @@ function performUIChange(
     if (goTo !== undefined)
         return [ goTo, newRequeriments ];
 
-    let newGoTo: MenuTypes = MenuTypes.CLOSED;
+    const choosableCards = getChoosableCards(gameState.game.configs, newRequeriments);
 
-    if (newRequeriments.action === Action.TAXAR && menuType === MenuTypes.MONEY)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
+    if (choosableCards.length === 1) {
+        newRequeriments.choosedCardType = choosableCards[0];
+        return [ MenuTypes.CARD_PICKING, newRequeriments ];
+    }
 
+    return [ getNextGoTo(newRequeriments.action as Action, menuType), newRequeriments ];
+}
 
-    if (newRequeriments.action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
-
-
-    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
+function getNextGoTo(action: Action, menuType: MenuTypes) {
+    if (action === Action.TAXAR && menuType === MenuTypes.MONEY)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
 
 
-    if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
+    if (action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
 
 
-    if (newRequeriments.action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
+    if (action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
 
 
-    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CLOSED)
-        newGoTo = MenuTypes.CARD_CHOOSER;
-    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
-        newGoTo = MenuTypes.CARD_PICKING;
-    if (newRequeriments.action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
-        newGoTo = MenuTypes.CARD_PICKING_CHANGE;
+    if (action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
 
-    return [ newGoTo, newRequeriments ];
+
+    if (action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.TROCAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+    if (action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
+        return MenuTypes.CARD_PICKING_CHANGE;
+
+    return MenuTypes.CLOSED;
 }
 
 function quantidadeTrocar(configs: Config, card: Card) {
