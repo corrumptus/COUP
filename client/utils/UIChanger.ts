@@ -259,5 +259,12 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
     )
         return "Você não pode assassinar pois não possui dinheiro suficiente";
 
+    if (
+        request.action === Action.CORRUPCAO
+        &&
+        gameState.game.asylum === 0
+    )
+        return "O asilo não possui moedas";
+
     return undefined;
 }
