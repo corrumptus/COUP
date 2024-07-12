@@ -246,5 +246,18 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
     )
         return "Você só pode dar golpe de estado neste turno";
 
+    if (
+        request.choosedCardType !== undefined
+        &&
+        request.action === Action.ASSASSINAR
+        &&
+        gameState.player.money <
+            gameState.game.configs.tiposCartas[
+                request.choosedCardType as keyof typeof
+                gameState.game.configs.tiposCartas
+            ].quantidadeAssassinar
+    )
+        return "Você não pode assassinar pois não possui dinheiro suficiente";
+
     return undefined;
 }
