@@ -5,6 +5,7 @@ import { Action, Card, GameState } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
+import { newToaster } from "./Toasters";
 
 export type ChangeRequest = ActionRequeriments & { goTo?: MenuTypes };
 
@@ -31,6 +32,13 @@ function performUIChange(
     requeriments: ActionRequeriments,
     request: ChangeRequest
 ): [MenuTypes, ActionRequeriments] {
+    const requestProblems = getRequestProblems(gameState, request);
+
+    if (requestProblems !== undefined) {
+        newToaster(requestProblems);
+        return [ menuType, requeriments ];
+    }
+
     const { goTo, ...requerimentsOfRequest } = request;
 
     const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
@@ -199,4 +207,8 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
 
 function quantidadeTrocar(configs: Config, card: Card) {
     return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
+}
+
+function getRequestProblems(gameState: GameState, request: ChangeRequest): string | undefined {
+    return undefined;
 }
