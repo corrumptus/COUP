@@ -127,7 +127,7 @@ export default function GameActionMenu({
     children = (
       <div className="flex flex-col gap-4 items-center">
         <h3 className="text-center text-2xl">Escolha que tipo de carta usar para {requeriments.action}</h3>
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           {choosableCards.includes(Card.DUQUE) &&
             <InfluenceCard
               card={Card.DUQUE}
@@ -200,7 +200,7 @@ export default function GameActionMenu({
         {requeriments.target === undefined ? " suas cartas " : " cartas de " + requeriments.target + " "}
         usar
       </h3>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <InfluenceCard
           customStyle="hover:scale-110 cursor-pointer"
           card={(requeriments.target !== undefined ?
@@ -246,7 +246,7 @@ export default function GameActionMenu({
   if (type === MenuTypes.CARD_PICKING_CHANGE) children = (
     <div className="flex flex-col gap-4 items-center">
       <h3 className="text-center text-2xl">Escolha qual das suas cartas deve ser trocada</h3>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <InfluenceCard
           card={gameState.player.cards[0].card}
           customStyle="hover:scale-110 cursor-pointer"
