@@ -267,29 +267,6 @@ export default function GameActionMenu({
     </div>
   )
 
-  if (type === MenuTypes.BLOCK_DEFENSE) children = (
-    <>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTESTAR });
-        }}
-      >
-        <h4>Contestar</h4>
-      </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTINUAR });
-        }}
-      >
-        <h4>Aceitar</h4>
-      </div>
-    </>
-  )
-
   if (type === MenuTypes.DEFENSE) children = (
     <>
       <div
@@ -309,6 +286,29 @@ export default function GameActionMenu({
         }}
       >
         <h4>Bloquear</h4>
+      </div>
+      <div
+        className={optionStyles}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTINUAR });
+        }}
+      >
+        <h4>Aceitar</h4>
+      </div>
+    </>
+  )
+
+  if (type === MenuTypes.BLOCK_DEFENSE) children = (
+    <>
+      <div
+        className={optionStyles}
+        onClick={e => {
+          e.stopPropagation();
+          performChange({ action: Action.CONTESTAR });
+        }}
+      >
+        <h4>Contestar</h4>
       </div>
       <div
         className={optionStyles}
