@@ -131,7 +131,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.DUQUE) &&
             <InfluenceCard
               card={Card.DUQUE}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.DUQUE });
@@ -141,7 +141,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.CAPITAO) &&
             <InfluenceCard
               card={Card.CAPITAO}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.CAPITAO });
@@ -151,7 +151,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.ASSASSINO) &&
             <InfluenceCard
               card={Card.ASSASSINO}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.ASSASSINO });
@@ -161,7 +161,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.CONDESSA) &&
             <InfluenceCard
               card={Card.CONDESSA}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.CONDESSA });
@@ -171,7 +171,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.EMBAIXADOR) &&
             <InfluenceCard
               card={Card.EMBAIXADOR}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.EMBAIXADOR });
@@ -181,7 +181,7 @@ export default function GameActionMenu({
           {choosableCards.includes(Card.INQUISIDOR) &&
             <InfluenceCard
               card={Card.INQUISIDOR}
-              customStyle="cursor-pointer"
+              customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ choosedCardType: Card.INQUISIDOR });
