@@ -228,5 +228,23 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
     )
         return "A carta escolhida está morta";
 
+    if (
+        gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado
+        &&
+        gameState.game.currentPlayer === gameState.player.name
+        &&
+        request.goTo !== MenuTypes.ATTACK
+    )
+        return "Você só pode dar golpe de estado neste turno";
+
+    if (
+        gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado
+        &&
+        gameState.game.currentPlayer === gameState.player.name
+        &&
+        request.action !== Action.GOLPE_ESTADO
+    )
+        return "Você só pode dar golpe de estado neste turno";
+
     return undefined;
 }
