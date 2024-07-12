@@ -244,26 +244,27 @@ export default function GameActionMenu({
   )
 
   if (type === MenuTypes.CARD_PICKING_CHANGE) children = (
-    <>
-      <InfluenceCard
-        card={gameState.player.cards[0].card}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({
-            choosedTargetCard: 0
-          });
-        }}
-      />
-      <InfluenceCard
-        card={gameState.player.cards[1].card}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({
-            choosedTargetCard: 1
-          });
-        }}
-      />
-    </>
+    <div className="flex flex-col gap-4 items-center">
+      <h3 className="text-center text-2xl">Escolha qual das suas cartas deve ser trocada</h3>
+      <div className="flex gap-4">
+        <InfluenceCard
+          card={gameState.player.cards[0].card}
+          customStyle="hover:scale-110 cursor-pointer"
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedTargetCard: 0 });
+          }}
+        />
+        <InfluenceCard
+          card={gameState.player.cards[1].card}
+          customStyle="hover:scale-110 cursor-pointer"
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ choosedTargetCard: 1 });
+          }}
+        />
+      </div>
+    </div>
   )
 
   if (type === MenuTypes.BLOCK_DEFENSE) children = (
