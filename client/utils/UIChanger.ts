@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Action, Card, GameState } from "@pages/GameView";
+import { Action, Card, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
@@ -210,5 +210,23 @@ function quantidadeTrocar(configs: Config, card: Card) {
 }
 
 function getRequestProblems(gameState: GameState, request: ChangeRequest): string | undefined {
+    if (
+        request.choosedSelfCard !== undefined
+        &&
+        gameState.player.cards[request.choosedSelfCard].isDead
+    )
+        return "A carta escolhida está morta";
+
+    if (
+        request.target !== undefined
+        &&
+        request.choosedTargetCard !== undefined
+        &&
+        (gameState.game.players
+            .find(p => p.name === request.target) as Omit<Player, "state">)
+            .cards[request.choosedTargetCard].isDead
+    )
+        return "A carta escolhida está morta";
+
     return undefined;
 }
