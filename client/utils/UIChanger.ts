@@ -288,5 +288,22 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
     )
         return "Você não tem dinheiro suficiente para trocar a religião de outro jogador";
 
+    if (
+        request.target !== undefined
+        &&
+        request.action === Action.EXTORQUIR
+        &&
+        getChoosableCards(gameState.game.configs, request).length === 1
+        &&
+        (gameState.game.players
+            .find(p => p.name === request.target) as Omit<Player, "state">
+        ).money <
+        gameState.game.configs.tiposCartas[
+            getChoosableCards(gameState.game.configs, request)[0] as
+            keyof typeof gameState.game.configs.tiposCartas
+        ].quantidadeExtorquir
+    )
+        return "Este player não tem dinheiro suficiente para ser extorquido";
+
     return undefined;
 }
