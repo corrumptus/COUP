@@ -242,7 +242,15 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
         &&
         gameState.game.currentPlayer === gameState.player.name
         &&
-        request.action !== Action.GOLPE_ESTADO
+        (
+            request.goTo !== MenuTypes.ATTACK
+            ||
+            (
+                request.goTo === undefined
+                &&
+                request.action !== Action.GOLPE_ESTADO
+            )
+        )
     )
         return "Você só pode dar golpe de estado neste turno";
 
@@ -265,14 +273,14 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
         gameState.game.asylum === 0
     )
         return "O asilo não possui moedas";
-    
+
     if (
         request.action === Action.TROCAR_PROPRIA_RELIGIAO
         &&
         gameState.player.money < gameState.game.configs.religiao.quantidadeTrocarPropria
     )
         return "Você não tem dinheiro suficiente para trocar de religião";
-    
+
     if (
         request.action === Action.TROCAR_RELIGIAO_OUTRO
         &&
