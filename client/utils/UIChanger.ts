@@ -211,6 +211,17 @@ function quantidadeTrocar(configs: Config, card: Card) {
 
 function getRequestProblems(gameState: GameState, request: ChangeRequest): string | undefined {
     if (
+        request.target !== undefined
+        &&
+        (gameState.game.players
+            .find(p => p.name === request.target) as Omit<Player, "state">
+        ).cards
+            .filter(c => !c.isDead)
+            .length === 0
+    )
+        return "O player escolhido já está morto";
+
+    if (
         request.choosedSelfCard !== undefined
         &&
         gameState.player.cards[request.choosedSelfCard].isDead
