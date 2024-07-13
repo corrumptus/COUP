@@ -32,7 +32,7 @@ function performUIChange(
     requeriments: ActionRequeriments,
     request: ChangeRequest
 ): [MenuTypes, ActionRequeriments] {
-    const requestProblems = getRequestProblems(gameState, request);
+    const requestProblems = getRequestProblems(gameState, request, requeriments);
 
     if (requestProblems !== undefined) {
         newToaster(requestProblems);
@@ -209,7 +209,11 @@ function quantidadeTrocar(configs: Config, card: Card) {
     return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
 }
 
-function getRequestProblems(gameState: GameState, request: ChangeRequest): string | undefined {
+function getRequestProblems(
+    gameState: GameState,
+    request: ChangeRequest,
+    curRequeriments: ActionRequeriments
+): string | undefined {
     if (
         request.target !== undefined
         &&
@@ -313,6 +317,24 @@ function getRequestProblems(gameState: GameState, request: ChangeRequest): strin
             getChoosableCards(gameState.game.configs, request)[0] as
             keyof typeof gameState.game.configs.tiposCartas
         ].quantidadeExtorquir
+    )
+        return "Este player não tem dinheiro suficiente para ser extorquido";
+
+    if (
+        curRequeriments.target !== undefined
+        &&
+        curRequeriments.action === Action.EXTORQUIR
+        &&
+        request.choosedCardType !== undefined
+        &&
+        (gameState.game.players
+            .find(p => p.name === curRequeriments.target) as Omit<Player, "state">)
+        .money <
+        gameState.game.configs.tiposCartas[
+            request.choosedCardType as
+            keyof typeof gameState.game.configs.tiposCartas
+        ]
+        .quantidadeExtorquir
     )
         return "Este player não tem dinheiro suficiente para ser extorquido";
 
