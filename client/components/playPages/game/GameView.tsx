@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
@@ -55,6 +55,12 @@ export type Player = {
   state: PlayerState
 }
 
+export enum ContextType {
+  ATTACKING,
+  BEING_ATTACKED,
+  OBSERVING
+}
+
 export type GameState = {
   player: Player,
   game: {
@@ -63,10 +69,21 @@ export type GameState = {
     asylum: number,
     configs: Config
   },
-  context?: {
+  context: {
+    type: ContextType.ATTACKING,
+    isInvestigating: boolean
+  } | {
+    type: ContextType.BEING_ATTACKED,
     attacker: string,
     action: Action,
     card: Card,
+    attackedCard?: number
+  } | {
+    type: ContextType.OBSERVING,
+    attacker: string,
+    action: Action,
+    card?: Card,
+    target?: string,
     attackedCard?: number
   }
 }
@@ -82,6 +99,11 @@ export default function GameView({
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const width = useDeviceWidth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (gameState.context !== undefined)
+      changeUI(gameState, requeriments);
+  });
 
   function leave() {
     socket.disconnect();
