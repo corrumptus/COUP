@@ -5,7 +5,7 @@ import { Action, Card, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
-import { newToaster } from "./Toasters";
+import { newToaster } from "@utils/Toasters";
 
 export type ChangeRequest = ActionRequeriments & { goTo?: MenuTypes };
 
