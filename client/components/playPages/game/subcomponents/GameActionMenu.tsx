@@ -355,13 +355,16 @@ export default function GameActionMenu({
     </div>
   )
 
-  if (type === MenuTypes.INVESTIGATING) {
-    const investigatedCard = gameState.game.players.find(p => p.name === requeriments.target)
-      ?.cards[requeriments.choosedTargetCard as number].card as Card;
+  if (
+    type === MenuTypes.INVESTIGATING
+    &&
+    gameState.context.type === ContextType.ATTACKING
+  ) {
     children = (
       <>
         <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
-          <InfluenceCard card={investigatedCard} />
+          <InfluenceCard card={gameState.context.investigatedCard} />
+          <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
           <div className="flex gap-4 items-center">
             <div
               className={optionStyles}
