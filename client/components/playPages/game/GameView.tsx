@@ -56,7 +56,7 @@ export type Player = {
 }
 
 export enum ContextType {
-  ATTACKING,
+  INVESTIGATING,
   BEING_ATTACKED,
   OBSERVING
 }
@@ -70,8 +70,8 @@ export type GameState = {
     configs: Config
   },
   context: {
-    type: ContextType.ATTACKING,
-    isInvestigating: boolean
+    type: ContextType.INVESTIGATING,
+    investigatedCard: Card
   } | {
     type: ContextType.BEING_ATTACKED,
     attacker: string,
@@ -81,7 +81,7 @@ export type GameState = {
   } | {
     type: ContextType.OBSERVING,
     attacker: string,
-    action: Action,
+    action?: Action,
     card?: Card,
     target?: string,
     attackedCard?: number
