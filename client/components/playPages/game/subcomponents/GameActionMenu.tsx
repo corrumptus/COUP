@@ -275,14 +275,14 @@ export default function GameActionMenu({
     <div className="flex flex-col gap-4 items-center">
       {gameState.context.attackedCard === undefined ? 
         <h2>
-          {gameState.context.attacker} está te atacando
-          com {gameState.context.action}
+          O player {gameState.context.attacker}
+          está te atacando com {gameState.context.action}
           usando a carta {gameState.context.card}
         </h2>
         :
         <h2>
-          {gameState.context.attacker} está atacando
-          a sua {gameState.context.attackedCard}
+          O player {gameState.context.attacker}
+          está atacando a sua {gameState.context.attackedCard}
           com {gameState.context.action}
           usando a carta {gameState.context.card}
         </h2>
