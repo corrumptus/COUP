@@ -1,4 +1,4 @@
-import { Action, Card, GameState, Player } from "@pages/GameView";
+import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
 import { ChangeRequest } from "@utils/UIChanger";
@@ -267,36 +267,57 @@ export default function GameActionMenu({
     </div>
   )
 
-  if (type === MenuTypes.DEFENSE) children = (
-    <>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTESTAR });
-        }}
-      >
-        <h4>Contestar</h4>
+  if (
+    type === MenuTypes.DEFENSE
+    &&
+    gameState.context.type === ContextType.BEING_ATTACKED
+  ) children = (
+    <div className="flex flex-col gap-4 items-center">
+      {gameState.context.attackedCard === undefined ? 
+        <h2>
+          {gameState.context.attacker} está te atacando
+          com {gameState.context.action}
+          usando a carta {gameState.context.card}
+        </h2>
+        :
+        <h2>
+          {gameState.context.attacker} está atacando
+          a sua {gameState.context.attackedCard}
+          com {gameState.context.action}
+          usando a carta {gameState.context.card}
+        </h2>
+      }
+      <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
+      <div className="flex gap-6">
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CONTESTAR });
+          }}
+        >
+          <h4>Contestar</h4>
+        </div>
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.BLOQUEAR });
+          }}
+        >
+          <h4>Bloquear</h4>
+        </div>
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CONTINUAR });
+          }}
+        >
+          <h4>Aceitar</h4>
+        </div>
       </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.BLOQUEAR });
-        }}
-      >
-        <h4>Bloquear</h4>
-      </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTINUAR });
-        }}
-      >
-        <h4>Aceitar</h4>
-      </div>
-    </>
+    </div>
   )
 
   if (type === MenuTypes.BLOCK_DEFENSE) children = (
