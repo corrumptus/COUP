@@ -320,27 +320,39 @@ export default function GameActionMenu({
     </div>
   )
 
-  if (type === MenuTypes.BLOCK_DEFENSE) children = (
-    <>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTESTAR });
-        }}
-      >
-        <h4>Contestar</h4>
+  if (
+    type === MenuTypes.BLOCK_DEFENSE
+    &&
+    gameState.context.type === ContextType.BEING_ATTACKED
+  ) children = (
+    <div className="flex flex-col gap-4 items-center">
+      <h2>
+        O player {gameState.context.attacker}
+        está te bloqueando
+        com a carta {gameState.context.card}
+      </h2>
+      <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
+      <div className="flex gap-6">
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CONTESTAR });
+          }}
+        >
+          <h4>Contestar</h4>
+        </div>
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CONTINUAR });
+          }}
+        >
+          <h4>Aceitar</h4>
+        </div>
       </div>
-      <div
-        className={optionStyles}
-        onClick={e => {
-          e.stopPropagation();
-          performChange({ action: Action.CONTINUAR });
-        }}
-      >
-        <h4>Aceitar</h4>
-      </div>
-    </>
+    </div>
   )
 
   if (type === MenuTypes.INVESTIGATING) {
