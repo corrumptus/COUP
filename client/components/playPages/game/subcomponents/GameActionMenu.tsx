@@ -358,7 +358,7 @@ export default function GameActionMenu({
   if (
     type === MenuTypes.INVESTIGATING
     &&
-    gameState.context.type === ContextType.ATTACKING
+    gameState.context.type === ContextType.INVESTIGATING
   ) {
     children = (
       <>
