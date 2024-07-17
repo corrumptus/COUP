@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Action, Card, GameState, Player } from "@pages/GameView";
+import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
@@ -32,6 +32,13 @@ function performUIChange(
     requeriments: ActionRequeriments,
     request: ChangeRequest
 ): [MenuTypes, ActionRequeriments] {
+    if (Object.keys(request).length === 0) {
+        if (gameState.context.type === ContextType.OBSERVING)
+            newToaster(notify(gameState));
+
+        return [ menuType, requeriments ];
+    }
+
     const requestProblems = getRequestProblems(gameState, request, requeriments);
 
     if (requestProblems !== undefined) {
@@ -207,6 +214,10 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
 
 function quantidadeTrocar(configs: Config, card: Card) {
     return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
+}
+
+function notify(gameState: GameState): string {
+    return "";
 }
 
 function getRequestProblems(
