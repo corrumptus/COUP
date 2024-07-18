@@ -84,7 +84,8 @@ export type GameState = {
     action?: Action,
     card?: Card,
     target?: string,
-    attackedCard?: number
+    attackedCard?: number,
+    isInvesting: boolean
   }
 }
 
@@ -102,8 +103,8 @@ export default function GameView({
 
   useEffect(() => {
     if (gameState.context !== undefined)
-      changeUI(gameState, requeriments);
-  });
+      changeUI(gameState, {});
+  }, [JSON.stringify(gameState.context)]);
 
   function leave() {
     socket.disconnect();
