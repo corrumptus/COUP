@@ -34,7 +34,7 @@ function performUIChange(
 ): [MenuTypes, ActionRequeriments] {
     if (Object.keys(request).length === 0) {
         if (gameState.context.type === ContextType.OBSERVING)
-            newToaster(notify(gameState));
+            newToaster(contextToNotification(gameState.context));
 
         return [ menuType, requeriments ];
     }
@@ -121,7 +121,55 @@ function quantidadeTrocar(configs: Config, card: Card) {
     return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
 }
 
-function notify(gameState: GameState): string {
+function contextToNotification(context: GameState["context"]): string {
+    if (context.type !== ContextType.OBSERVING)
+        return "";
+
+    if (context.action === Action.TROCAR_PROPRIA_RELIGIAO)
+        return `O player ${context.attacker} trocou a própria religião`;
+
+    if (context.action === Action.TROCAR_RELIGIAO_OUTRO)
+        return `O player ${context.attacker} trocou a religião de ${context.target}`;
+
+    if (context.action === Action.RENDA)
+        return `O player ${context.attacker} pediu renda`;
+
+    if (context.action === Action.AJUDA_EXTERNA)
+        return `O player ${context.attacker} pediu ajuda externa`;
+
+    if (context.action === Action.TAXAR)
+        return `O player ${context.attacker} taxou o banco`;
+
+    if (context.action === Action.CORRUPCAO)
+        return `O player ${context.attacker} se corrompeu`;
+
+    if (context.action === Action.EXTORQUIR)
+        return `O player ${context.attacker} extorquiu ${context.target} com ${context.card}`;
+
+    if (context.action === Action.ASSASSINAR)
+        return `O player ${context.attacker} assassinou uma carta de ${context.target} com ${context.card}`;
+
+    if (context.action === Action.INVESTIGAR)
+        return `O player ${context.attacker} quer ver uma carta de ${context.target} com ${context.card}`;
+
+    if (context.action === Action.GOLPE_ESTADO)
+        return `O player ${context.attacker} deu um golpe de estado em ${context.target}`;
+
+    if (context.action === Action.TROCAR && !context.isInvesting)
+        return context.attackedCard !== undefined ?
+            `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta com ${context.card}`
+            :
+            `O player ${context.attacker} trocou as cartas com ${context.card}`;
+
+    if (context.action === Action.TROCAR && context.isInvesting)
+        return `O player ${context.attacker} trocou a ${context.attackedCard as number + 1}º carta de ${context.target}`;
+
+    if (context.action === Action.CONTESTAR)
+        return `O player ${context.attacker} contestou ${context.target}`;
+
+    if (context.action === Action.BLOQUEAR)
+        return `O player ${context.attacker} bloqueou ${context.target}`;
+
     return "";
 }
 
