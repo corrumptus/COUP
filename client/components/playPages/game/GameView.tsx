@@ -71,7 +71,10 @@ export type GameState = {
   },
   context: {
     type: ContextType.INVESTIGATING,
-    investigatedCard: Card
+    card: Card,
+    target: string,
+    investigatedCard: Card,
+    targetCard: number
   } | {
     type: ContextType.BEING_ATTACKED,
     attacker: string,
