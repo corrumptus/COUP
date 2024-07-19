@@ -335,6 +335,13 @@ function isActionEmitable(
         return true;
 
     if (
+        requeriments.action === Action.TROCAR
+        &&
+        menuType === MenuTypes.INVESTIGATING
+    )
+        return true;
+
+    if (
         requeriments.action === Action.TROCAR &&
         menuType === MenuTypes.CARD_PICKING &&
         quantidadeTrocar(configs, requeriments.choosedCardType as Card) === 2
