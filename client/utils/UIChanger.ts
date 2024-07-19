@@ -33,6 +33,13 @@ function performUIChange(
     request: ChangeRequest
 ): [MenuTypes, ActionRequeriments] {
     if (Object.keys(request).length === 0) {
+        if (gameState.context.type === ContextType.BEING_ATTACKED) {
+            if (gameState.context.action === Action.BLOQUEAR)
+                return [ MenuTypes.BLOCK_DEFENSE, requeriments ];
+
+            return [ MenuTypes.DEFENSE, requeriments ];
+        }
+
         if (gameState.context.type === ContextType.OBSERVING)
             newToaster(contextToNotification(gameState.context));
 
