@@ -31,7 +31,7 @@ function performUIChange(
     menuType: MenuTypes,
     requeriments: ActionRequeriments,
     request: ChangeRequest
-): [MenuTypes, ActionRequeriments] {
+): [ MenuTypes, ActionRequeriments ] {
     if (Object.keys(request).length === 0) {
         if (gameState.context.type === ContextType.INVESTIGATING)
             return [
@@ -66,6 +66,9 @@ function performUIChange(
     const { goTo, ...requerimentsOfRequest } = request;
 
     const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
+
+    if ([MenuTypes.INVESTIGATING, MenuTypes.DEFENSE, MenuTypes.BLOCK_DEFENSE].indexOf(menuType) !== -1)
+        return [ menuType, requeriments ];
 
     if (goTo === MenuTypes.CLOSED)
         return [ MenuTypes.CLOSED, {} ];
