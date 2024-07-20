@@ -134,6 +134,11 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
     if (action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
         return MenuTypes.CARD_PICKING_CHANGE;
 
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.DEFENSE)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
     return MenuTypes.CLOSED;
 }
 
@@ -379,6 +384,12 @@ function isActionEmitable(
         return true;
 
     if (requeriments.action === Action.TROCAR_RELIGIAO_OUTRO)
+        return true;
+
+    if (
+        requeriments.action === Action.BLOQUEAR &&
+        menuType === MenuTypes.CARD_PICKING
+    )
         return true;
 
     return false;
