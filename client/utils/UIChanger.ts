@@ -139,6 +139,11 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
     if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
         return MenuTypes.CARD_PICKING;
 
+    if (action === Action.CONTESTAR && menuType === MenuTypes.DEFENSE)
+        return MenuTypes.CARD_PICKING;
+    if (action === Action.CONTESTAR && menuType === MenuTypes.BLOCK_DEFENSE)
+        return MenuTypes.CARD_PICKING;
+
     return MenuTypes.CLOSED;
 }
 
@@ -407,6 +412,37 @@ function isActionEmitable(
     )
         return true;
 
+    if (
+        requeriments.action === Action.CONTESTAR
+        &&
+        gameState.context.type === ContextType.BEING_ATTACKED
+        &&
+        (
+            (
+                !contestableActionNeedsSelfCard(
+                    gameState.context.previousAction as Action,
+                    gameState.context.preBlockAction
+                )
+                &&
+                (
+                    menuType === MenuTypes.DEFENSE
+                    ||
+                    menuType === MenuTypes.BLOCK_DEFENSE
+                )
+            )
+            ||
+            (
+                contestableActionNeedsSelfCard(
+                    gameState.context.previousAction as Action,
+                    gameState.context.preBlockAction
+                )
+                &&
+                menuType === MenuTypes.CARD_PICKING
+            )
+        )
+    )
+        return true;
+
     return false;
 }
 
@@ -442,4 +478,11 @@ function emitAction(
 
 function blockableActionNeedsSelfCard(blockableAction: Action): boolean {
     return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(blockableAction);
+}
+
+function contestableActionNeedsSelfCard(previousAction: Action, preBlockAction?: Action): boolean {
+    if (previousAction !== Action.BLOQUEAR)
+        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(previousAction);
+
+    return preBlockAction === Action.AJUDA_EXTERNA;
 }
