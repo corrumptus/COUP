@@ -73,7 +73,7 @@ function performUIChange(
     if (goTo === MenuTypes.CLOSED)
         return [ MenuTypes.CLOSED, {} ];
 
-    if (isActionEmitable(gameState.game.configs, newRequeriments, menuType)) {
+    if (isActionEmitable(gameState, newRequeriments, menuType)) {
         emitAction(
             // socket,
             gameState.game.configs,
@@ -331,7 +331,7 @@ function getRequestProblems(
 }
 
 function isActionEmitable(
-    configs: Config,
+    gameState: GameState,
     requeriments: ActionRequeriments,
     menuType: MenuTypes
 ): boolean {
@@ -369,14 +369,14 @@ function isActionEmitable(
     if (
         requeriments.action === Action.TROCAR &&
         menuType === MenuTypes.CARD_PICKING &&
-        quantidadeTrocar(configs, requeriments.choosedCardType as Card) === 2
+        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 2
     )
         return true;
 
     if (
         requeriments.action === Action.TROCAR &&
         menuType === MenuTypes.CARD_PICKING_CHANGE &&
-        quantidadeTrocar(configs, requeriments.choosedCardType as Card) === 1
+        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 1
     )
         return true;
 
@@ -387,8 +387,23 @@ function isActionEmitable(
         return true;
 
     if (
-        requeriments.action === Action.BLOQUEAR &&
-        menuType === MenuTypes.CARD_PICKING
+        requeriments.action === Action.BLOQUEAR
+        &&
+        gameState.context.type === ContextType.BEING_ATTACKED
+        &&
+        (
+            (
+                !blockableActionNeedsSelfCard(gameState.context.previousAction as Action)
+                &&
+                menuType === MenuTypes.DEFENSE
+            )
+            ||
+            (
+                blockableActionNeedsSelfCard(gameState.context.previousAction as Action)
+                &&
+                menuType === MenuTypes.CARD_PICKING
+            )
+        )
     )
         return true;
 
@@ -423,4 +438,8 @@ function emitAction(
 
     //@ts-ignore
     // socket.emit(...infos);
+}
+
+function blockableActionNeedsSelfCard(blockableAction: Action): boolean {
+    return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(blockableAction);
 }
