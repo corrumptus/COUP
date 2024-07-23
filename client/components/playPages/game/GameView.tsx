@@ -80,7 +80,9 @@ export type GameState = {
     attacker: string,
     action: Action,
     card: Card,
-    attackedCard?: number
+    attackedCard?: number,
+    previousAction?: Action,
+    preBlockAction?: Action
   } | {
     type: ContextType.OBSERVING,
     attacker: string,
