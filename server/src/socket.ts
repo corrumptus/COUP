@@ -6,7 +6,11 @@ import PlayerService from "./service/PlayerService";
 import ModifiedSocket from "./utils/ModifiedSocket";
 
 export default function initSocket(server: HTTPServer) {
-    const serverSocket: Server = new Server(server);
+    const serverSocket: Server = new Server(server, {
+        cors: {
+            origin: "*"
+        }
+    });
 
     serverSocket.on("connection", (socket: Socket) => {
         const modifiedSocket: ModifiedSocket = new ModifiedSocket(socket);
