@@ -1,19 +1,28 @@
 {
-    "quantidadeMoedasIniciais": 3,
+    "moedasIniciais": 3,
     "renda": 1,
     "ajudaExterna": 2,
     "quantidadeMinimaGolpeEstado": 7,
     "quantidadeMaximaGolpeEstado": 10,
-    "religiao": false,
-    "quantidadeTrocarPropriaReligiao": 1,
-    "quantidadeTrocarReligiaoOutroJogador": 2,
-    "deveresMesmaReligiao":
-        {
-            "golpeEstado": false,
-            "assassinar": false,
-            "extorquir": false,
-            "taxar": false
+    "religiao": {
+        "reforma": false,
+        "quantidadeTrocarPropria": 1,
+        "quantidadeTrocarOutro": 2,
+        "deveres": {
+            "golpeEstado": true,
+            "assassinar": true,
+            "extorquir": true,
+            "taxar": true
         },
+        "cartasParaCorrupcao": {
+            "duque": true,
+            "capitao": false,
+            "assassino": false,
+            "condessa": false,
+            "embaixador": false,
+            "inquisidor": false
+          }
+    },
     "tiposCartas":
         {
             "duque":
@@ -25,12 +34,14 @@
                     "investigar": false,
                     "quantidadeTaxar": 3,
                     "quantidadeExtorquir": 0,
+                    "quantidadeAssassinar": 0,
                     "quantidadeTrocar": 0,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": false,
-                    "bloqueiaAssassinar": false,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 0,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": false,
+                    "bloquearAssassinar": false,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 },
             "capitao":
                 {
@@ -41,12 +52,14 @@
                     "investigar": false,
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 2,
+                    "quantidadeAssassinar": 0,
                     "quantidadeTrocar": 0,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": true,
-                    "bloqueiaAssassinar": false,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 0,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": true,
+                    "bloquearAssassinar": false,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 },
             "assassino":
                 {
@@ -57,12 +70,14 @@
                     "investigar": false,
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 0,
+                    "quantidadeAssassinar": 3,
                     "quantidadeTrocar": 0,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": false,
-                    "bloqueiaAssassinar": false,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 0,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": false,
+                    "bloquearAssassinar": false,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 },
             "condessa":
                 {
@@ -73,12 +88,14 @@
                     "investigar": false,
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 0,
+                    "quantidadeAssassinar": 0,
                     "quantidadeTrocar": 0,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": false,
-                    "bloqueiaAssassinar": true,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 0,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": false,
+                    "bloquearAssassinar": true,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 },
             "embaixador":
                 {
@@ -89,12 +106,14 @@
                     "investigar": false,
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 0,
+                    "quantidadeAssassinar": 0,
                     "quantidadeTrocar": 2,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": true,
-                    "bloqueiaAssassinar": false,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 0,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": true,
+                    "bloquearAssassinar": false,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 },
             "inquisidor":
                 {
@@ -105,13 +124,14 @@
                     "investigar": true,
                     "quantidadeTaxar": 0,
                     "quantidadeExtorquir": 0,
+                    "quantidadeAssassinar": 0,
                     "quantidadeTrocar": 1,
-                    "bloqueiaTaxar": false,
-                    "bloqueiaExtorquir": true,
-                    "bloqueiaAssassinar": false,
-                    "bloqueiaTrocar": false,
-                    "bloqueiaInvestigar": false
+                    "quantidadeInvestigar": 1,
+                    "bloquearTaxar": false,
+                    "bloquearExtorquir": true,
+                    "bloquearAssassinar": false,
+                    "bloquearTrocar": false,
+                    "bloquearInvestigar": false
                 }
-        },
-    "preçoAssassinato": 3
+        }
 }
