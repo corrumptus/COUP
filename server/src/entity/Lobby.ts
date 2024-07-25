@@ -95,4 +95,12 @@ export default class Lobby {
     getGame(): Game | null {
         return this.currentGame;
     }
+
+    toLobbyFinder() {
+        return {
+            id: this.id,
+            quantidadePlayers: this.currentPlayers.length,
+            aberto: this.currentGame !== null
+        }
+    }
 }

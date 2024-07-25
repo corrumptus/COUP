@@ -54,7 +54,7 @@ api.post("/signup", async (req, res) => {
 });
 
 api.get("/lobby", (_, res) => {
-    res.send(LobbyService.allServers);
+    res.send(LobbyService.allLobbys);
 });
 
 api.post("/lobby", async (req, res) => {

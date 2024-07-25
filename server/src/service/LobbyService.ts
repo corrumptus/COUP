@@ -99,4 +99,10 @@ export default class LobbyService {
 
         return lobby;
     }
+
+    static get allLobbys() {
+        return LobbyService.lobbys
+            .filter(lobby => !lobby.isEmpty)
+            .map(lobby => lobby.toLobbyFinder());
+    }
 }
