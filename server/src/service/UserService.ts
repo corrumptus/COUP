@@ -33,7 +33,7 @@ export default class UserService {
 
         try {
             name = (await jwtVerify(
-                token.token,
+                token,
                 UserService.mySecret,
                 {
                     issuer: "COUP Game",
@@ -42,7 +42,7 @@ export default class UserService {
                 }
             )).payload.sub;
         } catch (error) {
-            throw new Error("Invalid token: " + token.token);
+            throw new Error("Invalid token: " + token);
         }
 
         if (name === undefined)
