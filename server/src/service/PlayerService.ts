@@ -1,7 +1,7 @@
 import Player from "../entity/player";
 import LobbyService from "./LobbyService";
 import Lobby from "../entity/Lobby";
-import ModifiedSocket from "../utils/ModifiedSocket";
+import { COUPSocket } from "../socket/socket";
 
 export default class PlayerService {
     private static players: {
@@ -12,7 +12,7 @@ export default class PlayerService {
         }
     } = {};
 
-    static setListeners(socket: ModifiedSocket) {
+    static setListeners(socket: COUPSocket) {
         socket.on("login", (name: string) => {
             const newPlayer = new Player(name);
 
@@ -28,7 +28,7 @@ export default class PlayerService {
         PlayerService.declare(socket);
     }
 
-    private static declare(socket: ModifiedSocket) {
+    private static declare(socket: COUPSocket) {
         PlayerService.players[socket.id] = { player: null, lobbyID: -1 };
     }
 

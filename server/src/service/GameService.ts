@@ -4,10 +4,10 @@ import Player from "../entity/player";
 import Turn from "../entity/Turn";
 import Game from "../entity/Game";
 import Config from "../utils/Config";
-import ModifiedSocket from "../utils/ModifiedSocket";
+import { COUPSocket } from "../socket/socket";
 
 export default class GameService {
-    static setListeners(socket: ModifiedSocket) {
+    static setListeners(socket: COUPSocket) {
         socket.on("initGame", (customConfigs?: Config) => {
             const lobby = PlayerService.getPlayersLobby(socket.id);
 

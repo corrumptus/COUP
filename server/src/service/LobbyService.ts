@@ -1,14 +1,14 @@
 import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import PlayerService from "./PlayerService";
-import ModifiedSocket from "../utils/ModifiedSocket";
+import { COUPSocket } from "../socket/socket";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];
     private static newLobbyID: number;
     private static emptyLobbys: number[] = [];
 
-    static setListeners(socket: ModifiedSocket) {
+    static setListeners(socket: COUPSocket) {
         socket.on("createLobby", () => {
             const player = PlayerService.getPlayer(socket.id);
 
