@@ -48,18 +48,15 @@ export default class UserValidator {
         return true;
     }
 
-    static isToken(obj: any): obj is UserToken {
-        if (!UserValidator.isObject(obj))
-            throw new Error("The parameter must be a Object");
+    static isToken(token: any): token is UserToken {
+        if (token === undefined)
+            throw new Error("Token must be provided");
 
-        if (!("token" in obj))
-            throw new Error("The object must have the following properties: token");
+        if (!UserValidator.isString(token))
+            throw new Error("Token must be a string");
 
-        if (!UserValidator.isString(obj.token))
-            throw new Error("Token cannot be a blank string");
-
-        if (obj.token.trim() === "")
-            throw new Error("Token cannot be a blank string");
+        if (token.trim() === "")
+            throw new Error("Token cannot be blank");
 
         return true;
     }
