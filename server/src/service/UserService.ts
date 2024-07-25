@@ -38,7 +38,7 @@ export default class UserService {
                 {
                     issuer: "COUP Game",
                     maxTokenAge: "2 days",
-                    clockTolerance: "1 day"
+                    clockTolerance: "30 day"
                 }
             )).payload.sub;
         } catch (error) {
@@ -90,7 +90,7 @@ export default class UserService {
             {
                 issuer: "COUP Game",
                 maxTokenAge: "2 days",
-                clockTolerance: "1 day"
+                clockTolerance: "30 day"
             }
         )).payload.sub;
     }
