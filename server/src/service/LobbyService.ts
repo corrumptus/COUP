@@ -2,6 +2,7 @@ import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import PlayerService from "./PlayerService";
 import { COUPSocket } from "../socket/socket";
+import Config from "../utils/Config";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];
@@ -9,34 +10,20 @@ export default class LobbyService {
     private static emptyLobbys: number[] = [];
 
     static setListeners(socket: COUPSocket) {
-        socket.on("createLobby", () => {
-            const player = PlayerService.getPlayer(socket.id);
-
-            if (player === null)
-                return;
-
-            const lobbyID: number = LobbyService.enterEmptyLobbyOrCreate(player);
-
-            PlayerService.setPlayersLobby(socket.id, lobbyID);
+        socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
+            
         });
 
-        socket.on("enterLobby", (lobbyID: number) => {
-            const player = PlayerService.getPlayer(socket.id);
+        socket.on("newOwner", (name: string) => {
 
-            if (player === null)
-                return;
-
-            const hasEntered: boolean = LobbyService.enterLobby(player, lobbyID);
-
-            if (hasEntered)
-                PlayerService.setPlayersLobby(socket.id, lobbyID);
         });
 
-        socket.on("leaveLobby", (lobbyID: number) => {
-            LobbyService.deletePlayer({
-                player: PlayerService.getPlayer(socket.id),
-                lobbyID: lobbyID 
-            });
+        socket.on("removePlayer", (name: string) => {
+
+        });
+
+        socket.on("beginMatch", (customConfigs?: Config) => {
+
         });
     }
 
