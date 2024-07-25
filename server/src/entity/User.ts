@@ -1,12 +1,10 @@
-export type UserProps = UserLogin & {
-    id: number;
-};
-
 export type UserLogin = {
     name: string;
     password: string;
-};
+}
 
-export type UserToken = {
-    token: string;
-};
+export type UserProps = UserLogin & {
+    id: number;
+}
+
+export type UserToken = string
