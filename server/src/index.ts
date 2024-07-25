@@ -1,6 +1,6 @@
 import http, { Server } from 'http'
 import api from './api/api';
-import initSocket from './socket';
+import initSocket from './socket/socket';
 
 require('dotenv').config();
 
