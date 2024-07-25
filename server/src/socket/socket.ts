@@ -9,8 +9,6 @@ import Config from "../utils/Config";
 interface RequestSocketOnEvents {
     "disconnect": () => void;
 
-    "enterLobby": (lobbyID: number) => void;
-
     "updateConfigs": (keys: string[], value: number | boolean) => void;
     "newOwner": (name: string) => void;
     "removePlayer": (name: string) => void;
