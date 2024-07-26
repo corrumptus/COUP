@@ -109,4 +109,8 @@ export default class Lobby {
     newOwner(player: Player) {
         this.owner = player;
     }
+
+    isOwner(player: Player): boolean {
+        return player === this.owner;
+    }
 }
