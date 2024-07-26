@@ -5,7 +5,6 @@ import Config from "../utils/Config";
 
 export default class Lobby {
     readonly id: number;
-    private games: Game[] = [];
     private currentGame: Game | null = null;
     private currentPlayers: Player[];
     private owner: Player;
@@ -79,8 +78,6 @@ export default class Lobby {
     }
 
     currentGameAlreadyFinish() {
-        this.games.push(this.currentGame as Game);
-
         this.currentGame = null;
     }
 
