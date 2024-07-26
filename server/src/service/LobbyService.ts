@@ -11,7 +11,9 @@ export default class LobbyService {
 
     static setListeners(socket: COUPSocket) {
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
-            
+            const lobby = PlayerService.getPlayersLobby(socket.id);
+
+            lobby.updateConfigs(keys, value);
         });
 
         socket.on("newOwner", (name: string) => {
