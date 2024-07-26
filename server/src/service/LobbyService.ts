@@ -26,15 +26,15 @@ export default class LobbyService {
         });
     }
 
-    private static enterLobby(player: Player, lobbyID: number): boolean {
+    static enterLobby(player: Player, lobbyID: number): number {
         const lobby = LobbyService.lobbys[lobbyID];
 
         if (lobby === undefined)
-            return false;
+            throw new Error("Lobby not found");
 
         lobby.addPlayer(player);
 
-        return true;
+        return lobbyID;
     }
 
     static enterNewLobby(player: Player): number {
