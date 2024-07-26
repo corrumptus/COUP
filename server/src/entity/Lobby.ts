@@ -105,4 +105,8 @@ export default class Lobby {
 
         config[keys[keys.length - 1]] = value;
     }
+
+    newOwner(player: Player) {
+        this.owner = player;
+    }
 }
