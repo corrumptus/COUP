@@ -5,7 +5,6 @@ import PlayerService from "./PlayerService";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];
-    private static newLobbyID: number;
     private static emptyLobbys: number[] = [];
 
     static setListeners(socket: COUPSocket) {
@@ -88,13 +87,11 @@ export default class LobbyService {
     }
 
     private static createNewLobby(player: Player): number {
-        const lobbyID = LobbyService.newLobbyID++;
-
-        const newLobby: Lobby = new Lobby(lobbyID, player);
+        const newLobby: Lobby = new Lobby(LobbyService.lobbys.length, player);
 
         LobbyService.lobbys.push(newLobby);
 
-        return lobbyID;
+        return LobbyService.lobbys.length - 1;
     }
 
     static deletePlayer({ player, lobbyID }: { player: Player | null, lobbyID: number }) {
@@ -111,10 +108,8 @@ export default class LobbyService {
     private static handleLobbyDeleting(lobbyID: number) {
         const lobby = LobbyService.lobbys[lobbyID];
 
-        if (lobbyID === LobbyService.newLobbyID - 1 && lobby.isEmpty) {
+        if (lobbyID === LobbyService.lobbys.length - 1 && lobby.isEmpty)
             LobbyService.lobbys.pop();
-            LobbyService.newLobbyID--;
-        }
 
         if (lobby.isEmpty)
             LobbyService.emptyLobbys.push(lobbyID);
