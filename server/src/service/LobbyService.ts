@@ -12,6 +12,11 @@ export default class LobbyService {
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
             const lobby = PlayerService.getPlayersLobby(socket.id);
 
+            const player = PlayerService.getPlayer(socket.id);
+
+            if (!lobby.isOwner(player))
+                return;
+
             lobby.updateConfigs(keys, value);
         });
 
