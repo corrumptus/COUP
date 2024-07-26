@@ -77,4 +77,23 @@ api.post("/lobby", async (req, res) => {
     }
 });
 
+api.post("/lobby/:id", async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+
+        if (!UserValidator.isToken(token))
+            throw new Error("The user cannot enter into servers without being logged in");
+
+        await UserService.loginByToken(token);
+
+        const name = await UserService.getName(token) as string;
+
+        PlayerService.addWaitingPlayer(name, Number(req.params.id));
+
+        res.send();
+    } catch (error) {
+        res.status(401).send({ error: (error as Error).message });
+    }
+});
+
 export default api;
