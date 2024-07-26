@@ -1,6 +1,5 @@
 import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
-import PlayerService from "./PlayerService";
 import { COUPSocket } from "../socket/socket";
 import Config from "../utils/Config";
 
@@ -27,16 +26,6 @@ export default class LobbyService {
         });
     }
 
-    private static enterEmptyLobbyOrCreate(player: Player): number {
-        const lobbyID: number =
-            LobbyService.emptyLobbys.length > 0 ?
-                LobbyService.enterEmptyLobby(player)
-                :
-                LobbyService.createNewLobby(player);
-
-        return lobbyID;
-    }
-
     private static enterLobby(player: Player, lobbyID: number): boolean {
         const lobby = LobbyService.lobbys[lobbyID];
 
@@ -46,6 +35,16 @@ export default class LobbyService {
         lobby.addPlayer(player);
 
         return true;
+    }
+
+    static enterNewLobby(player: Player): number {
+        const lobbyID: number =
+            LobbyService.emptyLobbys.length > 0 ?
+                LobbyService.enterEmptyLobby(player)
+                :
+                LobbyService.createNewLobby(player);
+
+        return lobbyID;
     }
 
     private static enterEmptyLobby(player: Player): number {

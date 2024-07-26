@@ -3,6 +3,7 @@ import { UserLogin, UserToken } from "../entity/User";
 import UserService from "../service/UserService";
 import UserValidator from "../utils/UserValidator";
 import LobbyService from "../service/LobbyService";
+import PlayerService from "../service/PlayerService";
 
 const api: Express = express();
 
@@ -58,18 +59,17 @@ api.get("/lobby", (_, res) => {
 });
 
 api.post("/lobby", async (req, res) => {
-    const token = req.headers.authorization;
-
-    if (token === undefined) {
-        res.status(401).send({ error: "The user cannot enter into servers without being logged in" });
-        return;
-    }
-
     try {
+        const token = req.headers.authorization;
+
         if (!UserValidator.isToken(token))
-            return;
+            throw new Error("The user cannot enter into servers without being logged in");
 
         await UserService.loginByToken(token);
+
+        const name = await UserService.getName(token) as string;
+
+        PlayerService.addWaitingPlayer(name);
 
         res.send();
     } catch (error) {
