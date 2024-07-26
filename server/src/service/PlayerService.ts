@@ -62,15 +62,12 @@ export default class PlayerService {
         return PlayerService.players[socketID].player !== null;
     }
 
-    static getPlayer(socketID: string): Player | null {
+    static getPlayer(socketID: string): Player {
         return PlayerService.players[socketID].player;
     }
 
-    static getPlayersLobby(socketID: string): Lobby | null {
+    static getPlayersLobby(socketID: string): Lobby {
         const player = PlayerService.players[socketID];
-
-        if (player === undefined)
-            return null;
 
         return LobbyService.getLobby(player.lobbyID);
     }

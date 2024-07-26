@@ -2,6 +2,7 @@ import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import { COUPSocket } from "../socket/socket";
 import Config from "../utils/Config";
+import PlayerService from "./PlayerService";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];
@@ -90,11 +91,8 @@ export default class LobbyService {
             LobbyService.emptyLobbys.push(lobbyID);
     }
 
-    static getLobby(lobbyID: number): Lobby | null {
+    static getLobby(lobbyID: number): Lobby {
         const lobby = LobbyService.lobbys[lobbyID];
-
-        if (lobby === undefined)
-            return null;
 
         return lobby;
     }
