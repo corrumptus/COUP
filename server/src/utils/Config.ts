@@ -6,7 +6,9 @@ type Carta = {
     investigar: boolean,
     quantidadeTaxar: number,
     quantidadeExtorquir: number,
+    quantidadeAssassinar: number,
     quantidadeTrocar: number,
+    quantidadeInvestigar: number,
     bloquearTaxar: boolean,
     bloquearExtorquir: boolean,
     bloquearAssassinar: boolean,
@@ -15,19 +17,29 @@ type Carta = {
 }
 
 type Config = {
-    quantidadeMoedasIniciais: number,
+    moedasIniciais: number,
     renda: number,
     ajudaExterna: number,
     quantidadeMinimaGolpeEstado: number,
     quantidadeMaximaGolpeEstado: number,
-    religiao: boolean,
-    quantidadeTrocarPropriaReligiao: number,
-    quantidadeTrocarReligiaoOutroJogador: number,
-    deveresMesmaReligiao: {
-        golpeEstado: boolean,
-        assassinar: boolean,
-        extorquir: boolean,
-        taxar: boolean
+    religiao: {
+        reforma: boolean,
+        quantidadeTrocarPropria: number,
+        quantidadeTrocarOutro: number,
+        deveres: {
+            golpeEstado: boolean,
+            assassinar: boolean,
+            extorquir: boolean,
+            taxar: boolean
+        },
+        cartasParaCorrupcao: {
+            duque: boolean,
+            capitao: boolean,
+            assassino: boolean,
+            condessa: boolean,
+            embaixador: boolean,
+            inquisidor: boolean
+        }
     },
     tiposCartas: {
         duque: Carta,
@@ -36,8 +48,7 @@ type Config = {
         condessa: Carta,
         embaixador: Carta,
         inquisidor: Carta
-    },
-    precoAssassinato: number
+    }
 }
 
 export default Config;
