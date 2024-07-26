@@ -4,7 +4,6 @@ import GameService from "../service/GameService";
 import LobbyService from "../service/LobbyService";
 import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
-import Config from "../utils/Config";
 
 interface RequestSocketOnEvents {
     "disconnect": () => void;
@@ -12,7 +11,7 @@ interface RequestSocketOnEvents {
     "updateConfigs": (keys: string[], value: number | boolean) => void;
     "newOwner": (name: string) => void;
     "removePlayer": (name: string) => void;
-    "beginMatch": (customConfigs?: Config) => void;
+    "beginMatch": () => void;
 
     "renda": () => void;
     "ajudaExterna": () => void;
