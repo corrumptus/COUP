@@ -72,13 +72,23 @@ export default class PlayerService {
         return LobbyService.getLobby(player.lobbyID);
     }
 
+    static getPlayersLobbyByName(name: string): Lobby | null {
+        const playerInfos = Object.values(PlayerService.players)
+            .find(p => p.player.name === name);
+
+        if (playerInfos === undefined)
+            return null;
+
+        return LobbyService.getLobby(playerInfos.lobbyID);
+    }
+
     static setPlayersLobby(socketID: string, lobbyID: number) {
         PlayerService.players[socketID].lobbyID = lobbyID;
     }
 
-    static getPlayerByName(name: string | undefined): Player | null {
+    static getPlayerByName(name: string): Player | null {
         return Object.values(PlayerService.players)
             .map(infos => infos.player)
-            .find(player => player?.name === name) || null;
+            .find(player => player.name === name) || null;
     }
 }
