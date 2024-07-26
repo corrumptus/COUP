@@ -26,10 +26,10 @@ export default class PlayerService {
 
         PlayerService.waitingPlayers[name] = {
             player: newPlayer,
-            lobbyID: lobbyID !== undefined ?
-                lobbyID
-                :
+            lobbyID: lobbyID === undefined ?
                 LobbyService.enterNewLobby(newPlayer)
+                :
+                LobbyService.enterLobby(newPlayer, lobbyID)
         };
 
         setTimeout(
