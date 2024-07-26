@@ -44,7 +44,7 @@ export default function LobbyView({
     setLobbyState(lobbyState);
   });
 
-  socket.on("configsUpdate", (keys: string[], value: number | boolean) => {
+  socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
     const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
     let configParam: any = newLobbyState.lobby.configs;
 

@@ -89,7 +89,7 @@ type ResponseSocketEmitEvents = {
 
 type RequestSocketOnEvents = {
   "playerConnected": (gameState: LobbyState) => void;
-  "configsUpdate": (keys: string[], value: number | boolean) => void;
+  "configsUpdated": (keys: string[], value: number | boolean) => void;
   "newPlayer": (player: string) => void;
   "leavingPlayer": (index: number) => void;
   "gameInit": (gameState: GameState) => void;
