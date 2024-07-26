@@ -1,7 +1,6 @@
 import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import { COUPSocket } from "../socket/socket";
-import Config from "../utils/Config";
 import PlayerService from "./PlayerService";
 
 export default class LobbyService {
@@ -40,8 +39,15 @@ export default class LobbyService {
             PlayerService.removePlayerByName(name);
         });
 
-        socket.on("beginMatch", (customConfigs?: Config) => {
+        socket.on("beginMatch", () => {
+            const lobby = PlayerService.getPlayersLobby(socket.id);
 
+            const player = PlayerService.getPlayer(socket.id);
+
+            if (!lobby.isOwner(player))
+                return;
+
+            lobby.newGame();
         });
     }
 
