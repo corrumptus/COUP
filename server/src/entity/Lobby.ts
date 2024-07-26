@@ -96,4 +96,13 @@ export default class Lobby {
             aberto: this.currentGame !== null
         }
     }
+
+    updateConfigs(keys: string[], value: number | boolean) {
+        let config: any = this.configs;
+
+        for (let i = 0; i < keys.length - 1; i++)
+            config = config[keys[i]];
+
+        config[keys[keys.length - 1]] = value;
+    }
 }
