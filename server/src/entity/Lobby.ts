@@ -8,11 +8,13 @@ export default class Lobby {
     private currentGame: Game | null = null;
     private currentPlayers: Player[];
     private owner: Player;
+    private configs: Config; 
 
     constructor(id: number, owner: Player) {
         this.id = id;
         this.currentPlayers = [owner];
         this.owner = owner;
+        this.configs = COUPdefaultConfigs;
     }
 
     addPlayer(player: Player) {
@@ -45,15 +47,12 @@ export default class Lobby {
         this.currentGame.deletePlayer(player);
     }
 
-    newGame(customConfigs?: Config) {
+    newGame() {
         if (this.currentGame === null) {
             this.currentGame = new Game(
                 this.currentPlayers,
                 this.currentGameAlreadyFinish,
-                {
-                    ...((COUPdefaultConfigs as unknown) as Config),
-                    ...customConfigs
-                }
+                { ...COUPdefaultConfigs, ...this.configs }
             );
 
             return;
@@ -69,10 +68,7 @@ export default class Lobby {
         this.currentGame = new Game(
             this.currentPlayers,
             this.currentGameAlreadyFinish,
-            {
-                ...((COUPdefaultConfigs as unknown) as Config),
-                ...customConfigs
-            },
+            { ...COUPdefaultConfigs, ...this.configs },
             winnerPosition !== -1 ? 0 : winnerPosition
         );
     }
