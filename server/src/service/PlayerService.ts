@@ -40,9 +40,7 @@ export default class PlayerService {
 
     static setListeners(socket: COUPSocket) {
         socket.on("disconnect", () => {
-            LobbyService.deletePlayer(PlayerService.players[socket.id]);
-
-            delete PlayerService.players[socket.id];
+            PlayerService.removePlayer(socket.id);
         });
 
         PlayerService.declare(socket);
@@ -90,5 +88,21 @@ export default class PlayerService {
         return Object.values(PlayerService.players)
             .map(infos => infos.player)
             .find(player => player.name === name) || null;
+    }
+
+    static removePlayer(socketId: string) {
+        LobbyService.deletePlayer(PlayerService.players[socketId]);
+
+        delete PlayerService.players[socketId];
+    }
+
+    static removePlayerByName(name: string) {
+        const playerInfos = Object.entries(PlayerService.players)
+            .find(([_, { player }]) => player.name === name);
+
+        if (playerInfos === undefined)
+            return;
+
+        PlayerService.removePlayer(playerInfos[0]);
     }
 }
