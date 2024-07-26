@@ -17,7 +17,16 @@ export default class LobbyService {
         });
 
         socket.on("newOwner", (name: string) => {
+            const lobby = PlayerService.getPlayersLobby(socket.id);
 
+            const newOwnerLobby = PlayerService.getPlayersLobbyByName(name);
+
+            if (lobby !== newOwnerLobby)
+                return;
+
+            const player = PlayerService.getPlayerByName(name) as Player;
+
+            lobby.newOwner(player);
         });
 
         socket.on("removePlayer", (name: string) => {
