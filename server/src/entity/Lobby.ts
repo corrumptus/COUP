@@ -27,7 +27,7 @@ export default class Lobby {
             this.owner = player;
     }
 
-    removePlayer(player: Player | null): number {
+    removePlayer(player: Player): number {
         if (player === null)
             return -1;
 
@@ -40,7 +40,7 @@ export default class Lobby {
             this.owner = this.currentPlayers[playerIndex !== 0 ? 0 : 1];
 
         if (this.currentGame !== null)
-            this.currentGame.deletePlayer(player);
+            this.currentGame.deletePlayer(playerIndex);
 
         return playerIndex;
     }
