@@ -8,7 +8,7 @@ export default class Lobby {
     private currentGame: Game | null = null;
     private currentPlayers: Player[];
     private owner: Player | null;
-    private configs: Config; 
+    private configs: Config;
 
     constructor(id: number, owner: Player) {
         this.id = id;

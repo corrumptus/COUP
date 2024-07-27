@@ -94,7 +94,7 @@ export default class PlayerService {
         const player = PlayerService.players[socketId];
 
         delete PlayerService.players[socketId];
-        
+
         return LobbyService.deletePlayer(player.lobbyID, player.player);
     }
 

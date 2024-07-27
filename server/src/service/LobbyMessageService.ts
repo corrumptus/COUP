@@ -5,14 +5,14 @@ import LobbyService from "./LobbyService";
 
 export type LobbyState = {
     player: {
-      name: string
+        name: string
     },
     lobby: {
-      players: string[],
-      owner: string,
-      configs: Config
+        players: string[],
+        owner: string,
+        configs: Config
     }
-  }
+}
 
 export default class LobbyMessageService {
     private static lobbys: {
