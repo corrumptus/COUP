@@ -95,6 +95,8 @@ export default class LobbyService {
 
         LobbyService.lobbys.push(newLobby);
 
+        LobbyMessageService.newLobby(newLobby);
+
         return LobbyService.lobbys.length - 1;
     }
 
