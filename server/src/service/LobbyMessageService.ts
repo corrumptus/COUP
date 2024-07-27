@@ -19,6 +19,10 @@ export default class LobbyMessageService {
         }
     }
 
+    static removeLobby(lobbyId: number) {
+        delete this.lobbys[lobbyId];
+    }
+
     static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
         if (!(lobbyId in this.lobbys))
             return;
@@ -26,7 +30,15 @@ export default class LobbyMessageService {
         this.lobbys[lobbyId].players.push({ socket: socket, name: name });
     }
 
-    static removeLobby(lobbyId: number) {
-        delete this.lobbys[lobbyId];
+    static removePlayer(lobbyId: number, name: string) {
+        if (!(lobbyId in this.lobbys))
+            return;
+
+        const playerIndex = this.lobbys[lobbyId].players.findIndex(p => p.name === name);
+
+        if (playerIndex === -1)
+            return;
+
+        this.lobbys[lobbyId].players.splice(playerIndex, 1);
     }
 }
