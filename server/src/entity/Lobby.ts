@@ -7,7 +7,7 @@ export default class Lobby {
     readonly id: number;
     private currentGame: Game | null = null;
     private currentPlayers: Player[];
-    private owner: Player;
+    private owner: Player | null;
     private configs: Config; 
 
     constructor(id: number, owner: Player) {
@@ -36,8 +36,12 @@ export default class Lobby {
         if (playerIndex === -1)
             return -1;
 
-        if (this.owner === player)
-            this.owner = this.currentPlayers[playerIndex !== 0 ? 0 : 1];
+        if (this.owner === player) {
+            if (this.currentPlayers.length > 1)
+                this.owner = this.currentPlayers[playerIndex !== 0 ? 0 : 1];
+            else
+                this.owner = null;
+        }
 
         if (this.currentGame !== null)
             this.currentGame.deletePlayer(playerIndex);
@@ -115,7 +119,7 @@ export default class Lobby {
     getState() {
         return {
             players: this.currentPlayers.map(p => p.name),
-            owner: this.owner.name,
+            owner: this.owner?.name || "",
             configs: this.configs
         };
     }
