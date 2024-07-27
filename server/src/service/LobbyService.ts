@@ -9,11 +9,11 @@ export default class LobbyService {
     private static emptyLobbys: number[] = [];
 
     static setListeners(socket: COUPSocket) {
+        const lobby = PlayerService.getPlayersLobby(socket.id);
+
+        const player = PlayerService.getPlayer(socket.id);
+
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
-            const lobby = PlayerService.getPlayersLobby(socket.id);
-
-            const player = PlayerService.getPlayer(socket.id);
-
             if (!lobby.isOwner(player))
                 return;
 
@@ -23,23 +23,19 @@ export default class LobbyService {
         });
 
         socket.on("newOwner", (name: string) => {
-            const lobby = PlayerService.getPlayersLobby(socket.id);
-
             const newOwnerLobby = PlayerService.getPlayersLobbyByName(name);
 
             if (lobby !== newOwnerLobby)
                 return;
 
-            const player = PlayerService.getPlayerByName(name) as Player;
+            const otherPlayer = PlayerService.getPlayerByName(name) as Player;
 
-            lobby.newOwner(player);
+            lobby.newOwner(otherPlayer);
 
             LobbyMessageService.sendLobbyStateChanges(lobby.id, "newOwner", name);
         });
 
         socket.on("removePlayer", (name: string) => {
-            const lobby = PlayerService.getPlayersLobby(socket.id);
-
             const removedPlayersLobby = PlayerService.getPlayersLobbyByName(name);
 
             if (lobby !== removedPlayersLobby)
@@ -54,10 +50,6 @@ export default class LobbyService {
         });
 
         socket.on("beginMatch", () => {
-            const lobby = PlayerService.getPlayersLobby(socket.id);
-
-            const player = PlayerService.getPlayer(socket.id);
-
             if (!lobby.isOwner(player))
                 return;
 
