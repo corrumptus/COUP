@@ -13,6 +13,8 @@ export default class LobbyService {
 
         const player = PlayerService.getPlayer(socket.id);
 
+        LobbyMessageService.newPlayer(lobby.id, player.name, socket);
+
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
             if (!lobby.isOwner(player))
                 return;
