@@ -107,8 +107,15 @@ export default class LobbyService {
             return -1;
 
         LobbyService.handleLobbyDeleting(lobby.id);
-        
-        return lobby.removePlayer(player);
+
+        const index = lobby.removePlayer(player);
+
+        if (index === -1)
+            return -1;
+
+        LobbyMessageService.removePlayer(lobby.id, player.name);
+
+        return index;
     }
 
     private static handleLobbyDeleting(lobbyId: number) {
