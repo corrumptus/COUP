@@ -62,35 +62,35 @@ export default class LobbyService {
         });
     }
 
-    static enterLobby(player: Player, lobbyID: number): number {
-        const lobby = LobbyService.lobbys[lobbyID];
+    static enterLobby(player: Player, lobbyId: number): number {
+        const lobby = LobbyService.lobbys[lobbyId];
 
         if (lobby === undefined)
             throw new Error("Lobby not found");
 
         lobby.addPlayer(player);
 
-        return lobbyID;
+        return lobbyId;
     }
 
     static enterNewLobby(player: Player): number {
-        const lobbyID: number =
+        const lobbyId: number =
             LobbyService.emptyLobbys.length > 0 ?
                 LobbyService.enterEmptyLobby(player)
                 :
                 LobbyService.createNewLobby(player);
 
-        return lobbyID;
+        return lobbyId;
     }
 
     private static enterEmptyLobby(player: Player): number {
-        const lobbyID = LobbyService.emptyLobbys.at(-1) as number;
+        const lobbyId = LobbyService.emptyLobbys.at(-1) as number;
 
-        LobbyService.lobbys[lobbyID].addPlayer(player);
+        LobbyService.lobbys[lobbyId].addPlayer(player);
 
         LobbyService.emptyLobbys.pop();
 
-        return lobbyID;
+        return lobbyId;
     }
 
     private static createNewLobby(player: Player): number {
@@ -101,8 +101,8 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
-    static deletePlayer({ player, lobbyID }: { player: Player | null, lobbyID: number }): number {
-        const lobby = LobbyService.lobbys[lobbyID];
+    static deletePlayer(lobbyId: number, player: Player): number {
+        const lobby = LobbyService.lobbys[lobbyId];
 
         if (lobby === undefined)
             return -1;
@@ -112,18 +112,18 @@ export default class LobbyService {
         return lobby.removePlayer(player);
     }
 
-    private static handleLobbyDeleting(lobbyID: number) {
-        const lobby = LobbyService.lobbys[lobbyID];
+    private static handleLobbyDeleting(lobbyId: number) {
+        const lobby = LobbyService.lobbys[lobbyId];
 
-        if (lobbyID === LobbyService.lobbys.length - 1 && lobby.isEmpty)
+        if (lobbyId === LobbyService.lobbys.length - 1 && lobby.isEmpty)
             LobbyService.lobbys.pop();
 
         if (lobby.isEmpty)
-            LobbyService.emptyLobbys.push(lobbyID);
+            LobbyService.emptyLobbys.push(lobbyId);
     }
 
-    static getLobby(lobbyID: number): Lobby {
-        const lobby = LobbyService.lobbys[lobbyID];
+    static getLobby(lobbyId: number): Lobby {
+        const lobby = LobbyService.lobbys[lobbyId];
 
         return lobby;
     }
