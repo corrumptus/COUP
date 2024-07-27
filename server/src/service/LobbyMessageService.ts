@@ -1,5 +1,17 @@
 import Lobby from "../entity/Lobby";
 import { COUPSocket } from "../socket/socket";
+import Config from "../utils/Config";
+
+export type LobbyState = {
+    player: {
+      name: string
+    },
+    lobby: {
+      players: string[],
+      owner: string,
+      configs: Config
+    }
+  }
 
 export default class LobbyMessageService {
     private static lobbys: {
