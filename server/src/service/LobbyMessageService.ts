@@ -1,6 +1,7 @@
 import Lobby from "../entity/Lobby";
 import { COUPSocket } from "../socket/socket";
 import Config from "../utils/Config";
+import LobbyService from "./LobbyService";
 
 export type LobbyState = {
     player: {
@@ -40,6 +41,8 @@ export default class LobbyMessageService {
             return;
 
         this.lobbys[lobbyId].players.push({ socket: socket, name: name });
+
+        socket.emit("playerConnected", LobbyMessageService.calculateLobbyState(lobbyId, name));
     }
 
     static removePlayer(lobbyId: number, name: string) {
@@ -52,5 +55,18 @@ export default class LobbyMessageService {
             return;
 
         this.lobbys[lobbyId].players.splice(playerIndex, 1);
+    }
+
+    private static calculateLobbyState(lobbyId: number, playerName: string): LobbyState {
+        const lobby = LobbyService.getLobby(lobbyId);
+
+        const lobbyState = lobby.getState();
+
+        return {
+            player: {
+                name: playerName
+            },
+            lobby: lobbyState
+        }
     }
 }
