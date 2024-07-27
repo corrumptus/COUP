@@ -40,6 +40,7 @@ export interface ResponseSocketEmitEvents {
     "configsUpdated": (keys: string[], value: number | boolean) => void;
     "newPlayer": (player: string) => void;
     "leavingPlayer": (index: number) => void;
+    "newOwner": (name: string) => void;
 }
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
