@@ -18,4 +18,11 @@ export default class LobbyMessageService {
             players: []
         }
     }
+
+    static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
+        if (!(lobbyId in this.lobbys))
+            return;
+
+        this.lobbys[lobbyId].players.push({ socket: socket, name: name });
+    }
 }
