@@ -113,4 +113,12 @@ export default class Lobby {
     isOwner(player: Player): boolean {
         return player === this.owner;
     }
+
+    getState() {
+        return {
+            players: this.currentPlayers.map(p => p.name),
+            owner: this.owner.name,
+            configs: this.configs
+        };
+    }
 }
