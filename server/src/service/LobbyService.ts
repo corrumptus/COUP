@@ -45,7 +45,9 @@ export default class LobbyService {
             if (lobby !== removedPlayersLobby)
                 return;
 
-            PlayerService.removePlayerByName(name);
+            const index = PlayerService.removePlayerByName(name);
+
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", index);
         });
 
         socket.on("beginMatch", () => {
