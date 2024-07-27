@@ -8,4 +8,14 @@ export default class LobbyMessageService {
             players: { socket: COUPSocket, name: string }[]
         }
     } = {}
+
+    static newLobby(lobby: Lobby) {
+        if (lobby.id in this.lobbys)
+            return;
+
+        LobbyMessageService.lobbys[lobby.id] = {
+            lobby: lobby,
+            players: []
+        }
+    }
 }
