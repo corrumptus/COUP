@@ -25,4 +25,8 @@ export default class LobbyMessageService {
 
         this.lobbys[lobbyId].players.push({ socket: socket, name: name });
     }
+
+    static removeLobby(lobbyId: number) {
+        delete this.lobbys[lobbyId];
+    }
 }
