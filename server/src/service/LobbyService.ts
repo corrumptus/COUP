@@ -1,6 +1,7 @@
 import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import { COUPSocket } from "../socket/socket";
+import LobbyMessageService from "./LobbyMessageService";
 import PlayerService from "./PlayerService";
 
 export default class LobbyService {
@@ -17,6 +18,8 @@ export default class LobbyService {
                 return;
 
             lobby.updateConfigs(keys, value);
+
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "configsUpdated", keys, value);
         });
 
         socket.on("newOwner", (name: string) => {
@@ -30,14 +33,16 @@ export default class LobbyService {
             const player = PlayerService.getPlayerByName(name) as Player;
 
             lobby.newOwner(player);
+
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "newOwner", name);
         });
 
         socket.on("removePlayer", (name: string) => {
             const lobby = PlayerService.getPlayersLobby(socket.id);
 
-            const newOwnerLobby = PlayerService.getPlayersLobbyByName(name);
+            const removedPlayersLobby = PlayerService.getPlayersLobbyByName(name);
 
-            if (lobby !== newOwnerLobby)
+            if (lobby !== removedPlayersLobby)
                 return;
 
             PlayerService.removePlayerByName(name);
