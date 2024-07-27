@@ -45,7 +45,7 @@ export default class Game {
                 new Card(randomCardType())
             ];
 
-            player.initRound(cards, this.configs.quantidadeMoedasIniciais);
+            player.initRound(cards, this.configs.moedasIniciais);
         });
     }
 
