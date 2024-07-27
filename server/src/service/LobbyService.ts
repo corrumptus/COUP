@@ -114,8 +114,11 @@ export default class LobbyService {
     private static handleLobbyDeleting(lobbyId: number) {
         const lobby = LobbyService.lobbys[lobbyId];
 
-        if (lobbyId === LobbyService.lobbys.length - 1 && lobby.isEmpty)
+        if (lobbyId === LobbyService.lobbys.length - 1 && lobby.isEmpty) {
             LobbyService.lobbys.pop();
+
+            LobbyMessageService.removeLobby(lobbyId);
+        }
 
         if (lobby.isEmpty)
             LobbyService.emptyLobbys.push(lobbyId);
