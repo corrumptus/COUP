@@ -91,9 +91,11 @@ export default class PlayerService {
     }
 
     static removePlayer(socketId: string): number {
+        const player = PlayerService.players[socketId];
+
         delete PlayerService.players[socketId];
         
-        return LobbyService.deletePlayer(PlayerService.players[socketId]);
+        return LobbyService.deletePlayer(player.lobbyID, player.player);
     }
 
     static removePlayerByName(name: string): number {
