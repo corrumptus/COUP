@@ -4,6 +4,7 @@ import GameService from "../service/GameService";
 import LobbyService from "../service/LobbyService";
 import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
+import { LobbyState } from "../service/LobbyMessageService";
 
 interface RequestSocketOnEvents {
     "disconnect": () => void;
@@ -34,7 +35,11 @@ interface RequestSocketOnEvents {
     "aceitar": () => void;
 }
 
-interface ResponseSocketEmitEvents {
+export interface ResponseSocketEmitEvents {
+    "playerConnected": (lobbyState: LobbyState) => void;
+    "configsUpdated": (keys: string[], value: number | boolean) => void;
+    "newPlayer": (player: string) => void;
+    "leavingPlayer": (index: number) => void;
 }
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
