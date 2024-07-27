@@ -25,21 +25,17 @@ export default class Game {
         this.tellPlayers();
     }
 
-    deletePlayer(player: Player) {
-        this.nonKilledPlayers.filter(name => name !== player.name);
+    deletePlayer(index: number) {
+        if (index < 0 || index >= this.players.length)
+            return;
 
-        this.players.filter((p, index) => {
-            if (p !== player)
-                return true;
+        this.nonKilledPlayers.splice(index, 1);
 
-            if (this.currentPlayer === index) {
-                this.currentPlayer--;
-                this.turns.pop();
-                this.nextPlayer();
-            }
-
-            return false;
-        })
+        if (this.currentPlayer === index) {
+            this.currentPlayer--;
+            this.turns.pop();
+            this.nextPlayer();
+        }
     }
 
     private deliverCardsAndMoney() {
@@ -102,10 +98,7 @@ export default class Game {
         return this.winner;
     }
 
-    getTurn(player: Player | null): Turn | null {
-        if (player === null)
-            return null;
-
+    getTurn(player: Player): Turn | null {
         if (!this.players.includes(player))
             return null;
 
