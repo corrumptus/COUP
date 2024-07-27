@@ -99,15 +99,15 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
-    static deletePlayer({ player, lobbyID }: { player: Player | null, lobbyID: number }) {
+    static deletePlayer({ player, lobbyID }: { player: Player | null, lobbyID: number }): number {
         const lobby = LobbyService.lobbys[lobbyID];
 
         if (lobby === undefined)
-            return;
-
-        lobby.removePlayer(player);
+            return -1;
 
         LobbyService.handleLobbyDeleting(lobby.id);
+        
+        return lobby.removePlayer(player);
     }
 
     private static handleLobbyDeleting(lobbyID: number) {

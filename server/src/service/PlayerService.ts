@@ -90,19 +90,19 @@ export default class PlayerService {
             .find(player => player.name === name) || null;
     }
 
-    static removePlayer(socketId: string) {
-        LobbyService.deletePlayer(PlayerService.players[socketId]);
-
+    static removePlayer(socketId: string): number {
         delete PlayerService.players[socketId];
+        
+        return LobbyService.deletePlayer(PlayerService.players[socketId]);
     }
 
-    static removePlayerByName(name: string) {
+    static removePlayerByName(name: string): number {
         const playerInfos = Object.entries(PlayerService.players)
             .find(([_, { player }]) => player.name === name);
 
         if (playerInfos === undefined)
-            return;
+            return -1;
 
-        PlayerService.removePlayer(playerInfos[0]);
+        return PlayerService.removePlayer(playerInfos[0]);
     }
 }

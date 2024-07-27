@@ -27,24 +27,22 @@ export default class Lobby {
             this.owner = player;
     }
 
-    removePlayer(player: Player | null) {
+    removePlayer(player: Player | null): number {
         if (player === null)
-            return;
+            return -1;
 
-        this.currentPlayers = this.currentPlayers.filter((p, i, players) => {
-            if (p !== player)
-                return true;
+        const playerIndex = this.currentPlayers.findIndex(p => p === player);
 
-            if (this.owner === player)
-                this.owner = players[i !== 0 ? 0 : 1];
+        if (playerIndex === -1)
+            return -1;
 
-            return false;
-        });
+        if (this.owner === player)
+            this.owner = this.currentPlayers[playerIndex !== 0 ? 0 : 1];
 
-        if (this.currentGame === null)
-            return;
+        if (this.currentGame !== null)
+            this.currentGame.deletePlayer(player);
 
-        this.currentGame.deletePlayer(player);
+        return playerIndex;
     }
 
     newGame() {
