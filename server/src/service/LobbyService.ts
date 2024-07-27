@@ -47,6 +47,9 @@ export default class LobbyService {
 
             const index = PlayerService.removePlayerByName(name);
 
+            if (index === -1)
+                return;
+
             LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", index);
         });
 
