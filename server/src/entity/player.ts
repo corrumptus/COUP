@@ -68,7 +68,7 @@ export default class Player {
     getState() {
         return {
             name: this.name,
-            cards: this.cards,
+            cards: this.cards.map(c => c.getState()),
             money: this.money,
             religion: this.religion
         };
