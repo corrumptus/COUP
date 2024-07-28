@@ -2,19 +2,19 @@ import CardType from "./CardType";
 
 export default class Card {
     private type: CardType;
-    private iskilled: boolean;
+    private isDead: boolean;
 
     constructor(type: CardType) {
         this.type = type;
-        this.iskilled = false;
+        this.isDead = false;
     }
 
     kill() {
-        this.iskilled = true;
+        this.isDead = true;
     }
 
     changeType(type: CardType) {
-        if (!this.iskilled)
+        if (!this.isDead)
             this.type = type;
     }
 
@@ -23,6 +23,13 @@ export default class Card {
     }
 
     getIsKilled(): boolean {
-        return this.iskilled;
+        return this.isDead;
+    }
+
+    getState() {
+        return {
+            card: this.type,
+            isDead: this.isDead
+        }
     }
 }
