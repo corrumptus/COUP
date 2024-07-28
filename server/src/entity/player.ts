@@ -52,4 +52,16 @@ export default class Player {
     get hasNonKilledCards(): boolean {
         return this.cards.filter(c => !c.getIsKilled()).length > 0;
     }
+
+    toEnemyInfo() {
+        return {
+            name: this.name,
+            cards: this.cards.map(c => ({
+                card: c.getIsKilled() ? c.getType() : undefined,
+                isDead: c.getIsKilled()
+            })),
+            money: this.money,
+            religion: this.religion
+        };
+    }
 }
