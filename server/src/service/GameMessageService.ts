@@ -4,8 +4,9 @@ import Game from "../entity/Game";
 import Religion from "../entity/Religion";
 import Config from "../utils/Config";
 import MessageService from "./MessageService";
+import PlayerService from "./PlayerService";
 
-export enum PlayerState {
+export enum PlayerStateType {
     WAITING_TURN = "waitingTurn",
     THINKING = "thinking",
     WAITING_REPLY = "waitingReply",
@@ -15,12 +16,12 @@ export enum PlayerState {
     NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
 }
 
-export type Player = {
+export type PlayerState = {
     name: string,
     cards: { card: CardType | undefined, isDead: boolean }[],
     money: number,
     religion?: Religion,
-    state: PlayerState
+    state: PlayerStateType
 }
 
 export enum ContextType {
@@ -30,9 +31,9 @@ export enum ContextType {
 }
 
 export type GameState = {
-    player: Player,
+    player: PlayerState,
     game: {
-        players: Omit<Player, "state">[],
+        players: Omit<PlayerState, "state">[],
         currentPlayer: string,
         asylum: number,
         configs: Config
@@ -74,6 +75,6 @@ export default class GameMessageService extends MessageService {
     }
 
     private static calculateGameState(game: Game, playerName: string): GameState {
-
+        const player = PlayerService.getPlayerByName(playerName);
     }
 }
