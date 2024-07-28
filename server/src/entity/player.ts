@@ -64,4 +64,13 @@ export default class Player {
             religion: this.religion
         };
     }
+
+    getState() {
+        return {
+            name: this.name,
+            cards: this.cards,
+            money: this.money,
+            religion: this.religion
+        };
+    }
 }
