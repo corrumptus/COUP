@@ -45,6 +45,13 @@ export interface ResponseSocketEmitEvents {
     "beginMatch": (gameState: GameState) => void;
 }
 
+export type SocketEmitLobbyEvents = "playerConnected" |
+    "configsUpdated" |
+    "newPlayer" |
+    "leavingPlayer" |
+    "newOwner" |
+    "beginMatch";
+
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
 export default function initSocket(server: HTTPServer) {
