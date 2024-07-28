@@ -12,6 +12,7 @@ export default class Game {
     private winner: Player | null = null;
     private onWin: () => void;
     private configs: Config;
+    private asylum: number;
 
     constructor(players: Player[], onWin: () => void, configs: Config, currentPlayer?: number) {
         this.players = players;
@@ -20,6 +21,7 @@ export default class Game {
         this.turns = [ new Turn(this.players[this.currentPlayer], this.nextPlayer) ];
         this.onWin = onWin;
         this.configs = configs;
+        this.asylum = 0;
 
         this.deliverCardsAndMoney();
         this.tellPlayers();
