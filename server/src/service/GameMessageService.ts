@@ -1,6 +1,7 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
+import Player from "../entity/player";
 import Religion from "../entity/Religion";
 import Config from "../utils/Config";
 import MessageService from "./MessageService";
@@ -75,6 +76,22 @@ export default class GameMessageService extends MessageService {
     }
 
     private static calculateGameState(game: Game, playerName: string): GameState {
-        const player = PlayerService.getPlayerByName(playerName);
+        const player = PlayerService.getPlayerByName(playerName) as Player;
+
+        const state = game.getState();
+
+        return {
+            player: {
+                ...player.getState(),
+                state: state.currentPlayer === player.name
+                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
+            },
+            game: state,
+            context: {
+                type: ContextType.OBSERVING,
+                attacker: state.currentPlayer,
+                isInvesting: false
+            }
+        }
     }
 }
