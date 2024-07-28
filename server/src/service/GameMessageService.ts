@@ -1,3 +1,5 @@
-export default class GameMessageService {
-    
+import MessageService from "./MessageService";
+
+export default class GameMessageService extends MessageService {
+
 }
