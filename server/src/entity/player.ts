@@ -4,14 +4,14 @@ import Religion, { randomReligion } from "./Religion";
 export default class Player {
     readonly name: string;
     private cards: Card[];
-    private religion: Religion | null;
+    private religion: Religion | undefined;
     private money: number;
     private handlerDieEvent: () => void = () => {};
 
     constructor(name: string) {
         this.name = name;
         this.cards = [];
-        this.religion = null;
+        this.religion = undefined;
         this.money = -1;
     }
 
@@ -21,7 +21,7 @@ export default class Player {
     }
 
     initReligion() {
-        if (this.religion !== null)
+        if (this.religion !== undefined)
             return;
 
         this.religion = randomReligion();
