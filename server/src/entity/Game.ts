@@ -113,4 +113,13 @@ export default class Game {
 
         return lastTurn;
     }
+
+    getState() {
+        return {
+            players: this.players.map(p => p.toEnemyInfo()),
+            currentPlayer: this.players[this.currentPlayer].name,
+            asylum: this.asylum,
+            configs: this.configs
+        };
+    }
 }
