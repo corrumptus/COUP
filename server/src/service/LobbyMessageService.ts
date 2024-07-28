@@ -1,4 +1,4 @@
-import { COUPSocket, ResponseSocketEmitEvents } from "../socket/socket";
+import { COUPSocket, ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "../socket/socket";
 import Config from "../utils/Config";
 import LobbyService from "./LobbyService";
 import MessageService from "./MessageService";
@@ -34,7 +34,7 @@ export default class LobbyMessageService extends MessageService {
         }
     }
 
-    static sendLobbyStateChanges<T extends keyof ResponseSocketEmitEvents>(
+    static sendLobbyStateChanges<T extends SocketEmitLobbyEvents>(
         lobbyId: number,
         message: T,
         ...values: Parameters<ResponseSocketEmitEvents[T]>
