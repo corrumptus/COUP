@@ -5,6 +5,7 @@ import LobbyService from "../service/LobbyService";
 import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
 import { LobbyState } from "../service/LobbyMessageService";
+import { GameState } from "../service/GameMessageService";
 
 interface RequestSocketOnEvents {
     "disconnect": () => void;
@@ -41,6 +42,7 @@ export interface ResponseSocketEmitEvents {
     "newPlayer": (player: string) => void;
     "leavingPlayer": (index: number) => void;
     "newOwner": (name: string) => void;
+    "beginMatch": (gameState: GameState) => void;
 }
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
