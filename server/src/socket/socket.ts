@@ -27,7 +27,7 @@ interface RequestSocketOnEvents {
     "golpeEstado": (target: string, targetCard: number) => void;
 
     "trocarReligiaoOutro": (target: string) => void;
-    "trocarReligiaoPropria": () => void;
+    "trocarPropriaReligiao": () => void;
 
     "trocar": (card: CardType, selfCard: number, target: string, targetCard: number) => void;
   

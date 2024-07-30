@@ -59,7 +59,7 @@ export default class GameService {
             GameService.makeAction(Action.GOLPE_ESTADO, socket.id, target);
         });
 
-        socket.on("trocarReligiaoPropria", () => {
+        socket.on("trocarPropriaReligiao", () => {
             GameService.makeAction(Action.TROCAR_PROPRIA_RELIGIAO, socket.id);
         });
 
