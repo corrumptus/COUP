@@ -17,23 +17,23 @@ interface RequestSocketOnEvents {
 
     "renda": () => void;
     "ajudaExterna": () => void;
-    "taxar": (card: CardType) => void;
+    "taxar": (card: CardType, selfCard: number) => void;
+    "corrupcao": (card: CardType, selfCard: number) => void;
 
-    "extorquir": (card: CardType, targetName: string) => void;
+    "extorquir": (card: CardType, selfCard: number, target: string) => void;
 
-    "assassinar": (card: CardType, targetName: string, playerCard: number) => void;
-    "investigar": (card: CardType, targetName: string, playerCard: number) => void;
-    "golpeEstado": (targetName: string, playerCard: number) => void;
+    "assassinar": (card: CardType, selfCard: number, target: string, targetCard: number) => void;
+    "investigar": (card: CardType, selfCard: number, target: string, targetCard: number) => void;
+    "golpeEstado": (target: string, targetCard: number) => void;
 
-    "trocarReligiaoOutro": (targetName: string) => void;
+    "trocarReligiaoOutro": (target: string) => void;
     "trocarReligiaoPropria": () => void;
 
-    "trocar": (card: CardType, targetName?: string, playerCard?: number) => void;
-    "manter": () => void;
-
-    "contestar": (targetName: string) => void;
-    "bloquear": (card: CardType, targetName: string) => void;
-    "aceitar": () => void;
+    "trocar": (card: CardType, selfCard: number, target: string, targetCard: number) => void;
+  
+    "contestar": (card?: CardType, selfCard?: number) => void;
+    "bloquear": (card?: CardType, selfCard?: number) => void;
+    "continuar": () => void;
 }
 
 export interface ResponseSocketEmitEvents {

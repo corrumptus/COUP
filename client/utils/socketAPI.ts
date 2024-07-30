@@ -63,28 +63,27 @@ type ResponseSocketEmitEvents = {
   "updateConfigs": (keys: string[], value: number | boolean) => void;
   "newOwner": (name: string) => void;
   "removePlayer": (name: string) => void;
-  "beginMatch": (customConfigs?: Config) => void;
+  "beginMatch": () => void;
 
   "renda": () => void;
   "ajudaExterna": () => void;
-  "taxar": (card: Card) => void;
-  "corrupcao": () => void;
+  "taxar": (card: Card, selfCard: number) => void;
+  "corrupcao": (card: Card, selfCard: number) => void;
 
-  "extorquir": (card: Card, targetName: string) => void;
+  "extorquir": (card: Card, selfCard: number, target: string) => void;
 
-  "assassinar": (card: Card, targetName: string, playerCard: number) => void;
-  "investigar": (card: Card, targetName: string, playerCard: number) => void;
-  "golpeEstado": (targetName: string, playerCard: number) => void;
+  "assassinar": (card: Card, selfCard: number, target: string, targetCard: number) => void;
+  "investigar": (card: Card, selfCard: number, target: string, targetCard: number) => void;
+  "golpeEstado": (target: string, targetCard: number) => void;
 
-  "trocarReligiaoOutro": (targetName: string) => void;
+  "trocarReligiaoOutro": (target: string) => void;
   "trocarReligiaoPropria": () => void;
 
-  "trocar": (card: Card, targetName?: string, playerCard?: number) => void;
-  "manter": () => void;
-
-  "contestar": (targetName: string) => void;
-  "bloquear": (card: Card, targetName: string) => void;
-  "aceitar": () => void;
+  "trocar": (card: Card, selfCard: number, target: string, targetCard: number) => void;
+  
+  "contestar": (card?: Card, selfCard?: number) => void;
+  "bloquear": (card?: Card, selfCard?: number) => void;
+  "continuar": () => void;
 }
 
 type RequestSocketOnEvents = {
