@@ -3,20 +3,10 @@ import Action from "../entity/Action";
 import Player from "../entity/player";
 import Turn from "../entity/Turn";
 import Game from "../entity/Game";
-import Config from "../utils/Config";
 import { COUPSocket } from "../socket/socket";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {
-        socket.on("initGame", (customConfigs?: Config) => {
-            const lobby = PlayerService.getPlayersLobby(socket.id);
-
-            if (lobby === null)
-                return;
-
-            lobby.newGame(customConfigs);
-        });
-
         socket.on("renda", () => {
             GameService.makeAction(Action.RENDA, socket.id);
         });
@@ -25,30 +15,16 @@ export default class GameService {
             GameService.makeAction(Action.AJUDA_EXTERNA, socket.id);
         });
 
-        socket.on("golpeEstado", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
-
-            if (target === null)
-                return;
-
-            GameService.makeAction(Action.GOLPE_ESTADO, socket.id, target);
-        });
-
-        socket.on("taxar", () => {
+        socket.on("taxar", (card, selfCard) => {
             GameService.makeAction(Action.TAXAR, socket.id);
         });
 
-        socket.on("assassinar", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
-
-            if (target === null)
-                return;
-
-            GameService.makeAction(Action.ASSASSINAR, socket.id, target);
+        socket.on("corrupcao", (card, selfCard) => {
+            GameService.makeAction(Action.TAXAR, socket.id);
         });
 
-        socket.on("extorquir", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
+        socket.on("extorquir", (card, selfCard, targetName) => {
+            const target = PlayerService.getPlayerByName(targetName);
 
             if (target === null)
                 return;
@@ -56,17 +32,17 @@ export default class GameService {
             GameService.makeAction(Action.EXTORQUIR, socket.id, target);
         });
 
-        socket.on("trocar", (name?: string) => {
-            const target = PlayerService.getPlayerByName(name);
+        socket.on("assassinar", (card, selfCard, targetName, targetCard) => {
+            const target = PlayerService.getPlayerByName(targetName);
 
             if (target === null)
                 return;
 
-            GameService.makeAction(Action.TROCAR, socket.id, target);
+            GameService.makeAction(Action.ASSASSINAR, socket.id, target);
         });
 
-        socket.on("investigar", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
+        socket.on("investigar", (card, selfCard, targetName, targetCard) => {
+            const target = PlayerService.getPlayerByName(targetName);
 
             if (target === null)
                 return;
@@ -74,22 +50,47 @@ export default class GameService {
             GameService.makeAction(Action.INVESTIGAR, socket.id, target);
         });
 
-        socket.on("contestar", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
+        socket.on("golpeEstado", (targetName, targetCard) => {
+            const target = PlayerService.getPlayerByName(targetName);
 
             if (target === null)
                 return;
 
-            GameService.makeAction(Action.CONTESTAR, socket.id, target);
+            GameService.makeAction(Action.GOLPE_ESTADO, socket.id, target);
         });
 
-        socket.on("bloquear", (name: string) => {
-            const target = PlayerService.getPlayerByName(name);
+        socket.on("trocarReligiaoPropria", () => {
+            GameService.makeAction(Action.TROCAR_PROPRIA_RELIGIAO, socket.id);
+        });
+
+        socket.on("trocarReligiaoOutro", (targetName) => {
+            const target = PlayerService.getPlayerByName(targetName);
 
             if (target === null)
                 return;
 
-            GameService.makeAction(Action.BLOQUEAR, socket.id, target);
+            GameService.makeAction(Action.TROCAR_RELIGIAO_OUTRO, socket.id, target);
+        });
+
+        socket.on("trocar", (card, selfCard, targetName, targetCard) => {
+            const target = PlayerService.getPlayerByName(targetName);
+
+            if (target === null)
+                return;
+
+            GameService.makeAction(Action.TROCAR, socket.id, target);
+        });
+
+        socket.on("contestar", (card?, selfCard?) => {
+            GameService.makeAction(Action.CONTESTAR, socket.id);
+        });
+
+        socket.on("bloquear", (card?, selfCard?) => {
+            GameService.makeAction(Action.BLOQUEAR, socket.id);
+        });
+
+        socket.on("continuar", () => {
+            GameService.makeAction(Action.CONTINUAR, socket.id);
         });
     }
 
