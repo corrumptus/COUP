@@ -64,6 +64,15 @@ export type GameState = {
     }
 }
 
+export type ActionInfos = {
+    attacker: string,
+    action?: Action,
+    card?: CardType,
+    target?: string,
+    attackedCard?: number,
+    isInvesting: boolean
+}
+
 export default class GameMessageService extends MessageService {
     static initGameState(lobbyId: number) {
         const { lobby, players } = super.lobbys[lobbyId];
