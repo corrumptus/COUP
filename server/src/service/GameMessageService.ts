@@ -118,4 +118,12 @@ export default class GameMessageService extends MessageService {
             )
         );
     }
+
+    static calculateNewGameState(
+        gameState: ReturnType<Game["getState"]>,
+        name: string,
+        infos: ActionInfos
+    ): GameState {
+        
+    }
 }
