@@ -103,4 +103,19 @@ export default class GameMessageService extends MessageService {
             }
         }
     }
+
+    static updatePlayers(
+        lobbyId: number,
+        gameState: ReturnType<Game["getState"]>,
+        infos: ActionInfos
+    ) {
+        const { players } = super.lobbys[lobbyId];
+
+        players.forEach(
+            p => p.socket.emit(
+                "updatePlayer",
+                GameMessageService.calculateNewGameState(gameState, p.name, infos)
+            )
+        );
+    }
 }
