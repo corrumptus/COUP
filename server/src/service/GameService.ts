@@ -2,114 +2,180 @@ import PlayerService from "./PlayerService";
 import Action from "../entity/Action";
 import Game from "../entity/Game";
 import { COUPSocket } from "../socket/socket";
-import CardType from "../entity/CardType";
-import Player from "../entity/player";
+import ActionService from "./ActionService";
+import GameMessageService from "./GameMessageService";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {
+        const lobbyId = PlayerService.getPlayersLobby(socket.id).id;
+
         socket.on("renda", () => {
-            GameService.makeAction(socket.id, Action.RENDA);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.RENDA);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("ajudaExterna", () => {
-            GameService.makeAction(socket.id, Action.AJUDA_EXTERNA);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.AJUDA_EXTERNA);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("taxar", (card, selfCard) => {
-            GameService.makeAction(socket.id, Action.TAXAR, card, selfCard);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.TAXAR, card, selfCard);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("corrupcao", (card, selfCard) => {
-            GameService.makeAction(socket.id, Action.CORRUPCAO, card, selfCard);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.CORRUPCAO, card, selfCard);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("extorquir", (card, selfCard, targetName) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("extorquir", (card, selfCard, target) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.EXTORQUIR, card, selfCard, target);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.EXTORQUIR, card, selfCard, target);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("assassinar", (card, selfCard, targetName, targetCard) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("assassinar", (card, selfCard, target, targetCard) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.ASSASSINAR, card, selfCard, target, targetCard);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.ASSASSINAR, card, selfCard, target, targetCard);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("investigar", (card, selfCard, targetName, targetCard) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("investigar", (card, selfCard, target, targetCard) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.INVESTIGAR, card, selfCard, target, targetCard);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.INVESTIGAR, card, selfCard, target, targetCard);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("golpeEstado", (targetName, targetCard) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("golpeEstado", (target, targetCard) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.GOLPE_ESTADO, undefined, undefined, target, targetCard);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.GOLPE_ESTADO, undefined, undefined, target, targetCard);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("trocarPropriaReligiao", () => {
-            GameService.makeAction(socket.id, Action.TROCAR_PROPRIA_RELIGIAO);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR_PROPRIA_RELIGIAO);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("trocarReligiaoOutro", (targetName) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("trocarReligiaoOutro", (target) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, target);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, target);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
-        socket.on("trocar", (card, selfCard, targetName, targetCard) => {
-            const target = PlayerService.getPlayerByName(targetName);
+        socket.on("trocar", (card, selfCard, target, targetCard) => {
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR, card, selfCard, target, targetCard);
 
-            if (target === null)
-                return;
-
-            GameService.makeAction(socket.id, Action.TROCAR, card, selfCard, target, targetCard);
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("contestar", (card?, selfCard?) => {
-            GameService.makeAction(socket.id, Action.CONTESTAR, card, selfCard);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.CONTESTAR, card, selfCard);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("bloquear", (card?, selfCard?) => {
-            GameService.makeAction(socket.id, Action.BLOQUEAR, card, selfCard);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.BLOQUEAR, card, selfCard);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
 
         socket.on("continuar", () => {
-            GameService.makeAction(socket.id, Action.CONTINUAR);
+            try {
+                const actionInfos = ActionService.makeAction(socket.id, Action.CONTINUAR);
+
+                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
+                
+                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+            } catch (error) {
+                socket.emit("gameActionError", (error as Error).message);
+            }
         });
-    }
-
-    static makeAction(
-        socketId: string,
-        action: Action,
-        card?: CardType,
-        selfCard?: number,
-        target?: Player,
-        targetCard?: number
-    ) {
-        const game = GameService.getPlayersGame(socketId);
-
-        if (game === null)
-            return;
-
-        const player = PlayerService.getPlayer(socketId);
-
-        game.getTurn(player)?.addAction(action);
     }
 
     static getPlayersGame(socketId: string): Game | null {
