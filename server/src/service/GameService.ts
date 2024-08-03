@@ -4,6 +4,7 @@ import Game from "../entity/Game";
 import { COUPSocket } from "../socket/socket";
 import ActionService from "./ActionService";
 import GameMessageService from "./GameMessageService";
+import Lobby from "../entity/Lobby";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {
@@ -179,10 +180,7 @@ export default class GameService {
     }
 
     static getPlayersGame(socketId: string): Game | null {
-        const lobby = PlayerService.getPlayersLobby(socketId);
-
-        if (lobby === null)
-            return null;
+        const lobby = PlayerService.getPlayersLobby(socketId) as Lobby;
 
         return lobby.getGame();
     }
