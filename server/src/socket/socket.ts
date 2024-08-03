@@ -45,6 +45,7 @@ export interface ResponseSocketEmitEvents {
     "beginMatch": (gameState: GameState) => void;
 
     "updatePlayer": (updates: GameState) => void;
+    "gameActionError": (message: string) => void;
 }
 
 export type SocketEmitLobbyEvents = "playerConnected" |
