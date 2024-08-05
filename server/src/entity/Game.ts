@@ -96,6 +96,10 @@ export default class Game {
         return this.players.find(p => p.name === this.nonKilledPlayers[0]) as Player;
     }
 
+    getConfigs(): Config {
+        return this.configs;
+    }
+
     getWinner(): Player | null {
         return this.winner;
     }
