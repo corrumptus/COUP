@@ -27,6 +27,10 @@ export default class Player {
         this.religion = randomReligion();
     }
 
+    getMoney(): number {
+        return this.money;
+    }
+
     addMoney(money: number) {
         if (money < 0)
             return;
