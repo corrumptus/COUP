@@ -1,6 +1,9 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
+import ActionValidator from "../utils/ActionValidator";
 import { ActionInfos } from "./GameMessageService";
+import GameService from "./GameService";
+import PlayerService from "./PlayerService";
 
 export default class ActionService {
     static makeAction(
@@ -11,5 +14,15 @@ export default class ActionService {
         targetName?: string,
         targetCard?: number
     ): ActionInfos {
+        const game = GameService.getPlayersGame(socketId);
+
+        if (game === null)
+            throw new Error("Player is not playing a game");
+
+        const player = PlayerService.getPlayer(socketId);
+
+        ActionValidator.validate(game, player, action, card, selfCard, targetName, targetCard);
+
+        game.getTurn(player)?.addAction(action);
     }
 }
