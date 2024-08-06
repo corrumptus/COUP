@@ -9,7 +9,7 @@ export default class Game {
     private currentPlayer: number;
     private nonKilledPlayers: string[];
     private turns: Turn[];
-    private winner: Player | null = null;
+    private winner: Player | undefined = undefined;
     private onWin: () => void;
     private configs: Config;
     private asylum: number;
@@ -89,7 +89,7 @@ export default class Game {
     }
 
     get isEnded(): boolean {
-        return this.winner !== null;
+        return this.winner !== undefined;
     }
 
     private localizeWinner(): Player {
@@ -100,20 +100,20 @@ export default class Game {
         return this.configs;
     }
 
-    getWinner(): Player | null {
+    getWinner(): Player | undefined {
         return this.winner;
     }
 
-    getTurn(player: Player): Turn | null {
+    getTurn(player: Player): Turn | undefined {
         if (!this.players.includes(player))
-            return null;
+            return undefined;
 
         const lastTurn: Turn = this.turns[this.turns.length - 1];
         const isPlayersTurn: boolean = lastTurn.getPlayer() === player;
         const isPlayerTarget: boolean = lastTurn.getTarget() === player;
 
         if (!isPlayersTurn && !isPlayerTarget)
-            return null;
+            return undefined;
 
         return lastTurn;
     }
