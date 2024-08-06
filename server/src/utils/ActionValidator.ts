@@ -18,6 +18,9 @@ export default class ActionValidator {
         if (!game.hasPlayer(player))
             throw new Error("O player não está no jogo");
 
+        if (!player.hasNonKilledCards)
+            throw new Error("O player está morto");
+
         if (
             player.getMoney() >= configs.quantidadeMaximaGolpeEstado &&
             action !== Action.GOLPE_ESTADO
