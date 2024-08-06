@@ -37,15 +37,15 @@ export default class ActionValidator {
         const actionMapper: {
             [key in Action]: (...args: any[]) => void
         } = {
-            [Action.RENDA]: () => ActionValidator.validateRenda()
+            [Action.RENDA]: () => ActionValidator.validateRenda(),
+            [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna()
         };
 
         actionMapper[action]();
     }
 
-    private static validateRenda() {
-        return true;
-    }
+    private static validateRenda() {}
+    private static validateAjudaExterna() {}
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
         return game.getLastTurn()?.getTarget()?.name === name;
