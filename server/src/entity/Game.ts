@@ -96,6 +96,10 @@ export default class Game {
         return this.players.find(p => p.name === this.nonKilledPlayers[0]) as Player;
     }
 
+    hasPlayer(player: Player): boolean {
+        return this.players.includes(player);
+    }
+
     getConfigs(): Config {
         return this.configs;
     }
