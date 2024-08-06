@@ -30,9 +30,15 @@ export default class ActionValidator {
 
         const actionMapper: {
             [key in Action]: (...args: any[]) => void
-        } = {};
+        } = {
+            [Action.RENDA]: () => ActionValidator.validateRenda()
+        };
 
         actionMapper[action]();
+    }
+
+    private static validateRenda() {
+        return true;
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
