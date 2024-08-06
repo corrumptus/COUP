@@ -104,18 +104,8 @@ export default class Game {
         return this.winner;
     }
 
-    getTurn(player: Player): Turn | undefined {
-        if (!this.players.includes(player))
-            return undefined;
-
-        const lastTurn: Turn = this.turns[this.turns.length - 1];
-        const isPlayersTurn: boolean = lastTurn.getPlayer() === player;
-        const isPlayerTarget: boolean = lastTurn.getTarget() === player;
-
-        if (!isPlayersTurn && !isPlayerTarget)
-            return undefined;
-
-        return lastTurn;
+    getLastTurn(): Turn | undefined {
+        return this.turns[this.turns.length - 1];
     }
 
     getState() {
