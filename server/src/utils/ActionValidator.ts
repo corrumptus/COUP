@@ -15,6 +15,9 @@ export default class ActionValidator {
     ) {
         const configs = game.getConfigs();
 
+        if (!game.hasPlayer(player))
+            throw new Error("O player não está no jogo");
+
         if (
             player.getMoney() >= configs.quantidadeMaximaGolpeEstado &&
             action !== Action.GOLPE_ESTADO
