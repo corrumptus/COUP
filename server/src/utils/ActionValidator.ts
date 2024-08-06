@@ -21,10 +21,25 @@ export default class ActionValidator {
         )
             throw new Error("O player precisa dar um golpe de estado neste turno.");
 
+        if (
+            ActionValidator.isPlayerBeingAttacked(game, player.name)
+            &&
+            !ActionValidator.isDefenseAction(action)
+        )
+            throw new Error("O player precisa se defender");
+
         const actionMapper: {
             [key in Action]: (...args: any[]) => void
         } = {};
 
         actionMapper[action]();
+    }
+
+    private static isPlayerBeingAttacked(game: Game, name: string): boolean {
+        return game.getLastTurn()?.getTarget()?.name === name;
+    }
+
+    private static isDefenseAction(action: Action): boolean {
+        return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
     }
 }
