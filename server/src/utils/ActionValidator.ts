@@ -43,7 +43,8 @@ export default class ActionValidator {
             [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs()),
             [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, game),
             [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
-            [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game)
+            [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
+            [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs())
         };
 
         actionMapper[action]();
@@ -131,7 +132,7 @@ export default class ActionValidator {
             throw new Error("O player não tem dinheiro suficiente para assassinar");
     }
 
-    static validateInvestigar(
+    private static validateInvestigar(
         player: Player,
         card: CardType | undefined,
         selfCard: number | undefined,
@@ -158,6 +159,25 @@ export default class ActionValidator {
 
         if (player.getCard(selfCard)?.getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
+
+        if (target.getCard(targetCard)?.getIsKilled())
+            throw new Error("A carta do inimigo escolhida já está morta");
+    }
+
+    private static validateGolpeEstado(
+        player: Player,
+        target: Player | undefined,
+        targetCard: number | undefined,
+        configs: Config
+    ) {
+        if (target === undefined)
+            throw new Error("Um inimigo deve ser escolhido");
+
+        if (targetCard === undefined)
+            throw new Error("Uma das cartas do inimigo deve ser escolhida");
+
+        if (player.getMoney() < configs.quantidadeMinimaGolpeEstado)
+            throw new Error("O player não tem dinheiro suficiente para dar um golpe de estado");
 
         if (target.getCard(targetCard)?.getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
