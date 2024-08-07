@@ -42,6 +42,7 @@ export default class ActionValidator {
             [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
             [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs()),
             [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, game),
+            [Action.EXTORQUIR]: () => ActionValidator.validateExtorquir(player, card, selfCard, target, game.getConfigs()),
             [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
             [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
             [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs())
@@ -95,6 +96,32 @@ export default class ActionValidator {
 
         if (game.getAsylumCoins() === 0)
             throw new Error("O asilo não possui moedas para serem pegas");
+    }
+
+    private static validateExtorquir(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        target: Player | undefined,
+        configs: Config
+    ) {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (target === undefined)
+            throw new Error("Um inimigo deve ser escolhido");
+
+        if (!configs.tiposCartas[card].extorquir)
+            throw new Error("O tipo de carta escolhida não pode extorquir");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
+
+        if (target.getMoney() < configs.tiposCartas[card].quantidadeExtorquir)
+            throw new Error("O inimigo não tem dinheiro suficiente para ser extorquido");
     }
 
     private static validateAssassinar(
