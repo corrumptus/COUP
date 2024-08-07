@@ -1,18 +1,18 @@
 enum Action {
-    RENDA,
-    AJUDA_EXTERNA,
-    TAXAR,
-    CORRUPCAO,
-    EXTORQUIR,
-    ASSASSINAR,
-    INVESTIGAR,
-    GOLPE_ESTADO,
-    TROCAR,
-    TROCAR_PROPRIA_RELIGIAO,
-    TROCAR_RELIGIAO_OUTRO,
-    CONTESTAR,
-    BLOQUEAR,
-    CONTINUAR
+    RENDA = "renda",
+    AJUDA_EXTERNA = "ajudaExterna",
+    TAXAR = "taxar",
+    CORRUPCAO = "corrupcao",
+    EXTORQUIR = "extorquir",
+    ASSASSINAR = "assassinar",
+    INVESTIGAR = "investigar",
+    GOLPE_ESTADO = "golpeEstado",
+    TROCAR = "trocar",
+    TROCAR_PROPRIA_RELIGIAO = "trocarPropriaReligiao",
+    TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
+    CONTESTAR = "contestar",
+    BLOQUEAR = "bloquear",
+    CONTINUAR = "continuar"
 }
 
 export default Action;
