@@ -2,6 +2,7 @@ import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
 import Player from "../entity/player";
+import Config from "./Config";
 
 export default class ActionValidator {
     static validate(
@@ -38,14 +39,35 @@ export default class ActionValidator {
             [key in Action]: (...args: any[]) => void
         } = {
             [Action.RENDA]: () => ActionValidator.validateRenda(),
-            [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna()
+            [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
+            [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs())
         };
 
         actionMapper[action]();
     }
 
     private static validateRenda() {}
+
     private static validateAjudaExterna() {}
+
+    private static validateTaxar(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        configs: Config
+    ) {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (!configs.tiposCartas[card as keyof Config["tiposCartas"]].taxar)
+            throw new Error("O tipo de carta escolhida não pode taxar");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A carta escolhida já está morta");
+    }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
         return game.getLastTurn()?.getTarget()?.name === name;
