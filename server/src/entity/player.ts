@@ -38,8 +38,8 @@ export default class Player {
         this.money += money;
     }
 
-    getCard(position: number): Card | null {
-        return this.cards[position] || null;
+    getCard(position: number): Card | undefined {
+        return this.cards[position];
     }
 
     killCard(position: number) {
