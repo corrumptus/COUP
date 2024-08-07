@@ -1,10 +1,10 @@
 enum CardType {
-    DUQUE,
-    ASSASSINO,
-    CAPITAO,
-    CONDESSA,
-    EMBAIXADOR,
-    INQUISIDOR
+    DUQUE = "duque",
+    ASSASSINO = "assassino",
+    CAPITAO = "capitao",
+    CONDESSA = "condessa",
+    EMBAIXADOR = "embaixador",
+    INQUISIDOR = "inquisidor"
 }
 
 export function randomCardType(): CardType {
