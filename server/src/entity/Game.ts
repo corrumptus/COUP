@@ -104,6 +104,10 @@ export default class Game {
         return this.configs;
     }
 
+    getAsylumCoins(): number {
+        return this.asylum;
+    }
+
     getWinner(): Player | undefined {
         return this.winner;
     }
