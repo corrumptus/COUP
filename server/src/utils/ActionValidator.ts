@@ -42,7 +42,8 @@ export default class ActionValidator {
             [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
             [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs()),
             [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, game),
-            [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game)
+            [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
+            [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game)
         };
 
         actionMapper[action]();
@@ -113,7 +114,7 @@ export default class ActionValidator {
             throw new Error("Um inimigo deve ser escolhido");
 
         if (targetCard === undefined)
-            throw new Error("Uma das cartas do jogador deve ser escolhida");
+            throw new Error("Uma das cartas do inimigo deve ser escolhida");
 
         const configs = game.getConfigs();
 
@@ -128,6 +129,38 @@ export default class ActionValidator {
 
         if (player.getMoney() < configs.tiposCartas[card].quantidadeAssassinar)
             throw new Error("O player não tem dinheiro suficiente para assassinar");
+    }
+
+    static validateInvestigar(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        target: Player | undefined,
+        targetCard: number | undefined,
+        game: Game
+    ) {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (target === undefined)
+            throw new Error("Um inimigo deve ser escolhido");
+
+        if (targetCard === undefined)
+            throw new Error("Uma das cartas do inimigo deve ser escolhida");
+
+        const configs = game.getConfigs();
+
+        if (!configs.tiposCartas[card].investigar)
+            throw new Error("O tipo de carta escolhida não pode investigar");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
+
+        if (target.getCard(targetCard)?.getIsKilled())
+            throw new Error("A carta do inimigo escolhida já está morta");
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
