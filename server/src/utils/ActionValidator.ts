@@ -40,7 +40,8 @@ export default class ActionValidator {
         } = {
             [Action.RENDA]: () => ActionValidator.validateRenda(),
             [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
-            [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs())
+            [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs()),
+            [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, game)
         };
 
         actionMapper[action]();
@@ -62,11 +63,35 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
-        if (!configs.tiposCartas[card as keyof Config["tiposCartas"]].taxar)
+        if (!configs.tiposCartas[card].taxar)
             throw new Error("O tipo de carta escolhida não pode taxar");
 
         if (player.getCard(selfCard)?.getIsKilled())
             throw new Error("A carta escolhida já está morta");
+    }
+
+    private static validateCorrupcao(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        game: Game
+    ) {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        const configs = game.getConfigs();
+
+        if (!configs.religiao.cartasParaCorrupcao[card])
+            throw new Error("O tipo de carta escolhida não pode corromper");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A carta escolhida já está morta");
+
+        if (game.getAsylumCoins() === 0)
+            throw new Error("O asilo não possui moedas para serem pegas");
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
