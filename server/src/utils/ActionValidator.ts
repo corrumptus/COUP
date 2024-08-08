@@ -48,7 +48,8 @@ export default class ActionValidator {
             [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs()),
             [Action.TROCAR]: () => ActionValidator.validateTrocar(player, card, selfCard, targetCard, game),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
-            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs())
+            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs()),
+            [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, game)
         };
 
         actionMapper[action]();
@@ -280,11 +281,48 @@ export default class ActionValidator {
             throw new Error("O player não tem dinheiro suficiente para trocar a religião do inimigo");
     }
 
+    private static validateBloquear(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        game: Game
+    ) {
+        if ([Action.ASSASSINAR, Action.INVESTIGAR].includes(game.getLastTurn()?.getLastAction() as Action))
+            return;
+
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
+
+        if (!ActionValidator.canBlockPreviousAction(game, card))
+            throw new Error("O tipo de carta escolhida não pode bloquear está ação");
+    }
+
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
         return game.getLastTurn()?.getTarget()?.name === name;
     }
 
     private static isDefenseAction(action: Action): boolean {
         return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
+    }
+
+    private static canBlockPreviousAction(game: Game, card: CardType): boolean {
+        const blockMapper = {
+            [Action.AJUDA_EXTERNA]: (card: CardType) => configs.tiposCartas[card].taxar,
+            [Action.TAXAR]: (card: CardType) => configs.tiposCartas[card].bloquearTaxar,
+            [Action.EXTORQUIR]: (card: CardType) => configs.tiposCartas[card].bloquearExtorquir,
+            [Action.TROCAR]: (card: CardType) => configs.tiposCartas[card].bloquearTrocar
+        }
+
+        const configs = game.getConfigs();
+
+        const previousAction = game.getLastTurn()?.getLastAction() as keyof typeof blockMapper;
+
+        return blockMapper[previousAction](card);
     }
 }
