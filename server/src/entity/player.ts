@@ -57,6 +57,10 @@ export default class Player {
         return this.cards.filter(c => !c.getIsKilled()).length > 0;
     }
 
+    get allCardsAreAlive(): boolean {
+        return this.cards.filter(c => !c.getIsKilled()).length === 2;
+    }
+
     toEnemyInfo() {
         return {
             name: this.name,
