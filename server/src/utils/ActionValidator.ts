@@ -46,7 +46,8 @@ export default class ActionValidator {
             [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
             [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
             [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs()),
-            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarProporarReligiao(player, game.getConfigs())
+            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
+            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs())
         };
 
         actionMapper[action]();
@@ -211,12 +212,30 @@ export default class ActionValidator {
             throw new Error("A carta do inimigo escolhida já está morta");
     }
 
-    private static validateTrocarProporarReligiao(player: Player, configs: Config): void {
+    private static validateTrocarPropriaReligiao(player: Player, configs: Config) {
         if (!configs.religiao.reforma)
             throw new Error("O jogo não passou pela reforma e não possui religião");
 
         if (player.getMoney() < configs.religiao.quantidadeTrocarPropria)
             throw new Error("O player não tem dinheiro suficiente para trocar sua própria religião");
+    }
+
+    private static validateTrocarReligiaoOutro(
+        player: Player,
+        target: Player | undefined,
+        configs: Config
+    ) {
+        if (!configs.religiao.reforma)
+            throw new Error("O jogo não passou pela reforma e não possui religião");
+
+        if (target === undefined)
+            throw new Error("Um inimigo deve ser escolhido");
+
+        if (!target.hasNonKilledCards)
+            throw new Error("O inimigo já está morto");
+
+        if (player.getMoney() < configs.religiao.quantidadeTrocarOutro)
+            throw new Error("O player não tem dinheiro suficiente para trocar a religião do inimigo");
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
