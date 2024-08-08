@@ -45,7 +45,8 @@ export default class ActionValidator {
             [Action.EXTORQUIR]: () => ActionValidator.validateExtorquir(player, card, selfCard, target, game.getConfigs()),
             [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
             [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
-            [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs())
+            [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs()),
+            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarProporarReligiao(player, game.getConfigs())
         };
 
         actionMapper[action]();
@@ -208,6 +209,14 @@ export default class ActionValidator {
 
         if (target.getCard(targetCard)?.getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
+    }
+
+    private static validateTrocarProporarReligiao(player: Player, configs: Config): void {
+        if (!configs.religiao.reforma)
+            throw new Error("O jogo não passou pela reforma e não possui religião");
+
+        if (player.getMoney() < configs.religiao.quantidadeTrocarPropria)
+            throw new Error("O player não tem dinheiro suficiente para trocar sua própria religião");
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
