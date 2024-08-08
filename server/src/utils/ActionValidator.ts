@@ -46,6 +46,7 @@ export default class ActionValidator {
             [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
             [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
             [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs()),
+            [Action.TROCAR]: () => ActionValidator.validateTrocar(player, card, selfCard, targetCard, game),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs())
         };
@@ -210,6 +211,47 @@ export default class ActionValidator {
 
         if (target.getCard(targetCard)?.getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
+    }
+
+    private static validateTrocar(
+        player: Player,
+        card: CardType | undefined,
+        selfCard: number | undefined,
+        targetCard: number | undefined,
+        game: Game
+    ) {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (targetCard === undefined)
+            throw new Error("Uma das cartas do inimigo deve ser escolhida");
+
+        const configs = game.getConfigs();
+
+        if (!configs.tiposCartas[card].trocar)
+            throw new Error("O tipo de carta escolhida não pode trocar");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
+
+        if (
+            configs.tiposCartas[card].quantidadeTrocar === 1
+            &&
+            targetCard === undefined
+        )
+            throw new Error("Uma carta deve ser escolhida");
+
+        if (
+            configs.tiposCartas[card].quantidadeTrocar === 1
+            &&
+            targetCard !== undefined
+            &&
+            player.getCard(targetCard)?.getIsKilled()
+        )
+            throw new Error("A carta escolhida já está morta");
     }
 
     private static validateTrocarPropriaReligiao(player: Player, configs: Config) {
