@@ -40,4 +40,8 @@ export default class Turn {
     getTarget(): Player | null {
         return this.target;
     }
+
+    getLastAction(): Action | undefined {
+        return this.actions[this.actions.length - 1];
+    }
 }
