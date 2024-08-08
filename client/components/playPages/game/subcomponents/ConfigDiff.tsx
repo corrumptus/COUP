@@ -37,7 +37,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Duque)",
       quantidadeAssassinar: "Quantidade para assassinar(Duque)",
       quantidadeTrocar: "Quantidade de trocas(Duque)",
-      quantidadeInvestigar: "Quantidade de investigações(Duque)",
       bloquearTaxar: "Bloquear taxar(Duque)",
       bloquearExtorquir: "Bloquear extorquir(Duque)",
       bloquearAssassinar: "Bloquear assassinar(Duque)",
@@ -54,7 +53,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Capitão)",
       quantidadeAssassinar: "Quantidade para assassinar(Capitão)",
       quantidadeTrocar: "Quantidade de trocas(Capitão)",
-      quantidadeInvestigar: "Quantidade de investigações(Capitão)",
       bloquearTaxar: "Bloquear taxar(Capitão)",
       bloquearExtorquir: "Bloquear extorquir(Capitão)",
       bloquearAssassinar: "Bloquear assassinar(Capitão)",
@@ -71,7 +69,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Assassino)",
       quantidadeAssassinar: "Quantidade para assassinar(Assassino)",
       quantidadeTrocar: "Quantidade de trocas(Assassino)",
-      quantidadeInvestigar: "Quantidade de investigações(Assassino)",
       bloquearTaxar: "Bloquear taxar(Assassino)",
       bloquearExtorquir: "Bloquear extorquir(Assassino)",
       bloquearAssassinar: "Bloquear assassinar(Assassino)",
@@ -88,7 +85,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Condessa)",
       quantidadeAssassinar: "Quantidade para assassinar(Condessa)",
       quantidadeTrocar: "Quantidade de trocas(Condessa)",
-      quantidadeInvestigar: "Quantidade de investigações(Condessa)",
       bloquearTaxar: "Bloquear taxar(Condessa)",
       bloquearExtorquir: "Bloquear extorquir(Condessa)",
       bloquearAssassinar: "Bloquear assassinar(Condessa)",
@@ -105,7 +101,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Embaixador)",
       quantidadeAssassinar: "Quantidade para assassinar(Embaixador)",
       quantidadeTrocar: "Quantidade de trocas(Embaixador)",
-      quantidadeInvestigar: "Quantidade de investigações(Embaixador)",
       bloquearTaxar: "Bloquear taxar(Embaixador)",
       bloquearExtorquir: "Bloquear extorquir(Embaixador)",
       bloquearAssassinar: "Bloquear assassinar(Embaixador)",
@@ -122,7 +117,6 @@ const COUPConfigToText = {
       quantidadeExtorquir: "Quantidade de extorquir(Inquisidor)",
       quantidadeAssassinar: "Quantidade para assassinar(Inquisidor)",
       quantidadeTrocar: "Quantidade de trocas(Inquisidor)",
-      quantidadeInvestigar: "Quantidade de investigações(Inquisidor)",
       bloquearTaxar: "Bloquear taxar(Inquisidor)",
       bloquearExtorquir: "Bloquear extorquir(Inquisidor)",
       bloquearAssassinar: "Bloquear assassinar(Inquisidor)",
@@ -142,15 +136,14 @@ function diffsToString<T>(diff: Differ<T>, converter: Converter<T>): string[] {
   for (let key in diff) {
     if (typeof diff[key] === "object" && !Array.isArray(diff[key]))
       diffs.push(...diffsToString(diff[key], converter[key] as Converter<typeof diff[typeof key]>));
-    else {
-      diffs.push(`${converter[key]}: ${ifBooleanYesOrNo((diff[key] as string[])[0])} -> ${ifBooleanYesOrNo((diff[key] as string[])[1])}`);
-    }
+    else
+      diffs.push(`${converter[key]}: ${toString((diff[key] as any[])[0])} -> ${toString((diff[key] as any[])[1])}`);
   }
 
   return diffs;
 }
 
-function ifBooleanYesOrNo(val: any): string {
+function toString(val: any): string {
   if (typeof val === "boolean")
     return val ? "sim" : "não";
 

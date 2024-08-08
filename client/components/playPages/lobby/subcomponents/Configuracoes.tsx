@@ -320,17 +320,6 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.duque.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "duque", "quantidadeInvestigar"], Number(e.target.value))
-                    }
-                  />
-                </div>
                 <div className="config_checkbox pr-[calc(100%-133px)]">
                   <label>Bloqueia Taxar</label>
                   <input
@@ -477,17 +466,6 @@ export default function Configuracoes({
                     min={0}
                     onChange={e =>
                       socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeTrocar"], Number(e.target.value))
-                    }
-                  />
-                </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.capitao.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "capitao", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -640,17 +618,6 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.assassino.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "assassino", "quantidadeInvestigar"], Number(e.target.value))
-                    }
-                  />
-                </div>
                 <div className="config_checkbox pr-[calc(100%-133px)]">
                   <label>Bloqueia Taxar</label>
                   <input
@@ -797,17 +764,6 @@ export default function Configuracoes({
                     min={0}
                     onChange={e =>
                       socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeTrocar"], Number(e.target.value))
-                    }
-                  />
-                </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.condessa.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "condessa", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -960,17 +916,6 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.embaixador.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "embaixador", "quantidadeInvestigar"], Number(e.target.value))
-                    }
-                  />
-                </div>
                 <div className="config_checkbox pr-[calc(100%-133px)]">
                   <label>Bloqueia Taxar</label>
                   <input
@@ -1117,17 +1062,6 @@ export default function Configuracoes({
                     min={0}
                     onChange={e =>
                       socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeTrocar"], Number(e.target.value))
-                    }
-                  />
-                </div>
-                <div className="config_outer_div">
-                  <label>Investigar Cartas</label>
-                  <input
-                    type="number"
-                    value={configs.tiposCartas.inquisidor.quantidadeInvestigar}
-                    min={0}
-                    onChange={e =>
-                      socket.emit("updateConfigs", ["tiposCartas", "inquisidor", "quantidadeInvestigar"], Number(e.target.value))
                     }
                   />
                 </div>
@@ -1322,10 +1256,6 @@ export default function Configuracoes({
                 <p>{configs.tiposCartas.duque.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.duque.quantidadeInvestigar}</p>
-              </div>
-              <div>
                 <p>Bloqueia Taxar</p>
                 <p>{configs.tiposCartas.duque.bloquearTaxar ? "sim" : "não"}</p>
               </div>
@@ -1385,10 +1315,6 @@ export default function Configuracoes({
               <div>
                 <p>Trocar Cartas(Própria)</p>
                 <p>{configs.tiposCartas.capitao.quantidadeTrocar}</p>
-              </div>
-              <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.capitao.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1452,10 +1378,6 @@ export default function Configuracoes({
                 <p>{configs.tiposCartas.assassino.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.assassino.quantidadeInvestigar}</p>
-              </div>
-              <div>
                 <p>Bloqueia Taxar</p>
                 <p>{configs.tiposCartas.assassino.bloquearTaxar ? "sim" : "não"}</p>
               </div>
@@ -1515,10 +1437,6 @@ export default function Configuracoes({
               <div>
                 <p>Trocar Cartas(Própria)</p>
                 <p>{configs.tiposCartas.condessa.quantidadeTrocar}</p>
-              </div>
-              <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.condessa.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>
@@ -1582,10 +1500,6 @@ export default function Configuracoes({
                 <p>{configs.tiposCartas.embaixador.quantidadeTrocar}</p>
               </div>
               <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.embaixador.quantidadeInvestigar}</p>
-              </div>
-              <div>
                 <p>Bloqueia Taxar</p>
                 <p>{configs.tiposCartas.embaixador.bloquearTaxar ? "sim" : "não"}</p>
               </div>
@@ -1645,10 +1559,6 @@ export default function Configuracoes({
               <div>
                 <p>Trocar Cartas(Própria)</p>
                 <p>{configs.tiposCartas.inquisidor.quantidadeTrocar}</p>
-              </div>
-              <div>
-                <p>Investigar Cartas</p>
-                <p>{configs.tiposCartas.inquisidor.quantidadeInvestigar}</p>
               </div>
               <div>
                 <p>Bloqueia Taxar</p>

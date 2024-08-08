@@ -8,7 +8,6 @@ type Carta = {
     quantidadeExtorquir: number,
     quantidadeAssassinar: number,
     quantidadeTrocar: number,
-    quantidadeInvestigar: number,
     bloquearTaxar: boolean,
     bloquearExtorquir: boolean,
     bloquearAssassinar: boolean,
