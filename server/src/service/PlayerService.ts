@@ -57,7 +57,7 @@ export default class PlayerService {
     }
 
     static isPlayerLogedIn(socketID: string): boolean {
-        return PlayerService.players[socketID].player !== null;
+        return PlayerService.players[socketID].player !== undefined;
     }
 
     static getPlayer(socketID: string): Player {
@@ -70,12 +70,12 @@ export default class PlayerService {
         return LobbyService.getLobby(player.lobbyID);
     }
 
-    static getPlayersLobbyByName(name: string): Lobby | null {
+    static getPlayersLobbyByName(name: string): Lobby | undefined {
         const playerInfos = Object.values(PlayerService.players)
             .find(p => p.player.name === name);
 
         if (playerInfos === undefined)
-            return null;
+            return undefined;
 
         return LobbyService.getLobby(playerInfos.lobbyID);
     }
@@ -84,10 +84,10 @@ export default class PlayerService {
         PlayerService.players[socketID].lobbyID = lobbyID;
     }
 
-    static getPlayerByName(name: string): Player | null {
+    static getPlayerByName(name: string): Player | undefined {
         return Object.values(PlayerService.players)
             .map(infos => infos.player)
-            .find(player => player.name === name) || null;
+            .find(player => player.name === name);
     }
 
     static removePlayer(socketId: string): number {
