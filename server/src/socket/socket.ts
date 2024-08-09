@@ -31,7 +31,7 @@ interface RequestSocketOnEvents {
 
     "trocar": (card: CardType, selfCard: number, target: string, targetCard: number) => void;
 
-    "contestar": (card?: CardType, selfCard?: number) => void;
+    "contestar": (selfCard?: number) => void;
     "bloquear": (card?: CardType, selfCard?: number) => void;
     "continuar": () => void;
 }
