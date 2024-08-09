@@ -50,7 +50,8 @@ export default class ActionValidator {
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs()),
             [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, game),
-            [Action.CONTESTAR]: () => ActionValidator.validateContestar(player, selfCard, game)
+            [Action.CONTESTAR]: () => ActionValidator.validateContestar(player, selfCard, game),
+            [Action.CONTINUAR]: () => ActionValidator.validateContinuar()
         };
 
         actionMapper[action]();
@@ -325,6 +326,8 @@ export default class ActionValidator {
         if (player.getCard(selfCard)?.getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
     }
+
+    private static validateContinuar() {}
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
         return game.getLastTurn()?.getTarget()?.name === name;
