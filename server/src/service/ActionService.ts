@@ -21,7 +21,12 @@ export default class ActionService {
 
         const player = PlayerService.getPlayer(socketId);
 
-        ActionValidator.validate(game, player, action, card, selfCard, targetName, targetCard);
+        const target = targetName === undefined ?
+            undefined
+            :
+            PlayerService.getPlayerByName(targetName);
+
+        ActionValidator.validate(game, player, action, card, selfCard, target, targetCard);
 
         game.getTurn(player)?.addAction(action);
     }
