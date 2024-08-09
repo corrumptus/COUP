@@ -49,7 +49,8 @@ export default class ActionValidator {
             [Action.TROCAR]: () => ActionValidator.validateTrocar(player, card, selfCard, targetCard, game),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs()),
-            [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, game)
+            [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, game),
+            [Action.CONTESTAR]: () => ActionValidator.validateContestar(player, selfCard, game)
         };
 
         actionMapper[action]();
@@ -301,6 +302,28 @@ export default class ActionValidator {
 
         if (!ActionValidator.canBlockPreviousAction(game, card))
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
+    }
+
+    private static validateContestar(
+        player: Player,
+        selfCard: number | undefined,
+        game: Game
+    ) {
+        if (game.getLastTurn()?.getLastAction() !== Action.BLOQUEAR)
+            if (
+                [Action.ASSASSINAR, Action.INVESTIGAR]
+                    .includes(game.getLastTurn()?.getLastAction() as Action)
+            )
+                return;
+        else
+            if (game.getLastTurn()?.getFirstAction() !== Action.AJUDA_EXTERNA)
+                return;
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (player.getCard(selfCard)?.getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
     }
 
     private static isPlayerBeingAttacked(game: Game, name: string): boolean {
