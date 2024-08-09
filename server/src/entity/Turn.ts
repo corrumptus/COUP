@@ -44,4 +44,8 @@ export default class Turn {
     getLastAction(): Action | undefined {
         return this.actions[this.actions.length - 1];
     }
+
+    getFirstAction(): Action | undefined {
+        return this.actions[0];
+    }
 }
