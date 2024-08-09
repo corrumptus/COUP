@@ -56,10 +56,6 @@ export default class PlayerService {
             });
     }
 
-    static isPlayerLogedIn(socketID: string): boolean {
-        return PlayerService.players[socketID].player !== undefined;
-    }
-
     static getPlayer(socketID: string): Player {
         return PlayerService.players[socketID].player;
     }
@@ -78,10 +74,6 @@ export default class PlayerService {
             return undefined;
 
         return LobbyService.getLobby(playerInfos.lobbyID);
-    }
-
-    static setPlayersLobby(socketID: string, lobbyID: number) {
-        PlayerService.players[socketID].lobbyID = lobbyID;
     }
 
     static getPlayerByName(name: string): Player | undefined {
