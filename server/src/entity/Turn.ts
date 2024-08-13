@@ -3,13 +3,13 @@ import Player from "./player";
 
 export default class Turn {
     private player: Player;
-    private target: Player | null;
+    private target: Player | undefined;
     private actions: Action[];
     private onFinish: () => void;
 
     constructor(player: Player, onFinish: () => void) {
         this.player = player;
-        this.target = null;
+        this.target = undefined;
         this.actions = [];
         this.onFinish = onFinish;
     }
@@ -37,7 +37,7 @@ export default class Turn {
         return this.player;
     }
 
-    getTarget(): Player | null {
+    getTarget(): Player | undefined {
         return this.target;
     }
 
