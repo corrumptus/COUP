@@ -1,4 +1,4 @@
-import Action, { postActions, targetActions } from "./Action";
+import Action from "./Action";
 import Player from "./player";
 
 export default class Turn {
@@ -15,15 +15,7 @@ export default class Turn {
     }
 
     addAction(action: Action, target?: Player) {
-        const lastAction = this.actions[this.actions.length - 1];
-
-        if (postActions[lastAction].indexOf(action) === -1)
-            return;
-
-        if (targetActions.indexOf(action) !== -1 && target === undefined)
-            return;
-
-        if (targetActions.indexOf(action) !== -1 && target !== undefined)
+        if (this.target === undefined)
             this.target = target;
 
         this.actions.push(action);
