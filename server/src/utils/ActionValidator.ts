@@ -1,24 +1,21 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
-import Game from "../entity/Game";
 import Player from "../entity/player";
+import Turn from "../entity/Turn";
 import Config from "./Config";
 
 export default class ActionValidator {
     static validate(
-        game: Game,
         player: Player,
         action: Action,
         card: CardType | undefined,
         selfCard: number | undefined,
         target: Player | undefined,
-        targetCard: number | undefined
+        targetCard: number | undefined,
+        turn: Turn,
+        configs: Config,
+        asylumCoins: number
     ) {
-        const configs = game.getConfigs();
-
-        if (!game.hasPlayer(player))
-            throw new Error("O player não está no jogo");
-
         if (!player.hasNonKilledCards)
             throw new Error("O player está morto");
 
@@ -29,7 +26,7 @@ export default class ActionValidator {
             throw new Error("O player precisa dar um golpe de estado neste turno.");
 
         if (
-            ActionValidator.isPlayerBeingAttacked(game, player.name)
+            ActionValidator.isPlayerBeingAttacked(turn, player.name)
             &&
             !ActionValidator.isDefenseAction(action)
         )
@@ -40,17 +37,17 @@ export default class ActionValidator {
         } = {
             [Action.RENDA]: () => ActionValidator.validateRenda(),
             [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
-            [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, game.getConfigs()),
-            [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, game),
-            [Action.EXTORQUIR]: () => ActionValidator.validateExtorquir(player, card, selfCard, target, game.getConfigs()),
-            [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, game),
-            [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, game),
-            [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, game.getConfigs()),
-            [Action.TROCAR]: () => ActionValidator.validateTrocar(player, card, selfCard, targetCard, game),
-            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, game.getConfigs()),
-            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, game.getConfigs()),
-            [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, game),
-            [Action.CONTESTAR]: () => ActionValidator.validateContestar(player, selfCard, game),
+            [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, configs),
+            [Action.CORRUPCAO]: () => ActionValidator.validateCorrupcao(player, card, selfCard, configs, asylumCoins),
+            [Action.EXTORQUIR]: () => ActionValidator.validateExtorquir(player, card, selfCard, target, configs),
+            [Action.ASSASSINAR]: () => ActionValidator.validateAssassinar(player, card, selfCard, target, targetCard, configs),
+            [Action.INVESTIGAR]: () => ActionValidator.validateInvestigar(player, card, selfCard, target, targetCard, configs),
+            [Action.GOLPE_ESTADO]: () => ActionValidator.validateGolpeEstado(player, target, targetCard, configs),
+            [Action.TROCAR]: () => ActionValidator.validateTrocar(player, card, selfCard, targetCard, configs),
+            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionValidator.validateTrocarPropriaReligiao(player, configs),
+            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionValidator.validateTrocarReligiaoOutro(player, target, configs),
+            [Action.BLOQUEAR]: () => ActionValidator.validateBloquear(player, card, selfCard, turn, configs),
+            [Action.CONTESTAR]: () => ActionValidator.validateContestar(player, selfCard, turn),
             [Action.CONTINUAR]: () => ActionValidator.validateContinuar()
         };
 
@@ -84,7 +81,8 @@ export default class ActionValidator {
         player: Player,
         card: CardType | undefined,
         selfCard: number | undefined,
-        game: Game
+        configs: Config,
+        asylumCoins: number
     ) {
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
@@ -92,15 +90,13 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
-        const configs = game.getConfigs();
-
         if (!configs.religiao.cartasParaCorrupcao[card])
             throw new Error("O tipo de carta escolhida não pode corromper");
 
         if (player.getCard(selfCard)?.getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (game.getAsylumCoins() === 0)
+        if (asylumCoins === 0)
             throw new Error("O asilo não possui moedas para serem pegas");
     }
 
@@ -136,7 +132,7 @@ export default class ActionValidator {
         selfCard: number | undefined,
         target: Player | undefined,
         targetCard: number | undefined,
-        game: Game
+        configs: Config
     ) {
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
@@ -149,8 +145,6 @@ export default class ActionValidator {
 
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
-
-        const configs = game.getConfigs();
 
         if (!configs.tiposCartas[card].assassinar)
             throw new Error("O tipo de carta escolhida não pode assassinar");
@@ -171,7 +165,7 @@ export default class ActionValidator {
         selfCard: number | undefined,
         target: Player | undefined,
         targetCard: number | undefined,
-        game: Game
+        configs: Config
     ) {
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
@@ -184,8 +178,6 @@ export default class ActionValidator {
 
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
-
-        const configs = game.getConfigs();
 
         if (!configs.tiposCartas[card].investigar)
             throw new Error("O tipo de carta escolhida não pode investigar");
@@ -221,7 +213,7 @@ export default class ActionValidator {
         card: CardType | undefined,
         selfCard: number | undefined,
         targetCard: number | undefined,
-        game: Game
+        configs: Config
     ) {
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
@@ -231,8 +223,6 @@ export default class ActionValidator {
 
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
-
-        const configs = game.getConfigs();
 
         if (!configs.tiposCartas[card].trocar)
             throw new Error("O tipo de carta escolhida não pode trocar");
@@ -287,9 +277,10 @@ export default class ActionValidator {
         player: Player,
         card: CardType | undefined,
         selfCard: number | undefined,
-        game: Game
+        turn: Turn,
+        configs: Config
     ) {
-        if ([Action.ASSASSINAR, Action.INVESTIGAR].includes(game.getLastTurn()?.getLastAction() as Action))
+        if ([Action.ASSASSINAR, Action.INVESTIGAR].includes(turn.getLastAction() as Action))
             return;
 
         if (card === undefined)
@@ -301,23 +292,23 @@ export default class ActionValidator {
         if (player.getCard(selfCard)?.getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (!ActionValidator.canBlockPreviousAction(game, card))
+        if (!ActionValidator.canBlockPreviousAction(turn, card, configs))
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
     }
 
     private static validateContestar(
         player: Player,
         selfCard: number | undefined,
-        game: Game
+        turn: Turn
     ) {
-        if (game.getLastTurn()?.getLastAction() !== Action.BLOQUEAR)
+        if (turn.getLastAction() !== Action.BLOQUEAR)
             if (
                 [Action.ASSASSINAR, Action.INVESTIGAR]
-                    .includes(game.getLastTurn()?.getLastAction() as Action)
+                    .includes(turn.getLastAction() as Action)
             )
                 return;
         else
-            if (game.getLastTurn()?.getFirstAction() !== Action.AJUDA_EXTERNA)
+            if (turn.getFirstAction() !== Action.AJUDA_EXTERNA)
                 return;
 
         if (selfCard === undefined)
@@ -329,15 +320,15 @@ export default class ActionValidator {
 
     private static validateContinuar() {}
 
-    private static isPlayerBeingAttacked(game: Game, name: string): boolean {
-        return game.getLastTurn()?.getTarget()?.name === name;
+    private static isPlayerBeingAttacked(turn: Turn, name: string): boolean {
+        return turn.getTarget()?.name === name;
     }
 
     private static isDefenseAction(action: Action): boolean {
         return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
     }
 
-    private static canBlockPreviousAction(game: Game, card: CardType): boolean {
+    private static canBlockPreviousAction(turn: Turn, card: CardType, configs: Config): boolean {
         const blockMapper = {
             [Action.AJUDA_EXTERNA]: (card: CardType) => configs.tiposCartas[card].taxar,
             [Action.TAXAR]: (card: CardType) => configs.tiposCartas[card].bloquearTaxar,
@@ -345,9 +336,7 @@ export default class ActionValidator {
             [Action.TROCAR]: (card: CardType) => configs.tiposCartas[card].bloquearTrocar
         }
 
-        const configs = game.getConfigs();
-
-        const previousAction = game.getLastTurn()?.getLastAction() as keyof typeof blockMapper;
+        const previousAction = turn.getLastAction() as keyof typeof blockMapper;
 
         return blockMapper[previousAction](card);
     }
