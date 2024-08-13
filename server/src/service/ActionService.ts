@@ -1,5 +1,7 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
+import Game from "../entity/Game";
+import Turn from "../entity/Turn";
 import ActionValidator from "../utils/ActionValidator";
 import { ActionInfos } from "./GameMessageService";
 import GameService from "./GameService";
@@ -26,8 +28,20 @@ export default class ActionService {
             :
             PlayerService.getPlayerByName(targetName);
 
-        ActionValidator.validate(game, player, action, card, selfCard, target, targetCard);
+        const turn = ActionService.getTheCorrectTurn(game);
 
-        game.getTurn(player)?.addAction(action);
+        ActionValidator.validate(player, action, card, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
+    }
+
+    private static getTheCorrectTurn(game: Game): Turn {
+        const lastTurn = game.getTurn(-1) as Turn;
+        const preLastTurn = game.getTurn(-2);
+
+        if (preLastTurn === undefined || preLastTurn.isfinished)
+            return lastTurn;
+
+        game.removeLastTurn();
+
+        return preLastTurn;
     }
 }
