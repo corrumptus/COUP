@@ -112,8 +112,8 @@ export default class Game {
         return this.winner;
     }
 
-    getLastTurn(): Turn | undefined {
-        return this.turns[this.turns.length - 1];
+    getTurn(index: number): Turn | undefined {
+        return this.turns.at(index);
     }
 
     getState() {
