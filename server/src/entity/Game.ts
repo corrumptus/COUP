@@ -116,6 +116,18 @@ export default class Game {
         return this.turns.at(index);
     }
 
+    removeLastTurn() {
+        const lastTurn = this.turns[this.turns.length - 1];
+
+        if (lastTurn === undefined)
+            return;
+
+        if (lastTurn.hasBeenStarted)
+            return;
+
+        this.turns.pop();
+    }
+
     getState() {
         return {
             players: this.players.map(p => p.toEnemyInfo()),
