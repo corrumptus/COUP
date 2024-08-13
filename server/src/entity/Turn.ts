@@ -40,4 +40,8 @@ export default class Turn {
     getFirstAction(): Action | undefined {
         return this.actions[0];
     }
+
+    get hasBeenStarted(): boolean {
+        return this.actions.length < 0;
+    }
 }
