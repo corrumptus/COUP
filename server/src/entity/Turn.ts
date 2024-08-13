@@ -5,12 +5,14 @@ export default class Turn {
     private player: Player;
     private target: Player | undefined;
     private actions: Action[];
+    private finished: boolean;
     private onFinish: () => void;
 
     constructor(player: Player, onFinish: () => void) {
         this.player = player;
         this.target = undefined;
         this.actions = [];
+        this.finished = false;
         this.onFinish = onFinish;
     }
 
@@ -23,6 +25,7 @@ export default class Turn {
 
     finish() {
         this.onFinish();
+        this.finished = true;
     }
 
     getPlayer(): Player {
@@ -43,5 +46,9 @@ export default class Turn {
 
     get hasBeenStarted(): boolean {
         return this.actions.length < 0;
+    }
+
+    get isfinished(): boolean {
+        return this.finished;
     }
 }
