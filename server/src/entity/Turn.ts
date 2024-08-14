@@ -21,11 +21,13 @@ export default class Turn {
         this.onFinish = onFinish;
     }
 
-    addAction(action: Action, target?: Player) {
+    addAction(action: Action) {
+        this.actions.push(action);
+    }
+
+    addTarget(target: Player) {
         if (this.target === undefined)
             this.target = target;
-
-        this.actions.push(action);
     }
 
     finish() {
