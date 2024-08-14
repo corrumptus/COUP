@@ -2,6 +2,7 @@ import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
 import Turn from "../entity/Turn";
+import ActionSaver from "../utils/ActionSaver";
 import ActionValidator from "../utils/ActionValidator";
 import { ActionInfos } from "./GameMessageService";
 import GameService from "./GameService";
@@ -31,6 +32,8 @@ export default class ActionService {
         const turn = ActionService.getTheCorrectTurn(game);
 
         ActionValidator.validate(player, action, card, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
+
+        return ActionSaver.save();
     }
 
     private static getTheCorrectTurn(game: Game): Turn {
