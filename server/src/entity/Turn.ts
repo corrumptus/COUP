@@ -30,6 +30,14 @@ export default class Turn {
             this.target = target;
     }
 
+    addCardType(cardType: CardType) {
+        this.cardTypes.push(cardType);
+    }
+
+    addCard(card: number) {
+        this.cards.push(card);
+    }
+
     finish() {
         this.onFinish();
         this.finished = true;
