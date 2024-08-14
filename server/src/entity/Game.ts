@@ -108,6 +108,17 @@ export default class Game {
         return this.asylum;
     }
 
+    addAsylumCoins(amount: number) {
+        if (amount <= 0)
+            return;
+
+        this.asylum += amount;
+    }
+
+    resetAsylumCoins() {
+        this.asylum = 0;
+    }
+
     getWinner(): Player | undefined {
         return this.winner;
     }
