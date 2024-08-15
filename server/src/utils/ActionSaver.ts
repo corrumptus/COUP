@@ -1,5 +1,6 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
+import Game from "../entity/Game";
 import Player from "../entity/player";
 import Turn from "../entity/Turn";
 import { ActionInfos } from "../service/GameMessageService";
@@ -8,18 +9,19 @@ import Config from "./Config";
 export default class ActionSaver {
     static save(
         action: Action,
+        game: Game,
         turn: Turn,
         player: Player,
-        cardType: CardType,
-        selfCard: number,
-        configs: Config
+        cardType?: CardType,
+        selfCard?: number
     ): ActionInfos {
         const actionMapper: {
             [key in Action]: () => void;
         } = {
-            [Action.RENDA]: () => ActionSaver.saveRenda(turn, player, configs),
-            [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, configs),
-            [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType, selfCard, configs)
+            [Action.RENDA]: () => ActionSaver.saveRenda(turn, player, game.getConfigs()),
+            [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, game.getConfigs()),
+            [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as number, game.getConfigs()),
+            [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as number)
         }
 
         actionMapper[action]();
@@ -47,6 +49,22 @@ export default class ActionSaver {
         player.addMoney(configs.tiposCartas[cardType].quantidadeTaxar);
 
         turn.addAction(Action.TAXAR);
+        turn.addCardType(cardType);
+        turn.addCard(selfCard);
+    }
+
+    private static saveCorrupcao(
+        game: Game,
+        turn: Turn,
+        player: Player,
+        cardType: CardType,
+        selfCard: number
+    ) {
+        player.addMoney(game.getAsylumCoins());
+
+        game.resetAsylumCoins();
+
+        turn.addAction(Action.CORRUPCAO);
         turn.addCardType(cardType);
         turn.addCard(selfCard);
     }
