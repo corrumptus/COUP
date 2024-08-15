@@ -38,6 +38,16 @@ export default class Player {
         this.money += money;
     }
 
+    removeMoney(money: number) {
+        if (money < 0)
+            return;
+
+        if (this.money - money < 0)
+            return;
+
+        this.money -= money;
+    }
+
     getCard(position: number): Card | undefined {
         return this.cards[position];
     }
