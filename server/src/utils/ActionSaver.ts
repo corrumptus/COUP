@@ -26,7 +26,8 @@ export default class ActionSaver {
             [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as number),
             [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, cardType as CardType, selfCard as number, target as Player),
             [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
-            [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number)
+            [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number),
+            [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -115,6 +116,22 @@ export default class ActionSaver {
         turn.addTarget(target);
         turn.addCardType(cardType);
         turn.addCard(selfCard);
+        turn.addCard(targetCard);
+    }
+
+    private static saveGolpeEstado(
+        turn: Turn,
+        player: Player,
+        target: Player,
+        targetCard: number,
+        configs: Config
+    ) {
+        player.removeMoney(configs.quantidadeMinimaGolpeEstado);
+
+        target.killCard(targetCard);
+
+        turn.addAction(Action.GOLPE_ESTADO);
+        turn.addTarget(target);
         turn.addCard(targetCard);
     }
 }
