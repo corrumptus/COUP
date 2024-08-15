@@ -24,7 +24,7 @@ export default class ActionSaver {
             [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, game.getConfigs()),
             [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as number, game.getConfigs()),
             [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as number),
-            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, player, cardType as CardType, selfCard as number, target as Player, game.getConfigs()),
+            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, cardType as CardType, selfCard as number, target as Player),
             [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, targetCard as number, game.getConfigs())
         }
 
@@ -75,16 +75,10 @@ export default class ActionSaver {
 
     private static saveExtorquir(
         turn: Turn,
-        player: Player,
         cardType: CardType,
         selfCard: number,
-        target: Player,
-        configs: Config
+        target: Player
     ) {
-        player.addMoney(configs.tiposCartas[cardType].quantidadeExtorquir);
-
-        target.removeMoney(configs.tiposCartas[cardType].quantidadeExtorquir);
-
         turn.addAction(Action.EXTORQUIR);
         turn.addTarget(target);
         turn.addCardType(cardType);
