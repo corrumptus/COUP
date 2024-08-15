@@ -14,7 +14,8 @@ export default class ActionSaver {
         player: Player,
         cardType?: CardType,
         selfCard?: number,
-        target?: Player
+        target?: Player,
+        targetCard?: number
     ): ActionInfos {
         const actionMapper: {
             [key in Action]: () => void;
@@ -23,7 +24,8 @@ export default class ActionSaver {
             [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, game.getConfigs()),
             [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as number, game.getConfigs()),
             [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as number),
-            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, player, cardType as CardType, selfCard as number, target as Player, game.getConfigs())
+            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, player, cardType as CardType, selfCard as number, target as Player, game.getConfigs()),
+            [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, targetCard as number, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -87,5 +89,21 @@ export default class ActionSaver {
         turn.addTarget(target);
         turn.addCardType(cardType);
         turn.addCard(selfCard);
+    }
+
+    private static saveAssassinar(
+        turn: Turn,
+        player: Player,
+        cardType: CardType,
+        selfCard: number,
+        targetCard: number,
+        configs: Config
+    ) {
+        player.removeMoney(configs.tiposCartas[cardType].quantidadeAssassinar);
+
+        turn.addAction(Action.ASSASSINAR);
+        turn.addCardType(cardType);
+        turn.addCard(selfCard);
+        turn.addCard(targetCard);
     }
 }
