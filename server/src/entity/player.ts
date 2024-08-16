@@ -4,25 +4,19 @@ import Religion, { randomReligion } from "./Religion";
 
 export default class Player {
     readonly name: string;
-    private cards: Card[];
+    private cards!: Card[];
     private cardHistory: CardType[][];
     private religion: Religion | undefined;
-    private money: number;
+    private money!: number;
     private handlerDieEvent: () => void = () => {};
 
     constructor(name: string) {
         this.name = name;
-        this.cards = [];
         this.cardHistory = [];
-        this.religion = undefined;
-        this.money = -1;
     }
 
     initRound(money: number) {
-        const cards = [
-            randomCardType(),
-            randomCardType()
-        ];
+        const cards = this.newCards();
 
         this.cards = cards.map(c => new Card(c));
         this.cardHistory.push(cards);
@@ -57,8 +51,33 @@ export default class Player {
         this.money -= money;
     }
 
+    getCards(): Card[] {
+        return this.cards;
+    }
+
     getCard(position: number): Card | undefined {
         return this.cards[position];
+    }
+
+    changeCards() {
+        const newCards = this.newCards();
+
+        this.cards.forEach((c, i) => c.changeType(newCards[i]));
+        this.cardHistory.push(newCards);
+    }
+
+    changeCard(position: number) {
+        const newCard = randomCardType();
+
+        this.cards[position].changeType(newCard);
+
+        const newCardHistory = this.cards.map(c => c.getType());
+
+        this.cardHistory.push(newCardHistory);
+    }
+
+    getPreviousCards(): CardType[] | undefined {
+        return this.cardHistory.at(-2);
     }
 
     killCard(position: number) {
@@ -99,5 +118,12 @@ export default class Player {
             money: this.money,
             religion: this.religion
         };
+    }
+
+    private newCards(): CardType[] {
+        return [
+            randomCardType(),
+            randomCardType()
+        ];
     }
 }
