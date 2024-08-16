@@ -1,5 +1,3 @@
-import Card from "./Card";
-import { randomCardType } from "./CardType";
 import Turn from "./Turn";
 import Player from "./player";
 import Config from "../utils/Config";
@@ -41,14 +39,7 @@ export default class Game {
     }
 
     private deliverCardsAndMoney() {
-        this.players.forEach(player => {
-            const cards: Card[] = [
-                new Card(randomCardType()),
-                new Card(randomCardType())
-            ];
-
-            player.initRound(cards, this.configs.moedasIniciais);
-        });
+        this.players.forEach(player => player.initRound(this.configs.moedasIniciais));
     }
 
     private tellPlayers() {

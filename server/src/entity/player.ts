@@ -1,9 +1,11 @@
 import Card from "./Card";
+import CardType, { randomCardType } from "./CardType";
 import Religion, { randomReligion } from "./Religion";
 
 export default class Player {
     readonly name: string;
     private cards: Card[];
+    private cardHistory: CardType[][];
     private religion: Religion | undefined;
     private money: number;
     private handlerDieEvent: () => void = () => {};
@@ -11,12 +13,19 @@ export default class Player {
     constructor(name: string) {
         this.name = name;
         this.cards = [];
+        this.cardHistory = [];
         this.religion = undefined;
         this.money = -1;
     }
 
-    initRound(cards: Card[], money: number) {
-        this.cards = cards;
+    initRound(money: number) {
+        const cards = [
+            randomCardType(),
+            randomCardType()
+        ];
+
+        this.cards = cards.map(c => new Card(c));
+        this.cardHistory.push(cards);
         this.money = money;
     }
 
