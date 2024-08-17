@@ -27,7 +27,8 @@ export default class ActionSaver {
             [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, cardType as CardType, selfCard as number, target as Player),
             [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
             [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number),
-            [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs())
+            [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs()),
+            [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -132,6 +133,33 @@ export default class ActionSaver {
 
         turn.addAction(Action.GOLPE_ESTADO);
         turn.addTarget(target);
+        turn.addCard(targetCard);
+    }
+
+    private static saveTrocar(
+        turn: Turn,
+        player: Player,
+        cardType: CardType,
+        selfCard: number,
+        target: Player,
+        targetCard: number,
+        configs: Config
+    ) {
+        turn.addAction(Action.TROCAR);
+
+        if (turn.getFirstAction() !== Action.TROCAR) {
+            target.changeCard(targetCard);
+            return;
+        }
+
+        turn.addCard(selfCard);
+
+        if (configs.tiposCartas[cardType].quantidadeTrocar === 2) {
+            player.changeCards();
+            return;
+        }
+
+        player.changeCard(targetCard);
         turn.addCard(targetCard);
     }
 }
