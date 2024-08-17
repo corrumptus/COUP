@@ -12,4 +12,8 @@ export function randomReligion(): Religion {
     return religions[Math.floor(Math.random()*religions.length)];
 }
 
+export function inverseReligion(religion: Religion) {
+    return religion === Religion.PROTESTANTE ? Religion.CATOLICA : Religion.PROTESTANTE;
+}
+
 export default Religion;

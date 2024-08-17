@@ -1,6 +1,6 @@
 import Card from "./Card";
 import CardType, { randomCardType } from "./CardType";
-import Religion, { randomReligion } from "./Religion";
+import Religion, { inverseReligion, randomReligion } from "./Religion";
 
 export type CardSlot = 0 | 1;
 
@@ -30,6 +30,10 @@ export default class Player {
             return;
 
         this.religion = randomReligion();
+    }
+
+    changeReligion() {
+        this.religion = inverseReligion(this.religion as Religion);
     }
 
     getMoney(): number {
