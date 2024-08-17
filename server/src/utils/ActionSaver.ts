@@ -28,7 +28,8 @@ export default class ActionSaver {
             [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
             [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number),
             [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs()),
-            [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs())
+            [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
+            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -161,5 +162,12 @@ export default class ActionSaver {
 
         player.changeCard(targetCard);
         turn.addCard(targetCard);
+    }
+
+    private static saveTrocarPropriaReligiao(turn: Turn, player: Player, configs: Config) {
+        player.removeMoney(configs.religiao.quantidadeTrocarPropria);
+        player.changeReligion();
+        
+        turn.addAction(Action.TROCAR_PROPRIA_RELIGIAO);
     }
 }
