@@ -2,10 +2,12 @@ import Card from "./Card";
 import CardType, { randomCardType } from "./CardType";
 import Religion, { randomReligion } from "./Religion";
 
+export type CardSlot = 0 | 1;
+
 export default class Player {
     readonly name: string;
-    private cards!: Card[];
-    private cardHistory: CardType[][];
+    private cards!: [Card, Card];
+    private cardHistory: [CardType, CardType][];
     private religion: Religion | undefined;
     private money!: number;
     private handlerDieEvent: () => void = () => {};
@@ -18,7 +20,7 @@ export default class Player {
     initRound(money: number) {
         const cards = this.newCards();
 
-        this.cards = cards.map(c => new Card(c));
+        this.cards = cards.map(c => new Card(c)) as [Card, Card];
         this.cardHistory.push(cards);
         this.money = money;
     }
@@ -51,11 +53,11 @@ export default class Player {
         this.money -= money;
     }
 
-    getCards(): Card[] {
+    getCards(): [Card, Card] {
         return this.cards;
     }
 
-    getCard(position: number): Card | undefined {
+    getCard(position: CardSlot): Card {
         return this.cards[position];
     }
 
@@ -66,22 +68,22 @@ export default class Player {
         this.cardHistory.push(newCards);
     }
 
-    changeCard(position: number) {
+    changeCard(position: CardSlot) {
         const newCard = randomCardType();
 
         this.cards[position].changeType(newCard);
 
-        const newCardHistory = this.cards.map(c => c.getType());
+        const newCardHistory = this.cards.map(c => c.getType()) as [CardType, CardType];
 
         this.cardHistory.push(newCardHistory);
     }
 
-    getPreviousCards(): CardType[] | undefined {
+    getPreviousCards(): [CardType, CardType] | undefined {
         return this.cardHistory.at(-2);
     }
 
-    killCard(position: number) {
-        this.cards[position]?.kill();
+    killCard(position: CardSlot) {
+        this.cards[position].kill();
 
         if (!this.hasNonKilledCards)
             this.handlerDieEvent();
@@ -120,7 +122,7 @@ export default class Player {
         };
     }
 
-    private newCards(): CardType[] {
+    private newCards(): [CardType, CardType] {
         return [
             randomCardType(),
             randomCardType()
