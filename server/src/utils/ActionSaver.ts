@@ -29,7 +29,8 @@ export default class ActionSaver {
             [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number),
             [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs()),
             [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
-            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs())
+            [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs()),
+            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -167,7 +168,15 @@ export default class ActionSaver {
     private static saveTrocarPropriaReligiao(turn: Turn, player: Player, configs: Config) {
         player.removeMoney(configs.religiao.quantidadeTrocarPropria);
         player.changeReligion();
-        
+
         turn.addAction(Action.TROCAR_PROPRIA_RELIGIAO);
+    }
+
+    private static saveTrocarReligiaoOutro(turn: Turn, player: Player, target: Player, configs: Config) {
+        player.removeMoney(configs.religiao.quantidadeTrocarOutro);
+        target.changeReligion();
+
+        turn.addAction(Action.TROCAR_RELIGIAO_OUTRO);
+        turn.addTarget(target);
     }
 }
