@@ -1,13 +1,13 @@
 import Action from "./Action";
 import CardType from "./CardType";
-import Player from "./player";
+import Player, { CardSlot } from "./player";
 
 export default class Turn {
     private player: Player;
     private target: Player | undefined;
     private actions: Action[];
     private cardTypes: CardType[];
-    private cards: number[];
+    private cards: CardSlot[];
     private finished: boolean;
     private onFinish: () => void;
 
@@ -34,7 +34,7 @@ export default class Turn {
         this.cardTypes.push(cardType);
     }
 
-    addCard(card: number) {
+    addCard(card: CardSlot) {
         this.cards.push(card);
     }
 
