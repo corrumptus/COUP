@@ -51,6 +51,17 @@ export default class Player {
         this.money += money;
     }
 
+    removeMoney(money: number) {
+        if (money < 0)
+            return;
+
+        if (this.money - money < 0)
+            return;
+
+        this.money -= money;
+        this.moneyHistory.push(-money);
+    }
+
     rollbackMoney(): number {
         if (this.moneyHistory.length === 0)
             return 0;
