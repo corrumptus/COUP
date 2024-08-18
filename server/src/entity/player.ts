@@ -89,8 +89,13 @@ export default class Player {
         this.cardHistory.push(newCardHistory);
     }
 
-    getPreviousCards(): [CardType, CardType] | undefined {
-        return this.cardHistory.at(-2);
+    rollbackCards() {
+        if (this.cardHistory.length === 1)
+            return;
+
+        const lastCardTypes = this.cardHistory.at(-2) as [CardType, CardType];
+
+        this.cards.forEach((c, i) => c.changeType(lastCardTypes[i]));
     }
 
     killCard(position: CardSlot) {
