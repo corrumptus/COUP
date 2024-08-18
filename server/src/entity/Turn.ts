@@ -59,6 +59,10 @@ export default class Turn {
         return this.actions[0];
     }
 
+    getFirstCardType(): CardType | undefined {
+        return this.cardTypes[0];
+    }
+
     get hasBeenStarted(): boolean {
         return this.actions.length < 0;
     }
