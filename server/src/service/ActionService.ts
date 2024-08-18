@@ -22,14 +22,14 @@ export default class ActionService {
         if (game === null)
             throw new Error("Player is not playing a game");
 
-        const player = PlayerService.getPlayer(socketId);
+        const turn = ActionService.getTheCorrectTurn(game);
+
+        const player = turn.getPlayer();
 
         const target = targetName === undefined ?
-            undefined
+            turn.getTarget()
             :
             PlayerService.getPlayerByName(targetName);
-
-        const turn = ActionService.getTheCorrectTurn(game);
 
         ActionValidator.validate(player, action, card, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 
