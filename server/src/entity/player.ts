@@ -10,11 +10,13 @@ export default class Player {
     private cardHistory: [CardType, CardType][];
     private religion: Religion | undefined;
     private money!: number;
+    private moneyHistory: number[];
     private handlerDieEvent: () => void = () => {};
 
     constructor(name: string) {
         this.name = name;
         this.cardHistory = [];
+        this.moneyHistory = [];
     }
 
     initRound(money: number) {
@@ -44,17 +46,22 @@ export default class Player {
         if (money < 0)
             return;
 
+        this.moneyHistory.push(money);
+
         this.money += money;
     }
 
-    removeMoney(money: number) {
-        if (money < 0)
-            return;
+    rollbackMoney(): number {
+        if (this.moneyHistory.length === 0)
+            return 0;
 
-        if (this.money - money < 0)
-            return;
+        const lastAddition = this.moneyHistory.at(-1) as number
 
-        this.money -= money;
+        this.money -= lastAddition;
+
+        this.moneyHistory.pop();
+
+        return lastAddition;
     }
 
     getCards(): [Card, Card] {
