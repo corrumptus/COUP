@@ -63,6 +63,10 @@ export default class Turn {
         return this.cardTypes[0];
     }
 
+    getFirstCard(): CardSlot | undefined {
+        return this.cards[0];
+    }
+
     get hasBeenStarted(): boolean {
         return this.actions.length < 0;
     }
