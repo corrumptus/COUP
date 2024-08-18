@@ -30,7 +30,8 @@ export default class ActionSaver {
             [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs()),
             [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs()),
-            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs())
+            [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs()),
+            [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as number, target as Player)
         }
 
         actionMapper[action]();
@@ -178,5 +179,38 @@ export default class ActionSaver {
 
         turn.addAction(Action.TROCAR_RELIGIAO_OUTRO);
         turn.addTarget(target);
+    }
+
+    private static saveBloquear(
+        turn: Turn,
+        cardType: CardType,
+        selfCard: number,
+        target: Player
+    ) {
+        turn.addAction(Action.BLOQUEAR);
+
+        const lastAction = turn.getLastAction() as Action;
+
+        const needAddSomethingActions = [
+            Action.AJUDA_EXTERNA,
+            Action.TAXAR,
+            Action.EXTORQUIR,
+            Action.TROCAR
+        ];
+
+        const needTargetActions = [
+            Action.AJUDA_EXTERNA,
+            Action.TAXAR,
+            Action.TROCAR
+        ];
+
+        if (!needAddSomethingActions.includes(lastAction))
+            return;
+
+        if (needTargetActions.includes(lastAction))
+            turn.addTarget(target);
+
+        turn.addCardType(cardType);
+        turn.addCard(selfCard);
     }
 }
