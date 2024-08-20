@@ -31,7 +31,8 @@ export default class ActionSaver {
             [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs()),
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs()),
-            [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as number, target as Player)
+            [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as number, target as Player),
+            [Action.CONTESTAR]: () => ActionSaver.saveContestar(turn, player, selfCard as number, target as Player, game.getConfigs()),
         }
 
         actionMapper[action]();
@@ -212,5 +213,195 @@ export default class ActionSaver {
 
         turn.addCardType(cardType);
         turn.addCard(selfCard);
+    }
+
+    private static saveContestar(
+        turn: Turn,
+        player: Player,
+        selfCard: number,
+        target: Player,
+        configs: Config
+    ) {
+        const contestarMapper = {
+            [Action.TAXAR]: () => {
+                const taxarCard = turn.getFirstCard() as number;
+
+                const taxarCardType = player.getCard(taxarCard).getType();
+
+                if (configs.tiposCartas[taxarCardType].taxar)
+                    target.killCard(selfCard);
+                else {
+                    player.killCard(taxarCard);
+                    player.rollbackMoney();
+                }
+
+                turn.addCard(selfCard);
+            },
+            [Action.CORRUPCAO]: () => {
+                const corrupcaoCard = turn.getFirstCard() as number;
+
+                const corrupcaoCardType = player.getCard(corrupcaoCard).getType();
+
+                if (configs.religiao.cartasParaCorrupcao[corrupcaoCardType])
+                    target.killCard(selfCard);
+                else {
+                    player.killCard(corrupcaoCard);
+                    player.rollbackMoney();
+                }
+
+                turn.addCard(selfCard);
+            },
+            [Action.EXTORQUIR]: () => {
+                const extorquirCard = turn.getFirstCard() as number;
+
+                const extorquirCardType = player.getCard(extorquirCard).getType();
+
+                if (configs.tiposCartas[extorquirCardType].extorquir) {
+                    const extorquirAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+
+                    target.removeMoney(extorquirAmount);
+                    player.addMoney(extorquirAmount);
+
+                    target.killCard(selfCard);
+                } else
+                    player.killCard(extorquirCard);
+
+                turn.addCard(selfCard);
+            },
+            [Action.ASSASSINAR]: () => {
+                const assassinarCard = turn.getFirstCard() as number;
+
+                const assassinarCardType = player.getCard(assassinarCard).getType();
+
+                if (configs.tiposCartas[assassinarCardType].assassinar) {
+                    const cardKilledByKiller = turn.getLastCard() as number;
+
+                    const cardKilledByContestar = (cardKilledByKiller+1)%2;
+
+                    target.killCard(cardKilledByKiller);
+                    target.killCard(cardKilledByContestar);
+                } else
+                    player.killCard(assassinarCard);
+            },
+            [Action.INVESTIGAR]: () => {
+                const investigarCard = turn.getFirstCard() as number;
+
+                const investigarCardType = player.getCard(investigarCard).getType();
+
+                if (configs.tiposCartas[investigarCardType].investigar) {
+                    const investigatedCard = turn.getLastCard() as number;
+
+                    const cardKilledByContestar = (investigatedCard+1)%2;
+
+                    target.killCard(cardKilledByContestar);
+                } else
+                    player.killCard(investigarCard);
+            },
+            [Action.TROCAR]: () => {
+                const trocarCard = turn.getFirstCard() as number;
+
+                const trocarCardType = player.getCard(trocarCard).getType();
+
+                if (configs.tiposCartas[trocarCardType].trocar)
+                    target.killCard(selfCard);
+                else {
+                    player.rollbackCards();
+                    player.killCard(trocarCard);
+                }
+
+                turn.addCard(selfCard);
+            },
+            [Action.BLOQUEAR]: () => {
+                const bloquearMapper = {
+                    [Action.AJUDA_EXTERNA]: () => {
+                        const bloquearCard = turn.getFirstCard() as number;
+
+                        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+                        if (configs.tiposCartas[bloquearCardType].taxar) {
+                            player.rollbackMoney();
+                            player.killCard(selfCard);
+                        } else
+                            target.killCard(bloquearCard);
+
+                        turn.addCard(selfCard);
+                    },
+                    [Action.TAXAR]: () => {
+                        const taxarCard = turn.getFirstCard() as number;
+
+                        const bloquearCard = turn.getLastCard();
+
+                        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+                        if (configs.tiposCartas[bloquearCardType].bloquearTaxar) {
+                            player.rollbackMoney();
+                            player.killCard(taxarCard);
+                        } else
+                            target.killCard(bloquearCard);
+                    },
+                    [Action.EXTORQUIR]: () => {
+                        const extorquirCard = turn.getFirstCard() as number;
+
+                        const extorquirCardType = player.getCard(extorquirCard).getType();
+
+                        const bloquearCard = turn.getLastCard();
+
+                        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+                        if (configs.tiposCartas[bloquearCardType].bloquearExtorquir)
+                            player.killCard(extorquirCard);
+                        else {
+                            const extorquirAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+
+                            target.removeMoney(extorquirAmount);
+                            player.addMoney(extorquirAmount);
+
+                            target.killCard(bloquearCard);
+                        }
+                    },
+                    [Action.ASSASSINAR]: () => {
+                        const assassinarCard = turn.getFirstCard() as number;
+
+                        const bloquearCard = turn.getLastCard() as number;
+
+                        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+                        if (configs.tiposCartas[bloquearCardType].bloquearAssassinar)
+                            player.killCard(assassinarCard);
+                        else {
+                            const cardKilledByContestar = (bloquearCard+1)%2;
+
+                            target.killCard(bloquearCard);
+                            target.killCard(cardKilledByContestar);
+                        }
+                    },
+                    [Action.INVESTIGAR]: () => {
+                        const investigarCard = turn.getFirstCard() as number;
+
+                        const bloquearCard = turn.getLastCard() as number;
+
+                        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+                        if (configs.tiposCartas[bloquearCardType].bloquearInvestigar)
+                            player.killCard(investigarCard);
+                        else {
+                            const cardKilledByContestar = (bloquearCard+1)%2;
+
+                            target.killCard(cardKilledByContestar);
+                        }
+                    }
+                };
+
+                const firstAction = turn.getFirstAction() as keyof typeof bloquearMapper;
+
+                bloquearMapper[firstAction]();
+            }
+        }
+
+        const lastAction = turn.getLastAction() as keyof typeof contestarMapper;
+
+        contestarMapper[lastAction]();
+
+        turn.addAction(Action.CONTESTAR);
     }
 }
