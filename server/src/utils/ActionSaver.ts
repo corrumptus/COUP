@@ -1,7 +1,7 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
-import Player from "../entity/player";
+import Player, { CardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
 import { ActionInfos } from "../service/GameMessageService";
 import Config from "./Config";
@@ -13,26 +13,26 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         cardType?: CardType,
-        selfCard?: number,
+        selfCard?: CardSlot,
         target?: Player,
-        targetCard?: number
+        targetCard?: CardSlot
     ): ActionInfos {
         const actionMapper: {
             [key in Action]: () => void;
         } = {
             [Action.RENDA]: () => ActionSaver.saveRenda(turn, player, game.getConfigs()),
             [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, game.getConfigs()),
-            [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as number, game.getConfigs()),
-            [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as number),
-            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, cardType as CardType, selfCard as number, target as Player),
-            [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
-            [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as number, target as Player, targetCard as number),
-            [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as number, game.getConfigs()),
-            [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as number, target as Player, targetCard as number, game.getConfigs()),
+            [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as CardSlot, game.getConfigs()),
+            [Action.CORRUPCAO]: () => ActionSaver.saveCorrupcao(game, turn, player, cardType as CardType, selfCard as CardSlot),
+            [Action.EXTORQUIR]: () => ActionSaver.saveExtorquir(turn, cardType as CardType, selfCard as CardSlot, target as Player),
+            [Action.ASSASSINAR]: () => ActionSaver.saveAssassinar(turn, player, cardType as CardType, selfCard as CardSlot, target as Player, targetCard as CardSlot, game.getConfigs()),
+            [Action.INVESTIGAR]: () => ActionSaver.saveInvestigar(turn, cardType as CardType, selfCard as CardSlot, target as Player, targetCard as CardSlot),
+            [Action.GOLPE_ESTADO]: () => ActionSaver.saveGolpeEstado(turn, player, target as Player, targetCard as CardSlot, game.getConfigs()),
+            [Action.TROCAR]: () => ActionSaver.saveTrocar(turn, player, cardType as CardType, selfCard as CardSlot, target as Player, targetCard as CardSlot, game.getConfigs()),
             [Action.TROCAR_PROPRIA_RELIGIAO]: () => ActionSaver.saveTrocarPropriaReligiao(turn, player, game.getConfigs()),
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs()),
-            [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as number, target as Player),
-            [Action.CONTESTAR]: () => ActionSaver.saveContestar(turn, player, selfCard as number, target as Player, game.getConfigs()),
+            [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as CardSlot, target as Player),
+            [Action.CONTESTAR]: () => ActionSaver.saveContestar(turn, player, selfCard as CardSlot, target as Player, game.getConfigs()),
         }
 
         actionMapper[action]();
@@ -54,7 +54,7 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         configs: Config
     ) {
         player.addMoney(configs.tiposCartas[cardType].quantidadeTaxar);
@@ -69,7 +69,7 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         cardType: CardType,
-        selfCard: number
+        selfCard: CardSlot
     ) {
         player.addMoney(game.getAsylumCoins());
 
@@ -83,7 +83,7 @@ export default class ActionSaver {
     private static saveExtorquir(
         turn: Turn,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player
     ) {
         turn.addAction(Action.EXTORQUIR);
@@ -96,9 +96,9 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player,
-        targetCard: number,
+        targetCard: CardSlot,
         configs: Config
     ) {
         player.removeMoney(configs.tiposCartas[cardType].quantidadeAssassinar);
@@ -113,9 +113,9 @@ export default class ActionSaver {
     private static saveInvestigar(
         turn: Turn,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player,
-        targetCard: number,
+        targetCard: CardSlot,
     ) {
         turn.addAction(Action.ASSASSINAR);
         turn.addTarget(target);
@@ -128,7 +128,7 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         target: Player,
-        targetCard: number,
+        targetCard: CardSlot,
         configs: Config
     ) {
         player.removeMoney(configs.quantidadeMinimaGolpeEstado);
@@ -144,9 +144,9 @@ export default class ActionSaver {
         turn: Turn,
         player: Player,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player,
-        targetCard: number,
+        targetCard: CardSlot,
         configs: Config
     ) {
         turn.addAction(Action.TROCAR);
@@ -185,7 +185,7 @@ export default class ActionSaver {
     private static saveBloquear(
         turn: Turn,
         cardType: CardType,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player
     ) {
         turn.addAction(Action.BLOQUEAR);
@@ -218,13 +218,13 @@ export default class ActionSaver {
     private static saveContestar(
         turn: Turn,
         player: Player,
-        selfCard: number,
+        selfCard: CardSlot,
         target: Player,
         configs: Config
     ) {
         const contestarMapper = {
             [Action.TAXAR]: () => {
-                const taxarCard = turn.getFirstCard() as number;
+                const taxarCard = turn.getFirstCard() as CardSlot;
 
                 const taxarCardType = player.getCard(taxarCard).getType();
 
@@ -238,7 +238,7 @@ export default class ActionSaver {
                 turn.addCard(selfCard);
             },
             [Action.CORRUPCAO]: () => {
-                const corrupcaoCard = turn.getFirstCard() as number;
+                const corrupcaoCard = turn.getFirstCard() as CardSlot;
 
                 const corrupcaoCardType = player.getCard(corrupcaoCard).getType();
 
@@ -252,7 +252,7 @@ export default class ActionSaver {
                 turn.addCard(selfCard);
             },
             [Action.EXTORQUIR]: () => {
-                const extorquirCard = turn.getFirstCard() as number;
+                const extorquirCard = turn.getFirstCard() as CardSlot;
 
                 const extorquirCardType = player.getCard(extorquirCard).getType();
 
@@ -269,14 +269,14 @@ export default class ActionSaver {
                 turn.addCard(selfCard);
             },
             [Action.ASSASSINAR]: () => {
-                const assassinarCard = turn.getFirstCard() as number;
+                const assassinarCard = turn.getFirstCard() as CardSlot;
 
                 const assassinarCardType = player.getCard(assassinarCard).getType();
 
                 if (configs.tiposCartas[assassinarCardType].assassinar) {
-                    const cardKilledByKiller = turn.getLastCard() as number;
+                    const cardKilledByKiller = turn.getLastCard() as CardSlot;
 
-                    const cardKilledByContestar = (cardKilledByKiller+1)%2;
+                    const cardKilledByContestar = (cardKilledByKiller+1)%2 as CardSlot;
 
                     target.killCard(cardKilledByKiller);
                     target.killCard(cardKilledByContestar);
@@ -284,21 +284,21 @@ export default class ActionSaver {
                     player.killCard(assassinarCard);
             },
             [Action.INVESTIGAR]: () => {
-                const investigarCard = turn.getFirstCard() as number;
+                const investigarCard = turn.getFirstCard() as CardSlot;
 
                 const investigarCardType = player.getCard(investigarCard).getType();
 
                 if (configs.tiposCartas[investigarCardType].investigar) {
-                    const investigatedCard = turn.getLastCard() as number;
+                    const investigatedCard = turn.getLastCard() as CardSlot;
 
-                    const cardKilledByContestar = (investigatedCard+1)%2;
+                    const cardKilledByContestar = (investigatedCard+1)%2 as CardSlot;
 
                     target.killCard(cardKilledByContestar);
                 } else
                     player.killCard(investigarCard);
             },
             [Action.TROCAR]: () => {
-                const trocarCard = turn.getFirstCard() as number;
+                const trocarCard = turn.getFirstCard() as CardSlot;
 
                 const trocarCardType = player.getCard(trocarCard).getType();
 
@@ -314,7 +314,7 @@ export default class ActionSaver {
             [Action.BLOQUEAR]: () => {
                 const bloquearMapper = {
                     [Action.AJUDA_EXTERNA]: () => {
-                        const bloquearCard = turn.getFirstCard() as number;
+                        const bloquearCard = turn.getFirstCard() as CardSlot;
 
                         const bloquearCardType = target.getCard(bloquearCard).getType();
 
@@ -327,9 +327,9 @@ export default class ActionSaver {
                         turn.addCard(selfCard);
                     },
                     [Action.TAXAR]: () => {
-                        const taxarCard = turn.getFirstCard() as number;
+                        const taxarCard = turn.getFirstCard() as CardSlot;
 
-                        const bloquearCard = turn.getLastCard();
+                        const bloquearCard = turn.getLastCard() as CardSlot;
 
                         const bloquearCardType = target.getCard(bloquearCard).getType();
 
@@ -340,11 +340,11 @@ export default class ActionSaver {
                             target.killCard(bloquearCard);
                     },
                     [Action.EXTORQUIR]: () => {
-                        const extorquirCard = turn.getFirstCard() as number;
+                        const extorquirCard = turn.getFirstCard() as CardSlot;
 
                         const extorquirCardType = player.getCard(extorquirCard).getType();
 
-                        const bloquearCard = turn.getLastCard();
+                        const bloquearCard = turn.getLastCard() as CardSlot;
 
                         const bloquearCardType = target.getCard(bloquearCard).getType();
 
@@ -360,32 +360,32 @@ export default class ActionSaver {
                         }
                     },
                     [Action.ASSASSINAR]: () => {
-                        const assassinarCard = turn.getFirstCard() as number;
+                        const assassinarCard = turn.getFirstCard() as CardSlot;
 
-                        const bloquearCard = turn.getLastCard() as number;
+                        const bloquearCard = turn.getLastCard() as CardSlot;
 
                         const bloquearCardType = target.getCard(bloquearCard).getType();
 
                         if (configs.tiposCartas[bloquearCardType].bloquearAssassinar)
                             player.killCard(assassinarCard);
                         else {
-                            const cardKilledByContestar = (bloquearCard+1)%2;
+                            const cardKilledByContestar = (bloquearCard+1)%2 as CardSlot;
 
                             target.killCard(bloquearCard);
                             target.killCard(cardKilledByContestar);
                         }
                     },
                     [Action.INVESTIGAR]: () => {
-                        const investigarCard = turn.getFirstCard() as number;
+                        const investigarCard = turn.getFirstCard() as CardSlot;
 
-                        const bloquearCard = turn.getLastCard() as number;
+                        const bloquearCard = turn.getLastCard() as CardSlot;
 
                         const bloquearCardType = target.getCard(bloquearCard).getType();
 
                         if (configs.tiposCartas[bloquearCardType].bloquearInvestigar)
                             player.killCard(investigarCard);
                         else {
-                            const cardKilledByContestar = (bloquearCard+1)%2;
+                            const cardKilledByContestar = (bloquearCard+1)%2 as CardSlot;
 
                             target.killCard(cardKilledByContestar);
                         }
