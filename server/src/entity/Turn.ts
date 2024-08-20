@@ -67,6 +67,10 @@ export default class Turn {
         return this.cards[0];
     }
 
+    getLastCard(): CardSlot | undefined {
+        return this.cards.at(-1);
+    }
+
     get hasBeenStarted(): boolean {
         return this.actions.length < 0;
     }
