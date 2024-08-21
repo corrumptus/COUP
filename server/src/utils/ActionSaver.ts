@@ -33,6 +33,7 @@ export default class ActionSaver {
             [Action.TROCAR_RELIGIAO_OUTRO]: () => ActionSaver.saveTrocarReligiaoOutro(turn, player, target as Player, game.getConfigs()),
             [Action.BLOQUEAR]: () => ActionSaver.saveBloquear(turn, cardType as CardType, selfCard as CardSlot, target as Player),
             [Action.CONTESTAR]: () => ActionSaver.saveContestar(turn, player, selfCard as CardSlot, target as Player, game.getConfigs()),
+            [Action.CONTINUAR]: () => ActionSaver.saveContinuar(turn, player, target as Player, game.getConfigs())
         }
 
         actionMapper[action]();
@@ -188,8 +189,6 @@ export default class ActionSaver {
         selfCard: CardSlot,
         target: Player
     ) {
-        turn.addAction(Action.BLOQUEAR);
-
         const lastAction = turn.getLastAction() as Action;
 
         const needAddSomethingActions = [
@@ -207,6 +206,8 @@ export default class ActionSaver {
 
         if (!needAddSomethingActions.includes(lastAction))
             return;
+
+        turn.addAction(Action.BLOQUEAR);
 
         if (needTargetActions.includes(lastAction))
             turn.addTarget(target);
@@ -403,5 +404,57 @@ export default class ActionSaver {
         contestarMapper[lastAction]();
 
         turn.addAction(Action.CONTESTAR);
+    }
+
+    private static saveContinuar(
+        turn: Turn,
+        player: Player,
+        target: Player,
+        configs: Config
+    ) {
+        const continuarMapper = {
+            [Action.EXTORQUIR]: () => {
+                const cardType = turn.getFirstCardType() as CardType;
+
+                const extorquirAmount = configs.tiposCartas[cardType].quantidadeExtorquir;
+                
+                player.addMoney(extorquirAmount);
+                target.removeMoney(extorquirAmount);
+            },
+            [Action.ASSASSINAR]: () => {
+                const card = turn.getLastCard() as CardSlot;
+
+                target.killCard(card);
+            },
+            [Action.INVESTIGAR]: () => {},
+            [Action.BLOQUEAR]: () => {
+                const bloquarMapper = {
+                    [Action.AJUDA_EXTERNA]: () => {
+                        player.removeMoney(configs.ajudaExterna);
+                    },
+                    [Action.TAXAR]: () => {
+                        const cardType = turn.getFirstCardType() as CardType;
+
+                        player.removeMoney(configs.tiposCartas[cardType].quantidadeTaxar);
+                    },
+                    [Action.EXTORQUIR]: () => {},
+                    [Action.ASSASSINAR]: () => {},
+                    [Action.INVESTIGAR]: () => {},
+                    [Action.TROCAR]: () => {
+                        player.rollbackCards();
+                    }
+                }
+
+                const firstAction = turn.getFirstAction() as keyof typeof bloquarMapper;
+
+                bloquarMapper[firstAction]();
+            }
+        }
+
+        const lastAction = turn.getLastAction() as keyof typeof continuarMapper;
+
+        continuarMapper[lastAction]();
+
+        turn.addAction(Action.CONTINUAR);
     }
 }
