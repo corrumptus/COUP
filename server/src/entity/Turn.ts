@@ -51,12 +51,16 @@ export default class Turn {
         return this.target;
     }
 
+    getFirstAction(): Action | undefined {
+        return this.actions[0];
+    }
+
     getLastAction(): Action | undefined {
         return this.actions[this.actions.length - 1];
     }
 
-    getFirstAction(): Action | undefined {
-        return this.actions[0];
+    getAllActions(): Action[] {
+        return this.actions;
     }
 
     getFirstCardType(): CardType | undefined {
