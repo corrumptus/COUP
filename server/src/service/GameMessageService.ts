@@ -67,10 +67,10 @@ export type GameState = {
 export type ActionInfos = {
     attacker: string,
     action?: Action,
-    card?: CardType,
+    cardType?: CardType,
     target?: string,
     attackedCard?: number,
-    isInvesting: boolean
+    isInvestigating: boolean
 }
 
 export default class GameMessageService extends MessageService {
