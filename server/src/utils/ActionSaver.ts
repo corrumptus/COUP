@@ -3,7 +3,6 @@ import CardType from "../entity/CardType";
 import Game from "../entity/Game";
 import Player, { CardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
-import { ActionInfos } from "../service/GameMessageService";
 import Config from "./Config";
 
 export default class ActionSaver {
@@ -16,10 +15,8 @@ export default class ActionSaver {
         selfCard?: CardSlot,
         target?: Player,
         targetCard?: CardSlot
-    ): ActionInfos {
-        const actionMapper: {
-            [key in Action]: () => void;
-        } = {
+    ) {
+        const actionMapper = {
             [Action.RENDA]: () => ActionSaver.saveRenda(turn, player, game.getConfigs()),
             [Action.AJUDA_EXTERNA]: () => ActionSaver.saveAjudaExterna(turn, player, game.getConfigs()),
             [Action.TAXAR]: () => ActionSaver.saveTaxar(turn, player, cardType as CardType, selfCard as CardSlot, game.getConfigs()),

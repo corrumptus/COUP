@@ -12,7 +12,7 @@ export default class ActionService {
     static makeAction(
         socketId: string,
         action: Action,
-        card?: CardType,
+        cardType?: CardType,
         selfCard?: number,
         targetName?: string,
         targetCard?: number
@@ -31,9 +31,9 @@ export default class ActionService {
             :
             PlayerService.getPlayerByName(targetName);
 
-        ActionValidator.validate(player, action, card, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
+        ActionValidator.validate(player, action, cardType, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 
-        return ActionSaver.save();
+        ActionSaver.save(action, game, turn, player, cardType, selfCard, target, targetCard);
     }
 
     private static getTheCorrectTurn(game: Game): Turn {
