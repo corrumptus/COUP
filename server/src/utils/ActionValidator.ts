@@ -1,6 +1,6 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
-import Player from "../entity/player";
+import Player, { isCardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
 import Config from "./Config";
 
@@ -32,9 +32,7 @@ export default class ActionValidator {
         )
             throw new Error("O player precisa se defender");
 
-        const actionMapper: {
-            [key in Action]: (...args: any[]) => void
-        } = {
+        const actionMapper = {
             [Action.RENDA]: () => ActionValidator.validateRenda(),
             [Action.AJUDA_EXTERNA]: () => ActionValidator.validateAjudaExterna(),
             [Action.TAXAR]: () => ActionValidator.validateTaxar(player, card, selfCard, configs),
@@ -70,10 +68,13 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
         if (!configs.tiposCartas[card].taxar)
             throw new Error("O tipo de carta escolhida não pode taxar");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
     }
 
@@ -90,10 +91,13 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
         if (!configs.religiao.cartasParaCorrupcao[card])
             throw new Error("O tipo de carta escolhida não pode corromper");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
         if (asylumCoins === 0)
@@ -113,13 +117,16 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
         if (!configs.tiposCartas[card].extorquir)
             throw new Error("O tipo de carta escolhida não pode extorquir");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
         if (target.getMoney() < configs.tiposCartas[card].quantidadeExtorquir)
@@ -140,19 +147,25 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
 
+        if (!isCardSlot(targetCard))
+            throw new Error("O index da carta do inimigo deve ser 0 ou 1");
+
         if (!configs.tiposCartas[card].assassinar)
             throw new Error("O tipo de carta escolhida não pode assassinar");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (target.getCard(targetCard)?.getIsKilled())
+        if (target.getCard(targetCard).getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
 
         if (player.getMoney() < configs.tiposCartas[card].quantidadeAssassinar)
@@ -173,19 +186,25 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
 
+        if (!isCardSlot(targetCard))
+            throw new Error("O index da carta do inimigo deve ser 0 ou 1");
+
         if (!configs.tiposCartas[card].investigar)
             throw new Error("O tipo de carta escolhida não pode investigar");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (target.getCard(targetCard)?.getIsKilled())
+        if (target.getCard(targetCard).getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
     }
 
@@ -201,10 +220,13 @@ export default class ActionValidator {
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
 
+        if (!isCardSlot(targetCard))
+            throw new Error("O index da carta do inimigo deve ser 0 ou 1");
+
         if (player.getMoney() < configs.quantidadeMinimaGolpeEstado)
             throw new Error("O player não tem dinheiro suficiente para dar um golpe de estado");
 
-        if (target.getCard(targetCard)?.getIsKilled())
+        if (target.getCard(targetCard).getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
     }
 
@@ -221,13 +243,13 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
-        if (targetCard === undefined)
-            throw new Error("Uma das cartas do inimigo deve ser escolhida");
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
 
         if (!configs.tiposCartas[card].trocar)
             throw new Error("O tipo de carta escolhida não pode trocar");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
         if (
@@ -242,7 +264,18 @@ export default class ActionValidator {
             &&
             targetCard !== undefined
             &&
-            player.getCard(targetCard)?.getIsKilled()
+            !isCardSlot(targetCard)
+        )
+            throw new Error("O index da carta escolhida deve ser 0 ou 1");
+
+        if (
+            configs.tiposCartas[card].quantidadeTrocar === 1
+            &&
+            targetCard !== undefined
+            &&
+            isCardSlot(targetCard)
+            &&
+            player.getCard(targetCard).getIsKilled()
         )
             throw new Error("A carta escolhida já está morta");
     }
@@ -289,7 +322,10 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
         if (!ActionValidator.canBlockPreviousAction(turn, card, configs))
@@ -314,7 +350,10 @@ export default class ActionValidator {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
-        if (player.getCard(selfCard)?.getIsKilled())
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
+        if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
     }
 
@@ -330,14 +369,14 @@ export default class ActionValidator {
 
     private static canBlockPreviousAction(turn: Turn, card: CardType, configs: Config): boolean {
         const blockMapper = {
-            [Action.AJUDA_EXTERNA]: (card: CardType) => configs.tiposCartas[card].taxar,
-            [Action.TAXAR]: (card: CardType) => configs.tiposCartas[card].bloquearTaxar,
-            [Action.EXTORQUIR]: (card: CardType) => configs.tiposCartas[card].bloquearExtorquir,
-            [Action.TROCAR]: (card: CardType) => configs.tiposCartas[card].bloquearTrocar
+            [Action.AJUDA_EXTERNA]: () => configs.tiposCartas[card].taxar,
+            [Action.TAXAR]: () => configs.tiposCartas[card].bloquearTaxar,
+            [Action.EXTORQUIR]: () => configs.tiposCartas[card].bloquearExtorquir,
+            [Action.TROCAR]: () => configs.tiposCartas[card].bloquearTrocar
         }
 
         const previousAction = turn.getLastAction() as keyof typeof blockMapper;
 
-        return blockMapper[previousAction](card);
+        return blockMapper[previousAction]();
     }
 }
