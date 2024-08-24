@@ -6,6 +6,10 @@ declare const cardSlotSymbol: unique symbol;
 
 export type CardSlot = (0 | 1) & { [cardSlotSymbol]: "cardSlot" };
 
+export function isCardSlot(cardSlot: any): cardSlot is CardSlot {
+    return cardSlot === 0 || cardSlot === 1;
+}
+
 export default class Player {
     readonly name: string;
     private cards!: [Card, Card];
