@@ -75,6 +75,10 @@ export default class Turn {
         return this.cards.at(-1);
     }
 
+    getLastCardType(): CardType | undefined {
+        return this.cardTypes.at(-1);
+    }
+
     get hasBeenStarted(): boolean {
         return this.actions.length < 0;
     }
