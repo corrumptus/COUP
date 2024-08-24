@@ -2,7 +2,9 @@ import Card from "./Card";
 import CardType, { randomCardType } from "./CardType";
 import Religion, { inverseReligion, randomReligion } from "./Religion";
 
-export type CardSlot = 0 | 1;
+declare const cardSlotSymbol: unique symbol;
+
+export type CardSlot = (0 | 1) & { [cardSlotSymbol]: "cardSlot" };
 
 export default class Player {
     readonly name: string;
