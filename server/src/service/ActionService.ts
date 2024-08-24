@@ -4,6 +4,7 @@ import Game from "../entity/Game";
 import Turn from "../entity/Turn";
 import ActionSaver from "../utils/ActionSaver";
 import ActionValidator from "../utils/ActionValidator";
+import Config from "../utils/Config";
 import { ActionInfos } from "./GameMessageService";
 import GameService from "./GameService";
 import PlayerService from "./PlayerService";
@@ -34,6 +35,8 @@ export default class ActionService {
         ActionValidator.validate(player, action, cardType, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 
         ActionSaver.save(action, game, turn, player, cardType, selfCard, target, targetCard);
+
+        return ActionService.getActionInfos(turn, cardType, targetCard, game.getConfigs());
     }
 
     private static getTheCorrectTurn(game: Game): Turn {
@@ -46,5 +49,72 @@ export default class ActionService {
         game.removeLastTurn();
 
         return preLastTurn;
+    }
+
+    private static getActionInfos(
+        turn: Turn,
+        cardType: CardType | undefined,
+        attackedCard: number | undefined,
+        configs: Config
+    ): ActionInfos {
+        let player = turn.getPlayer().name;
+        let target = turn.getTarget()?.name;
+        let isInvestigating = false;
+
+        const actions = turn.getAllActions();
+
+        let lastAction: Action | undefined = actions[actions.length - 1];
+
+        if (lastAction === Action.CONTINUAR)
+            lastAction = undefined;
+
+        if (
+            (
+                actions.length === 2
+                &&
+                [Action.CONTESTAR, Action.BLOQUEAR].includes(lastAction as Action)
+            )
+            ||
+            (
+                actions.length === 3
+                &&
+                actions[1] === Action.BLOQUEAR
+            )
+        )
+            [ player, target ] = [ target as string, player ];
+
+        const lastCardType = turn.getLastCardType() as CardType;
+
+        if (
+            actions[0] === Action.INVESTIGAR
+            &&
+            (
+                actions[1] === Action.CONTINUAR
+                ||
+                (
+                    actions[1] === Action.BLOQUEAR
+                    &&
+                    actions[2] === Action.CONTESTAR
+                    &&
+                    !configs.tiposCartas[lastCardType].bloquearInvestigar
+                )
+                ||
+                (
+                    actions[1] === Action.CONTESTAR
+                    &&
+                    configs.tiposCartas[lastCardType].investigar
+                )
+            )
+        )
+            isInvestigating = true;
+
+        return {
+            attacker: player,
+            action: lastAction,
+            cardType: cardType,
+            target: target,
+            attackedCard: attackedCard,
+            isInvestigating: isInvestigating
+        };
     }
 }
