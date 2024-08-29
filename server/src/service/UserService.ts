@@ -4,7 +4,7 @@ import UserRepository from "../repository/UserRepository";
 import { AES } from "crypto-js";
 
 export default class UserService {
-    private static mySecret: Uint8Array = new TextEncoder().encode(process.env.SECRET_KEY || "12345678");
+    private static mySecret: Uint8Array = new TextEncoder().encode(process.env.SECRET_KEY);
 
     static async login(user: UserLogin): Promise<string> {
         return await UserService.verifyFromProps(user);
