@@ -69,7 +69,7 @@ api.post("/lobby", async (req, res) => {
 
         const name = await UserService.getName(token) as string;
 
-        PlayerService.addWaitingPlayer(name);
+        PlayerService.addWaitingPlayer(name, true);
 
         res.send();
     } catch (error) {
@@ -88,11 +88,41 @@ api.post("/lobby/:id", async (req, res) => {
 
         const name = await UserService.getName(token) as string;
 
-        PlayerService.addWaitingPlayer(name, Number(req.params.id));
+        PlayerService.addWaitingPlayer(name, true, Number(req.params.id));
 
         res.send();
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
+    }
+});
+
+api.post("/lobby/nonLogged", async (req, res) => {
+    try {
+        const name = req.body.name;
+
+        if (name === undefined)
+            throw new Error("User must provide a name");
+
+        PlayerService.addWaitingPlayer(name, false);
+
+        res.send();
+    } catch (error) {
+        res.send(401).send({ error: (error as Error).message });
+    }
+});
+
+api.post("/lobby/nonLogged/:id", async (req, res) => {
+    try {
+        const name = req.body.name;
+
+        if (name === undefined)
+            throw new Error("User must provide a name");
+
+        PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
+
+        res.send();
+    } catch (error) {
+        res.send(401).send({ error: (error as Error).message });
     }
 });
 
