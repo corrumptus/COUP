@@ -1,8 +1,9 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
-import Player from "../entity/player";
+import Player, { CardSlot } from "../entity/player";
 import Religion from "../entity/Religion";
+import Turn from "../entity/Turn";
 import Config from "../utils/Config";
 import MessageService from "./MessageService";
 import PlayerService from "./PlayerService";
@@ -41,26 +42,26 @@ export type GameState = {
     },
     context: {
         type: ContextType.INVESTIGATING,
-        card: CardType,
+        cardType: CardType,
         target: string,
         investigatedCard: CardType,
-        targetCard: number
+        targetCard: CardSlot
     } | {
         type: ContextType.BEING_ATTACKED,
         attacker: string,
         action: Action,
-        card: CardType,
-        attackedCard?: number,
+        cardType: CardType,
+        attackedCard?: CardSlot,
         previousAction?: Action,
         preBlockAction?: Action
     } | {
         type: ContextType.OBSERVING,
         attacker: string,
         action?: Action,
-        card?: CardType,
+        cardType?: CardType,
         target?: string,
-        attackedCard?: number,
-        isInvesting: boolean
+        attackedCard?: CardSlot,
+        isInvestigating: boolean
     }
 }
 
@@ -69,7 +70,7 @@ export type ActionInfos = {
     action?: Action,
     cardType?: CardType,
     target?: string,
-    attackedCard?: number,
+    attackedCard?: CardSlot,
     isInvestigating: boolean
 }
 
@@ -99,14 +100,14 @@ export default class GameMessageService extends MessageService {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: state.currentPlayer,
-                isInvesting: false
+                isInvestigating: false
             }
         }
     }
 
     static updatePlayers(
         lobbyId: number,
-        gameState: ReturnType<Game["getState"]>,
+        game: Game,
         infos: ActionInfos
     ) {
         const { players } = super.lobbys[lobbyId];
@@ -114,16 +115,121 @@ export default class GameMessageService extends MessageService {
         players.forEach(
             p => p.socket.emit(
                 "updatePlayer",
-                GameMessageService.calculateNewGameState(gameState, p.name, infos)
+                GameMessageService.calculateNewGameState(game, p.name, infos)
             )
         );
     }
 
     private static calculateNewGameState(
-        gameState: ReturnType<Game["getState"]>,
+        game: Game,
         name: string,
         infos: ActionInfos
     ): GameState {
-        
+        const gameState = game.getState();
+
+        return {
+            player: {
+                ...gameState.players.find(p => p.name === name) as Omit<PlayerState, "state">,
+                state: GameMessageService.calculatePlayerState(gameState, name, infos)
+            },
+            game: gameState,
+            context: GameMessageService.calculateGameContext(game, name, infos)
+        }
+    }
+
+    private static calculatePlayerState(
+        gameState: ReturnType<Game["getState"]>,
+        name: string,
+        infos: ActionInfos
+    ): PlayerStateType {
+        if (
+            name !== gameState.currentPlayer
+            &&
+            name !== infos.target
+        )
+            return PlayerStateType.WAITING_TURN;
+
+        if (
+            name !== gameState.currentPlayer
+            &&
+            name === infos.target
+            &&
+            infos.action !== Action.BLOQUEAR
+        )
+            return PlayerStateType.BEING_ATTACKED;
+
+        if (
+            name !== gameState.currentPlayer
+            &&
+            name === infos.target
+            &&
+            infos.action === Action.BLOQUEAR
+        )
+            return PlayerStateType.BEING_BLOCKED;
+
+        if (
+            name === gameState.currentPlayer
+            &&
+            (gameState.players.find(p => p.name === name) as Omit<PlayerState, "state">)
+                .money >= gameState.configs.quantidadeMaximaGolpeEstado
+        )
+            return PlayerStateType.NEED_TO_GOLPE_ESTADO;
+
+        if (
+            name === gameState.currentPlayer
+            &&
+            infos.isInvestigating
+        )
+            return PlayerStateType.INVESTIGATING;
+
+        if (
+            name === gameState.currentPlayer
+            &&
+            name === infos.attacker
+        )
+            return PlayerStateType.WAITING_REPLY;
+
+        return PlayerStateType.THINKING;
+    }
+
+    private static calculateGameContext(
+        game: Game,
+        name: string,
+        infos: ActionInfos
+    ): GameState["context"] {
+        const gameState = game.getState();
+
+        const currentTurn = game.getTurn(-1) as Turn;
+
+        if (
+            name === gameState.currentPlayer
+            &&
+            infos.isInvestigating
+        )
+            return {
+                type: ContextType.INVESTIGATING,
+                cardType: currentTurn.getFirstCardType() as CardType,
+                target: (currentTurn.getTarget() as Player).name,
+                investigatedCard: currentTurn.getLastCardType() as CardType,
+                targetCard: currentTurn.getLastCard() as CardSlot
+            }
+
+        if (
+            name === infos.target
+        )
+            return {
+                type: ContextType.BEING_ATTACKED,
+                attacker: infos.attacker,
+                action: infos.action as Action,
+                cardType: infos.cardType as CardType,
+                attackedCard: infos.attackedCard,
+                previousAction: currentTurn.getAllActions().at(-2),
+                preBlockAction: currentTurn.getFirstAction()
+            }
+
+        return {
+            type: ContextType.OBSERVING,
+            ...infos
+        }
     }
 }
