@@ -37,7 +37,7 @@ export default class ActionService {
 
         ActionSaver.save(action, game, turn, player, cardType, selfCard as CardSlot | undefined, target, targetCard as CardSlot | undefined);
 
-        return ActionService.getActionInfos(turn, cardType, targetCard, game.getConfigs());
+        return ActionService.getActionInfos(turn, cardType, targetCard as CardSlot | undefined, game.getConfigs());
     }
 
     private static getTheCorrectTurn(game: Game): Turn {
@@ -55,7 +55,7 @@ export default class ActionService {
     private static getActionInfos(
         turn: Turn,
         cardType: CardType | undefined,
-        attackedCard: number | undefined,
+        attackedCard: CardSlot | undefined,
         configs: Config
     ): ActionInfos {
         let player = turn.getPlayer().name;
