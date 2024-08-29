@@ -8,20 +8,22 @@ export default class PlayerService {
     private static players: {
         [socketId: string]: {
             player: Player,
-            lobbyID: number
+            lobbyID: number,
+            isLogged: boolean
         }
     } = {};
 
     private static waitingPlayers: {
         [name: string]: {
             player: Player,
-            lobbyID: number
+            lobbyID: number,
+            isLogged: boolean
         }
     } = {};
 
     private static WAITING_TIMEOUT_MS = 300_000;
 
-    static addWaitingPlayer(name: string, lobbyID?: number) {
+    static addWaitingPlayer(name: string, isLogged: boolean, lobbyID?: number) {
         const newPlayer = new Player(name);
 
         PlayerService.waitingPlayers[name] = {
@@ -29,7 +31,8 @@ export default class PlayerService {
             lobbyID: lobbyID === undefined ?
                 LobbyService.enterNewLobby(newPlayer)
                 :
-                LobbyService.enterLobby(newPlayer, lobbyID)
+                LobbyService.enterLobby(newPlayer, lobbyID),
+            isLogged: isLogged
         };
 
         setTimeout(
