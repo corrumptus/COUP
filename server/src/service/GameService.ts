@@ -14,9 +14,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.RENDA);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -26,9 +26,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.AJUDA_EXTERNA);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -38,9 +38,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.TAXAR, card, selfCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -50,9 +50,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.CORRUPCAO, card, selfCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -62,9 +62,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.EXTORQUIR, card, selfCard, target);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -74,9 +74,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.ASSASSINAR, card, selfCard, target, targetCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -86,9 +86,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.INVESTIGAR, card, selfCard, target, targetCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -98,9 +98,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.GOLPE_ESTADO, undefined, undefined, target, targetCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -110,9 +110,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR_PROPRIA_RELIGIAO);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -122,9 +122,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, target);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -134,33 +134,33 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.TROCAR, card, selfCard, target, targetCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
         });
 
-        socket.on("contestar", (card?, selfCard?) => {
+        socket.on("contestar", (selfCard) => {
             try {
-                const actionInfos = ActionService.makeAction(socket.id, Action.CONTESTAR, card, selfCard);
+                const actionInfos = ActionService.makeAction(socket.id, Action.CONTESTAR, undefined, selfCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
         });
 
-        socket.on("bloquear", (card?, selfCard?) => {
+        socket.on("bloquear", (card, selfCard) => {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.BLOQUEAR, card, selfCard);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
@@ -170,9 +170,9 @@ export default class GameService {
             try {
                 const actionInfos = ActionService.makeAction(socket.id, Action.CONTINUAR);
 
-                const gameState = (GameService.getPlayersGame(socket.id) as Game).getState();
-                
-                GameMessageService.updatePlayers(lobbyId, gameState, actionInfos);
+                const game = GameService.getPlayersGame(socket.id) as Game;
+
+                GameMessageService.updatePlayers(lobbyId, game, actionInfos);
             } catch (error) {
                 socket.emit("gameActionError", (error as Error).message);
             }
