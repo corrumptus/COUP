@@ -36,7 +36,12 @@ export default class PlayerService {
         };
 
         setTimeout(
-            () => delete PlayerService.waitingPlayers[name],
+            () => {
+                const { lobbyID, player } = PlayerService.waitingPlayers[name];
+
+                LobbyService.deletePlayer(lobbyID, player);
+                delete PlayerService.waitingPlayers[name];
+            },
             PlayerService.WAITING_TIMEOUT_MS
         );
     }
