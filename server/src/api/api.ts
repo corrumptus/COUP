@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import cors from "cors";
 import { UserLogin, UserToken } from "../entity/User";
 import UserService from "../service/UserService";
 import UserValidator from "../utils/UserValidator";
@@ -8,6 +9,8 @@ import PlayerService from "../service/PlayerService";
 const api: Express = express();
 
 api.use(express.json());
+
+api.use(cors());
 
 api.post("/login", async (req, res) => {
     try {
@@ -58,6 +61,36 @@ api.get("/lobby", (_, res) => {
     res.send(LobbyService.allLobbys);
 });
 
+api.post("/lobby/nonLogged", async (req, res) => {
+    try {
+        const name = req.body.name;
+
+        if (name === undefined)
+            throw new Error("User must provide a name");
+
+        PlayerService.addWaitingPlayer(name, false);
+
+        res.send();
+    } catch (error) {
+        res.status(401).send({ error: (error as Error).message });
+    }
+});
+
+api.post("/lobby/nonLogged/:id", async (req, res) => {
+    try {
+        const name = req.body.name;
+
+        if (name === undefined)
+            throw new Error("User must provide a name");
+
+        PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
+
+        res.send();
+    } catch (error) {
+        res.status(401).send({ error: (error as Error).message });
+    }
+});
+
 api.post("/lobby", async (req, res) => {
     try {
         const token = req.headers.authorization;
@@ -93,36 +126,6 @@ api.post("/lobby/:id", async (req, res) => {
         res.send();
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
-    }
-});
-
-api.post("/lobby/nonLogged", async (req, res) => {
-    try {
-        const name = req.body.name;
-
-        if (name === undefined)
-            throw new Error("User must provide a name");
-
-        PlayerService.addWaitingPlayer(name, false);
-
-        res.send();
-    } catch (error) {
-        res.send(401).send({ error: (error as Error).message });
-    }
-});
-
-api.post("/lobby/nonLogged/:id", async (req, res) => {
-    try {
-        const name = req.body.name;
-
-        if (name === undefined)
-            throw new Error("User must provide a name");
-
-        PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
-
-        res.send();
-    } catch (error) {
-        res.send(401).send({ error: (error as Error).message });
     }
 });
 
