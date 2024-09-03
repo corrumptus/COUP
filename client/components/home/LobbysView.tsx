@@ -48,6 +48,9 @@ export default function LobbysView({
       const response = token === null ?
         await fetch("http://localhost:5000/lobby/nonLogged/" + lobbys[i].id, {
           method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
           body: JSON.stringify({
             name: name
           })
@@ -84,6 +87,9 @@ export default function LobbysView({
       const response = token === null ?
         await fetch("http://localhost:5000/lobby/nonLogged", {
           method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
           body: JSON.stringify({
             name: name
           })
