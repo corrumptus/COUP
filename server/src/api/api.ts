@@ -68,9 +68,9 @@ api.post("/lobby/nonLogged", async (req, res) => {
         if (name === undefined)
             throw new Error("User must provide a name");
 
-        PlayerService.addWaitingPlayer(name, false);
+        const lobbyId = PlayerService.addWaitingPlayer(name, false);
 
-        res.send();
+        res.send({ lobbyId: lobbyId });
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
     }
@@ -83,9 +83,9 @@ api.post("/lobby/nonLogged/:id", async (req, res) => {
         if (name === undefined)
             throw new Error("User must provide a name");
 
-        PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
+        const lobbyId = PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
 
-        res.send();
+        res.send({ lobbyId: lobbyId });
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
     }
@@ -102,9 +102,9 @@ api.post("/lobby", async (req, res) => {
 
         const name = await UserService.getName(token) as string;
 
-        PlayerService.addWaitingPlayer(name, true);
+        const lobbyId = PlayerService.addWaitingPlayer(name, true);
 
-        res.send();
+        res.send({ lobbyId: lobbyId });
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
     }
@@ -121,9 +121,9 @@ api.post("/lobby/:id", async (req, res) => {
 
         const name = await UserService.getName(token) as string;
 
-        PlayerService.addWaitingPlayer(name, true, Number(req.params.id));
+        const lobbyId = PlayerService.addWaitingPlayer(name, true, Number(req.params.id));
 
-        res.send();
+        res.send({ lobbyId: lobbyId });
     } catch (error) {
         res.status(401).send({ error: (error as Error).message });
     }

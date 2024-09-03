@@ -23,7 +23,7 @@ export default class PlayerService {
 
     private static WAITING_TIMEOUT_MS = 300_000;
 
-    static addWaitingPlayer(name: string, isLogged: boolean, lobbyID?: number) {
+    static addWaitingPlayer(name: string, isLogged: boolean, lobbyID?: number): number {
         const newPlayer = new Player(name);
 
         PlayerService.waitingPlayers[name] = {
@@ -44,6 +44,8 @@ export default class PlayerService {
             },
             PlayerService.WAITING_TIMEOUT_MS
         );
+
+        return PlayerService.waitingPlayers[name].lobbyID;
     }
 
     static setListeners(socket: COUPSocket) {
