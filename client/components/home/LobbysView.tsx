@@ -63,7 +63,7 @@ export default function LobbysView({
           }
         });
 
-      const result: { error: string } | undefined = await response.json();
+      const result: { error: string } | { lobbyId: number } = await response.json();
 
       if (!response.ok)
         throw new Error((result as { error: string }).error);
@@ -102,12 +102,12 @@ export default function LobbysView({
           }
         });
 
-      const result: { error: string } | number = await response.json();
+      const result: { error: string } | { lobbyId: number } = await response.json();
 
       if (!response.ok)
         throw new Error((result as { error: string }).error);
 
-      router.push("/jogar/" + (result as number).toString());
+      router.push("/jogar/" + (result as { lobbyId: number }).lobbyId);
     } catch (e) {
       if (e instanceof TypeError)
         newToaster("Não foi possível criar um servidor");
