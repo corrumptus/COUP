@@ -65,7 +65,7 @@ api.post("/lobby/nonLogged", async (req, res) => {
     try {
         const name = req.body.name;
 
-        if (name === undefined)
+        if (name === undefined || name.trim() === "")
             throw new Error("User must provide a name");
 
         const lobbyId = PlayerService.addWaitingPlayer(name, false);
@@ -80,7 +80,7 @@ api.post("/lobby/nonLogged/:id", async (req, res) => {
     try {
         const name = req.body.name;
 
-        if (name === undefined)
+        if (name === undefined || name.trim() === "")
             throw new Error("User must provide a name");
 
         const lobbyId = PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
