@@ -15,7 +15,7 @@ export default function Home() {
       className="h-full bg-[url(../public/home-page.png)] bg-center bg-no-repeat bg-cover flex flex-col"
     >
       <Header />
-      <main className="grid content-center h-full justify-items-start gap-1 pl-2.5 relative">
+      <main className="grid content-center h-full justify-items-start gap-2.5 pl-2.5 relative">
         <Toasters />
         {isServersVisible &&
           <LobbysView closeView={() => setServersVisibility(false)}/>
