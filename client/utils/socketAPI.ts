@@ -57,7 +57,7 @@ export type Config = {
 }
 
 type ResponseSocketEmitEvents = {
-  "enterLobby": (lobbyID: number) => void;
+  "enterLobby": (lobbyId: number) => void;
 
   "updateConfigs": (keys: string[], value: number | boolean) => void;
   "newOwner": (name: string) => void;
@@ -95,19 +95,19 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-async function getURL(lobbyID: number): Promise<string | undefined> {
+async function getURL(lobbyId: number): Promise<string | undefined> {
   if (typeof localStorage === undefined)
     return "";
 
   try {
-    const response = await fetch("http://localhost:5000/lobby/" + lobbyID.toString(), {
+    const response = await fetch("http://localhost:5000/lobby/" + lobbyId.toString(), {
       method: "PUT",
       headers: {
         Authorization: localStorage.getItem("coup-token") as string
       }
     });
 
-    const result = await response.json();
+    const result: { url: string } | { error: string } = await response.json();
   
     if (!response.ok)
       throw new Error((result as { error: string }).error);
@@ -120,11 +120,11 @@ async function getURL(lobbyID: number): Promise<string | undefined> {
 
 let socket: COUPSocket;
 
-export async function enterLobby(lobbyID: number) {
+export async function enterLobby(lobbyId: number) {
   if (socket !== undefined)
     return { socket: socket };
 
-  const url = await getURL(lobbyID);
+  const url = await getURL(lobbyId);
 
   if (url === undefined)
     return { error: "Cannot access the server" };
