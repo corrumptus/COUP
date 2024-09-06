@@ -8,7 +8,7 @@ export default class PlayerService {
     private static players: {
         [socketId: string]: {
             player: Player,
-            lobbyID: number,
+            lobbyId: number,
             isLogged: boolean
         }
     } = {};
@@ -16,36 +16,36 @@ export default class PlayerService {
     private static waitingPlayers: {
         [name: string]: {
             player: Player,
-            lobbyID: number,
+            lobbyId: number,
             isLogged: boolean
         }
     } = {};
 
     private static WAITING_TIMEOUT_MS = 300_000;
 
-    static addWaitingPlayer(name: string, isLogged: boolean, lobbyID?: number): number {
+    static addWaitingPlayer(name: string, isLogged: boolean, lobbyId?: number): number {
         const newPlayer = new Player(name);
 
         PlayerService.waitingPlayers[name] = {
             player: newPlayer,
-            lobbyID: lobbyID === undefined ?
+            lobbyId: lobbyId === undefined ?
                 LobbyService.enterNewLobby(newPlayer)
                 :
-                LobbyService.enterLobby(newPlayer, lobbyID),
+                LobbyService.enterLobby(newPlayer, lobbyId),
             isLogged: isLogged
         };
 
         setTimeout(
             () => {
-                const { lobbyID, player } = PlayerService.waitingPlayers[name];
+                const { lobbyId, player } = PlayerService.waitingPlayers[name];
 
-                LobbyService.deletePlayer(lobbyID, player);
+                LobbyService.deletePlayer(lobbyId, player);
                 delete PlayerService.waitingPlayers[name];
             },
             PlayerService.WAITING_TIMEOUT_MS
         );
 
-        return PlayerService.waitingPlayers[name].lobbyID;
+        return PlayerService.waitingPlayers[name].lobbyId;
     }
 
     static setListeners(socket: COUPSocket) {
@@ -73,7 +73,7 @@ export default class PlayerService {
     static getPlayersLobby(socketID: string): Lobby {
         const player = PlayerService.players[socketID];
 
-        return LobbyService.getLobby(player.lobbyID);
+        return LobbyService.getLobby(player.lobbyId);
     }
 
     static getPlayersLobbyByName(name: string): Lobby | undefined {
@@ -83,7 +83,7 @@ export default class PlayerService {
         if (playerInfos === undefined)
             return undefined;
 
-        return LobbyService.getLobby(playerInfos.lobbyID);
+        return LobbyService.getLobby(playerInfos.lobbyId);
     }
 
     static getPlayerByName(name: string): Player | undefined {
@@ -97,7 +97,7 @@ export default class PlayerService {
 
         delete PlayerService.players[socketId];
 
-        return LobbyService.deletePlayer(player.lobbyID, player.player);
+        return LobbyService.deletePlayer(player.lobbyId, player.player);
     }
 
     static removePlayerByName(name: string): number {
