@@ -23,6 +23,9 @@ export default function LobbysView({
   const [ senha, setSenha ] = useState("");
 
   useEffect(() => {
+    if (sessionStorage.getItem("coup-name") !== undefined)
+      sessionStorage.removeItem("coup-name");
+
     (async () => {
       try {
         const response = await fetch("http://localhost:5000/lobby");
@@ -68,7 +71,10 @@ export default function LobbysView({
       if (!response.ok)
         throw new Error((result as { error: string }).error);
 
-      router.push("/jogar/" + lobbys[i].id);
+      if (token === null)
+        sessionStorage.setItem("coup-name", name);
+
+      router.push("/jogar/" + (result as { lobbyId: number }).lobbyId);
     } catch (e) {
       if (e instanceof TypeError)
         newToaster("Não foi possível criar um servidor");
@@ -106,6 +112,9 @@ export default function LobbysView({
 
       if (!response.ok)
         throw new Error((result as { error: string }).error);
+
+      if (token === null)
+        sessionStorage.setItem("coup-name", name);
 
       router.push("/jogar/" + (result as { lobbyId: number }).lobbyId);
     } catch (e) {
