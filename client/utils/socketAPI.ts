@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client"
 import { LobbyState } from "@pages/LobbyView";
 import { Card, GameState } from "@pages/GameView";
@@ -91,51 +92,31 @@ type RequestSocketOnEvents = {
   "newPlayer": (player: string) => void;
   "leavingPlayer": (index: number) => void;
   "gameInit": (gameState: GameState) => void;
+  "disconnectReason": (reason: string) => void;
 }
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-async function getURL(lobbyId: number): Promise<string | undefined> {
-  if (typeof localStorage === undefined)
-    return "";
+export function useSocket() {
+  const [ socket, setSocket ] = useState<COUPSocket>();
+  const [ error, setError ] = useState<string>();
 
-  try {
-    const response = await fetch("http://localhost:5000/lobby/" + lobbyId.toString(), {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("coup-token") as string
-      }
-    });
+  useEffect(() => {
+    setSocket(
+      (io("http://localhost:5000", {
+        auth: {
+          token: localStorage.getItem("coup-token")
+        }
+      }) as COUPSocket)
+        .on("disconnectReason", (reason) => {
+          setError(reason);
+        }).on("disconnect", () => {
+          setError("Não foi possível se conectar ao servidor");
+        })
+    );
+  }, []);
 
-    const result: { url: string } | { error: string } = await response.json();
-  
-    if (!response.ok)
-      throw new Error((result as { error: string }).error);
-  
-    return (result as { url: string }).url;
-  } catch (error) {
-    return undefined;
-  }
-}
-
-let socket: COUPSocket;
-
-export async function enterLobby(lobbyId: number) {
-  if (socket !== undefined)
-    return { socket: socket };
-
-  const url = await getURL(lobbyId);
-
-  if (url === undefined)
-    return { error: "Cannot access the server" };
-
-  socket = io(url, {
-    auth: {
-      token: localStorage.getItem("coup-token")
-    }
-  });
-
-  return { socket: socket };
+  return { socket: socket as COUPSocket, error: error };
 }
 
 export function configDiff(configs: Config): Differ<Config> {

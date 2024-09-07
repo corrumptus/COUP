@@ -3,11 +3,11 @@
 import { useState } from "react";
 import GameView, { GameState } from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
-import { enterLobby } from "@utils/socketAPI";
+import { useSocket } from "@utils/socketAPI";
 
-export default async function EntrarLobby({ params: { id } }: { params: { id: number } }) {
+export default function EntrarLobby() {
   const [ gameState, setGameState ] = useState<GameState>();
-  const { socket, error } = await enterLobby(id);
+  const { socket, error } = useSocket();
 
   if (error !== undefined) return (
     <div className="h-full flex justify-center items-center">{error}</div>
