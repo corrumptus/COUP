@@ -1,19 +1,21 @@
 import Game from "./Game";
 import Player from "./player";
-import COUPdefaultConfigs from "../../resources/COUPdefaultConfigs.json"
 import Config from "../utils/Config";
+import COUPdefaultConfigs from "../../resources/COUPdefaultConfigs.json";
 
 export default class Lobby {
     readonly id: number;
-    private currentGame: Game | null = null;
+    private currentGame: Game | undefined;
     private currentPlayers: Player[];
-    private owner: Player | null;
+    private owner: Player | undefined;
+    private password: string | undefined;
     private configs: Config;
 
     constructor(id: number, owner: Player) {
         this.id = id;
         this.currentPlayers = [owner];
         this.owner = owner;
+        this.password = undefined;
         this.configs = COUPdefaultConfigs;
     }
 
@@ -28,9 +30,6 @@ export default class Lobby {
     }
 
     removePlayer(player: Player): number {
-        if (player === null)
-            return -1;
-
         const playerIndex = this.currentPlayers.findIndex(p => p === player);
 
         if (playerIndex === -1)
@@ -40,17 +39,17 @@ export default class Lobby {
             if (this.currentPlayers.length > 1)
                 this.owner = this.currentPlayers[playerIndex !== 0 ? 0 : 1];
             else
-                this.owner = null;
+                this.owner = undefined;
         }
 
-        if (this.currentGame !== null)
+        if (this.currentGame !== undefined)
             this.currentGame.deletePlayer(playerIndex);
 
         return playerIndex;
     }
 
     newGame() {
-        if (this.currentGame === null) {
+        if (this.currentGame === undefined) {
             this.currentGame = new Game(
                 this.currentPlayers,
                 this.currentGameAlreadyFinish,
@@ -76,26 +75,30 @@ export default class Lobby {
     }
 
     currentGameAlreadyFinish() {
-        this.currentGame = null;
+        this.currentGame = undefined;
     }
 
     get isRunningGame(): boolean {
-        return this.currentGame !== null && !this.currentGame.isEnded;
+        return this.currentGame !== undefined && !this.currentGame.isEnded;
     }
 
     get isEmpty(): boolean {
         return this.currentPlayers.length === 0;
     }
 
-    getGame(): Game | null {
+    getGame(): Game | undefined {
         return this.currentGame;
+    }
+
+    getPassword(): string | undefined {
+        return this.password;
     }
 
     toLobbyFinder() {
         return {
             id: this.id,
             quantidadePlayers: this.currentPlayers.length,
-            aberto: this.currentGame !== null
+            aberto: this.currentGame !== undefined
         }
     }
 
@@ -114,6 +117,14 @@ export default class Lobby {
 
     isOwner(player: Player): boolean {
         return player === this.owner;
+    }
+
+    newPassword(password: string) {
+        this.password = password;
+    }
+
+    removePassword() {
+        this.password = undefined;
     }
 
     getState() {
