@@ -51,6 +51,20 @@ export default class LobbyService {
             LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", index);
         });
 
+        socket.on("changePassword", (password: string) => {
+            if (!lobby.isOwner(player))
+                return;
+
+            lobby.newPassword(password);
+        });
+
+        socket.on("removePassword", () => {
+            if (!lobby.isOwner(player))
+                return;
+
+            lobby.removePassword();
+        });
+
         socket.on("beginMatch", () => {
             if (!lobby.isOwner(player))
                 return;
