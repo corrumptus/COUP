@@ -101,12 +101,27 @@ export function useSocket() {
   const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
+  if (
+    localStorage.getItem("coup-token") === null
+    ||
+    sessionStorage.getItem("coup-name") === null
+  )
+    return { error: "O usuário deve estar logado ou possuir um nome" };
+
+  if (error !== undefined)
+    return { error: error };
+
   useEffect(() => {
     setSocket(
       (io("http://localhost:5000", {
-        auth: {
-          token: localStorage.getItem("coup-token")
-        }
+        auth: localStorage.getItem("coup-token") !== null ?
+          {
+            token: localStorage.getItem("coup-token")
+          }
+          :
+          {
+            name: sessionStorage.getItem("coup-name")
+          }
       }) as COUPSocket)
         .on("disconnectReason", (reason) => {
           setError(reason);
@@ -116,7 +131,7 @@ export function useSocket() {
     );
   }, []);
 
-  return { socket: socket as COUPSocket, error: error };
+  return { socket: socket as COUPSocket };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
