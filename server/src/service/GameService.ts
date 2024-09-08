@@ -179,7 +179,7 @@ export default class GameService {
         });
     }
 
-    static getPlayersGame(socketId: string): Game | null {
+    static getPlayersGame(socketId: string): Game | undefined {
         const lobby = PlayerService.getPlayersLobby(socketId) as Lobby;
 
         return lobby.getGame();

@@ -6,6 +6,7 @@ import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
 import { LobbyState } from "../service/LobbyMessageService";
 import { GameState } from "../service/GameMessageService";
+import SocketValidatorService from "../service/SocketValidatorService";
 
 interface RequestSocketOnEvents {
     "disconnect": () => void;
@@ -13,6 +14,8 @@ interface RequestSocketOnEvents {
     "updateConfigs": (keys: string[], value: number | boolean) => void;
     "newOwner": (name: string) => void;
     "removePlayer": (name: string) => void;
+    "changePassword": (password: string) => void;
+    "removePassword": () => void;
     "beginMatch": () => void;
 
     "renda": () => void;
@@ -37,6 +40,8 @@ interface RequestSocketOnEvents {
 }
 
 export interface ResponseSocketEmitEvents {
+    "disconnectReason": (reason: string) => void;
+
     "playerConnected": (lobbyState: LobbyState) => void;
     "configsUpdated": (keys: string[], value: number | boolean) => void;
     "newPlayer": (player: string) => void;
@@ -65,6 +70,14 @@ export default function initSocket(server: HTTPServer) {
     });
 
     serverSocket.on("connection", (socket: COUPSocket) => {
+        const error = SocketValidatorService.validate(socket);
+
+        if (error !== undefined) {
+            socket.emit("disconnectReason", error);
+            socket.disconnect();
+            return;
+        }
+
         PlayerService.setListeners(socket);
 
         LobbyService.setListeners(socket);
