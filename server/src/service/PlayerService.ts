@@ -37,6 +37,9 @@ export default class PlayerService {
 
         setTimeout(
             () => {
+                if (PlayerService.waitingPlayers[name] === undefined)
+                    return;
+
                 const { lobbyId, player } = PlayerService.waitingPlayers[name];
 
                 LobbyService.deletePlayer(lobbyId, player);
