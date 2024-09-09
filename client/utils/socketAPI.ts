@@ -103,7 +103,7 @@ export function useSocket() {
 
   if (
     localStorage.getItem("coup-token") === null
-    ||
+    &&
     sessionStorage.getItem("coup-name") === null
   )
     return { error: "O usuário deve estar logado ou possuir um nome" };
