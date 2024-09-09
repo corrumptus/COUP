@@ -11,7 +11,7 @@ export default function EntrarLobby() {
 
   if (error !== undefined) return (
     <div className="h-full flex justify-center items-center">{error}</div>
-  )
+  );
 
   return gameState === undefined ?
     <LobbyView initGame={setGameState} socket={socket} />

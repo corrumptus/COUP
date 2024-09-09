@@ -97,8 +97,9 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
+let socket: COUPSocket;
+
 export function useSocket() {
-  const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
   if (
@@ -111,27 +112,26 @@ export function useSocket() {
   if (error !== undefined)
     return { error: error };
 
-  useEffect(() => {
-    setSocket(
-      (io("http://localhost:5000", {
-        auth: localStorage.getItem("coup-token") !== null ?
-          {
-            token: localStorage.getItem("coup-token")
-          }
-          :
-          {
-            name: sessionStorage.getItem("coup-name")
-          }
-      }) as COUPSocket)
-        .on("disconnectReason", (reason) => {
-          setError(reason);
-        }).on("disconnect", () => {
-          setError("Não foi possível se conectar ao servidor");
-        })
-    );
-  }, []);
+  if (socket !== undefined)
+    return { socket: socket };
 
-  return { socket: socket as COUPSocket };
+  socket = (io("http://localhost:5000", {
+    auth: localStorage.getItem("coup-token") !== null ?
+      {
+        token: localStorage.getItem("coup-token")
+      }
+      :
+      {
+        name: sessionStorage.getItem("coup-name")
+      }
+  }) as COUPSocket)
+    .on("disconnectReason", (reason) => {
+      setError(reason);
+    }).on("disconnect", () => {
+      setError("Não foi possível se conectar ao servidor");
+    });
+
+  return { socket: socket };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
