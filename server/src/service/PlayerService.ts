@@ -56,14 +56,22 @@ export default class PlayerService {
         PlayerService.declare(socket);
     }
 
-    private static declare(socket: COUPSocket) {
-        UserService.getName(socket.handshake.auth.token)
-            .then(name => {
-                PlayerService.players[socket.id] =
-                    PlayerService.waitingPlayers[name as string];
+    private static async declare(socket: COUPSocket) {
+        if (socket.handshake.auth.token !== undefined) {
+            const name = await UserService.getName(socket.handshake.auth.token);
 
-                delete PlayerService.waitingPlayers[name as string];
-            });
+            PlayerService.players[socket.id] =
+                PlayerService.waitingPlayers[name as string];
+
+            delete PlayerService.waitingPlayers[name as string];
+        } else {
+            const name = socket.handshake.auth.name;
+
+            PlayerService.players[socket.id] =
+                PlayerService.waitingPlayers[name];
+
+            delete PlayerService.waitingPlayers[name];
+        }
     }
 
     static getPlayer(socketID: string): Player {
