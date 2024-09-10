@@ -128,7 +128,7 @@ export function useSocket() {
     .on("disconnectReason", (reason) => {
       setError(reason);
     }).on("disconnect", () => {
-      setError("Não foi possível se conectar ao servidor");
+      setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
     });
 
   return { socket: socket };
