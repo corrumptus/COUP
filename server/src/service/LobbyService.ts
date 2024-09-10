@@ -153,7 +153,7 @@ export default class LobbyService {
 
     static get allLobbys() {
         return LobbyService.lobbys
-            .filter(lobby => !lobby.isEmpty)
+            .filter(lobby => !lobby.isEmpty && !lobby.isRunningGame)
             .map(lobby => lobby.toLobbyFinder());
     }
 }
