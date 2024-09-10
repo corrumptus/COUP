@@ -43,7 +43,7 @@ export default class LobbyService {
             if (lobby !== removedPlayersLobby)
                 return;
 
-            const index = PlayerService.removePlayerByName(name);
+            const index = PlayerService.removePlayerByName(name, "Jogador removido pelo dono do jogo");
 
             if (index === -1)
                 return;
