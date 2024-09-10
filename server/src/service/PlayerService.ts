@@ -111,11 +111,11 @@ export default class PlayerService {
     static removePlayer(socketId: string, disconnectReason: string): number {
         const player = PlayerService.players[socketId];
 
-        delete PlayerService.players[socketId];
-
         player.socket.emit("disconnectReason", disconnectReason);
 
         player.socket.disconnect();
+
+        delete PlayerService.players[socketId];
 
         return LobbyService.deletePlayer(player.lobbyId, player.player);
     }
