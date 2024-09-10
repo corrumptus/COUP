@@ -9,7 +9,8 @@ export default class PlayerService {
         [socketId: string]: {
             player: Player,
             lobbyId: number,
-            isLogged: boolean
+            isLogged: boolean,
+            socket: COUPSocket
         }
     } = {};
 
@@ -63,15 +64,19 @@ export default class PlayerService {
         if (socket.handshake.auth.token !== undefined) {
             const name = await UserService.getName(socket.handshake.auth.token);
 
-            PlayerService.players[socket.id] =
-                PlayerService.waitingPlayers[name as string];
+            PlayerService.players[socket.id] = {
+                ...PlayerService.waitingPlayers[name as string],
+                socket: socket
+            };
 
             delete PlayerService.waitingPlayers[name as string];
         } else {
             const name = socket.handshake.auth.name;
 
-            PlayerService.players[socket.id] =
-                PlayerService.waitingPlayers[name];
+            PlayerService.players[socket.id] = {
+                ...PlayerService.waitingPlayers[name],
+                socket: socket
+            };
 
             delete PlayerService.waitingPlayers[name];
         }
