@@ -16,6 +16,8 @@ export type LobbyState = {
 
 export default class LobbyMessageService extends MessageService {
     static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", name);
+
         super.newPlayer(lobbyId, name, socket);
 
         socket.emit("playerConnected", LobbyMessageService.calculateLobbyState(lobbyId, name));
