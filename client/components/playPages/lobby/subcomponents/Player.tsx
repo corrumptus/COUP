@@ -4,16 +4,18 @@ import Image from "next/image";
 export default function Player({
   name,
   canEdit,
+  isOwner,
   socket
 }: {
   name: string,
   canEdit: boolean,
+  isOwner: boolean,
   socket: COUPSocket
 }) {
   return (
     <li className="flex items-center gap-2 border-b border-[#4f4f4f] pt-px">
-      <span className="text-lg flex-1 text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
-      {canEdit &&
+      <span className="text-2xl flex-1 text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
+      {canEdit && !isOwner &&
         <div className="flex gap-1.5 w-max">
           <Image
             src="/crown_player.png"

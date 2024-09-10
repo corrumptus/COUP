@@ -104,10 +104,11 @@ export default function LobbyView({
         <div className="w-full pc:w-[calc((100%-2.5rem)/2)] h-[500px] pc:h-full flex flex-col gap-1.5 bg-[url(../public/papiro.png)] bg-[length:100%_100%] bg-no-repeat px-[5%] pc:px-[2%] pt-[55px] pb-[65px] pc:pt-[calc(((100vh-52px-5rem)/2)*0.2)] pc:pb-[calc(((100vh-52px-5rem)/2)*0.24)]">
           <h2 className="text-center text-2xl pc:text-3xl">Players</h2>
           <ul className="overflow-auto">
-            {lobbyState.lobby.players.map(p => <Player
-                key={p}
-                name={p}
+            {lobbyState.lobby.players.map(playerName => <Player
+                key={playerName}
+                name={playerName}
                 canEdit={canEdit}
+                isOwner={playerName === lobbyState.lobby.owner}
                 socket={socket}
               />
             )}
