@@ -98,7 +98,7 @@ export default class Lobby {
         return {
             id: this.id,
             quantidadePlayers: this.currentPlayers.length,
-            aberto: this.currentGame !== undefined
+            aberto: this.password === undefined
         }
     }
 
