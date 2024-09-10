@@ -45,6 +45,8 @@ export default class Lobby {
         if (this.currentGame !== undefined)
             this.currentGame.deletePlayer(playerIndex);
 
+        this.currentPlayers.splice(playerIndex, 1);
+
         return playerIndex;
     }
 
