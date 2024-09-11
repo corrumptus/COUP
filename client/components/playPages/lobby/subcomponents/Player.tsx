@@ -5,16 +5,28 @@ export default function Player({
   name,
   canEdit,
   isOwner,
+  isUser,
   socket
 }: {
   name: string,
   canEdit: boolean,
   isOwner: boolean,
+  isUser: boolean,
   socket: COUPSocket
 }) {
+  function getNameColor() {
+    if (isOwner)
+      return " text-[#ff0000]";
+
+    if (isUser)
+      return " text-[#0d9b0d]";
+
+    return "";
+  }
+
   return (
     <li className="flex items-center gap-2 border-b border-[#4f4f4f] pt-px">
-      <span className="text-2xl flex-1 text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
+      <span className={`text-2xl flex-1 text-ellipsis overflow-hidden whitespace-nowrap${getNameColor()}`}>{name}</span>
       {canEdit && !isOwner &&
         <div className="flex gap-1.5 w-max">
           <Image

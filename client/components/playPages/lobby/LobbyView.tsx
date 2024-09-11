@@ -119,6 +119,7 @@ export default function LobbyView({
                 name={playerName}
                 canEdit={canEdit}
                 isOwner={playerName === lobbyState.lobby.owner}
+                isUser={playerName === lobbyState.player.name}
                 socket={socket}
               />
             )}
