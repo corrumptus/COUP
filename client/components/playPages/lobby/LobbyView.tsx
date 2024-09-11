@@ -74,7 +74,15 @@ export default function LobbyView({
     setLobbyState(newLobbyState);
   });
 
-  socket.on("gameInit", initGame);
+  socket.on("newOwner", (player: string) => {
+    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+    newLobbyState.lobby.owner = player;
+
+    setLobbyState(newLobbyState);
+  });
+
+  socket.on("beginMatch", initGame);
 
   return (
     <div className="h-full flex flex-col">
