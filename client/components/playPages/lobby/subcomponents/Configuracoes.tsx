@@ -72,9 +72,9 @@ export default function Configuracoes({
             />
           </div>
         </div>
-        <div>
-          <h3 className="text-2xl font-bold text-center">Religião</h3>
-          <div className="config_checkbox pr-[calc(100%-80px)]">
+        <div className="flex flex-col items-start">
+          <h3 className="text-2xl font-bold text-center w-full">Religião</h3>
+          <div className="config_checkbox">
             <label>Religião</label>
             <input
               type="checkbox"
@@ -92,7 +92,7 @@ export default function Configuracoes({
                   value={configs.religiao.quantidadeTrocarPropria}
                   min={0}
                   onChange={e =>
-                    socket.emit("updateConfigs", ["religiao", "quantidadeTrocar"], Number(e.target.value))
+                    socket.emit("updateConfigs", ["religiao", "quantidadeTrocarPropria"], Number(e.target.value))
                   }
                 />
               </div>
@@ -109,8 +109,8 @@ export default function Configuracoes({
               </div>
               <div className="w-full">
                 <p>Mandamentos da Religião</p>
-                <div className="w-full">
-                  <div className="config_checkbox pr-[calc(100%-146px)]">
+                <div className="w-full flex flex-col items-start">
+                  <div className="config_checkbox">
                     <label>Golpe de Estado</label>
                     <input
                       type="checkbox"
@@ -120,7 +120,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-103px)]">
+                  <div className="config_checkbox">
                     <label>Assassinar</label>
                     <input
                       type="checkbox"
@@ -130,7 +130,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-89px)]">
+                  <div className="config_checkbox">
                     <label>Extorquir</label>
                     <input
                       type="checkbox"
@@ -140,7 +140,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label>Taxar</label>
                     <input
                       type="checkbox"
@@ -154,8 +154,8 @@ export default function Configuracoes({
               </div>
               <div>
                 <p>Cartas Para Corrupção</p>
-                <div className="w-full">
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                <div className="w-full flex flex-col items-start">
+                  <div className="config_checkbox">
                     <label htmlFor="">Duque</label>
                     <input
                       type="checkbox"
@@ -165,7 +165,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label htmlFor="">Capitão</label>
                     <input
                       type="checkbox"
@@ -175,7 +175,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label htmlFor="">Assassino</label>
                     <input
                       type="checkbox"
@@ -185,7 +185,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label htmlFor="">Condessa</label>
                     <input
                       type="checkbox"
@@ -195,7 +195,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label htmlFor="">Embaixador</label>
                     <input
                       type="checkbox"
@@ -205,7 +205,7 @@ export default function Configuracoes({
                       }
                     />
                   </div>
-                  <div className="config_checkbox pr-[calc(100%-63px)]">
+                  <div className="config_checkbox">
                     <label htmlFor="">Inquisidor</label>
                     <input
                       type="checkbox"
@@ -225,8 +225,8 @@ export default function Configuracoes({
           <div className="w-full flex flex-col gap-6 config_cartas">
             <div>
               <p>Duque</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -236,7 +236,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -246,7 +246,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -256,7 +256,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -266,7 +266,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -320,7 +320,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -330,7 +330,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -340,7 +340,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -350,7 +350,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -360,7 +360,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -374,8 +374,8 @@ export default function Configuracoes({
             </div>
             <div>
               <p>Capitão</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -385,7 +385,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -395,7 +395,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -405,7 +405,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -415,7 +415,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -469,7 +469,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -479,7 +479,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -489,7 +489,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -499,7 +499,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -509,7 +509,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -523,8 +523,8 @@ export default function Configuracoes({
             </div>
             <div>
               <p>Assassino</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -534,7 +534,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -544,7 +544,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -554,7 +554,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -564,7 +564,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -618,7 +618,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -628,7 +628,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -638,7 +638,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -648,7 +648,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -658,7 +658,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -672,8 +672,8 @@ export default function Configuracoes({
             </div>
             <div>
               <p>Condessa</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -683,7 +683,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -693,7 +693,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -703,7 +703,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -713,7 +713,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -767,7 +767,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -777,7 +777,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -787,7 +787,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -797,7 +797,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -807,7 +807,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -821,8 +821,8 @@ export default function Configuracoes({
             </div>
             <div>
               <p>Embaixador</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -832,7 +832,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -842,7 +842,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -852,7 +852,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -862,7 +862,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -916,7 +916,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -926,7 +926,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -936,7 +936,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -946,7 +946,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -956,7 +956,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -970,8 +970,8 @@ export default function Configuracoes({
             </div>
             <div>
               <p>Inquisidor</p>
-              <div>
-                <div className="config_checkbox pr-[calc(100%-63px)]">
+              <div className="w-full flex flex-col items-start">
+                <div className="config_checkbox">
                   <label>Taxar</label>
                   <input
                     type="checkbox"
@@ -981,7 +981,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-89px)]">
+                <div className="config_checkbox">
                   <label>Extorquir</label>
                   <input
                     type="checkbox"
@@ -991,7 +991,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-103px)]">
+                <div className="config_checkbox">
                   <label>Assassinar</label>
                   <input
                     type="checkbox"
@@ -1001,7 +1001,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-144px)]">
+                <div className="config_checkbox">
                   <label>Trocar(Próprias)</label>
                   <input
                     type="checkbox"
@@ -1011,7 +1011,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-95px)]">
+                <div className="config_checkbox">
                   <label>Investigar</label>
                   <input
                     type="checkbox"
@@ -1065,7 +1065,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-133px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Taxar</label>
                   <input
                     type="checkbox"
@@ -1075,7 +1075,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-159px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Extorquir</label>
                   <input
                     type="checkbox"
@@ -1085,7 +1085,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-172px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Assassinar</label>
                   <input
                     type="checkbox"
@@ -1095,7 +1095,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-252px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Trocar(Troca Própria)</label>
                   <input
                     type="checkbox"
@@ -1105,7 +1105,7 @@ export default function Configuracoes({
                     }
                   />
                 </div>
-                <div className="config_checkbox pr-[calc(100%-165px)]">
+                <div className="config_checkbox">
                   <label>Bloqueia Investigar</label>
                   <input
                     type="checkbox"
@@ -1151,9 +1151,9 @@ export default function Configuracoes({
         <h3 className="text-2xl font-bold text-center">Religião</h3>
         <div className="config_outer_div">
           <p className="text-xl">Religião</p>
-          <p className="text-lg">{configs.religiao ? "sim" : "não"}</p>
+          <p className="text-lg">{configs.religiao.reforma ? "sim" : "não"}</p>
         </div>
-        {configs.religiao && <>
+        {configs.religiao.reforma && <>
           <div className="config_diferenciation">
             <p className="text-xl">Trocar Religião(Própria)</p>
             <p className="text-lg">{configs.religiao.quantidadeTrocarPropria}</p>
