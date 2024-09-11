@@ -87,12 +87,17 @@ type ResponseSocketEmitEvents = {
 }
 
 type RequestSocketOnEvents = {
-  "playerConnected": (gameState: LobbyState) => void;
+  "disconnectReason": (reason: string) => void;
+
+  "playerConnected": (lobbyState: LobbyState) => void;
   "configsUpdated": (keys: string[], value: number | boolean) => void;
   "newPlayer": (player: string) => void;
   "leavingPlayer": (player: string) => void;
-  "gameInit": (gameState: GameState) => void;
-  "disconnectReason": (reason: string) => void;
+  "newOwner": (name: string) => void;
+  "beginMatch": (gameState: GameState) => void;
+
+  "updatePlayer": (updates: GameState) => void;
+  "gameActionError": (message: string) => void;
 }
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
