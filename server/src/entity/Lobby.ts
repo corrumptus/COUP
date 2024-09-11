@@ -29,11 +29,11 @@ export default class Lobby {
             this.owner = player;
     }
 
-    removePlayer(player: Player): number {
+    removePlayer(player: Player) {
         const playerIndex = this.currentPlayers.findIndex(p => p === player);
 
         if (playerIndex === -1)
-            return -1;
+            return;
 
         if (this.owner === player) {
             if (this.currentPlayers.length > 1)
@@ -46,8 +46,6 @@ export default class Lobby {
             this.currentGame.deletePlayer(playerIndex);
 
         this.currentPlayers.splice(playerIndex, 1);
-
-        return playerIndex;
     }
 
     newGame() {

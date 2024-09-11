@@ -43,12 +43,9 @@ export default class LobbyService {
             if (lobby !== removedPlayersLobby)
                 return;
 
-            const index = PlayerService.removePlayerByName(name, "Jogador removido pelo dono do jogo");
+            PlayerService.removePlayerByName(name, "Jogador removido pelo dono do jogo");
 
-            if (index === -1)
-                return;
-
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", index);
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", name);
         });
 
         socket.on("changePassword", (password: string) => {
@@ -114,22 +111,17 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
-    static deletePlayer(lobbyId: number, player: Player): number {
+    static deletePlayer(lobbyId: number, player: Player) {
         const lobby = LobbyService.lobbys[lobbyId];
 
         if (lobby === undefined)
-            return -1;
+            return;
 
         LobbyService.handleLobbyDeleting(lobby.id);
 
-        const index = lobby.removePlayer(player);
-
-        if (index === -1)
-            return -1;
+        lobby.removePlayer(player);
 
         LobbyMessageService.removePlayer(lobby.id, player.name);
-
-        return index;
     }
 
     private static handleLobbyDeleting(lobbyId: number) {

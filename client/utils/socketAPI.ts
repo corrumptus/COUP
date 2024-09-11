@@ -90,7 +90,7 @@ type RequestSocketOnEvents = {
   "playerConnected": (gameState: LobbyState) => void;
   "configsUpdated": (keys: string[], value: number | boolean) => void;
   "newPlayer": (player: string) => void;
-  "leavingPlayer": (index: number) => void;
+  "leavingPlayer": (player: string) => void;
   "gameInit": (gameState: GameState) => void;
   "disconnectReason": (reason: string) => void;
 }

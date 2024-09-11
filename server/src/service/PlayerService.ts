@@ -108,7 +108,7 @@ export default class PlayerService {
             .find(player => player.name === name);
     }
 
-    static removePlayer(socketId: string, disconnectReason: string): number {
+    static removePlayer(socketId: string, disconnectReason: string) {
         const player = PlayerService.players[socketId];
 
         player.socket.emit("disconnectReason", disconnectReason);
@@ -117,16 +117,16 @@ export default class PlayerService {
 
         delete PlayerService.players[socketId];
 
-        return LobbyService.deletePlayer(player.lobbyId, player.player);
+        LobbyService.deletePlayer(player.lobbyId, player.player);
     }
 
-    static removePlayerByName(name: string, disconnectReason: string): number {
+    static removePlayerByName(name: string, disconnectReason: string) {
         const playerInfos = Object.entries(PlayerService.players)
             .find(([_, { player }]) => player.name === name);
 
         if (playerInfos === undefined)
-            return -1;
+            return;
 
-        return PlayerService.removePlayer(playerInfos[0], disconnectReason);
+        PlayerService.removePlayer(playerInfos[0], disconnectReason);
     }
 }

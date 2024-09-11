@@ -45,7 +45,7 @@ export interface ResponseSocketEmitEvents {
     "playerConnected": (lobbyState: LobbyState) => void;
     "configsUpdated": (keys: string[], value: number | boolean) => void;
     "newPlayer": (player: string) => void;
-    "leavingPlayer": (index: number) => void;
+    "leavingPlayer": (player: string) => void;
     "newOwner": (name: string) => void;
     "beginMatch": (gameState: GameState) => void;
 

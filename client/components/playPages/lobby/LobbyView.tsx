@@ -64,8 +64,10 @@ export default function LobbyView({
     setLobbyState(newLobbyState);
   });
 
-  socket.on("leavingPlayer", (index: number) => {
+  socket.on("leavingPlayer", (player: string) => {
     const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+    const index = newLobbyState.lobby.players.indexOf(player);
 
     newLobbyState.lobby.players.splice(index, 1);
 
