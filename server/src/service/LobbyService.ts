@@ -111,6 +111,10 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
+    static messagePlayerDisconnected(lobbyId: number, name: string) {
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", name);
+    }
+
     static deletePlayer(lobbyId: number, player: Player) {
         const lobby = LobbyService.lobbys[lobbyId];
 

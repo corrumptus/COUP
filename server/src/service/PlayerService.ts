@@ -54,7 +54,11 @@ export default class PlayerService {
 
     static setListeners(socket: COUPSocket) {
         socket.on("disconnect", () => {
+            const { lobbyId, player: { name } } = PlayerService.players[socket.id];
+
             PlayerService.removePlayer(socket.id, "player desconectou");
+
+            LobbyService.messagePlayerDisconnected(lobbyId, name);
         });
 
         PlayerService.declare(socket);
