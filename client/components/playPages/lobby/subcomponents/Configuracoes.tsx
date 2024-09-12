@@ -1,12 +1,15 @@
+import FormInput from "@/components/form/subcomponents/FormInput";
 import { COUPSocket, Config } from "@utils/socketAPI";
 
 export default function Configuracoes({
   configs,
   canEdit,
+  password,
   socket
 }: {
   configs: Config,
   canEdit: boolean,
+  password: string | undefined,
   socket: COUPSocket
 }) {
   const configStyles = "flex flex-col gap-4 overflow-auto px-[3%]";
@@ -1118,6 +1121,27 @@ export default function Configuracoes({
               </div>
             </div>
           </div>
+        </div>
+        <div className="config_outer_div">
+          <h3 className="text-2xl font-bold text-center">Servidor</h3>
+          <div className="config_checkbox">
+            <label>Privado</label>
+            <input
+              type="checkbox"
+              checked={password !== undefined}
+              onChange={e => !e.target.checked && socket.emit("removePassword")}
+            />
+          </div>
+          {password !== undefined &&
+            <div>
+              <FormInput
+                value={password}
+                changeValue={newPassword => socket.emit("changePassword", newPassword)}
+                label="Senha"
+                isPassword
+              />
+            </div>
+          }
         </div>
       </div>
     );

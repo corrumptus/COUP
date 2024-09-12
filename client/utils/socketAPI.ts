@@ -63,6 +63,8 @@ type ResponseSocketEmitEvents = {
   "updateConfigs": (keys: string[], value: number | boolean) => void;
   "newOwner": (name: string) => void;
   "removePlayer": (name: string) => void;
+  "changePassword": (password: string) => void;
+  "removePassword": () => void;
   "beginMatch": () => void;
 
   "renda": () => void;
@@ -91,6 +93,7 @@ type RequestSocketOnEvents = {
 
   "playerConnected": (lobbyState: LobbyState) => void;
   "configsUpdated": (keys: string[], value: number | boolean) => void;
+  "passwordUpdated": (password: string | undefined) => void;
   "newPlayer": (player: string) => void;
   "leavingPlayer": (player: string) => void;
   "newOwner": (name: string) => void;

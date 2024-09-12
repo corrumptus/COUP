@@ -14,7 +14,8 @@ export type LobbyState = {
   lobby: {
     players: string[],
     owner: string,
-    configs: Config
+    configs: Config,
+    password: string | undefined
   }
 }
 
@@ -32,7 +33,8 @@ export default function LobbyView({
     lobby: {
       players: [],
       owner: "",
-      configs: COUPDefaultConfigs
+      configs: COUPDefaultConfigs,
+      password: undefined
     }
   });
 
@@ -52,6 +54,14 @@ export default function LobbyView({
       configParam = configParam[keys[i]];
 
     configParam[keys.at(-1) as string] = value;
+
+    setLobbyState(newLobbyState);
+  });
+
+  socket.on("passwordUpdated", (password: string | undefined) => {
+    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+    newLobbyState.lobby.password = password;
 
     setLobbyState(newLobbyState);
   });
@@ -130,6 +140,7 @@ export default function LobbyView({
           <Configuracoes
             configs={lobbyState.lobby.configs}
             canEdit={canEdit}
+            password={lobbyState.lobby.password}
             socket={socket}
           />
         </div>
