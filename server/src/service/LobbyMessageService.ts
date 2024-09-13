@@ -41,6 +41,9 @@ export default class LobbyMessageService extends MessageService {
         message: T,
         ...values: Parameters<ResponseSocketEmitEvents[T]>
     ) {
+        if (super.lobbys[lobbyId] === undefined)
+            return;
+
         const sockets = super.lobbys[lobbyId].players.map(p => p.socket);
 
         sockets.forEach(s => s.emit(message, ...values));
