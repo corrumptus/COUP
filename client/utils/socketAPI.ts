@@ -105,7 +105,7 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-let socket: COUPSocket;
+let socket: COUPSocket | undefined = undefined;
 
 export function useSocket() {
   const [ error, setError ] = useState<string>();
@@ -121,7 +121,7 @@ export function useSocket() {
     return { error: error };
 
   if (socket !== undefined)
-    return { socket: socket };
+    return { socket: socket, onClose: () => { socket = undefined; } };
 
   socket = (io("http://localhost:5000", {
     auth: localStorage.getItem("coup-token") !== null ?
@@ -139,7 +139,7 @@ export function useSocket() {
       setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
     });
 
-  return { socket: socket };
+  return { socket: socket, onClose: () => { socket = undefined; } };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
