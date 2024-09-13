@@ -110,7 +110,7 @@ export function useDeviceWidth() {
 }
 
 export type Differ<T> = {
-    [P in keyof T]?: Differ<T[P]> | T[P][];
+    [P in keyof T]?: T[P] extends object ? Differ<T[P]> : [T[P], T[P]];
 }
 
 export function objectDiff<T>(base: T, differ: T): Differ<T> {
@@ -119,12 +119,12 @@ export function objectDiff<T>(base: T, differ: T): Differ<T> {
     for (let key in base) {
         if (typeof base[key] !== "object") {
             if (base[key] !== differ[key])
-                diff[key] = [base[key], differ[key]];
+                diff[key] = [base[key], differ[key]] as typeof diff[typeof key];
         } else {
             let diffDeep = objectDiff(base[key], differ[key]);
 
             if (Object.keys(diffDeep).length !== 0)
-                diff[key] = diffDeep;
+                diff[key] = diffDeep as typeof diff[typeof key];
         }
     }
 

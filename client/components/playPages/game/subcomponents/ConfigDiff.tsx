@@ -127,7 +127,7 @@ const COUPConfigToText = {
 }
 
 type Converter<T> = {
-  [P in keyof T]: string | Converter<T[P]>
+  [P in keyof T]: T[P] extends object ? Converter<T[P]> : string;
 }
 
 function diffsToString<T>(diff: Differ<T>, converter: Converter<T>): string[] {
@@ -135,7 +135,7 @@ function diffsToString<T>(diff: Differ<T>, converter: Converter<T>): string[] {
 
   for (let key in diff) {
     if (typeof diff[key] === "object" && !Array.isArray(diff[key]))
-      diffs.push(...diffsToString(diff[key], converter[key] as Converter<typeof diff[typeof key]>));
+      diffs.push(...diffsToString(diff[key] as Differ<typeof diff[typeof key]>, converter[key] as Converter<typeof diff[typeof key]>));
     else
       diffs.push(`${converter[key]}: ${toString((diff[key] as any[])[0])} -> ${toString((diff[key] as any[])[1])}`);
   }
