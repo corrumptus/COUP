@@ -84,14 +84,18 @@ export default class UserService {
     }
 
     static async getName(token: string): Promise<string | undefined> {
-        return (await jwtVerify(
-            token,
-            UserService.mySecret,
-            {
-                issuer: "COUP Game",
-                maxTokenAge: "2 days",
-                clockTolerance: "30 day"
-            }
-        )).payload.sub;
+        try {
+            return (await jwtVerify(
+                token,
+                UserService.mySecret,
+                {
+                    issuer: "COUP Game",
+                    maxTokenAge: "2 days",
+                    clockTolerance: "30 day"
+                }
+            )).payload.sub;
+        } catch (error) {
+            return undefined;
+        }
     }
 }
