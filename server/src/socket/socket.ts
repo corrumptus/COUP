@@ -70,7 +70,7 @@ export default function initSocket(server: HTTPServer) {
         }
     });
 
-    serverSocket.on("connection", (socket: COUPSocket) => {
+    serverSocket.on("connection", async (socket: COUPSocket) => {
         const error = SocketValidatorService.validate(socket);
 
         if (error !== undefined) {
@@ -79,7 +79,7 @@ export default function initSocket(server: HTTPServer) {
             return;
         }
 
-        PlayerService.setListeners(socket);
+        await PlayerService.setListeners(socket);
 
         LobbyService.setListeners(socket);
 

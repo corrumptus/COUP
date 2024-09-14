@@ -52,7 +52,7 @@ export default class PlayerService {
         return PlayerService.waitingPlayers[name].lobbyId;
     }
 
-    static setListeners(socket: COUPSocket) {
+    static async setListeners(socket: COUPSocket) {
         socket.on("disconnect", () => {
             const { lobbyId, player: { name } } = PlayerService.players[socket.id];
 
@@ -61,7 +61,7 @@ export default class PlayerService {
             LobbyService.messagePlayerDisconnected(lobbyId, name);
         });
 
-        PlayerService.declare(socket);
+        await PlayerService.declare(socket);
     }
 
     private static async declare(socket: COUPSocket) {
