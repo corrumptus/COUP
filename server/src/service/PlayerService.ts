@@ -112,6 +112,14 @@ export default class PlayerService {
             .find(player => player.name === name);
     }
 
+    static getAwaitedPlayer(name: string): {
+        player: Player;
+        lobbyId: number;
+        isLogged: boolean;
+    } | undefined {
+        return PlayerService.waitingPlayers[name];
+    }
+
     static removePlayer(socketId: string, disconnectReason: string) {
         const player = PlayerService.players[socketId];
 
