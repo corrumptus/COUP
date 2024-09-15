@@ -98,7 +98,7 @@ export default function LobbyView({
     <div className="h-full flex flex-col">
       <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
         <div
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer gap-2"
           onClick={() => {
             socket.disconnect();
             router.push("/");

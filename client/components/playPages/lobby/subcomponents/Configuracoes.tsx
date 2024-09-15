@@ -1,4 +1,4 @@
-import FormInput from "@/components/form/subcomponents/FormInput";
+import FormInput from "@components/FormInput";
 import { COUPSocket, Config } from "@utils/socketAPI";
 
 export default function Configuracoes({
@@ -1124,7 +1124,7 @@ export default function Configuracoes({
         </div>
         <div className="config_outer_div">
           <h3 className="text-2xl font-bold text-center">Servidor</h3>
-          <div className="config_checkbox">
+          <div className="config_checkbox flex justify-end">
             <label>Privado</label>
             <input
               type="checkbox"
@@ -1136,7 +1136,7 @@ export default function Configuracoes({
             <div>
               <FormInput
                 value={password}
-                changeValue={newPassword => socket.emit("changePassword", newPassword)}
+                changeValue={(newPassword: string) => socket.emit("changePassword", newPassword)}
                 label="Senha"
                 isPassword
               />
