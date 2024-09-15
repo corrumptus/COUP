@@ -53,6 +53,8 @@ export default class LobbyService {
                 return;
 
             lobby.newPassword(password);
+
+            socket.emit("passwordUpdated", password);
         });
 
         socket.on("removePassword", () => {
@@ -60,6 +62,8 @@ export default class LobbyService {
                 return;
 
             lobby.removePassword();
+
+            socket.emit("passwordUpdated", undefined);
         });
 
         socket.on("beginMatch", () => {
