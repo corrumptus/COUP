@@ -63,7 +63,7 @@ export default class LobbyService {
 
             lobby.removePassword();
 
-            socket.emit("passwordUpdated", undefined);
+            socket.emit("passwordUpdated");
         });
 
         socket.on("beginMatch", () => {

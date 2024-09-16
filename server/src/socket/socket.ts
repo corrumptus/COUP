@@ -44,7 +44,7 @@ export interface ResponseSocketEmitEvents {
 
     "playerConnected": (lobbyState: LobbyState) => void;
     "configsUpdated": (keys: string[], value: number | boolean) => void;
-    "passwordUpdated": (password: string | undefined) => void;
+    "passwordUpdated": (password?: string) => void;
     "newPlayer": (player: string) => void;
     "leavingPlayer": (player: string) => void;
     "newOwner": (name: string) => void;
