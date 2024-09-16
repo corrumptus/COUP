@@ -1,4 +1,3 @@
-import FormInput from "@components/FormInput";
 import { COUPSocket, Config } from "@utils/socketAPI";
 
 export default function Configuracoes({
@@ -1129,16 +1128,20 @@ export default function Configuracoes({
             <input
               type="checkbox"
               checked={password !== undefined}
-              onChange={e => !e.target.checked && socket.emit("removePassword")}
+              onChange={e => e.target.checked ?
+                socket.emit("changePassword", "")
+                :
+                socket.emit("removePassword")
+              }
             />
           </div>
           {password !== undefined &&
-            <div>
-              <FormInput
+            <div className="config_checkbox flex justify-end">
+              <label>Senha</label>
+              <input
+                type="text"
                 value={password}
-                changeValue={(newPassword: string) => socket.emit("changePassword", newPassword)}
-                label="Senha"
-                isPassword
+                onChange={e => socket.emit("changePassword", e.target.value)}
               />
             </div>
           }
