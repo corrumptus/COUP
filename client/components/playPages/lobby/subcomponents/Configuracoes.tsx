@@ -1136,7 +1136,7 @@ export default function Configuracoes({
             />
           </div>
           {password !== undefined &&
-            <div className="config_checkbox flex justify-end">
+            <div className="config_outer_div flex justify-end mb-[1px]">
               <label>Senha</label>
               <input
                 type="text"

@@ -41,7 +41,7 @@ body {
     @apply w-full flex flex-col
   }
 
-  .config_outer_div > input[type="number"] {
+  .config_outer_div > input:not([type="checkbox"]) {
     @apply bg-transparent border-b border-black
   }
 
