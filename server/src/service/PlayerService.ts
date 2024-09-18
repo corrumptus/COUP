@@ -24,7 +24,15 @@ export default class PlayerService {
 
     private static WAITING_TIMEOUT_MS = 300_000;
 
-    static addWaitingPlayer(name: string, isLogged: boolean, lobbyId?: number): number {
+    static addWaitingPlayer(
+        name: string,
+        isLogged: boolean,
+        lobbyId?: number,
+        password?: string | undefined
+    ): number {
+        if (lobbyId !== undefined && !LobbyService.isPasswordFromLobby(password, lobbyId))
+            throw new Error("A senha está incorreta");
+
         const newPlayer = new Player(name);
 
         PlayerService.waitingPlayers[name] = {

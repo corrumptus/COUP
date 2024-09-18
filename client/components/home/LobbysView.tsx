@@ -55,15 +55,20 @@ export default function LobbysView({
             "content-type": "application/json"
           },
           body: JSON.stringify({
-            name: name
+            name: name,
+            senha: lobbys[selected].aberto ? undefined : senha
           })
         })
         :
         await fetch("http://localhost:5000/lobby/" + lobbys[i].id, {
           method: "POST",
           headers: {
-            Authorization: token
-          }
+            Authorization: token,
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            senha: lobbys[selected].aberto ? undefined : senha
+          })
         });
 
       const result: { error: string } | { lobbyId: number } = await response.json();

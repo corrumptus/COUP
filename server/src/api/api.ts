@@ -79,11 +79,12 @@ api.post("/lobby/nonLogged", async (req, res) => {
 api.post("/lobby/nonLogged/:id", async (req, res) => {
     try {
         const name = req.body.name;
+        const senha = req.body.senha;
 
         if (name === undefined || name.trim() === "")
             throw new Error("User must provide a name");
 
-        const lobbyId = PlayerService.addWaitingPlayer(name, false, Number(req.params.id));
+        const lobbyId = PlayerService.addWaitingPlayer(name, false, Number(req.params.id), senha);
 
         res.send({ lobbyId: lobbyId });
     } catch (error) {
@@ -113,6 +114,7 @@ api.post("/lobby", async (req, res) => {
 api.post("/lobby/:id", async (req, res) => {
     try {
         const token = req.headers.authorization;
+        const senha = req.body.senha;
 
         if (!UserValidator.isToken(token))
             throw new Error("The user cannot enter into servers without being logged in");
@@ -121,7 +123,7 @@ api.post("/lobby/:id", async (req, res) => {
 
         const name = await UserService.getName(token) as string;
 
-        const lobbyId = PlayerService.addWaitingPlayer(name, true, Number(req.params.id));
+        const lobbyId = PlayerService.addWaitingPlayer(name, true, Number(req.params.id), senha);
 
         res.send({ lobbyId: lobbyId });
     } catch (error) {

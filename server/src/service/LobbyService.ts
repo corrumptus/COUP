@@ -145,6 +145,15 @@ export default class LobbyService {
         return lobby;
     }
 
+    static isPasswordFromLobby(password: string | undefined, lobbyId: number): boolean {
+        const lobby = LobbyService.lobbys[lobbyId];
+
+        if (lobby === undefined)
+            return false;
+
+        return lobby.getPassword() === password;
+    }
+
     static get allLobbys() {
         return LobbyService.lobbys
             .filter(lobby => !lobby.isEmpty && !lobby.isRunningGame)
