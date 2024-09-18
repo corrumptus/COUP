@@ -47,8 +47,10 @@ export default class Lobby {
 
         this.currentPlayers.splice(playerIndex, 1);
 
-        if (this.isEmpty)
+        if (this.isEmpty) {
             this.configs = COUPdefaultConfigs;
+            this.password = undefined;
+        }
     }
 
     newGame() {
