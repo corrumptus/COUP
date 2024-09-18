@@ -54,8 +54,10 @@ export interface ResponseSocketEmitEvents {
     "gameActionError": (message: string) => void;
 }
 
-export type SocketEmitLobbyEvents = "playerConnected" |
+export type SocketEmitLobbyEvents =
+    "playerConnected" |
     "configsUpdated" |
+    "passwordUpdated" |
     "newPlayer" |
     "leavingPlayer" |
     "newOwner" |

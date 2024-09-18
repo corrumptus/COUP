@@ -54,7 +54,7 @@ export default class LobbyService {
 
             lobby.newPassword(password);
 
-            socket.emit("passwordUpdated", password);
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "passwordUpdated", password);
         });
 
         socket.on("removePassword", () => {
@@ -63,7 +63,7 @@ export default class LobbyService {
 
             lobby.removePassword();
 
-            socket.emit("passwordUpdated");
+            LobbyMessageService.sendLobbyStateChanges(lobby.id, "passwordUpdated");
         });
 
         socket.on("beginMatch", () => {
