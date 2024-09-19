@@ -1,6 +1,7 @@
 import Lobby from "../entity/Lobby";
 import Player from "../entity/player";
 import { COUPSocket } from "../socket/socket";
+import GameService from "./GameService";
 import LobbyMessageService from "./LobbyMessageService";
 import PlayerService from "./PlayerService";
 
@@ -71,6 +72,8 @@ export default class LobbyService {
                 return;
 
             lobby.newGame();
+
+            GameService.beginMatch(lobby.id);
         });
     }
 

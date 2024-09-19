@@ -184,4 +184,8 @@ export default class GameService {
 
         return lobby.getGame();
     }
+
+    static beginMatch(lobbyId: number) {
+        GameMessageService.initGameState(lobbyId);
+    }
 }
