@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Socket, io } from "socket.io-client"
 import { LobbyState } from "@pages/LobbyView";
 import { Card, GameState } from "@pages/GameView";
@@ -105,9 +105,8 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-let socket: COUPSocket | undefined = undefined;
-
 export function useSocket() {
+  const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
   if (
@@ -121,9 +120,9 @@ export function useSocket() {
     return { error: error };
 
   if (socket !== undefined)
-    return { socket: socket, onClose: () => { socket = undefined; } };
+    return { socket: socket, onClose: () => {} };
 
-  socket = (io("http://localhost:5000", {
+  const newSocket = (io("http://localhost:5000", {
     auth: localStorage.getItem("coup-token") !== null ?
       {
         token: localStorage.getItem("coup-token")
@@ -139,7 +138,9 @@ export function useSocket() {
       setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
     });
 
-  return { socket: socket, onClose: () => { socket = undefined; } };
+  setSocket(newSocket);
+
+  return { socket: newSocket, onClose: () => {} };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
