@@ -96,7 +96,7 @@ export default class GameMessageService extends MessageService {
                 state: state.currentPlayer === player.name
                     ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
             },
-            game: state,
+            game: GameMessageService.gameStateForPlayer(state, player.name),
             context: {
                 type: ContextType.OBSERVING,
                 attacker: state.currentPlayer,
@@ -132,7 +132,7 @@ export default class GameMessageService extends MessageService {
                 ...gameState.players.find(p => p.name === name) as Omit<PlayerState, "state">,
                 state: GameMessageService.calculatePlayerState(gameState, name, infos)
             },
-            game: gameState,
+            game: GameMessageService.gameStateForPlayer(gameState, name),
             context: GameMessageService.calculateGameContext(game, name, infos)
         }
     }
@@ -231,5 +231,12 @@ export default class GameMessageService extends MessageService {
             type: ContextType.OBSERVING,
             ...infos
         }
+    }
+
+    private static gameStateForPlayer(
+        gameState: GameState["game"],
+        playerName: string
+    ): GameState["game"] {
+        return { ...gameState, players: gameState.players.filter(p => p.name !== playerName) }
     }
 }
