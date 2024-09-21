@@ -5,7 +5,6 @@ import InfluenceCard from "@components/InfluenceCard";
 import { MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { ChangeRequest } from "@utils/UIChanger";
-import { ACTION } from "next/dist/client/components/app-router-headers";
 
 export default function GamePcFooter({
   player,

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { GameState } from "@pages/GameView";
 import Player from "@components/Player";
 import Configuracoes from "@components/Configuracoes";
-import { GameState } from "../game/GameView";
 import { COUPSocket, Config } from "@utils/socketAPI";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 

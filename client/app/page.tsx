@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@pages/Header";
 import LobbysView from "@pages/LobbysView";
-import Toasters from "@/utils/Toasters";
+import Toasters from "@utils/Toasters";
 
 export default function Home() {
   const router = useRouter();
