@@ -5,6 +5,7 @@ import ConfigDiff from "@components/ConfigDiff";
 import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
+import NextPerson from "@components/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
 import { ChangeRequest } from "@utils/UIChanger";
@@ -12,6 +13,8 @@ import { ChangeRequest } from "@utils/UIChanger";
 export default function GameMobileView({
   isDiffsVisible,
   closeDiffs,
+  isNextPersonVisible,
+  closeNextPerson,
   gameState,
   menuType,
   requeriments,
@@ -20,6 +23,8 @@ export default function GameMobileView({
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
+  isNextPersonVisible: boolean,
+  closeNextPerson: () => void,
   gameState: GameState,
   menuType: MenuTypes,
   requeriments: ActionRequeriments,
@@ -78,6 +83,9 @@ export default function GameMobileView({
             requeriments={requeriments}
             performChange={performChange}
           />
+        }
+        {isNextPersonVisible &&
+          <NextPerson person={gameState.game.currentPlayer} closeNextPerson={closeNextPerson} />
         }
       </main>
     </div>

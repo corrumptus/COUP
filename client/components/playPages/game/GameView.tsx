@@ -103,12 +103,18 @@ export default function GameView({
 }) {
   const [ menuType, requeriments, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
+  const [ isNextPersonVisible, setIsNextPersonVisible ] = useState(false);
   const width = useDeviceWidth();
   const router = useRouter();
 
   useEffect(() => {
     changeUI(gameState, {});
   }, [JSON.stringify(gameState.context)]);
+
+  useEffect(() => {
+    if (!isDiffsVisible)
+      setIsNextPersonVisible(true);
+  }, [isDiffsVisible, gameState.game.currentPlayer]);
 
   function leave() {
     socket.disconnect();
@@ -119,6 +125,8 @@ export default function GameView({
     <GameMobileView
       isDiffsVisible={isDiffsVisible}
       closeDiffs={() => setIsDiffsVisible(false)}
+      isNextPersonVisible={isNextPersonVisible}
+      closeNextPerson={() => setIsNextPersonVisible(false)}
       gameState={gameState}
       menuType={menuType}
       requeriments={requeriments}
@@ -129,6 +137,8 @@ export default function GameView({
     <GamePCView
       isDiffsVisible={isDiffsVisible}
       closeDiffs={() => setIsDiffsVisible(false)}
+      isNextPersonVisible={isNextPersonVisible}
+      closeNextPerson={() => setIsNextPersonVisible(false)}
       gameState={gameState}
       menuType={menuType}
       requeriments={requeriments}
