@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
-import { Config } from "@utils/socketAPI";
+import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
 import { newToaster } from "@utils/Toasters";
 
@@ -18,15 +18,16 @@ export default function useUIChanger() {
     return [
         menuType,
         requeriments,
-        (gameState: GameState, newRequeriments: ChangeRequest) => {
+        (socket: COUPSocket, gameState: GameState, newRequeriments: ChangeRequest) => {
             setMenuTypeAndRequeriments(
-                performUIChange(gameState, menuType, requeriments, newRequeriments)
+                performUIChange(socket, gameState, menuType, requeriments, newRequeriments)
             );
         }
     ] as const;
 }
 
 function performUIChange(
+    socket: COUPSocket,
     gameState: GameState,
     menuType: MenuTypes,
     requeriments: ActionRequeriments,
@@ -75,7 +76,7 @@ function performUIChange(
 
     if (isActionEmitable(gameState, newRequeriments, menuType)) {
         emitAction(
-            // socket,
+            socket,
             gameState.game.configs,
             newRequeriments
         );
@@ -447,7 +448,7 @@ function isActionEmitable(
 }
 
 function emitAction(
-    // socket: COUPSocket,
+    socket: COUPSocket,
     configs: Config,
     requeriments: ActionRequeriments
 ) {
@@ -472,8 +473,10 @@ function emitAction(
     })
     .filter(info => info !== undefined);
 
-    //@ts-ignore
-    // socket.emit(...infos);
+    console.log(infos);
+
+    // @ts-ignore
+    socket.emit(...infos);
 }
 
 function blockableActionNeedsSelfCard(blockableAction: Action): boolean {

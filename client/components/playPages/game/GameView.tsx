@@ -108,7 +108,7 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
-    changeUI(gameState, {});
+    changeUI(socket, gameState, {});
   }, [JSON.stringify(gameState.context)]);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function GameView({
       gameState={gameState}
       menuType={menuType}
       requeriments={requeriments}
-      performChange={changeRequest => changeUI(gameState, changeRequest)}
+      performChange={changeRequest => changeUI(socket, gameState, changeRequest)}
       leave={leave}
     />
     :
@@ -142,7 +142,7 @@ export default function GameView({
       gameState={gameState}
       menuType={menuType}
       requeriments={requeriments}
-      performChange={changeRequest => changeUI(gameState, changeRequest)}
+      performChange={changeRequest => changeUI(socket, gameState, changeRequest)}
       leave={leave}
     />
 }
