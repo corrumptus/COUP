@@ -164,8 +164,11 @@ export default function ConfigDiff({
   const getDiffs = diffsToString(configDiff, COUPConfigToText);
 
   return (
-    <div className="w-full max-h-[350px] absolute top-[50%] translate-y-[-50%] bg-neutral-400 flex flex-wrap px-[20%]">
-      {getDiffs.map((d => <span key={d}>{d}</span>))}
+    <div className="w-full h-full absolute  flex flex-col justify-center items-center z-[4] bg-zinc-700/50">
+      <h1 className="text-white text-2xl font-bold">Configurações diferentes</h1>
+      <div className="w-[80%] h-[50%] flex flex-wrap bg-neutral-400 p-3">
+        {getDiffs.map((d => <span key={d}>{d}</span>))}
+      </div>
     </div>
   )
 }
