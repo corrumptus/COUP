@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
-import { Config, COUPSocket } from "@utils/socketAPI";
+import { Config } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
 import { newToaster } from "@utils/Toasters";
 

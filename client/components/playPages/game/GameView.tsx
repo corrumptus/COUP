@@ -107,8 +107,7 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
-    if (gameState.context !== undefined)
-      changeUI(gameState, {});
+    changeUI(gameState, {});
   }, [JSON.stringify(gameState.context)]);
 
   function leave() {

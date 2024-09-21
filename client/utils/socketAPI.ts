@@ -120,7 +120,7 @@ export function useSocket() {
     return { error: error };
 
   if (socket !== undefined)
-    return { socket: socket, onClose: () => {} };
+    return { socket: socket };
 
   const newSocket = (io("http://localhost:5000", {
     auth: localStorage.getItem("coup-token") !== null ?
@@ -140,7 +140,7 @@ export function useSocket() {
 
   setSocket(newSocket);
 
-  return { socket: newSocket, onClose: () => {} };
+  return { socket: newSocket };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
