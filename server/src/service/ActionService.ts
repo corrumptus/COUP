@@ -21,7 +21,7 @@ export default class ActionService {
     ): ActionInfos {
         const game = GameService.getPlayersGame(socketId);
 
-        if (game === null)
+        if (game === undefined)
             throw new Error("Player is not playing a game");
 
         const turn = ActionService.getTheCorrectTurn(game);
@@ -32,6 +32,8 @@ export default class ActionService {
             turn.getTarget()
             :
             PlayerService.getPlayerByName(targetName);
+
+        ActionValidator.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
         ActionValidator.validate(player, action, cardType, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 

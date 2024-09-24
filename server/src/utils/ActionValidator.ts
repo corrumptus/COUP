@@ -379,4 +379,26 @@ export default class ActionValidator {
 
         return blockMapper[previousAction]();
     }
+
+    static validateSocketTurn(socketPlayer: Player, turn: Turn) {
+        const [ player, target ] = [ turn.getPlayer(), turn.getTarget() ];
+
+        if (
+            socketPlayer === player
+            &&
+            turn.getAllActions().length%2 === 0
+        )
+            return;
+
+        if (
+            target !== undefined
+            &&
+            socketPlayer === target
+            &&
+            turn.getAllActions().length%2 === 1
+        )
+            return;
+
+        throw new Error("Não é a vez do player");
+    }
 }
