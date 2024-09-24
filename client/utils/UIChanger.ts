@@ -473,8 +473,6 @@ function emitAction(
     })
     .filter(info => info !== undefined);
 
-    console.log(infos);
-
     // @ts-ignore
     socket.emit(...infos);
 }
