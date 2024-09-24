@@ -16,7 +16,7 @@ export default class Game {
         this.players = players;
         this.currentPlayer = currentPlayer || this.random;
         this.nonKilledPlayers = players.map(p => p.name);
-        this.turns = [ new Turn(this.players[this.currentPlayer], this.nextPlayer) ];
+        this.turns = [ new Turn(this.players[this.currentPlayer], () => this.nextPlayer()) ];
         this.onWin = onWin;
         this.configs = configs;
         this.asylum = 0;
@@ -70,7 +70,7 @@ export default class Game {
 
         this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
 
-        const newTurn = new Turn(this.players[this.currentPlayer], this.nextPlayer);
+        const newTurn = new Turn(this.players[this.currentPlayer], () => this.nextPlayer());
 
         this.turns.push(newTurn);
     }
