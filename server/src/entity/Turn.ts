@@ -38,9 +38,11 @@ export default class Turn {
         this.cards.push(card);
     }
 
-    finish() {
-        this.onFinish();
+    finish(shouldCallOnFinish: boolean = true) {
         this.finished = true;
+
+        if (shouldCallOnFinish)
+            this.onFinish();
     }
 
     getPlayer(): Player {
