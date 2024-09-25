@@ -1,6 +1,5 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
-import Game from "../entity/Game";
 import { CardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
 import ActionSaver from "../utils/ActionSaver";
@@ -27,7 +26,7 @@ export default class ActionService {
         if (game === undefined)
             throw new Error("Player is not playing a game");
 
-        const turn = ActionService.getTheCorrectTurn(game);
+        const turn = ActionValidator.getCorrectTurn(game, action);
 
         const player = turn.getPlayer();
 
@@ -45,18 +44,6 @@ export default class ActionService {
         ActionTurnFinisher.finish(action, lobbyId, game, turn);
 
         return ActionService.getActionInfos(turn, cardType, targetCard as CardSlot | undefined, game.getConfigs());
-    }
-
-    private static getTheCorrectTurn(game: Game): Turn {
-        const lastTurn = game.getTurn(-1) as Turn;
-        const preLastTurn = game.getTurn(-2);
-
-        if (preLastTurn === undefined || preLastTurn.isfinished)
-            return lastTurn;
-
-        game.removeLastTurn();
-
-        return preLastTurn;
     }
 
     private static getActionInfos(

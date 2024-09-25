@@ -1,5 +1,6 @@
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
+import Game from "../entity/Game";
 import Player, { isCardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
 import Config from "./Config";
@@ -400,5 +401,18 @@ export default class ActionValidator {
             return;
 
         throw new Error("Não é a vez do player");
+    }
+
+    static getCorrectTurn(game: Game, action: Action): Turn {
+        const lastTurn = game.getTurn(-1) as Turn;
+        const preLastTurn = game.getTurn(-2);
+
+        if (preLastTurn === undefined)
+            return lastTurn;
+
+        if (!preLastTurn.isfinished && ActionValidator.isDefenseAction(action))
+            return preLastTurn;
+
+        return lastTurn;
     }
 }
