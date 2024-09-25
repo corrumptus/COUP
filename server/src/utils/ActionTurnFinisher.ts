@@ -1,11 +1,25 @@
 import Action from "../entity/Action";
+import Game from "../entity/Game";
 import Turn from "../entity/Turn";
 
 export default class ActionTurnFinisher {
-    static finish(action: Action, turn: Turn) {
+    static lobbys: {
+        [id: number]: Turn
+    } = {};
+
+    static finish(action: Action, lobbyId: number, game: Game, turn: Turn) {
+        if (
+            lobbyId in ActionTurnFinisher.lobbys
+            &&
+            turn !== ActionTurnFinisher.lobbys[lobbyId]
+        ) {
+            ActionTurnFinisher.lobbys[lobbyId].finish(false);
+            delete ActionTurnFinisher.lobbys[lobbyId];
+        }
+
         const actionMapper = {
             [Action.RENDA]: () => ActionTurnFinisher.finishRenda(turn),
-            [Action.AJUDA_EXTERNA]: () => ActionTurnFinisher.finishAjudaExterna(),
+            [Action.AJUDA_EXTERNA]: () => ActionTurnFinisher.finishAjudaExterna(lobbyId, game, turn),
             [Action.TAXAR]: () => ActionTurnFinisher.finishTaxar(),
             [Action.CORRUPCAO]: () => ActionTurnFinisher.finishCorrupcao(),
             [Action.EXTORQUIR]: () => ActionTurnFinisher.finishExtorquir(),
@@ -25,5 +39,11 @@ export default class ActionTurnFinisher {
 
     private static finishRenda(turn: Turn) {
         turn.finish();
+    }
+
+    private static finishAjudaExterna(lobbyId: number, game: Game, turn: Turn) {
+        ActionTurnFinisher.lobbys[lobbyId] = turn;
+
+        game.nextPlayer();
     }
 }

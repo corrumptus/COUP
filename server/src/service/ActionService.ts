@@ -20,6 +20,8 @@ export default class ActionService {
         targetName?: string,
         targetCard?: number
     ): ActionInfos {
+        const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
+
         const game = GameService.getPlayersGame(socketId);
 
         if (game === undefined)
@@ -40,7 +42,7 @@ export default class ActionService {
 
         ActionSaver.save(action, game, turn, player, cardType, selfCard as CardSlot | undefined, target, targetCard as CardSlot | undefined);
 
-        ActionTurnFinisher.finish(action, turn);
+        ActionTurnFinisher.finish(action, lobbyId, game, turn);
 
         return ActionService.getActionInfos(turn, cardType, targetCard as CardSlot | undefined, game.getConfigs());
     }
