@@ -94,12 +94,12 @@ export default class PlayerService {
         }
     }
 
-    static getPlayer(socketID: string): Player {
-        return PlayerService.players[socketID].player;
+    static getPlayer(socketId: string): Player {
+        return PlayerService.players[socketId].player;
     }
 
-    static getPlayersLobby(socketID: string): Lobby {
-        const player = PlayerService.players[socketID];
+    static getPlayersLobby(socketId: string): Lobby {
+        const player = PlayerService.players[socketId];
 
         return LobbyService.getLobby(player.lobbyId);
     }

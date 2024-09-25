@@ -4,6 +4,7 @@ import Game from "../entity/Game";
 import { CardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
 import ActionSaver from "../utils/ActionSaver";
+import ActionTurnFinisher from "../utils/ActionTurnFinisher";
 import ActionValidator from "../utils/ActionValidator";
 import Config from "../utils/Config";
 import { ActionInfos } from "./GameMessageService";
@@ -38,6 +39,8 @@ export default class ActionService {
         ActionValidator.validate(player, action, cardType, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 
         ActionSaver.save(action, game, turn, player, cardType, selfCard as CardSlot | undefined, target, targetCard as CardSlot | undefined);
+
+        ActionTurnFinisher.finish();
 
         return ActionService.getActionInfos(turn, cardType, targetCard as CardSlot | undefined, game.getConfigs());
     }
