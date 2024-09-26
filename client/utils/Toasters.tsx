@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from "react";
 
 let externalSetState: Dispatch<SetStateAction<ReturnType<typeof Toaster>[]>>;
 
@@ -42,10 +42,10 @@ function Toaster({
 }) {
   return (
     <div
-      className="bg-white rounded-2xl overflow-hidden cursor-pointer relative"
+      className="bg-white rounded-2xl overflow-hidden cursor-pointer relative p-1.5"
       onClick={removeToaster}
     >
-      <div className="w-full max-w-[250px] max-h-[150px] m-3 overflow-hidden text">
+      <div className="w-full max-w-[250px] max-h-[150px] overflow-hidden p-1.5">
         {children}
       </div>
       <div className="h-0.5 absolute bottom-0 animate-toast"></div>
