@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 let externalSetState: Dispatch<SetStateAction<ReturnType<typeof Toaster>[]>>;
 
 export function newToaster(children: string | JSX.Element) {
-  const id = JSON.stringify(children) + Math.floor(Math.random() * 100);
+  const id: string = Math.floor(Math.random() * 10000).toString();
 
   function removeToaster() {
     externalSetState(prev => prev.filter(t => t.key !== id));
@@ -11,7 +11,7 @@ export function newToaster(children: string | JSX.Element) {
 
   externalSetState(prev => {
     const toasters = [...prev];
-    
+
     if (prev.length === 3)
       toasters.splice(0, 1);
 
