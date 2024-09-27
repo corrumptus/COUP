@@ -81,12 +81,12 @@ export default class GameMessageService extends MessageService {
         const game = lobby.getGame() as Game;
 
         players.forEach(p =>
-            p.socket.emit("beginMatch", GameMessageService.calculateGameState(game, p.name))
+            p.socket.emit("beginMatch", GameMessageService.calculateGameState(game, p.name, lobby.id))
         );
     }
 
-    private static calculateGameState(game: Game, playerName: string): GameState {
-        const player = PlayerService.getPlayerByName(playerName) as Player;
+    private static calculateGameState(game: Game, playerName: string, lobbyId: number): GameState {
+        const player = PlayerService.getPlayerByName(playerName, lobbyId) as Player;
 
         const state = game.getState();
 
@@ -115,21 +115,24 @@ export default class GameMessageService extends MessageService {
         players.forEach(
             p => p.socket.emit(
                 "updatePlayer",
-                GameMessageService.calculateNewGameState(game, p.name, infos)
+                GameMessageService.calculateNewGameState(lobbyId, game, p.name, infos)
             )
         );
     }
 
     private static calculateNewGameState(
+        lobbyId: number,
         game: Game,
         name: string,
         infos: ActionInfos
     ): GameState {
+        const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
+
         const gameState = game.getState();
 
         return {
             player: {
-                ...gameState.players.find(p => p.name === name) as Omit<PlayerState, "state">,
+                ...player.getState(),
                 state: GameMessageService.calculatePlayerState(gameState, name, infos)
             },
             game: GameMessageService.gameStateForPlayer(gameState, name),
