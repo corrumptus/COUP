@@ -26,12 +26,10 @@ export default class LobbyService {
         });
 
         socket.on("newOwner", (name: string) => {
-            const newOwnerLobby = PlayerService.getPlayersLobbyByName(name);
-
-            if (lobby !== newOwnerLobby)
+            if (PlayerService.getPlayerByName(name, lobby.id) === undefined)
                 return;
 
-            const otherPlayer = PlayerService.getPlayerByName(name) as Player;
+            const otherPlayer = PlayerService.getPlayerByName(name, lobby.id) as Player;
 
             lobby.newOwner(otherPlayer);
 
@@ -39,12 +37,10 @@ export default class LobbyService {
         });
 
         socket.on("removePlayer", (name: string) => {
-            const removedPlayersLobby = PlayerService.getPlayersLobbyByName(name);
-
-            if (lobby !== removedPlayersLobby)
+            if (PlayerService.getPlayerByName(name, lobby.id) === undefined)
                 return;
 
-            PlayerService.removePlayerByName(name, "Jogador removido pelo dono do jogo");
+            PlayerService.removePlayerByName(lobby.id, name, "Jogador removido pelo dono do jogo");
 
             LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", name);
         });

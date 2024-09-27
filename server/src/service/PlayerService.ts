@@ -98,6 +98,11 @@ export default class PlayerService {
         return PlayerService.players[socketId].player;
     }
 
+    static getPlayerByName(name: string, lobbyId: number): Player | undefined {
+        return Object.values(PlayerService.players)
+            .find(player => player.lobbyId === lobbyId && player.player.name === name)?.player;
+    }
+
     static getPlayersLobby(socketId: string): Lobby {
         const player = PlayerService.players[socketId];
 
@@ -112,12 +117,6 @@ export default class PlayerService {
             return undefined;
 
         return LobbyService.getLobby(playerInfos.lobbyId);
-    }
-
-    static getPlayerByName(name: string): Player | undefined {
-        return Object.values(PlayerService.players)
-            .map(infos => infos.player)
-            .find(player => player.name === name);
     }
 
     static getAwaitedPlayer(name: string): {
@@ -140,9 +139,12 @@ export default class PlayerService {
         LobbyService.deletePlayer(player.lobbyId, player.player);
     }
 
-    static removePlayerByName(name: string, disconnectReason: string) {
+    static removePlayerByName(lobbyId: number, name: string, disconnectReason: string) {
         const playerInfos = Object.entries(PlayerService.players)
-            .find(([_, { player }]) => player.name === name);
+            .find(
+                ([, { player, lobbyId: playerLobbyId }]) =>
+                    lobbyId === playerLobbyId && player.name === name
+            );
 
         if (playerInfos === undefined)
             return;
