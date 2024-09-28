@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
 import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
 import { Config, COUPSocket } from "@utils/socketAPI";
@@ -14,7 +14,7 @@ export default function useUIChanger() {
     const [
         [ menuType, requeriments ],
         setMenuTypeAndRequeriments
-    ] = useState<[MenuTypes, ActionRequeriments]>([MenuTypes.CLOSED, {}]);
+    ] = useState<[ MenuTypes, ActionRequeriments ]>([MenuTypes.CLOSED, {}]);
 
     return [
         menuType,
@@ -27,12 +27,40 @@ export default function useUIChanger() {
                     menuType,
                     requeriments,
                     newRequeriments,
-                    (action: Action.BLOQUEAR | Action.CONTESTAR) =>
-                        setMenuTypeAndRequeriments([ MenuTypes.CLOSED, { action: action }])
+                    performUiChangesByToaster(
+                        setMenuTypeAndRequeriments,
+                        socket,
+                        (gameState.context as { action: Action }).action
+                    )
                 )
             );
         }
     ] as const;
+}
+
+function performUiChangesByToaster(
+    changeUi: Dispatch<SetStateAction<[ MenuTypes, ActionRequeriments ]>>,
+    socket: COUPSocket,
+    notifiedAction: Action
+) {
+    return (
+        action: Action.BLOQUEAR | Action.CONTESTAR
+    ) => {
+        if (action === Action.BLOQUEAR && !blockableActionNeedsSelfCard(notifiedAction)) {
+            socket.emit("bloquear");
+            return;
+        }
+
+        if (action === Action.CONTESTAR && !contestableActionNeedsSelfCard(notifiedAction)) {
+            socket.emit("contestar");
+            return;
+        }
+
+        changeUi([ 
+            action === Action.BLOQUEAR ? MenuTypes.CARD_CHOOSER : MenuTypes.CARD_PICKING,
+            { action: action }
+        ]);
+    }
 }
 
 function performUIChange(
@@ -445,7 +473,7 @@ function isActionEmitable(
     return false;
 }
 
-function quantidadeTrocar(configs: Config, card: Card) {
+function quantidadeTrocar(configs: Config, card: Card): number {
     return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
 }
 
@@ -490,7 +518,7 @@ function emitAction(
     socket.emit(...infos);
 }
 
-function getNextGoTo(action: Action, menuType: MenuTypes) {
+function getNextGoTo(action: Action, menuType: MenuTypes): MenuTypes {
     if (action === Action.TAXAR && menuType === MenuTypes.MONEY)
         return MenuTypes.CARD_CHOOSER;
     if (action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
@@ -529,8 +557,6 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
         return MenuTypes.CARD_PICKING_CHANGE;
 
 
-    if (action === Action.BLOQUEAR && menuType === MenuTypes.CLOSED)
-        return MenuTypes.CARD_CHOOSER;
     if (action === Action.BLOQUEAR && menuType === MenuTypes.DEFENSE)
         return MenuTypes.CARD_CHOOSER;
     if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
