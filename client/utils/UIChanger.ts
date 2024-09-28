@@ -112,67 +112,6 @@ function performUIChange(
     return [ getNextGoTo(newRequeriments.action as Action, menuType), newRequeriments ];
 }
 
-function getNextGoTo(action: Action, menuType: MenuTypes) {
-    if (action === Action.TAXAR && menuType === MenuTypes.MONEY)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.TROCAR && menuType === MenuTypes.CLOSED)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-    if (action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
-        return MenuTypes.CARD_PICKING_CHANGE;
-
-
-    if (action === Action.BLOQUEAR && menuType === MenuTypes.CLOSED)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.BLOQUEAR && menuType === MenuTypes.DEFENSE)
-        return MenuTypes.CARD_CHOOSER;
-    if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
-        return MenuTypes.CARD_PICKING;
-
-
-    if (action === Action.CONTESTAR && menuType === MenuTypes.CLOSED)
-        return MenuTypes.CARD_PICKING;
-    if (action === Action.CONTESTAR && menuType === MenuTypes.DEFENSE)
-        return MenuTypes.CARD_PICKING;
-    if (action === Action.CONTESTAR && menuType === MenuTypes.BLOCK_DEFENSE)
-        return MenuTypes.CARD_PICKING;
-
-    return MenuTypes.CLOSED;
-}
-
-function quantidadeTrocar(configs: Config, card: Card) {
-    return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
-}
-
 function contextToNotification(
     context: GameState["context"],
     attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
@@ -506,6 +445,21 @@ function isActionEmitable(
     return false;
 }
 
+function quantidadeTrocar(configs: Config, card: Card) {
+    return configs.tiposCartas[card as keyof typeof configs.tiposCartas].quantidadeTrocar;
+}
+
+function blockableActionNeedsSelfCard(blockableAction: Action): boolean {
+    return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(blockableAction);
+}
+
+function contestableActionNeedsSelfCard(previousAction: Action, preBlockAction?: Action): boolean {
+    if (previousAction !== Action.BLOQUEAR)
+        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(previousAction);
+
+    return preBlockAction === Action.AJUDA_EXTERNA;
+}
+
 function emitAction(
     socket: COUPSocket,
     configs: Config,
@@ -536,13 +490,59 @@ function emitAction(
     socket.emit(...infos);
 }
 
-function blockableActionNeedsSelfCard(blockableAction: Action): boolean {
-    return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(blockableAction);
-}
+function getNextGoTo(action: Action, menuType: MenuTypes) {
+    if (action === Action.TAXAR && menuType === MenuTypes.MONEY)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.TAXAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
 
-function contestableActionNeedsSelfCard(previousAction: Action, preBlockAction?: Action): boolean {
-    if (previousAction !== Action.BLOQUEAR)
-        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(previousAction);
 
-    return preBlockAction === Action.AJUDA_EXTERNA;
+    if (action === Action.CORRUPCAO && menuType === MenuTypes.MONEY)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.CORRUPCAO && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.EXTORQUIR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.EXTORQUIR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.ASSASSINAR && menuType === MenuTypes.ATTACK)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.ASSASSINAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.INVESTIGAR && menuType === MenuTypes.ATTACK)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.INVESTIGAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.TROCAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.TROCAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+    if (action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
+        return MenuTypes.CARD_PICKING_CHANGE;
+
+
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.DEFENSE)
+        return MenuTypes.CARD_CHOOSER;
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
+        return MenuTypes.CARD_PICKING;
+
+
+    if (action === Action.CONTESTAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_PICKING;
+    if (action === Action.CONTESTAR && menuType === MenuTypes.DEFENSE)
+        return MenuTypes.CARD_PICKING;
+    if (action === Action.CONTESTAR && menuType === MenuTypes.BLOCK_DEFENSE)
+        return MenuTypes.CARD_PICKING;
+
+    return MenuTypes.CLOSED;
 }
