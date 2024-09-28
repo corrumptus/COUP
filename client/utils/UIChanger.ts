@@ -21,7 +21,15 @@ export default function useUIChanger() {
         requeriments,
         (socket: COUPSocket, gameState: GameState, newRequeriments: ChangeRequest) => {
             setMenuTypeAndRequeriments(
-                performUIChange(socket, gameState, menuType, requeriments, newRequeriments)
+                performUIChange(
+                    socket,
+                    gameState,
+                    menuType,
+                    requeriments,
+                    newRequeriments,
+                    (action: Action.BLOQUEAR | Action.CONTESTAR) =>
+                        setMenuTypeAndRequeriments([ MenuTypes.CLOSED, { action: action }])
+                )
             );
         }
     ] as const;
@@ -32,7 +40,8 @@ function performUIChange(
     gameState: GameState,
     menuType: MenuTypes,
     requeriments: ActionRequeriments,
-    request: ChangeRequest
+    request: ChangeRequest,
+    attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
 ): [ MenuTypes, ActionRequeriments ] {
     if (Object.keys(request).length === 0) {
         if (gameState.context.type === ContextType.INVESTIGATING)
@@ -57,7 +66,7 @@ function performUIChange(
             &&
             gameState.context.attacker !== gameState.player.name
         ) {
-            newToaster(contextToNotification(socket, gameState, gameState.context));
+            newToaster(contextToNotification(gameState.context, attackNotifiedAction));
         }
 
         return [ menuType, requeriments ];
@@ -70,12 +79,12 @@ function performUIChange(
         return [ menuType, requeriments ];
     }
 
+    if ([MenuTypes.INVESTIGATING, MenuTypes.DEFENSE, MenuTypes.BLOCK_DEFENSE].includes(menuType))
+        return [ menuType, requeriments ];
+
     const { goTo, ...requerimentsOfRequest } = request;
 
     const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
-
-    if ([MenuTypes.INVESTIGATING, MenuTypes.DEFENSE, MenuTypes.BLOCK_DEFENSE].indexOf(menuType) !== -1)
-        return [ menuType, requeriments ];
 
     if (goTo === MenuTypes.CLOSED)
         return [ MenuTypes.CLOSED, {} ];
@@ -141,11 +150,17 @@ function getNextGoTo(action: Action, menuType: MenuTypes) {
     if (action === Action.TROCAR && menuType === MenuTypes.CARD_PICKING)
         return MenuTypes.CARD_PICKING_CHANGE;
 
+
+    if (action === Action.BLOQUEAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_CHOOSER;
     if (action === Action.BLOQUEAR && menuType === MenuTypes.DEFENSE)
         return MenuTypes.CARD_CHOOSER;
     if (action === Action.BLOQUEAR && menuType === MenuTypes.CARD_CHOOSER)
         return MenuTypes.CARD_PICKING;
 
+
+    if (action === Action.CONTESTAR && menuType === MenuTypes.CLOSED)
+        return MenuTypes.CARD_PICKING;
     if (action === Action.CONTESTAR && menuType === MenuTypes.DEFENSE)
         return MenuTypes.CARD_PICKING;
     if (action === Action.CONTESTAR && menuType === MenuTypes.BLOCK_DEFENSE)
@@ -159,17 +174,15 @@ function quantidadeTrocar(configs: Config, card: Card) {
 }
 
 function contextToNotification(
-    socket: COUPSocket,
-    gameState: GameState,
-    context: GameState["context"]
+    context: GameState["context"],
+    attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
 ): JSX.Element {
     if (context.type !== ContextType.OBSERVING)
         return createContextNotification(
-            socket,
-            gameState,
             "",
             false,
-            false
+            false,
+            (_) => {}
         );
 
     let message = "";
@@ -243,11 +256,10 @@ function contextToNotification(
     }
 
     return createContextNotification(
-        socket,
-        gameState,
         message,
         blockAble,
-        contestable
+        contestable,
+        attackNotifiedAction
     );
 }
 

@@ -1,22 +1,16 @@
-import { Action, GameState } from "@pages/GameView";
-import { COUPSocket } from "@utils/socketAPI";
-import useUIChanger from "@utils/UIChanger";
+import { Action } from "@pages/GameView";
 
 function ContextNotification({
-  socket,
-  gameState,
   message,
   blockable,
-  contestable
+  contestable,
+  attackNotifiedAction
 }: {
-  socket: COUPSocket,
-  gameState: GameState,
   message: string,
   blockable: boolean,
-  contestable: boolean
+  contestable: boolean,
+  attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
 }) {
-  const [ , , changeUI ] = useUIChanger();
-
   return (
     <div>
       {message}
@@ -27,7 +21,7 @@ function ContextNotification({
             onClick={e => {
               e.stopPropagation();
 
-              changeUI(socket, gameState, { "action": Action.BLOQUEAR })
+              attackNotifiedAction(Action.BLOQUEAR);
             }}
           >
             Bloquear
@@ -39,7 +33,7 @@ function ContextNotification({
             onClick={e => {
               e.stopPropagation();
 
-              changeUI(socket, gameState, { "action": Action.CONTESTAR })
+              attackNotifiedAction(Action.CONTESTAR);
             }}
           >
             Contestar
@@ -51,17 +45,15 @@ function ContextNotification({
 }
 
 export default function createContextNotification(
-  socket: COUPSocket,
-  gameState: GameState,
   message: string,
   blockable: boolean,
-  contestable: boolean
+  contestable: boolean,
+  attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
 ) {
   return <ContextNotification
-    socket={socket}
-    gameState={gameState}
     message={message}
     blockable={blockable}
     contestable={contestable}
+    attackNotifiedAction={attackNotifiedAction}
   />
 }
