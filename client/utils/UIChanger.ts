@@ -452,6 +452,27 @@ function isActionEmitable(
         return true;
 
     if (
+        requeriments.action === Action.BLOQUEAR
+        &&
+        gameState.context.type === ContextType.OBSERVING
+        &&
+        (
+            (
+                !blockableActionNeedsSelfCard(gameState.context.action as Action)
+                &&
+                menuType === MenuTypes.CLOSED
+            )
+            ||
+            (
+                blockableActionNeedsSelfCard(gameState.context.action as Action)
+                &&
+                menuType === MenuTypes.CARD_PICKING
+            )
+        )
+    )
+        return true;
+
+    if (
         requeriments.action === Action.CONTESTAR
         &&
         gameState.context.type === ContextType.BEING_ATTACKED
@@ -474,6 +495,31 @@ function isActionEmitable(
                 contestableActionNeedsSelfCard(
                     gameState.context.previousAction as Action,
                     gameState.context.preBlockAction
+                )
+                &&
+                menuType === MenuTypes.CARD_PICKING
+            )
+        )
+    )
+        return true;
+
+    if (
+        requeriments.action === Action.CONTESTAR
+        &&
+        gameState.context.type === ContextType.OBSERVING
+        &&
+        (
+            (
+                !contestableActionNeedsSelfCard(
+                    gameState.context.action as Action
+                )
+                &&
+                menuType === MenuTypes.CLOSED
+            )
+            ||
+            (
+                contestableActionNeedsSelfCard(
+                    gameState.context.action as Action
                 )
                 &&
                 menuType === MenuTypes.CARD_PICKING
