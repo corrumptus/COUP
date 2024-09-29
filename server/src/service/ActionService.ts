@@ -33,7 +33,7 @@ export default class ActionService {
         const target = targetName === undefined ?
             turn.getTarget()
             :
-            PlayerService.getPlayerByName(targetName);
+            PlayerService.getPlayerByName(targetName, lobbyId);
 
         ActionValidator.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 

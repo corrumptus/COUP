@@ -400,6 +400,15 @@ export default class ActionValidator {
         )
             return;
 
+        if (
+            target === undefined
+            &&
+            socketPlayer !== player
+            &&
+            turn.getAllActions().length%2 === 1
+        )
+            return;
+
         throw new Error("Não é a vez do player");
     }
 
