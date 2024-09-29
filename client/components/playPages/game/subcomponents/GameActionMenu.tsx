@@ -123,7 +123,11 @@ export default function GameActionMenu({
   )
 
   if (type === MenuTypes.CARD_CHOOSER) {
-    const choosableCards = getChoosableCards(gameState.game.configs, requeriments);
+    const choosableCards = getChoosableCards(
+      requeriments.action as Action,
+      gameState.game.configs,
+      (gameState.context as { action?: Action }).action
+    );
     children = (
       <div className="flex flex-col gap-4 items-center">
         <h3 className="text-center text-2xl">Escolha que tipo de carta usar para {requeriments.action}</h3>

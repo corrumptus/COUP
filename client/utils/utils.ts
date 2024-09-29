@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Action, Card, PlayerState } from "@pages/GameView";
-import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
+import { MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 
 export interface CardColors {
@@ -131,18 +131,39 @@ export function objectDiff<T>(base: T, differ: T): Differ<T> {
     return diff;
 }
 
-export function getChoosableCards(
+export function getChoosableCards<T extends Action>(
+    action: T,
     configs: Config,
-    requeriments: ActionRequeriments
+    prevAction: T extends Action.BLOQUEAR ? Action : undefined
 ): Card[] {
     return Object.entries(configs.tiposCartas)
         .filter(([cardName, cardInfos]) => {
-            if (requeriments.action === Action.CORRUPCAO) {
+            if (action === Action.BLOQUEAR) {
+                if (prevAction === Action.AJUDA_EXTERNA)
+                    return cardInfos.taxar;
+
+                if (prevAction === Action.TAXAR)
+                    return cardInfos.bloquearTaxar;
+
+                if (prevAction === Action.EXTORQUIR)
+                    return cardInfos.bloquearExtorquir;
+
+                if (prevAction === Action.ASSASSINAR)
+                    return cardInfos.bloquearAssassinar;
+
+                if (prevAction === Action.INVESTIGAR)
+                    return cardInfos.bloquearInvestigar;
+
+                if (prevAction === Action.TROCAR)
+                    return cardInfos.bloquearTrocar;
+            }
+
+            if (action === Action.CORRUPCAO) {
                 const cartasParaCorrupcao = configs.religiao.cartasParaCorrupcao;
                 return cartasParaCorrupcao[cardName as keyof typeof cartasParaCorrupcao];
             }
 
-            return cardInfos[requeriments.action as keyof typeof cardInfos] as boolean;
+            return cardInfos[action as keyof typeof cardInfos] as boolean;
         })
         .map(([card, _]) => card) as Card[];
 }

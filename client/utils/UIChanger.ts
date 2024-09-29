@@ -130,7 +130,11 @@ function performUIChange(
     if (goTo !== undefined)
         return [ goTo, newRequeriments ];
 
-    const choosableCards = getChoosableCards(gameState.game.configs, newRequeriments);
+    const choosableCards = getChoosableCards(
+        newRequeriments.action as Action,
+        gameState.game.configs,
+        (gameState.context as { action?: Action }).action
+    );
 
     if (choosableCards.length === 1) {
         newRequeriments.choosedCardType = choosableCards[0];
@@ -329,13 +333,21 @@ function getRequestProblems(
         &&
         request.action === Action.EXTORQUIR
         &&
-        getChoosableCards(gameState.game.configs, request).length === 1
+        getChoosableCards(
+            request.action as Action,
+            gameState.game.configs,
+            (gameState.context as { action?: Action }).action 
+        ).length === 1
         &&
         (gameState.game.players
             .find(p => p.name === request.target) as Omit<Player, "state">
         ).money <
         gameState.game.configs.tiposCartas[
-            getChoosableCards(gameState.game.configs, request)[0] as
+            getChoosableCards(
+                request.action as Action,
+                gameState.game.configs,
+                (gameState.context as { action?: Action }).action 
+            )[0] as
             keyof typeof gameState.game.configs.tiposCartas
         ].quantidadeExtorquir
     )
