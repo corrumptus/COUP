@@ -68,7 +68,7 @@ export type GameState = {
 export type ActionInfos = {
     attacker: string,
     action?: Action,
-    cardType?: CardType,
+    card?: CardType,
     target?: string,
     attackedCard?: CardSlot,
     isInvestigating: boolean
@@ -224,7 +224,7 @@ export default class GameMessageService extends MessageService {
                 type: ContextType.BEING_ATTACKED,
                 attacker: infos.attacker,
                 action: infos.action as Action,
-                card: infos.cardType as CardType,
+                card: infos.card as CardType,
                 attackedCard: infos.attackedCard,
                 previousAction: currentTurn.getAllActions().at(-2),
                 preBlockAction: currentTurn.getFirstAction()

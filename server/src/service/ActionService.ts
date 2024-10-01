@@ -14,7 +14,7 @@ export default class ActionService {
     static makeAction(
         socketId: string,
         action: Action,
-        cardType?: CardType,
+        card?: CardType,
         selfCard?: number,
         targetName?: string,
         targetCard?: number
@@ -37,18 +37,18 @@ export default class ActionService {
 
         ActionValidator.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
-        ActionValidator.validate(player, action, cardType, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
+        ActionValidator.validate(player, action, card, selfCard, target, targetCard, turn, game.getConfigs(), game.getAsylumCoins());
 
-        ActionSaver.save(action, game, turn, player, cardType, selfCard as CardSlot | undefined, target, targetCard as CardSlot | undefined);
+        ActionSaver.save(action, game, turn, player, card, selfCard as CardSlot | undefined, target, targetCard as CardSlot | undefined);
 
         ActionTurnFinisher.finish(action, lobbyId, game, turn);
 
-        return ActionService.getActionInfos(turn, cardType, targetCard as CardSlot | undefined, game.getConfigs());
+        return ActionService.getActionInfos(turn, card, targetCard as CardSlot | undefined, game.getConfigs());
     }
 
     private static getActionInfos(
         turn: Turn,
-        cardType: CardType | undefined,
+        card: CardType | undefined,
         attackedCard: CardSlot | undefined,
         configs: Config
     ): ActionInfos {
@@ -106,7 +106,7 @@ export default class ActionService {
         return {
             attacker: player,
             action: lastAction,
-            cardType: cardType,
+            card: card,
             target: target,
             attackedCard: attackedCard,
             isInvestigating: isInvestigating
