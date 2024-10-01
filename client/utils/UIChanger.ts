@@ -206,7 +206,7 @@ function contextToNotification(
     if (context.action === Action.GOLPE_ESTADO)
         message = `O player ${context.attacker} deu um golpe de estado em ${context.target}`;
 
-    if (context.action === Action.TROCAR && !context.isInvesting) {
+    if (context.action === Action.TROCAR && !context.isInvestigating) {
         message = context.attackedCard !== undefined ?
             `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta com ${context.card}`
             :
@@ -215,7 +215,7 @@ function contextToNotification(
         contestable = true;
     }
 
-    if (context.action === Action.TROCAR && context.isInvesting)
+    if (context.action === Action.TROCAR && context.isInvestigating)
         message = `O player ${context.attacker} trocou a ${context.attackedCard as number + 1}º carta de ${context.target}`;
 
     if (context.action === Action.CONTESTAR)
@@ -394,13 +394,13 @@ function isActionEmitable(
     if (requeriments.action === Action.EXTORQUIR && menuType === MenuTypes.CARD_PICKING)
         return true;
 
-    if (requeriments.action === Action.GOLPE_ESTADO)
-        return true;
-
     if (requeriments.action === Action.ASSASSINAR && menuType === MenuTypes.CARD_PICKING)
         return true;
 
     if (requeriments.action === Action.INVESTIGAR && menuType === MenuTypes.CARD_PICKING)
+        return true;
+
+    if (requeriments.action === Action.GOLPE_ESTADO)
         return true;
 
     if (
@@ -526,6 +526,9 @@ function isActionEmitable(
             )
         )
     )
+        return true;
+
+    if (requeriments.action === Action.CONTINUAR)
         return true;
 
     return false;
