@@ -30,10 +30,12 @@ export default class ActionService {
 
         const player = turn.getPlayer();
 
-        const target = targetName === undefined ?
-            turn.getTarget()
-            :
-            PlayerService.getPlayerByName(targetName, lobbyId);
+        const target = (
+            targetName === undefined ?
+                turn.getTarget()
+                :
+                PlayerService.getPlayerByName(targetName, lobbyId)
+        ) || PlayerService.getPlayer(socketId);
 
         ActionValidator.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
