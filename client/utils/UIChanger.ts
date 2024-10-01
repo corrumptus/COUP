@@ -558,7 +558,7 @@ function emitAction(
         requeriments.target,
         requeriments.choosedTargetCard
     ]
-    .filter((info, i) => {
+    .map((info, i) => {
         if (
             i === 4 &&
             requeriments.action === Action.TROCAR &&
