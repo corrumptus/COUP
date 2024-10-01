@@ -326,12 +326,12 @@ export default function GameActionMenu({
     gameState.context.type === ContextType.BEING_ATTACKED
   ) children = (
     <div className="flex flex-col gap-4 items-center">
-      <h2>
+      <h2 className="text-lg">
         O player {gameState.context.attacker}
         está te bloqueando
         com a carta {gameState.context.card}
       </h2>
-      <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
+      <h3 className="text-center text-2xl">Escolha a sua ação</h3>
       <div className="flex gap-6">
         <div
           className={optionStyles}
