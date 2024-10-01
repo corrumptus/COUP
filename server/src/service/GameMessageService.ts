@@ -219,6 +219,8 @@ export default class GameMessageService extends MessageService {
 
         if (
             name === infos.target
+            &&
+            infos.action !== undefined
         )
             return {
                 type: ContextType.BEING_ATTACKED,
