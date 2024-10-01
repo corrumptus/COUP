@@ -93,6 +93,8 @@ function performUIChange(
             gameState.context.type === ContextType.OBSERVING
             &&
             gameState.context.attacker !== gameState.player.name
+            &&
+            gameState.context.action !== undefined
         ) {
             newToaster(contextToNotification(gameState.context, attackNotifiedAction));
         }
