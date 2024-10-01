@@ -107,14 +107,13 @@ function performUIChange(
         return [ menuType, requeriments ];
     }
 
-    if ([MenuTypes.INVESTIGATING, MenuTypes.DEFENSE, MenuTypes.BLOCK_DEFENSE].includes(menuType))
-        return [ menuType, requeriments ];
+    const cannotLeave = [MenuTypes.INVESTIGATING, MenuTypes.DEFENSE, MenuTypes.BLOCK_DEFENSE].includes(menuType);
 
     const { goTo, ...requerimentsOfRequest } = request;
 
     const newRequeriments = { ...requeriments, ...requerimentsOfRequest };
 
-    if (goTo === MenuTypes.CLOSED)
+    if (goTo === MenuTypes.CLOSED && !cannotLeave)
         return [ MenuTypes.CLOSED, {} ];
 
     if (isActionEmitable(gameState, newRequeriments, menuType)) {
@@ -140,6 +139,9 @@ function performUIChange(
         newRequeriments.choosedCardType = choosableCards[0];
         return [ MenuTypes.CARD_PICKING, newRequeriments ];
     }
+
+    if (cannotLeave)
+        return [ menuType, requeriments ];
 
     return [ getNextGoTo(newRequeriments.action as Action, menuType), newRequeriments ];
 }
