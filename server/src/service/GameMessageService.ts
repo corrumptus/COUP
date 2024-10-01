@@ -42,7 +42,7 @@ export type GameState = {
     },
     context: {
         type: ContextType.INVESTIGATING,
-        cardType: CardType,
+        card: CardType,
         target: string,
         investigatedCard: CardType,
         targetCard: CardSlot
@@ -50,7 +50,7 @@ export type GameState = {
         type: ContextType.BEING_ATTACKED,
         attacker: string,
         action: Action,
-        cardType: CardType,
+        card: CardType,
         attackedCard?: CardSlot,
         previousAction?: Action,
         preBlockAction?: Action
@@ -58,7 +58,7 @@ export type GameState = {
         type: ContextType.OBSERVING,
         attacker: string,
         action?: Action,
-        cardType?: CardType,
+        card?: CardType,
         target?: string,
         attackedCard?: CardSlot,
         isInvestigating: boolean
@@ -211,7 +211,7 @@ export default class GameMessageService extends MessageService {
         )
             return {
                 type: ContextType.INVESTIGATING,
-                cardType: currentTurn.getFirstCardType() as CardType,
+                card: currentTurn.getFirstCardType() as CardType,
                 target: (currentTurn.getTarget() as Player).name,
                 investigatedCard: currentTurn.getLastCardType() as CardType,
                 targetCard: currentTurn.getLastCard() as CardSlot
@@ -224,7 +224,7 @@ export default class GameMessageService extends MessageService {
                 type: ContextType.BEING_ATTACKED,
                 attacker: infos.attacker,
                 action: infos.action as Action,
-                cardType: infos.cardType as CardType,
+                card: infos.cardType as CardType,
                 attackedCard: infos.attackedCard,
                 previousAction: currentTurn.getAllActions().at(-2),
                 preBlockAction: currentTurn.getFirstAction()
