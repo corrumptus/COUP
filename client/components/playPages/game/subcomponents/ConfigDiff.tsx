@@ -1,5 +1,6 @@
 import { Config } from "@utils/socketAPI";
 import { Differ } from "@utils/utils";
+import { useEffect } from "react";
 
 const COUPConfigToText = {
   moedasIniciais: "Moedas iniciais",
@@ -157,11 +158,20 @@ export default function ConfigDiff({
   configDiff: Differ<Config>,
   disappear: () => void
 }) {
-  setTimeout(() => {
+  const getDiffs = diffsToString(configDiff, COUPConfigToText);
+
+  const timeout = setTimeout(() => {
     disappear();
   }, 4000);
 
-  const getDiffs = diffsToString(configDiff, COUPConfigToText);
+  useEffect(() => {
+    return () => {
+      if (getDiffs.length === 0) {
+        clearTimeout(timeout);
+        disappear();
+      }
+    };
+  });
 
   if (getDiffs.length === 0)
     return undefined;
