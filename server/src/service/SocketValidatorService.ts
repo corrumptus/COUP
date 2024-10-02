@@ -18,20 +18,9 @@ export default class SocketValidatorService {
         if (
             "name" in auth
             &&
-            PlayerService.getAwaitedPlayer(auth.name) === undefined
-        )
-            return "O usuário deve escolher um lobby ou criar seu próprio";
-
-        if (
-            "name" in auth
+            auth.lobby !== undefined
             &&
-            PlayerService.getAwaitedPlayer(auth.name) !== undefined
-            &&
-            (
-                PlayerService.getAwaitedPlayer(auth.name)?.lobbyId
-                ===
-                PlayerService.getPlayersLobbyByName(auth.name)?.id
-            )
+            PlayerService.getPlayerByName(auth.name, auth.lobby) !== undefined
         )
             return "Este nome já está sendo usado nesse lobby";
 
