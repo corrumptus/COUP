@@ -37,9 +37,9 @@ export default class PlayerService {
 
             const newPlayer = new Player(name);
 
-            let lobbyId: number | undefined = socket.handshake.auth.lobby;
+            let lobbyId: number = socket.handshake.auth.lobby;
 
-            if (lobbyId === undefined)
+            if (lobbyId === -1)
                 lobbyId = LobbyService.enterNewLobby(newPlayer);
             else
                 LobbyService.enterLobby(newPlayer, lobbyId);
