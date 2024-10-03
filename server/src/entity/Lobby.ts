@@ -134,6 +134,7 @@ export default class Lobby {
 
     getState() {
         return {
+            id: this.id,
             players: this.currentPlayers.map(p => p.name),
             owner: this.owner?.name || "",
             configs: this.configs

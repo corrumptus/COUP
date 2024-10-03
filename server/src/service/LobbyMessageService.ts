@@ -8,6 +8,7 @@ export type LobbyState = {
         name: string
     },
     lobby: {
+        id: number,
         players: string[],
         owner: string,
         configs: Config
