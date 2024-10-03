@@ -12,6 +12,7 @@ export type LobbyState = {
     name: string
   },
   lobby: {
+    id: number,
     players: string[],
     owner: string,
     configs: Config,
@@ -21,16 +22,19 @@ export type LobbyState = {
 
 export default function LobbyView({
   initGame,
-  socket
+  socket,
+  changeIdWhenCreating
 }: {
   initGame: (gameState: GameState) => void,
-  socket: COUPSocket
+  socket: COUPSocket,
+  changeIdWhenCreating: (id: number) => void
 }) {
   const [ lobbyState, setLobbyState ] = useState<LobbyState>({
     player: {
       name: ""
     },
     lobby: {
+      id: 0,
       players: [],
       owner: "",
       configs: COUPDefaultConfigs,
@@ -44,6 +48,8 @@ export default function LobbyView({
 
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
+
+    changeIdWhenCreating(lobbyState.lobby.id);
   });
 
   socket.on("configsUpdated", (keys: string[], value: number | boolean) => {

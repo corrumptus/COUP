@@ -33,7 +33,14 @@ export default function EntrarLobby({ params: { id } }: { params: { id: number }
   );
 
   return gameState === undefined ?
-    <LobbyView initGame={setGameState} socket={socket} />
+    <LobbyView
+      initGame={setGameState}
+      socket={socket}
+      changeIdWhenCreating={(lobbyId: number) => {
+        if (id !== lobbyId)
+          window.history.replaceState(null, "", `/jogar/${lobbyId}`);
+      }}
+    />
     :
     <GameView gameState={gameState} socket={socket} />
 }
