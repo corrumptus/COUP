@@ -47,45 +47,10 @@ export default function LobbysView({
       return;
     }
 
-    try {
-      const response = token === null ?
-        await fetch("http://localhost:5000/lobby/nonLogged/" + lobbys[i].id, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: JSON.stringify({
-            name: name,
-            senha: lobbys[selected].aberto ? undefined : senha
-          })
-        })
-        :
-        await fetch("http://localhost:5000/lobby/" + lobbys[i].id, {
-          method: "POST",
-          headers: {
-            Authorization: token,
-            "content-type": "application/json"
-          },
-          body: JSON.stringify({
-            senha: lobbys[selected].aberto ? undefined : senha
-          })
-        });
+    if (token === null)
+      sessionStorage.setItem("coup-name", name);
 
-      const result: { error: string } | { lobbyId: number } = await response.json();
-
-      if (!response.ok)
-        throw new Error((result as { error: string }).error);
-
-      if (token === null)
-        sessionStorage.setItem("coup-name", name);
-
-      router.push("/jogar/" + (result as { lobbyId: number }).lobbyId);
-    } catch (e) {
-      if (e instanceof TypeError)
-        newToaster("Não foi possível criar um servidor");
-      else
-        newToaster("Error: " + (e as Error).message);
-    }
+    router.push(`/jogar/${i}`);
   }
 
   async function create() {
@@ -94,40 +59,10 @@ export default function LobbysView({
       return;
     }
 
-    try {
-      const response = token === null ?
-        await fetch("http://localhost:5000/lobby/nonLogged", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: JSON.stringify({
-            name: name
-          })
-        })
-        :
-        await fetch("http://localhost:5000/lobby", {
-          method: "POST",
-          headers: {
-            Authorization: token
-          }
-        });
+    if (token === null)
+      sessionStorage.setItem("coup-name", name);
 
-      const result: { error: string } | { lobbyId: number } = await response.json();
-
-      if (!response.ok)
-        throw new Error((result as { error: string }).error);
-
-      if (token === null)
-        sessionStorage.setItem("coup-name", name);
-
-      router.push("/jogar/" + (result as { lobbyId: number }).lobbyId);
-    } catch (e) {
-      if (e instanceof TypeError)
-        newToaster("Não foi possível criar um servidor");
-      else
-        newToaster("Error: " + (e as Error).message);
-    }
+    router.push("/jogar/-1");
   }
 
   return (
