@@ -68,7 +68,7 @@ export default class PlayerService {
     static getPlayersLobby(socketId: string): Lobby {
         const player = PlayerService.players[socketId];
 
-        return LobbyService.getLobby(player.lobbyId);
+        return LobbyService.getLobby(player.lobbyId) as Lobby;
     }
 
     static removePlayer(socketId: string, disconnectReason: string) {

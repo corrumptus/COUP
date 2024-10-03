@@ -1,3 +1,4 @@
+import Lobby from "../entity/Lobby";
 import { COUPSocket, ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "../socket/socket";
 import Config from "../utils/Config";
 import LobbyService from "./LobbyService";
@@ -25,7 +26,7 @@ export default class LobbyMessageService extends MessageService {
     }
 
     private static calculateLobbyState(lobbyId: number, playerName: string): LobbyState {
-        const lobby = LobbyService.getLobby(lobbyId);
+        const lobby = LobbyService.getLobby(lobbyId) as Lobby;
 
         const lobbyState = lobby.getState();
 

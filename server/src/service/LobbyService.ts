@@ -77,7 +77,7 @@ export default class LobbyService {
         const lobby = LobbyService.lobbys[lobbyId];
 
         if (lobby === undefined)
-            throw new Error("Lobby not found");
+            throw new Error("Lobby não encontrado");
 
         lobby.addPlayer(player);
 
@@ -138,10 +138,8 @@ export default class LobbyService {
         }
     }
 
-    static getLobby(lobbyId: number): Lobby {
-        const lobby = LobbyService.lobbys[lobbyId];
-
-        return lobby;
+    static getLobby(lobbyId: number): Lobby | undefined {
+        return LobbyService.lobbys[lobbyId];
     }
 
     static isPasswordFromLobby(password: string | undefined, lobbyId: number): boolean {
