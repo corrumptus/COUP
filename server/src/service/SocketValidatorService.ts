@@ -1,4 +1,5 @@
 import { COUPSocket } from "../socket/socket";
+import LobbyService from "./LobbyService";
 import PlayerService from "./PlayerService";
 
 export default class SocketValidatorService {
@@ -21,6 +22,11 @@ export default class SocketValidatorService {
             auth.lobby < -1
         )
             return "O usuário deve escolher um lobby para entrar ou criar seu próprio";
+
+        if (
+            LobbyService.getLobby(auth.lobby) === undefined
+        )
+            return "Este lobby não existe";
 
         if (
             "name" in auth
