@@ -6,9 +6,9 @@ import LobbyView from "@pages/LobbyView";
 import { useSocket } from "@utils/socketAPI";
 import { newToaster } from "@utils/Toasters";
 
-export default function EntrarLobby() {
+export default function EntrarLobby({ params: { id } }: { params: { id: number } }) {
   const [ gameState, setGameState ] = useState<GameState>();
-  const { socket, error } = useSocket();
+  const { socket, error } = useSocket(id);
 
   useEffect(() => {
     if (socket === undefined)
