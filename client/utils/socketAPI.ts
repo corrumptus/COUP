@@ -105,7 +105,7 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export function useSocket() {
+export function useSocket(id: number) {
   const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
@@ -122,14 +122,18 @@ export function useSocket() {
   if (socket !== undefined)
     return { socket: socket };
 
+  const lobby = isNaN(id) ? -1 : Number(id);
+
   const newSocket = (io("http://localhost:5000", {
     auth: localStorage.getItem("coup-token") !== null ?
       {
-        token: localStorage.getItem("coup-token")
+        token: localStorage.getItem("coup-token"),
+        lobby: lobby
       }
       :
       {
-        name: sessionStorage.getItem("coup-name")
+        name: sessionStorage.getItem("coup-name"),
+        lobby: lobby
       }
   }) as COUPSocket)
     .on("disconnectReason", (reason) => {
