@@ -105,7 +105,7 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export function useSocket(id: number) {
+export function useSocket(id: string | undefined) {
   const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
@@ -122,7 +122,14 @@ export function useSocket(id: number) {
   if (socket !== undefined)
     return { socket: socket };
 
-  const lobby = isNaN(id) ? -1 : Number(id);
+  if (
+    id !== undefined
+    &&
+    Number.isNaN(Number(id))
+  )
+    return { error: "Lobby inválido" };
+
+  const lobby = id === undefined ? undefined : Number(id);
 
   const newSocket = (io("http://localhost:5000", {
     auth: localStorage.getItem("coup-token") !== null ?

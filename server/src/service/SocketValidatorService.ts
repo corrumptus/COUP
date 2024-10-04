@@ -15,15 +15,13 @@ export default class SocketValidatorService {
             return "O usuário deve estar logado ou escolher um nome";
 
         if (
-            auth.lobby === undefined
-            ||
-            isNaN(auth.lobby)
-            ||
-            auth.lobby < -1
+            auth.lobby < 0
         )
             return "O usuário deve escolher um lobby para entrar ou criar seu próprio";
 
         if (
+            auth.lobby !== undefined
+            &&
             LobbyService.getLobby(auth.lobby) === undefined
         )
             return "Este lobby não existe";

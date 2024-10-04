@@ -6,9 +6,9 @@ import LobbyView from "@pages/LobbyView";
 import { useSocket } from "@utils/socketAPI";
 import { newToaster } from "@utils/Toasters";
 
-export default function EntrarLobby({ params: { id } }: { params: { id: number } }) {
+export default function EntrarLobby({ params: { id } }: { params: { id: string } }) {
   const [ gameState, setGameState ] = useState<GameState>();
-  const { socket, error } = useSocket(id);
+  const { socket, error } = useSocket(id === "-1" ? undefined : id);
 
   useEffect(() => {
     if (socket === undefined)
@@ -37,7 +37,7 @@ export default function EntrarLobby({ params: { id } }: { params: { id: number }
       initGame={setGameState}
       socket={socket}
       changeIdWhenCreating={(lobbyId: number) => {
-        if (id !== lobbyId)
+        if (Number(id) !== lobbyId)
           window.history.replaceState(null, "", `/jogar/${lobbyId}`);
       }}
     />
