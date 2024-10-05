@@ -3,6 +3,7 @@ import Player from "./player";
 import Config from "../utils/Config";
 
 export default class Game {
+    private initialPlayers: Player[];
     private players: Player[];
     private currentPlayer: number;
     private nonKilledPlayers: string[];
@@ -13,6 +14,7 @@ export default class Game {
     private asylum: number;
 
     constructor(players: Player[], onWin: () => void, configs: Config, currentPlayer?: number) {
+        this.initialPlayers = players;
         this.players = players;
         this.currentPlayer = currentPlayer || this.random;
         this.nonKilledPlayers = players.map(p => p.name);
@@ -25,9 +27,35 @@ export default class Game {
         this.tellPlayers();
     }
 
-    deletePlayer(index: number) {
-        if (index < 0 || index >= this.players.length)
+    addPlayer(playerName: string) {
+        const index = this.initialPlayers.findIndex(p => p.name === playerName);
+
+        if (index === -1)
             return;
+
+        this.players.splice(index, 0, this.initialPlayers[index]);
+        this.nonKilledPlayers.splice(index, 0, this.initialPlayers[index].name);
+    }
+
+    removePlayer(playerName: string) {
+        const index = this.initialPlayers.findIndex(p => p.name === playerName);
+
+        if (index === -1)
+            return;
+
+        this.players.splice(index, 1);
+        this.nonKilledPlayers.splice(index, 1);
+    }
+
+    deletePlayer(playerName: string) {
+        const index = this.initialPlayers.findIndex(p => p.name === playerName);
+
+        if (index === -1)
+            return;
+
+        this.initialPlayers.splice(index, 1);
+
+        this.players.splice(index, 1);
 
         this.nonKilledPlayers.splice(index, 1);
 
