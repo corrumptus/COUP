@@ -10,7 +10,9 @@ export default class PlayerService {
             player: Player,
             lobbyId: number,
             isLogged: boolean,
-            socket: COUPSocket
+            socket: COUPSocket,
+            userAgent: string | undefined,
+            sessionCode: string
         }
     } = {};
 
@@ -48,8 +50,14 @@ export default class PlayerService {
                 socket: socket,
                 lobbyId: lobbyId,
                 isLogged: isLogged,
-                player: newPlayer
+                player: newPlayer,
+                userAgent: socket.handshake.headers["user-agent"],
+                sessionCode: socket.handshake.headers["user-agent"]
+                    + ""
+                    + Object.keys(PlayerService.players).length
             }
+
+            socket.emit("sessionCode", PlayerService.players[socket.id].sessionCode);
         } catch (error) {
             socket.emit("disconnectReason", (error as Error).message);
             socket.disconnect();
