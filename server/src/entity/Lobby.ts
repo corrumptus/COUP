@@ -23,13 +23,13 @@ export default class Lobby {
         if (this.isRunningGame)
             return;
 
-        this.players.push(player);
-
         if (this.players.length === 0)
             this.owner = player;
+
+        this.players.push(player);
     }
 
-    removePlayer(player: Player) {
+    deletePlayer(player: Player) {
         const playerIndex = this.players.findIndex(p => p === player);
 
         if (playerIndex === -1)
