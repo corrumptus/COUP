@@ -46,6 +46,14 @@ export default function LobbyView({
 
   const router = useRouter();
 
+  socket.on("sessionCode", (code: string) => {
+    localStorage.setItem("coup-sessionCode", code);
+  });
+
+  socket.on("disconnect", () => {
+    localStorage.removeItem("coup-sessionCode");
+  });
+
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
 

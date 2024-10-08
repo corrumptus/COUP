@@ -91,6 +91,7 @@ type ResponseSocketEmitEvents = {
 type RequestSocketOnEvents = {
   "disconnectReason": (reason: string) => void;
 
+  "sessionCode": (code: string) => void;
   "playerConnected": (lobbyState: LobbyState) => void;
   "configsUpdated": (keys: string[], value: number | boolean) => void;
   "passwordUpdated": (password: string | undefined) => void;
@@ -135,12 +136,14 @@ export function useSocket(id: string | undefined) {
     auth: localStorage.getItem("coup-token") !== null ?
       {
         token: localStorage.getItem("coup-token"),
-        lobby: lobby
+        lobby: lobby,
+        sessionCode: localStorage.getItem("coup-sessionCode") || undefined
       }
       :
       {
         name: sessionStorage.getItem("coup-name"),
-        lobby: lobby
+        lobby: lobby,
+        sessionCode: localStorage.getItem("coup-sessionCode") || undefined
       }
   }) as COUPSocket)
     .on("disconnectReason", (reason) => {
