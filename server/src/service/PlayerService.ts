@@ -1,3 +1,4 @@
+import { DisconnectReason } from "socket.io";
 import Player from "../entity/player";
 import LobbyService from "./LobbyService";
 import Lobby from "../entity/Lobby";
@@ -16,30 +17,83 @@ export default class PlayerService {
         }
     } = {};
 
+    private static reconnectionPlayers: {
+        [sessionCode: string]: {
+            player: Player,
+            lobbyId: number,
+            isLogged: boolean,
+            userAgent: string | undefined
+        }
+    } = {};
+
     static async setListeners(socket: COUPSocket) {
         await PlayerService.declare(socket);
 
-        socket.on("disconnect", () => {
-            const { lobbyId, player: { name } } = PlayerService.players[socket.id];
+        socket.on("disconnect", (reason: DisconnectReason) => {
+            if (
+                [
+                    "client namespace disconnect",
+                    "server namespace disconnect",
+                    "server shutting down"
+                ]
+                    .includes(reason)
+            ) {
+                const { lobbyId, player: { name } } = PlayerService.players[socket.id];
 
-            PlayerService.removePlayer(socket.id, "player desconectou");
+                PlayerService.deletePlayer(socket.id, "player desconectou");
 
-            LobbyService.messagePlayerDisconnected(lobbyId, name);
+                LobbyService.messagePlayerConnectionState("leavingPlayer", lobbyId, name);
+            } else {
+                const { sessionCode, socket: _, ...playerInfos } = PlayerService.players[socket.id];
+
+                PlayerService.reconnectionPlayers[sessionCode] = playerInfos;
+
+                const { lobbyId, player: { name } } = playerInfos;
+
+                LobbyService.removePlayer(lobbyId, name);
+
+                LobbyService.messagePlayerConnectionState("leavingPlayer", lobbyId, name);
+            }
         });
     }
 
     private static async declare(socket: COUPSocket) {
+        const auth = socket.handshake.auth;
+
+        if (
+            auth.sessionCode !== undefined
+            &&
+            PlayerService.reconnectionPlayers[auth.sessionCode] !== undefined
+            &&
+            PlayerService.reconnectionPlayers[auth.sessionCode].userAgent
+                === socket.handshake.headers["user-agent"]
+        ) {
+            PlayerService.players[socket.id] = {
+                socket: socket,
+                sessionCode: auth.sessionCode,
+                ...PlayerService.reconnectionPlayers[auth.sessionCode]
+            }
+
+            LobbyService.addPlayer(
+                PlayerService.reconnectionPlayers[auth.sessionCode].lobbyId,
+                PlayerService.reconnectionPlayers[auth.sessionCode].player.name,
+                socket
+            );
+
+            delete PlayerService.reconnectionPlayers[auth.sessionCode];
+        }
+
         try {
-            const isLogged = socket.handshake.auth.token !== undefined;
+            const isLogged = auth.token !== undefined;
 
             const name = isLogged ?
-                await UserService.getName(socket.handshake.auth.token)
+                await UserService.getName(auth.token)
                 :
-                socket.handshake.auth.name;
+                auth.name;
 
             const newPlayer = new Player(name);
 
-            let lobbyId: number | undefined = socket.handshake.auth.lobby;
+            let lobbyId: number | undefined = auth.lobby;
 
             if (lobbyId === undefined)
                 lobbyId = LobbyService.enterNewLobby(newPlayer);
@@ -79,7 +133,7 @@ export default class PlayerService {
         return LobbyService.getLobby(player.lobbyId) as Lobby;
     }
 
-    static removePlayer(socketId: string, disconnectReason: string) {
+    static deletePlayer(socketId: string, disconnectReason: string) {
         const player = PlayerService.players[socketId];
 
         player.socket.emit("disconnectReason", disconnectReason);
@@ -91,7 +145,7 @@ export default class PlayerService {
         LobbyService.deletePlayer(player.lobbyId, player.player);
     }
 
-    static removePlayerByName(lobbyId: number, name: string, disconnectReason: string) {
+    static deletePlayerByName(lobbyId: number, name: string, disconnectReason: string) {
         const playerInfos = Object.entries(PlayerService.players)
             .find(
                 ([, { player, lobbyId: playerLobbyId }]) =>
@@ -101,6 +155,6 @@ export default class PlayerService {
         if (playerInfos === undefined)
             return;
 
-        PlayerService.removePlayer(playerInfos[0], disconnectReason);
+        PlayerService.deletePlayer(playerInfos[0], disconnectReason);
     }
 }

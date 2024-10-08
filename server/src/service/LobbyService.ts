@@ -40,7 +40,7 @@ export default class LobbyService {
             if (PlayerService.getPlayerByName(name, lobby.id) === undefined)
                 return;
 
-            PlayerService.removePlayerByName(lobby.id, name, "Jogador removido pelo dono do jogo");
+            PlayerService.deletePlayerByName(lobby.id, name, "Jogador removido pelo dono do jogo");
 
             LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", name);
         });
@@ -114,8 +114,44 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
-    static messagePlayerDisconnected(lobbyId: number, name: string) {
-        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", name);
+    static messagePlayerConnectionState(
+        state: "leavingPlayer" | "newPlayer",
+        lobbyId: number,
+        name: string
+    ) {
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, state, name);
+    }
+
+    static addPlayer(lobbyId: number, playerName: string, socket: COUPSocket) {
+        const lobby = LobbyService.lobbys[lobbyId];
+
+        if (lobby === undefined)
+            return;
+
+        const game = lobby.getGame();
+
+        if (game === undefined)
+            return;
+
+        game.addPlayer(playerName);
+
+        LobbyMessageService.newPlayer(lobby.id, playerName, socket);
+    }
+
+    static removePlayer(lobbyId: number, playerName: string) {
+        const lobby = LobbyService.lobbys[lobbyId];
+
+        if (lobby === undefined)
+            return;
+
+        const game = lobby.getGame();
+
+        if (game === undefined)
+            return;
+
+        game.removePlayer(playerName);
+
+        LobbyMessageService.removePlayer(lobby.id, playerName);
     }
 
     static deletePlayer(lobbyId: number, player: Player) {
@@ -124,7 +160,7 @@ export default class LobbyService {
         if (lobby === undefined)
             return;
 
-        lobby.removePlayer(player);
+        lobby.deletePlayer(player);
 
         LobbyMessageService.removePlayer(lobby.id, player.name);
 
