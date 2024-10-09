@@ -58,6 +58,7 @@ export default class PlayerService {
     }
 
     private static async declare(socket: COUPSocket) {
+        const userAgent = socket.handshake.headers["user-agent"];
         const auth = socket.handshake.auth;
 
         if (
@@ -66,7 +67,7 @@ export default class PlayerService {
             PlayerService.reconnectionPlayers[auth.sessionCode] !== undefined
             &&
             PlayerService.reconnectionPlayers[auth.sessionCode].userAgent
-                === socket.handshake.headers["user-agent"]
+                === userAgent
         ) {
             PlayerService.players[socket.id] = {
                 socket: socket,
@@ -105,10 +106,8 @@ export default class PlayerService {
                 lobbyId: lobbyId,
                 isLogged: isLogged,
                 player: newPlayer,
-                userAgent: socket.handshake.headers["user-agent"],
-                sessionCode: socket.handshake.headers["user-agent"]
-                    + ""
-                    + Object.keys(PlayerService.players).length
+                userAgent: userAgent,
+                sessionCode: `${name}${socket.id}${userAgent}${Math.random()}`
             }
 
             socket.emit("sessionCode", PlayerService.players[socket.id].sessionCode);
