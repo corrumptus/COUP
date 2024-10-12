@@ -5,19 +5,48 @@ import PlayerService from "./PlayerService";
 export default class SocketValidatorService {
     static validate(socket: COUPSocket): string | undefined {
         const auth = socket.handshake.auth;
+
         if (
+            (
+                !("name" in auth)
+                &&
+                !("lobby" in auth)
+            )
+            ||
             (
                 !("token" in auth)
                 &&
-                !("name" in auth)
+                !("lobby" in auth)
+            )
+            ||
+            (
+                !("sessionCode" in auth)
             )
         )
-            return "O usuário deve estar logado ou escolher um nome";
+            return "O usuário deve estar logado ou escolher um nome e escolher um lobby";
+
+        if ("name" in auth && !SocketValidatorService.isString(auth.name))
+            return "O nome deve ser uma string";
+
+        if ("token" in auth && !SocketValidatorService.isString(auth.token))
+            return "O token deve ser uma string";
+
+        if ("sessionCode" in auth && !SocketValidatorService.isString(auth.sessionCode))
+            return "O sessionCode deve ser uma string";
 
         if (
+            "lobby" in auth &&
+            auth.lobby !== undefined &&
+            !SocketValidatorService.isNumber(auth.lobby)
+        )
+            return "O lobby deve ser um número ou não ser informado";
+
+        if (
+            auth.lobby !== undefined
+            &&
             auth.lobby < 0
         )
-            return "O usuário deve escolher um lobby para entrar ou criar seu próprio";
+            return "O usuário deve escolher um lobby ou criar seu próprio";
 
         if (
             auth.lobby !== undefined
@@ -25,6 +54,13 @@ export default class SocketValidatorService {
             LobbyService.getLobby(auth.lobby) === undefined
         )
             return "Este lobby não existe";
+
+        if (
+            auth.sessionCode !== undefined
+            &&
+            PlayerService.getReconnectingPlayer(auth.sessionCode) === undefined
+        )
+            return "Este código de sessão é inválido";
 
         if (
             "name" in auth
@@ -36,5 +72,20 @@ export default class SocketValidatorService {
             return "Este nome já está sendo usado nesse lobby";
 
         return undefined;
+    }
+
+    private static isString(variable: any): variable is string {
+        return (
+            variable !== null &&
+            typeof variable === "string"
+        );
+    }
+
+    private static isNumber(variable: any): variable is number {
+        return (
+            variable !== null &&
+            typeof variable === "number" &&
+            !isNaN(variable)
+        );
     }
 }
