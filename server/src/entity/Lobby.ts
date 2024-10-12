@@ -42,9 +42,6 @@ export default class Lobby {
                 this.owner = undefined;
         }
 
-        if (this.currentGame !== undefined)
-            this.currentGame.deletePlayer(player.name);
-
         this.players.splice(playerIndex, 1);
 
         if (this.isEmpty) {
