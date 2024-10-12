@@ -7,23 +7,13 @@ export default class SocketValidatorService {
         const auth = socket.handshake.auth;
 
         if (
-            (
-                !("name" in auth)
-                &&
-                !("lobby" in auth)
-            )
-            ||
-            (
-                !("token" in auth)
-                &&
-                !("lobby" in auth)
-            )
-            ||
-            (
-                !("sessionCode" in auth)
-            )
+            !("name" in auth)
+            &&
+            !("token" in auth)
+            &&
+            !("sessionCode" in auth)
         )
-            return "O usuário deve estar logado ou escolher um nome e escolher um lobby";
+            return "O usuário deve estar logado ou escolher um nome";
 
         if ("name" in auth && !SocketValidatorService.isString(auth.name))
             return "O nome deve ser uma string";
