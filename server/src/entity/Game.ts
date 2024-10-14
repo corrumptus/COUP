@@ -3,63 +3,51 @@ import Player from "./player";
 import Config from "../utils/Config";
 
 export default class Game {
-    private initialPlayers: Player[];
     private players: Player[];
     private currentPlayer: number;
     private nonKilledPlayers: string[];
     private turns: Turn[];
     private winner: Player | undefined = undefined;
     private onWin: () => void;
-    private configs: Config;
     private asylum: number;
+    private configs: Config;
 
     constructor(players: Player[], onWin: () => void, configs: Config, currentPlayer?: number) {
-        this.initialPlayers = players;
         this.players = players;
         this.currentPlayer = currentPlayer || this.random;
         this.nonKilledPlayers = players.map(p => p.name);
         this.turns = [ new Turn(this.players[this.currentPlayer], () => this.nextPlayer()) ];
         this.onWin = onWin;
-        this.configs = configs;
         this.asylum = 0;
+        this.configs = configs;
 
         this.deliverCardsAndMoney();
         this.tellPlayers();
     }
 
-    addPlayer(playerName: string) {
-        const index = this.initialPlayers.findIndex(p => p.name === playerName);
+    addPlayer(player: Player) {
+        const hasPlayer = this.players.find(p => p.name === player.name) !== undefined;
 
-        if (index === -1)
+        if (hasPlayer)
             return;
 
-        this.players.splice(index, 0, this.initialPlayers[index]);
-        this.nonKilledPlayers.splice(index, 0, this.initialPlayers[index].name);
-    }
-
-    removePlayer(playerName: string) {
-        const index = this.initialPlayers.findIndex(p => p.name === playerName);
-
-        if (index === -1)
-            return;
-
-        this.players.splice(index, 1);
-        this.nonKilledPlayers.splice(index, 1);
+        this.players.push(player);
+        this.nonKilledPlayers.push(player.name);
     }
 
     deletePlayer(playerName: string) {
-        const index = this.initialPlayers.findIndex(p => p.name === playerName);
+        const indexP = this.players.findIndex(p => p.name === playerName);
 
-        if (index === -1)
+        if (indexP === -1)
             return;
 
-        this.initialPlayers.splice(index, 1);
+        this.players.splice(indexP, 1);
 
-        this.players.splice(index, 1);
+        const indexNP = this.nonKilledPlayers.findIndex(p => p === playerName);
 
-        this.nonKilledPlayers.splice(index, 1);
+        this.nonKilledPlayers.splice(indexNP, 1);
 
-        if (this.currentPlayer === index) {
+        if (this.currentPlayer === indexNP) {
             this.currentPlayer--;
             this.turns.pop();
             this.nextPlayer();
@@ -90,21 +78,20 @@ export default class Game {
     }
 
     nextPlayer() {
-        if (this.someoneWin()) {
+        if (this.nonKilledPlayers.length === 1) {
             this.winner = this.localizeWinner();
             this.onWin();
             return;
         }
 
-        this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+        this.currentPlayer = (this.currentPlayer + 1) % this.nonKilledPlayers.length;
 
-        const newTurn = new Turn(this.players[this.currentPlayer], () => this.nextPlayer());
+        const player = this.players
+            .find(p => p.name === this.nonKilledPlayers[this.currentPlayer]) as Player;
+
+        const newTurn = new Turn(player, () => this.nextPlayer());
 
         this.turns.push(newTurn);
-    }
-
-    someoneWin(): boolean {
-        return this.nonKilledPlayers.length === 1;
     }
 
     get isEnded(): boolean {
