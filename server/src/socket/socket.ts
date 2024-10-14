@@ -5,12 +5,10 @@ import LobbyService from "../service/LobbyService";
 import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
 import { LobbyState } from "../service/LobbyMessageService";
-import { GameState } from "../service/GameMessageService";
+import { GameState, PlayerState } from "../service/GameMessageService";
 import SocketValidatorService from "../service/SocketValidatorService";
 
 interface RequestSocketOnEvents {
-    "disconnect": () => void;
-
     "updateConfigs": (keys: string[], value: number | boolean) => void;
     "newOwner": (name: string) => void;
     "removePlayer": (name: string) => void;
@@ -52,6 +50,7 @@ export interface ResponseSocketEmitEvents {
     "beginMatch": (gameState: GameState) => void;
 
     "updatePlayer": (updates: GameState) => void;
+    "addPlayer": (player: Omit<PlayerState, "state">) => void;
     "gameActionError": (message: string) => void;
 }
 
