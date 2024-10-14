@@ -5,6 +5,7 @@ import GamePCView from "@pages/GamePCView";
 import { COUPSocket, Config } from "@utils/socketAPI";
 import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
+import { newToaster } from "@utils/Toasters";
 
 export enum Religion {
   PROTESTANTE = "PROTESTANTE",
@@ -96,16 +97,56 @@ export type GameState = {
 
 export default function GameView({
   gameState,
-  socket
+  socket,
+  changeGameState
 }: {
   gameState: GameState,
-  socket: COUPSocket
+  socket: COUPSocket,
+  changeGameState: (gameState: GameState) => void
 }) {
   const [ menuType, requeriments, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const [ isNextPersonVisible, setIsNextPersonVisible ] = useState(false);
   const width = useDeviceWidth();
   const router = useRouter();
+
+  useEffect(() => {
+    socket.on("gameActionError", (message: string) => {
+      newToaster(message);
+    });
+  
+    socket.on("updatePlayer", (newGameState: GameState) => {
+      changeGameState(newGameState);
+    });
+
+    socket.on("addPlayer", (player: Omit<Player, "state">) => {
+      const newGameState: GameState = JSON.parse(JSON.stringify(gameState));
+
+      newGameState.game.players.push(player);
+
+      changeGameState(newGameState);
+    });
+
+    socket.on("leavingPlayer", (player: string) => {
+      const newGameState: GameState = JSON.parse(JSON.stringify(gameState));
+
+      const index = newGameState.game.players.findIndex(p => p.name === player);
+
+      if (index === -1)
+        return;
+
+      newGameState.game.players.splice(index, 1);
+
+      changeGameState(newGameState);
+    });
+
+    return () => {
+      socket.removeAllListeners("gameActionError");
+      socket.removeAllListeners("updatePlayer");
+      socket.removeAllListeners("addPlayer");
+      socket.removeAllListeners("leavingPlayer");
+    }
+  });
 
   useEffect(() => {
     changeUI(socket, gameState, {});
@@ -118,6 +159,7 @@ export default function GameView({
 
   function leave() {
     socket.disconnect();
+    localStorage.removeItem("coup-sessionCode");
     router.push("/");
   }
 

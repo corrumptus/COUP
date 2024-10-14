@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { GameState } from "@pages/GameView";
@@ -46,67 +46,83 @@ export default function LobbyView({
 
   const router = useRouter();
 
-  socket.on("sessionCode", (code: string) => {
-    localStorage.setItem("coup-sessionCode", code);
+  useEffect(() => {
+    socket.on("sessionCode", (code: string) => {
+      localStorage.setItem("coup-sessionCode", code);
+    });
+
+    socket.on("disconnect", () => {
+      localStorage.removeItem("coup-sessionCode");
+    });
+
+    socket.on("playerConnected", (lobbyState: LobbyState) => {
+      setLobbyState(lobbyState);
+
+      changeIdWhenCreating(lobbyState.lobby.id);
+    });
+
+    socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      let configParam: any = newLobbyState.lobby.configs;
+
+      for (let i = 0; i < keys.length-1; i++)
+        configParam = configParam[keys[i]];
+
+      configParam[keys.at(-1) as string] = value;
+
+      setLobbyState(newLobbyState);
+    });
+
+    socket.on("passwordUpdated", (password: string | undefined) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+      newLobbyState.lobby.password = password;
+
+      setLobbyState(newLobbyState);
+    });
+
+    socket.on("newPlayer", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+      newLobbyState.lobby.players.push(player);
+
+      setLobbyState(newLobbyState);
+    });
+
+    socket.on("leavingPlayer", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+      const index = newLobbyState.lobby.players.indexOf(player);
+
+      newLobbyState.lobby.players.splice(index, 1);
+
+      setLobbyState(newLobbyState);
+    });
+
+    socket.on("newOwner", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+
+      newLobbyState.lobby.owner = player;
+
+      setLobbyState(newLobbyState);
+    });
+
+    socket.on("beginMatch", initGame);
+
+    return () => {
+      socket.removeAllListeners("sessionCode");
+      socket.removeAllListeners("playerConnected");
+      socket.removeAllListeners("configsUpdated");
+      socket.removeAllListeners("passwordUpdated");
+      socket.removeAllListeners("newPlayer");
+      socket.removeAllListeners("leavingPlayer");
+      socket.removeAllListeners("newOwner");
+      socket.removeAllListeners("beginMatch");
+
+      const lastDisconnect = socket.listeners("disconnect")[1];
+      socket.removeListener("disconnect", lastDisconnect);
+    }
   });
-
-  socket.on("disconnect", () => {
-    localStorage.removeItem("coup-sessionCode");
-  });
-
-  socket.on("playerConnected", (lobbyState: LobbyState) => {
-    setLobbyState(lobbyState);
-
-    changeIdWhenCreating(lobbyState.lobby.id);
-  });
-
-  socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-    let configParam: any = newLobbyState.lobby.configs;
-
-    for (let i = 0; i < keys.length-1; i++)
-      configParam = configParam[keys[i]];
-
-    configParam[keys.at(-1) as string] = value;
-
-    setLobbyState(newLobbyState);
-  });
-
-  socket.on("passwordUpdated", (password: string | undefined) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-
-    newLobbyState.lobby.password = password;
-
-    setLobbyState(newLobbyState);
-  });
-
-  socket.on("newPlayer", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-
-    newLobbyState.lobby.players.push(player);
-
-    setLobbyState(newLobbyState);
-  });
-
-  socket.on("leavingPlayer", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-
-    const index = newLobbyState.lobby.players.indexOf(player);
-
-    newLobbyState.lobby.players.splice(index, 1);
-
-    setLobbyState(newLobbyState);
-  });
-
-  socket.on("newOwner", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-
-    newLobbyState.lobby.owner = player;
-
-    setLobbyState(newLobbyState);
-  });
-
-  socket.on("beginMatch", initGame);
 
   return (
     <div className="h-full flex flex-col">
@@ -115,6 +131,7 @@ export default function LobbyView({
           className="flex items-center cursor-pointer gap-2"
           onClick={() => {
             socket.disconnect();
+            localStorage.removeItem("coup-sessionCode");
             router.push("/");
           }}
         >
