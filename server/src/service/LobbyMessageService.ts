@@ -1,7 +1,6 @@
 import Lobby from "../entity/Lobby";
-import { COUPSocket, ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "../socket/socket";
+import { ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "../socket/socket";
 import Config from "../utils/Config";
-import LobbyService from "./LobbyService";
 import MessageService from "./MessageService";
 
 export type LobbyState = {
@@ -17,17 +16,25 @@ export type LobbyState = {
 }
 
 export default class LobbyMessageService extends MessageService {
-    static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
-        LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", name);
+    static sendLobbyState(lobbyId: number, playerName: string) {
+        const lobby = LobbyMessageService.lobbys[lobbyId];
 
-        super.newPlayer(lobbyId, name, socket);
+        if (lobby === undefined)
+            return;
 
-        socket.emit("playerConnected", LobbyMessageService.calculateLobbyState(lobbyId, name));
+        const player = lobby.players.find(p => p.name === playerName);
+
+        if (player === undefined)
+            return;
+
+        player.socket
+            .emit(
+                "playerConnected",
+                LobbyMessageService.calculateLobbyState(lobby.lobby, playerName)
+            );
     }
 
-    private static calculateLobbyState(lobbyId: number, playerName: string): LobbyState {
-        const lobby = LobbyService.getLobby(lobbyId) as Lobby;
-
+    private static calculateLobbyState(lobby: Lobby, playerName: string): LobbyState {
         const lobbyState = lobby.getState();
 
         return {

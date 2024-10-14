@@ -14,7 +14,7 @@ export default class LobbyService {
 
         const player = PlayerService.getPlayer(socket.id);
 
-        LobbyMessageService.newPlayer(lobby.id, player.name, socket);
+        LobbyService.declare(lobby.id, player.name, socket);
 
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
             if (!lobby.isOwner(player))
@@ -73,6 +73,14 @@ export default class LobbyService {
         });
     }
 
+    private static declare(lobbyId: number, playerName: string, socket: COUPSocket) {
+        LobbyMessageService.newPlayer(lobbyId, playerName, socket);
+
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
+
+        LobbyMessageService.sendLobbyState(lobbyId, playerName);
+    }
+
     static enterLobby(player: Player, lobbyId: number): number {
         const lobby = LobbyService.lobbys[lobbyId];
 
@@ -114,28 +122,18 @@ export default class LobbyService {
         return LobbyService.lobbys.length - 1;
     }
 
-    static messagePlayerConnectionState(
-        state: "leavingPlayer" | "newPlayer",
-        lobbyId: number,
-        name: string
-    ) {
-        LobbyMessageService.sendLobbyStateChanges(lobbyId, state, name);
-    }
-
     static addPlayer(lobbyId: number, playerName: string, socket: COUPSocket) {
         const lobby = LobbyService.lobbys[lobbyId];
 
         if (lobby === undefined)
             return;
 
-        const game = lobby.getGame();
-
-        if (game === undefined)
-            return;
-
-        game.addPlayer(playerName);
-
         LobbyMessageService.newPlayer(lobby.id, playerName, socket);
+
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
+
+        if (lobby.isRunningGame)
+            GameService.addPlayer(lobby.id, playerName, socket);
     }
 
     static removePlayer(lobbyId: number, playerName: string) {
@@ -144,14 +142,12 @@ export default class LobbyService {
         if (lobby === undefined)
             return;
 
-        const game = lobby.getGame();
-
-        if (game === undefined)
-            return;
-
-        game.removePlayer(playerName);
-
         LobbyMessageService.removePlayer(lobby.id, playerName);
+
+        if (lobby.isRunningGame)
+            GameService.removePlayer(lobby.id, playerName);
+
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", playerName);
     }
 
     static deletePlayer(lobbyId: number, player: Player) {
@@ -163,6 +159,11 @@ export default class LobbyService {
         lobby.deletePlayer(player);
 
         LobbyMessageService.removePlayer(lobby.id, player.name);
+
+        if (lobby.isRunningGame)
+            GameService.deletePlayer(lobby.id, player.name);
+
+        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", player.name);
 
         if (lobby.isEmpty) {
             if (lobbyId === LobbyService.lobbys.length - 1) {

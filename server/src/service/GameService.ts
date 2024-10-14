@@ -4,7 +4,7 @@ import Game from "../entity/Game";
 import { COUPSocket } from "../socket/socket";
 import ActionService from "./ActionService";
 import GameMessageService from "./GameMessageService";
-import Lobby from "../entity/Lobby";
+import LobbyService from "./LobbyService";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {
@@ -180,12 +180,68 @@ export default class GameService {
     }
 
     static getPlayersGame(socketId: string): Game | undefined {
-        const lobby = PlayerService.getPlayersLobby(socketId) as Lobby;
+        const lobby = PlayerService.getPlayersLobby(socketId);
 
         return lobby.getGame();
     }
 
     static beginMatch(lobbyId: number) {
         GameMessageService.initGameState(lobbyId);
+    }
+
+    static addPlayer(lobbyId: number, playerName: string, socket: COUPSocket) {
+        const lobby = LobbyService.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
+
+        const game = lobby.getGame();
+
+        if (game === undefined)
+            return;
+
+        game.addPlayer(playerName);
+
+        const playerInfos = PlayerService.getPlayer(socket.id).toEnemyInfo();
+
+        GameMessageService.sendPlayerReconnecting(lobbyId, playerInfos);
+        
+        GameMessageService.newPlayer(lobbyId, playerName, socket);
+    }
+
+    static removePlayer(lobbyId: number, playerName: string) {
+        const lobby = LobbyService.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
+
+        const game = lobby.getGame();
+
+        if (game === undefined)
+            return;
+
+        game.removePlayer(playerName);
+
+        GameMessageService.removePlayer(lobbyId, playerName);
+
+        GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
+    }
+
+    static deletePlayer(lobbyId: number, playerName: string) {
+        const lobby = LobbyService.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
+
+        const game = lobby.getGame();
+
+        if (game === undefined)
+            return;
+
+        game.deletePlayer(playerName);
+
+        GameMessageService.removePlayer(lobbyId, playerName);
+
+        GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
     }
 }

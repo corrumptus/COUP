@@ -244,4 +244,16 @@ export default class GameMessageService extends MessageService {
     ): GameState["game"] {
         return { ...gameState, players: gameState.players.filter(p => p.name !== playerName) }
     }
+
+    static sendPlayerReconnecting(lobbyId: number, info: Omit<PlayerState, "state">) {
+        const { players } = super.lobbys[lobbyId];
+
+        players.forEach(p => p.socket.emit("addPlayer", info));
+    }
+
+    static sendPlayerDisconnecting(lobbyId: number, info: string) {
+        const { players } = super.lobbys[lobbyId];
+
+        players.forEach(p => p.socket.emit("leavingPlayer", info));
+    }
 }
