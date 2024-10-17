@@ -186,27 +186,18 @@ export default class GameService {
     }
 
     static beginMatch(lobbyId: number) {
-        GameMessageService.initGameState(lobbyId);
+        GameMessageService.beginMatch(lobbyId);
     }
 
-    static addPlayer(lobbyId: number, playerName: string, socket: COUPSocket) {
+    static addPlayer(lobbyId: number, socket: COUPSocket) {
         const lobby = LobbyService.getLobby(lobbyId);
 
         if (lobby === undefined)
             return;
 
-        const game = lobby.getGame();
-
-        if (game === undefined)
-            return;
-
-        game.addPlayer(playerName);
-
         const playerInfos = PlayerService.getPlayer(socket.id).toEnemyInfo();
 
         GameMessageService.sendPlayerReconnecting(lobbyId, playerInfos);
-        
-        GameMessageService.newPlayer(lobbyId, playerName, socket);
     }
 
     static removePlayer(lobbyId: number, playerName: string) {
@@ -214,15 +205,6 @@ export default class GameService {
 
         if (lobby === undefined)
             return;
-
-        const game = lobby.getGame();
-
-        if (game === undefined)
-            return;
-
-        game.removePlayer(playerName);
-
-        GameMessageService.removePlayer(lobbyId, playerName);
 
         GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
     }
@@ -232,15 +214,6 @@ export default class GameService {
 
         if (lobby === undefined)
             return;
-
-        const game = lobby.getGame();
-
-        if (game === undefined)
-            return;
-
-        game.deletePlayer(playerName);
-
-        GameMessageService.removePlayer(lobbyId, playerName);
 
         GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
     }
