@@ -7,6 +7,7 @@ export default class Lobby {
     readonly id: number;
     private currentGame: Game | undefined;
     private players: Player[];
+    private gamePlayers: string[] | undefined;
     private owner: Player | undefined;
     private password: string | undefined;
     private configs: Config;
@@ -14,40 +15,85 @@ export default class Lobby {
     constructor(id: number, owner: Player) {
         this.id = id;
         this.players = [owner];
+        this.gamePlayers = undefined;
         this.owner = owner;
         this.password = undefined;
         this.configs = COUPdefaultConfigs;
     }
 
     addPlayer(player: Player) {
-        if (this.isRunningGame)
+        if (this.currentGame === undefined) {
+            if (this.owner === undefined)
+                this.owner = player;
+
+            this.players.push(player);
+            return;
+        }
+
+        if (this.players.find(p => p.name === player.name) === undefined)
             return;
 
-        if (this.players.length === 0)
-            this.owner = player;
-
-        this.players.push(player);
+        (this.gamePlayers as string[]).push(player.name);
     }
 
-    deletePlayer(player: Player) {
-        const playerIndex = this.players.findIndex(p => p === player);
-
-        if (playerIndex === -1)
+    removePlayer(playerName: string) {
+        if (
+            this.currentGame === undefined ||
+            this.currentGame.isEnded ||
+            this.gamePlayers === undefined
+        )
             return;
 
-        if (this.owner === player) {
-            if (this.players.length > 1)
-                this.owner = this.players[playerIndex !== 0 ? 0 : 1];
-            else
-                this.owner = undefined;
+        const index = this.gamePlayers.findIndex(p => p === playerName);
+
+        if (index === -1)
+            return;
+
+        this.gamePlayers.splice(index, 1);
+
+        if (this.gamePlayers.length === 0) {
+            this.resetLobby();
+            return;
         }
 
-        this.players.splice(playerIndex, 1);
+        if (this.owner !== undefined && this.owner.name === playerName) {
+            const name = this.gamePlayers[0];
 
-        if (this.isEmpty) {
-            this.configs = COUPdefaultConfigs;
-            this.password = undefined;
+            this.owner = this.players.find(p => p.name === name);
         }
+
+        this.currentGame.deletePlayer(playerName);
+    }
+
+    deletePlayer(playerName: string) {
+        const indexP = this.players.findIndex(p => p.name === playerName);
+
+        if (indexP === -1)
+            return;
+
+        this.players.splice(indexP, 1);
+
+        if (this.players.length === 0) {
+            this.resetLobby();
+            return;
+        }
+
+        if (this.owner !== undefined && this.owner.name === playerName) {
+            this.owner = this.players[0];
+        }
+
+        if (
+            this.currentGame === undefined ||
+            this.currentGame.isEnded ||
+            this.gamePlayers === undefined
+        )
+            return;
+
+        const indexGP = this.gamePlayers.findIndex(p => p === playerName);
+
+        this.gamePlayers.splice(indexGP, 1);
+
+        this.currentGame.deletePlayer(playerName);
     }
 
     newGame() {
@@ -126,6 +172,15 @@ export default class Lobby {
     }
 
     removePassword() {
+        this.password = undefined;
+    }
+
+    private resetLobby() {
+        this.currentGame = undefined;
+        this.players = [];
+        this.gamePlayers = undefined;
+        this.owner = undefined;
+        this.configs = COUPdefaultConfigs;
         this.password = undefined;
     }
 
