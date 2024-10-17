@@ -40,14 +40,13 @@ interface RequestSocketOnEvents {
 export interface ResponseSocketEmitEvents {
     "disconnectReason": (reason: string) => void;
 
-    "sessionCode": (code: string) => void;
     "playerConnected": (lobbyState: LobbyState) => void;
     "configsUpdated": (keys: string[], value: number | boolean) => void;
     "passwordUpdated": (password?: string) => void;
     "newPlayer": (player: string) => void;
     "leavingPlayer": (player: string) => void;
     "newOwner": (name: string) => void;
-    "beginMatch": (gameState: GameState) => void;
+    "beginMatch": (gameState: GameState, sessionCode: string) => void;
 
     "updatePlayer": (updates: GameState) => void;
     "addPlayer": (player: Omit<PlayerState, "state">) => void;

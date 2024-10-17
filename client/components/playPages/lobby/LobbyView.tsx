@@ -47,10 +47,6 @@ export default function LobbyView({
   const router = useRouter();
 
   useEffect(() => {
-    socket.on("sessionCode", (code: string) => {
-      localStorage.setItem("coup-sessionCode", code);
-    });
-
     socket.on("disconnect", () => {
       localStorage.removeItem("coup-sessionCode");
     });
@@ -107,10 +103,12 @@ export default function LobbyView({
       setLobbyState(newLobbyState);
     });
 
-    socket.on("beginMatch", initGame);
+    socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
+      initGame(gameState);
+      localStorage.setItem("coup-sessionCode", sessionCode);
+    });
 
     return () => {
-      socket.removeAllListeners("sessionCode");
       socket.removeAllListeners("playerConnected");
       socket.removeAllListeners("configsUpdated");
       socket.removeAllListeners("passwordUpdated");

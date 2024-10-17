@@ -84,8 +84,6 @@ export default class PlayerService {
                 userAgent: userAgent,
                 sessionCode: `${name}${socket.id}${userAgent}${Math.random()}`
             }
-
-            socket.emit("sessionCode", PlayerService.players[socket.id].sessionCode);
         } catch (error) {
             socket.emit("disconnectReason", (error as Error).message);
             socket.disconnect();
@@ -163,5 +161,9 @@ export default class PlayerService {
             return;
 
         PlayerService.deletePlayer(playerInfos[0], disconnectReason);
+    }
+
+    static getSessionCode(socketId: string) {
+        return PlayerService.players[socketId].sessionCode;
     }
 }

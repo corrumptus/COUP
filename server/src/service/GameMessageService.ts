@@ -75,13 +75,17 @@ export type ActionInfos = {
 }
 
 export default class GameMessageService extends MessageService {
-    static initGameState(lobbyId: number) {
+    static beginMatch(lobbyId: number) {
         const { lobby, players } = super.lobbys[lobbyId];
 
         const game = lobby.getGame() as Game;
 
         players.forEach(p =>
-            p.socket.emit("beginMatch", GameMessageService.calculateGameState(game, p.name, lobby.id))
+            p.socket.emit(
+                "beginMatch",
+                GameMessageService.calculateGameState(game, p.name, lobby.id),
+                PlayerService.getSessionCode(p.socket.id)
+            )
         );
     }
 
@@ -245,15 +249,15 @@ export default class GameMessageService extends MessageService {
         return { ...gameState, players: gameState.players.filter(p => p.name !== playerName) }
     }
 
-    static sendPlayerReconnecting(lobbyId: number, info: Omit<PlayerState, "state">) {
+    static sendPlayerReconnecting(lobbyId: number, player: Omit<PlayerState, "state">) {
         const { players } = super.lobbys[lobbyId];
 
-        players.forEach(p => p.socket.emit("addPlayer", info));
+        players.forEach(p => p.socket.emit("addPlayer", player));
     }
 
-    static sendPlayerDisconnecting(lobbyId: number, info: string) {
+    static sendPlayerDisconnecting(lobbyId: number, player: string) {
         const { players } = super.lobbys[lobbyId];
 
-        players.forEach(p => p.socket.emit("leavingPlayer", info));
+        players.forEach(p => p.socket.emit("leavingPlayer", player));
     }
 }

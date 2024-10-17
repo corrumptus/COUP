@@ -41,8 +41,6 @@ export default class LobbyService {
                 return;
 
             PlayerService.deletePlayerByName(lobby.id, name, "Jogador removido pelo dono do jogo");
-
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", name);
         });
 
         socket.on("changePassword", (password: string) => {
@@ -74,9 +72,9 @@ export default class LobbyService {
     }
 
     private static declare(lobbyId: number, playerName: string, socket: COUPSocket) {
-        LobbyMessageService.newPlayer(lobbyId, playerName, socket);
-
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
+
+        LobbyMessageService.newPlayer(lobbyId, playerName, socket);
 
         LobbyMessageService.sendLobbyState(lobbyId, playerName);
     }
@@ -133,7 +131,7 @@ export default class LobbyService {
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
 
         if (lobby.isRunningGame)
-            GameService.addPlayer(lobby.id, playerName, socket);
+            GameService.addPlayer(lobby.id, socket);
     }
 
     static removePlayer(lobbyId: number, playerName: string) {
@@ -141,6 +139,8 @@ export default class LobbyService {
 
         if (lobby === undefined)
             return;
+
+        lobby.removePlayer(playerName);
 
         LobbyMessageService.removePlayer(lobby.id, playerName);
 
@@ -156,23 +156,26 @@ export default class LobbyService {
         if (lobby === undefined)
             return;
 
-        lobby.deletePlayer(player);
-
         LobbyMessageService.removePlayer(lobby.id, player.name);
 
-        if (lobby.isRunningGame)
+        lobby.deletePlayer(player.name);
+
+        if (lobby.isRunningGame) {
             GameService.deletePlayer(lobby.id, player.name);
+            return;
+        }
 
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", player.name);
 
-        if (lobby.isEmpty) {
-            if (lobbyId === LobbyService.lobbys.length - 1) {
-                LobbyService.lobbys.pop();
+        if (!lobby.isEmpty)
+            return;
 
-                LobbyMessageService.removeLobby(lobbyId);
-            } else
-                LobbyService.emptyLobbys.push(lobbyId);
-        }
+        if (lobbyId === LobbyService.lobbys.length - 1) {
+            LobbyService.lobbys.pop();
+
+            LobbyMessageService.removeLobby(lobbyId);
+        } else
+            LobbyService.emptyLobbys.push(lobbyId);
     }
 
     static getLobby(lobbyId: number): Lobby | undefined {
