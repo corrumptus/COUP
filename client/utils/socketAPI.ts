@@ -161,6 +161,7 @@ export function useSocket(id: string | undefined) {
     .on("disconnectReason", (reason) => {
       setError(reason);
     }).on("disconnect", () => {
+      localStorage.removeItem("coup-sessionCode");
       setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
     });
 

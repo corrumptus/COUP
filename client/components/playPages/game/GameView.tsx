@@ -139,14 +139,7 @@ export default function GameView({
 
       changeGameState(newGameState);
     });
-
-    return () => {
-      socket.removeAllListeners("gameActionError");
-      socket.removeAllListeners("updatePlayer");
-      socket.removeAllListeners("addPlayer");
-      socket.removeAllListeners("leavingPlayer");
-    }
-  });
+  }, []);
 
   useEffect(() => {
     changeUI(socket, gameState, {});
