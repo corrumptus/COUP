@@ -37,6 +37,8 @@ export default class PlayerService {
                     "server shutting down"
                 ]
                     .includes(reason)
+                ||
+                !LobbyService.lobbyIsRunningGame(PlayerService.players[socket.id].lobbyId)
             )
                 PlayerService.deletePlayer(socket.id, "player desconectou");
             else
@@ -132,6 +134,8 @@ export default class PlayerService {
 
     static removePlayer(socketId: string) {
         const { sessionCode, socket: _, ...playerInfos } = PlayerService.players[socketId];
+
+        delete PlayerService.players[socketId];
 
         PlayerService.reconnectionPlayers[sessionCode] = playerInfos;
 

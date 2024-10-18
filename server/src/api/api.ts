@@ -4,7 +4,6 @@ import { UserLogin, UserToken } from "../entity/User";
 import UserService from "../service/UserService";
 import UserValidator from "../utils/UserValidator";
 import LobbyService from "../service/LobbyService";
-import PlayerService from "../service/PlayerService";
 
 const api: Express = express();
 
