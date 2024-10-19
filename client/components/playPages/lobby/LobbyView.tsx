@@ -46,12 +46,9 @@ export default function LobbyView({
 
   const router = useRouter();
 
-  useEffect(() => {
-    changeIdWhenCreating(lobbyState.lobby.id);
-  }, [lobbyState.lobby.id]);
-
   socket.on("playerConnected", (lobbyState: LobbyState) => {
     setLobbyState(lobbyState);
+    changeIdWhenCreating(lobbyState.lobby.id);
   });
 
   socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
