@@ -140,14 +140,35 @@ export default class LobbyService {
         if (lobby === undefined)
             return;
 
+        const wasOwner = lobby.isOwnerName(playerName);
+
         lobby.removePlayer(playerName);
 
         LobbyMessageService.removePlayer(lobby.id, playerName);
 
-        if (lobby.isRunningGame)
+        if (lobby.isRunningGame) {
             GameService.removePlayer(lobby.id, playerName);
+            return;
+        }
 
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", playerName);
+
+        if (wasOwner)
+            LobbyMessageService.sendLobbyStateChanges(
+                lobbyId,
+                "newOwner",
+                (lobby.getOwner() as Player).name
+            );
+
+        if (!lobby.isEmpty)
+            return;
+
+        if (lobbyId === LobbyService.lobbys.length - 1) {
+            LobbyService.lobbys.pop();
+
+            LobbyMessageService.removeLobby(lobbyId);
+        } else
+            LobbyService.emptyLobbys.push(lobbyId);
     }
 
     static deletePlayer(lobbyId: number, player: Player) {
@@ -158,6 +179,8 @@ export default class LobbyService {
 
         LobbyMessageService.removePlayer(lobby.id, player.name);
 
+        const wasOwner = lobby.isOwnerName(player.name);
+
         lobby.deletePlayer(player.name);
 
         if (lobby.isRunningGame) {
@@ -166,6 +189,13 @@ export default class LobbyService {
         }
 
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", player.name);
+
+        if (wasOwner)
+            LobbyMessageService.sendLobbyStateChanges(
+                lobbyId,
+                "newOwner",
+                (lobby.getOwner() as Player).name
+            );
 
         if (!lobby.isEmpty)
             return;

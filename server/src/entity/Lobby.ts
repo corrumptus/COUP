@@ -159,12 +159,20 @@ export default class Lobby {
         config[keys[keys.length - 1]] = value;
     }
 
+    getOwner(): Player | undefined {
+        return this.owner;
+    }
+
     newOwner(player: Player) {
         this.owner = player;
     }
 
     isOwner(player: Player): boolean {
         return player === this.owner;
+    }
+
+    isOwnerName(name: string): boolean {
+        return name === this.owner?.name;
     }
 
     newPassword(password: string) {
