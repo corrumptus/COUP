@@ -89,6 +89,23 @@ export default class GameMessageService extends MessageService {
         );
     }
 
+    static reconnectGameState(lobbyId: number, name: string) {
+        const { lobby, players } = super.lobbys[lobbyId];
+
+        const game = lobby.getGame() as Game;
+
+        const player = players.find(p => p.name === name);
+
+        if (player === undefined)
+            return;
+
+        player.socket.emit(
+            "beginMatch",
+            GameMessageService.calculateGameState(game, player.name, lobby.id),
+            PlayerService.getSessionCode(player.socket.id)
+        );
+    }
+
     private static calculateGameState(game: Game, playerName: string, lobbyId: number): GameState {
         const player = PlayerService.getPlayerByName(playerName, lobbyId) as Player;
 
