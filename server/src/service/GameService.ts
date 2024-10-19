@@ -200,15 +200,6 @@ export default class GameService {
         GameMessageService.sendPlayerReconnecting(lobbyId, playerInfos);
     }
 
-    static removePlayer(lobbyId: number, playerName: string) {
-        const lobby = LobbyService.getLobby(lobbyId);
-
-        if (lobby === undefined)
-            return;
-
-        GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
-    }
-
     static deletePlayer(lobbyId: number, playerName: string) {
         const lobby = LobbyService.getLobby(lobbyId);
 

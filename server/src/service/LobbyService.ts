@@ -147,7 +147,7 @@ export default class LobbyService {
         LobbyMessageService.removePlayer(lobby.id, playerName);
 
         if (lobby.isRunningGame) {
-            GameService.removePlayer(lobby.id, playerName);
+            GameService.deletePlayer(lobby.id, playerName);
             return;
         }
 
