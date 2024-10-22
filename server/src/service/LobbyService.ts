@@ -74,17 +74,15 @@ export default class LobbyService {
     private static declare(lobbyId: number, playerName: string, socket: COUPSocket) {
         const gameAlreadyStarted = LobbyService.lobbyIsRunningGame(lobbyId);
 
-        if (gameAlreadyStarted)
-            GameService.addPlayer(lobbyId, socket);
-        else
+        if (!gameAlreadyStarted)
             LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
 
         LobbyMessageService.newPlayer(lobbyId, playerName, socket);
 
-        if (gameAlreadyStarted)
-            GameService.reconnectGameState(lobbyId, playerName);
-        else
+        if (!gameAlreadyStarted)
             LobbyMessageService.sendLobbyState(lobbyId, playerName);
+        else
+            GameService.reconnectGameState(lobbyId, playerName);
     }
 
     static enterLobby(player: Player, lobbyId: number): number {
@@ -134,12 +132,12 @@ export default class LobbyService {
         if (lobby === undefined)
             return;
 
-        LobbyMessageService.newPlayer(lobby.id, playerName, socket);
-
         if (lobby.isRunningGame)
             GameService.addPlayer(lobby.id, socket);
         else
             LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
+
+        LobbyMessageService.newPlayer(lobby.id, playerName, socket);
     }
 
     static removePlayer(lobbyId: number, playerName: string) {

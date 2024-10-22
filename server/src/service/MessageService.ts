@@ -18,7 +18,7 @@ export default class MessageService {
     } = {}
 
     static newLobby(lobby: Lobby) {
-        if (lobby.id in this.lobbys)
+        if (lobby.id in MessageService.lobbys)
             return;
 
         MessageService.lobbys[lobby.id] = {
@@ -28,7 +28,7 @@ export default class MessageService {
     }
 
     static removeLobby(lobbyId: number) {
-        delete this.lobbys[lobbyId];
+        delete MessageService.lobbys[lobbyId];
     }
 
     static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
@@ -70,15 +70,16 @@ export default class MessageService {
     }
 
     static removePlayer(lobbyId: number, name: string) {
-        if (!(lobbyId in this.lobbys))
+        if (!(lobbyId in MessageService.lobbys))
             return;
 
-        const playerIndex = this.lobbys[lobbyId].players.findIndex(p => p.name === name);
+        const playerIndex = MessageService.lobbys[lobbyId].players
+            .findIndex(p => p.name === name);
 
         if (playerIndex === -1)
             return;
 
-        this.lobbys[lobbyId].players.splice(playerIndex, 1);
+        MessageService.lobbys[lobbyId].players.splice(playerIndex, 1);
     }
 
     static send(
@@ -94,7 +95,7 @@ export default class MessageService {
 
         if (name === undefined) {
             lobby.players
-                .forEach(({ socket }) => socket.emit(messageType, ...messages));
+                .forEach(p => MessageService.emit(p, messageType, messages));
             return;
         }
 
