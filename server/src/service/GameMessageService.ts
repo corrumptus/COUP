@@ -4,6 +4,7 @@ import Game from "../entity/Game";
 import Player, { CardSlot } from "../entity/player";
 import Religion from "../entity/Religion";
 import Turn from "../entity/Turn";
+import { COUPSocket } from "../socket/socket";
 import Config from "../utils/Config";
 import MessageService from "./MessageService";
 import PlayerService from "./PlayerService";
@@ -76,38 +77,45 @@ export type ActionInfos = {
 
 export default class GameMessageService extends MessageService {
     static beginMatch(lobbyId: number) {
-        const { lobby, players } = super.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
 
         const game = lobby.getGame() as Game;
 
-        players.forEach(p =>
-            p.socket.emit(
-                "beginMatch",
-                GameMessageService.calculateGameState(game, p.name, lobby.id),
-                PlayerService.getSessionCode(p.socket.id)
-            )
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "beginMatch",
+            (socket: COUPSocket, name: string) => [
+                GameMessageService.calculateGameState(game, name, lobbyId),
+                PlayerService.getSessionCode(socket.id)
+            ]
         );
     }
 
     static reconnectGameState(lobbyId: number, name: string) {
-        const { lobby, players } = super.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
 
         const game = lobby.getGame() as Game;
 
-        const player = players.find(p => p.name === name);
-
-        if (player === undefined)
-            return;
-
-        player.socket.emit(
+        super.sendDiscriminating(
+            lobbyId,
+            name,
             "beginMatch",
-            GameMessageService.calculateGameState(game, player.name, lobby.id),
-            PlayerService.getSessionCode(player.socket.id)
+            (socket: COUPSocket, name: string) => [
+                GameMessageService.calculateGameState(game, name, lobby.id),
+                PlayerService.getSessionCode(socket.id)
+            ]
         );
     }
 
-    private static calculateGameState(game: Game, playerName: string, lobbyId: number): GameState {
-        const player = PlayerService.getPlayerByName(playerName, lobbyId) as Player;
+    private static calculateGameState(game: Game, name: string, lobbyId: number): GameState {
+        const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
 
         const state = game.getState();
 
@@ -131,13 +139,18 @@ export default class GameMessageService extends MessageService {
         game: Game,
         infos: ActionInfos
     ) {
-        const { players } = super.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
 
-        players.forEach(
-            p => p.socket.emit(
-                "updatePlayer",
-                GameMessageService.calculateNewGameState(lobbyId, game, p.name, infos)
-            )
+        if (lobby === undefined)
+            return;
+
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "updatePlayer",
+            (_, name: string) => [
+                GameMessageService.calculateNewGameState(lobbyId, game, name, infos)
+            ]
         );
     }
 
@@ -267,14 +280,30 @@ export default class GameMessageService extends MessageService {
     }
 
     static sendPlayerReconnecting(lobbyId: number, player: Omit<PlayerState, "state">) {
-        const { players } = super.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
 
-        players.forEach(p => p.socket.emit("addPlayer", player));
+        if (lobby === undefined)
+            return;
+
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "addPlayer",
+            () => [player]
+        );
     }
 
     static sendPlayerDisconnecting(lobbyId: number, player: string) {
-        const { players } = super.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
 
-        players.forEach(p => p.socket.emit("leavingPlayer", player));
+        if (lobby === undefined)
+            return;
+
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "leavingPlayer",
+            () => [player]
+        );
     }
 }

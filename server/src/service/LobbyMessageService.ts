@@ -17,21 +17,17 @@ export type LobbyState = {
 
 export default class LobbyMessageService extends MessageService {
     static sendLobbyState(lobbyId: number, playerName: string) {
-        const lobby = LobbyMessageService.lobbys[lobbyId];
+        const lobby = super.getLobby(lobbyId);
 
         if (lobby === undefined)
             return;
 
-        const player = lobby.players.find(p => p.name === playerName);
-
-        if (player === undefined)
-            return;
-
-        player.socket
-            .emit(
-                "playerConnected",
-                LobbyMessageService.calculateLobbyState(lobby.lobby, playerName)
-            );
+        super.send(
+            lobbyId,
+            playerName,
+            "playerConnected",
+            LobbyMessageService.calculateLobbyState(lobby, playerName)
+        );
     }
 
     private static calculateLobbyState(lobby: Lobby, playerName: string): LobbyState {
@@ -50,11 +46,14 @@ export default class LobbyMessageService extends MessageService {
         message: T,
         ...values: Parameters<ResponseSocketEmitEvents[T]>
     ) {
-        if (super.lobbys[lobbyId] === undefined)
+        if (super.getLobby(lobbyId) === undefined)
             return;
 
-        const sockets = super.lobbys[lobbyId].players.map(p => p.socket);
-
-        sockets.forEach(s => s.emit(message, ...values));
+        super.send(
+            lobbyId,
+            undefined,
+            message,
+            ...values
+        );
     }
 }
