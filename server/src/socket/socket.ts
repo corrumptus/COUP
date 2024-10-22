@@ -9,6 +9,9 @@ import { GameState, PlayerState } from "../service/GameMessageService";
 import SocketValidatorService from "../service/SocketValidatorService";
 
 interface RequestSocketOnEvents {
+    "canReceive": () => void;
+    "cantReceive": () => void;
+
     "updateConfigs": (keys: string[], value: number | boolean) => void;
     "newOwner": (name: string) => void;
     "removePlayer": (name: string) => void;

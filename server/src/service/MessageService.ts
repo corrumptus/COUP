@@ -5,7 +5,15 @@ export default class MessageService {
     private static lobbys: {
         [lobbyId: number]: {
             lobby: Lobby,
-            players: { socket: COUPSocket, name: string }[]
+            players: {
+                socket: COUPSocket,
+                name: string,
+                canReceive: boolean,
+                messageBuffer: {
+                    messageType: keyof ResponseSocketEmitEvents,
+                    messages: Parameters<ResponseSocketEmitEvents[keyof ResponseSocketEmitEvents]>
+                }[]
+            }[]
         }
     } = {}
 
@@ -27,7 +35,38 @@ export default class MessageService {
         if (!(lobbyId in MessageService.lobbys))
             return;
 
-        MessageService.lobbys[lobbyId].players.push({ socket: socket, name: name });
+        MessageService.lobbys[lobbyId].players.push({
+            socket: socket, 
+            name: name,
+            canReceive: false,
+            messageBuffer: []
+        });
+
+        socket.on("canReceive", () => {
+            const player = MessageService.lobbys[lobbyId]
+                .players.find(p => p.socket === socket);
+
+            if (player === undefined)
+                return;
+
+            player.canReceive = true;
+
+            player.messageBuffer
+                .forEach(m => player.socket.emit(
+                    m.messageType,
+                    ...m.messages
+                ));
+
+            player.messageBuffer.splice(0);
+        });
+
+        socket.on("cantReceive", () => {
+            const player = MessageService.lobbys[lobbyId]
+                .players.find(p => p.socket === socket);
+
+            if (player !== undefined)
+                player.canReceive = false;
+        });
     }
 
     static removePlayer(lobbyId: number, name: string) {
@@ -65,6 +104,8 @@ export default class MessageService {
             return;
 
         player.socket.emit(messageType, ...messages);
+
+        MessageService.emit(player, messageType, messages);
     }
 
     static sendDiscriminating<T extends keyof ResponseSocketEmitEvents>(
@@ -81,7 +122,7 @@ export default class MessageService {
 
         if (name === undefined) {
             lobby.players
-                .forEach(({ socket, name }) => socket.emit(messageType, ...messager(socket, name)));
+                .forEach(p => MessageService.emit(p, messageType, messager(p.socket, p.name)));
             return;
         }
 
@@ -90,7 +131,29 @@ export default class MessageService {
         if (player === undefined)
             return;
 
-        player.socket.emit(messageType, ...messager(player.socket, player.name));
+        MessageService.emit(player, messageType, messager(player.socket, player.name));
+    }
+
+    private static emit<T extends keyof ResponseSocketEmitEvents>(player: {
+            socket: COUPSocket,
+            canReceive: boolean,
+            messageBuffer: {
+                messageType: keyof ResponseSocketEmitEvents,
+                messages: Parameters<ResponseSocketEmitEvents[keyof ResponseSocketEmitEvents]>
+            }[]
+        },
+        messageType: T,
+        messages: Parameters<ResponseSocketEmitEvents[T]>
+    ) {
+        if (player.canReceive) {
+            player.socket.emit(messageType, ...messages);
+            return;
+        }
+
+        player.messageBuffer.push({
+            messageType: messageType,
+            messages: messages
+        });
     }
 
     static getLobby(lobbyId: number): Lobby | undefined {
