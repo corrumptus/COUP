@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
@@ -102,7 +102,7 @@ export default function GameView({
 }: {
   gameState: GameState,
   socket: COUPSocket,
-  changeGameState: (gameState: GameState) => void
+  changeGameState: Dispatch<SetStateAction<GameState | undefined>>
 }) {
   const [ menuType, requeriments, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
@@ -121,24 +121,28 @@ export default function GameView({
     });
 
     socket.on("addPlayer", (player: Omit<Player, "state">) => {
-      const newGameState: GameState = JSON.parse(JSON.stringify(gameState));
+      changeGameState(prevGameState => {
+        const newGameState: GameState = JSON.parse(JSON.stringify(prevGameState));
 
-      newGameState.game.players.push(player);
+        newGameState.game.players.push(player);
 
-      changeGameState(newGameState);
+        return newGameState;
+      });
     });
 
     socket.on("leavingPlayer", (player: string) => {
-      const newGameState: GameState = JSON.parse(JSON.stringify(gameState));
+      changeGameState(prevGameState => {
+        const newGameState: GameState = JSON.parse(JSON.stringify(prevGameState));
 
-      const index = newGameState.game.players.findIndex(p => p.name === player);
+        const index = newGameState.game.players.findIndex(p => p.name === player);
 
-      if (index === -1)
-        return;
+        if (index === -1)
+          return prevGameState;
 
-      newGameState.game.players.splice(index, 1);
+        newGameState.game.players.splice(index, 1);
 
-      changeGameState(newGameState);
+        return newGameState;
+      });
     });
 
     socket.emit("canReceive");

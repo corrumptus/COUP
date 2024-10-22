@@ -53,49 +53,59 @@ export default function LobbyView({
     });
 
     socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
-      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-      let configParam: any = newLobbyState.lobby.configs;
+      setLobbyState(prevLobbyState => {
+        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
+        let configParam: any = newLobbyState.lobby.configs;
 
-      for (let i = 0; i < keys.length-1; i++)
-        configParam = configParam[keys[i]];
+        for (let i = 0; i < keys.length-1; i++)
+          configParam = configParam[keys[i]];
 
-      configParam[keys.at(-1) as string] = value;
+        configParam[keys.at(-1) as string] = value;
 
-      setLobbyState(newLobbyState);
+        return newLobbyState;
+      });
     });
 
     socket.on("passwordUpdated", (password: string | undefined) => {
-      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      setLobbyState(prevLobbyState => {
+        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
 
-      newLobbyState.lobby.password = password;
+        newLobbyState.lobby.password = password;
 
-      setLobbyState(newLobbyState);
+        return newLobbyState;
+      });
     });
 
     socket.on("newPlayer", (player: string) => {
-      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      setLobbyState(prevLobbyState => {
+        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
 
-      newLobbyState.lobby.players.push(player);
+        newLobbyState.lobby.players.push(player);
 
-      setLobbyState(newLobbyState);
+        return newLobbyState;
+      });
     });
 
     socket.on("leavingPlayer", (player: string) => {
-      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      setLobbyState(prevLobbyState => {
+        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
 
-      const index = newLobbyState.lobby.players.indexOf(player);
+        const index = newLobbyState.lobby.players.indexOf(player);
 
-      newLobbyState.lobby.players.splice(index, 1);
+        newLobbyState.lobby.players.splice(index, 1);
 
-      setLobbyState(newLobbyState);
+        return newLobbyState;
+      });
     });
 
     socket.on("newOwner", (player: string) => {
-      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      setLobbyState(prevLobbyState => {
+        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
 
-      newLobbyState.lobby.owner = player;
+        newLobbyState.lobby.owner = player;
 
-      setLobbyState(newLobbyState);
+        return newLobbyState;
+      });
     });
 
     socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {

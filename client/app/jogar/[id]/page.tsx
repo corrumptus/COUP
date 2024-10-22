@@ -26,6 +26,6 @@ export default function EntrarLobby({ params: { id } }: { params: { id: string }
     <GameView
       gameState={gameState}
       socket={socket}
-      changeGameState={(gameState) => setGameState(gameState)}
+      changeGameState={setGameState}
     />
 }
