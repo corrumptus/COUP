@@ -46,61 +46,77 @@ export default function LobbyView({
 
   const router = useRouter();
 
-  socket.on("playerConnected", (lobbyState: LobbyState) => {
-    setLobbyState(lobbyState);
-    changeIdWhenCreating(lobbyState.lobby.id);
-  });
+  useEffect(() => {
+    socket.on("playerConnected", (lobbyState: LobbyState) => {
+      setLobbyState(lobbyState);
+      changeIdWhenCreating(lobbyState.lobby.id);
+    });
 
-  socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
-    let configParam: any = newLobbyState.lobby.configs;
+    socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+      let configParam: any = newLobbyState.lobby.configs;
 
-    for (let i = 0; i < keys.length-1; i++)
-      configParam = configParam[keys[i]];
+      for (let i = 0; i < keys.length-1; i++)
+        configParam = configParam[keys[i]];
 
-    configParam[keys.at(-1) as string] = value;
+      configParam[keys.at(-1) as string] = value;
 
-    setLobbyState(newLobbyState);
-  });
+      setLobbyState(newLobbyState);
+    });
 
-  socket.on("passwordUpdated", (password: string | undefined) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+    socket.on("passwordUpdated", (password: string | undefined) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
 
-    newLobbyState.lobby.password = password;
+      newLobbyState.lobby.password = password;
 
-    setLobbyState(newLobbyState);
-  });
+      setLobbyState(newLobbyState);
+    });
 
-  socket.on("newPlayer", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+    socket.on("newPlayer", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
 
-    newLobbyState.lobby.players.push(player);
+      newLobbyState.lobby.players.push(player);
 
-    setLobbyState(newLobbyState);
-  });
+      setLobbyState(newLobbyState);
+    });
 
-  socket.on("leavingPlayer", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+    socket.on("leavingPlayer", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
 
-    const index = newLobbyState.lobby.players.indexOf(player);
+      const index = newLobbyState.lobby.players.indexOf(player);
 
-    newLobbyState.lobby.players.splice(index, 1);
+      newLobbyState.lobby.players.splice(index, 1);
 
-    setLobbyState(newLobbyState);
-  });
+      setLobbyState(newLobbyState);
+    });
 
-  socket.on("newOwner", (player: string) => {
-    const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
+    socket.on("newOwner", (player: string) => {
+      const newLobbyState: LobbyState = JSON.parse(JSON.stringify(lobbyState));
 
-    newLobbyState.lobby.owner = player;
+      newLobbyState.lobby.owner = player;
 
-    setLobbyState(newLobbyState);
-  });
+      setLobbyState(newLobbyState);
+    });
 
-  socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
-    initGame(gameState);
-    localStorage.setItem("coup-sessionCode", sessionCode);
-  });
+    socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
+      initGame(gameState);
+      localStorage.setItem("coup-sessionCode", sessionCode);
+    });
+
+    socket.emit("canReceive");
+
+    return () => {
+      socket.emit("cantReceive");
+
+      socket.removeAllListeners("playerConnected");
+      socket.removeAllListeners("configsUpdated");
+      socket.removeAllListeners("passwordUpdated");
+      socket.removeAllListeners("newPlayer");
+      socket.removeAllListeners("leavingPlayer");
+      socket.removeAllListeners("newOwner");
+      socket.removeAllListeners("beginMatch");
+    };
+  }, []);
 
   return (
     <div className="h-full flex flex-col">

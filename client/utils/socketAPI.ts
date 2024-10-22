@@ -58,7 +58,8 @@ export type Config = {
 }
 
 type ResponseSocketEmitEvents = {
-  "enterLobby": (lobbyId: number) => void;
+  "canReceive": () => void;
+  "cantReceive": () => void;
 
   "updateConfigs": (keys: string[], value: number | boolean) => void;
   "newOwner": (name: string) => void;

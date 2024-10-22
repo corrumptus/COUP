@@ -111,6 +111,7 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
+
     socket.on("gameActionError", (message: string) => {
       newToaster(message);
     });
@@ -139,6 +140,17 @@ export default function GameView({
 
       changeGameState(newGameState);
     });
+
+    socket.emit("canReceive");
+
+    return () => {
+      socket.emit("cantReceive");
+
+      socket.removeAllListeners("gameActionError");
+      socket.removeAllListeners("updatePlayer");
+      socket.removeAllListeners("addPlayer");
+      socket.removeAllListeners("leavingPlayer");
+    };
   }, []);
 
   useEffect(() => {
