@@ -107,7 +107,7 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export function useSocket(id: string | undefined) {
+export default function useSocket(id: string | undefined) {
   const [ socket, setSocket ] = useState<COUPSocket>();
   const [ error, setError ] = useState<string>();
 
