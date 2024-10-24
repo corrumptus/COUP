@@ -136,8 +136,6 @@ export default class LobbyService {
             GameService.addPlayer(lobby.id, socket);
         else
             LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
-
-        LobbyMessageService.newPlayer(lobby.id, playerName, socket);
     }
 
     static removePlayer(lobbyId: number, playerName: string) {

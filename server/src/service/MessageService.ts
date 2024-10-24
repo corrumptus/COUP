@@ -36,7 +36,7 @@ export default class MessageService {
             return;
 
         MessageService.lobbys[lobbyId].players.push({
-            socket: socket, 
+            socket: socket,
             name: name,
             canReceive: false,
             messageBuffer: []
