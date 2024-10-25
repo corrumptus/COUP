@@ -276,19 +276,19 @@ export default function GameActionMenu({
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
-            performChange({ action: Action.CONTESTAR });
+            performChange({ action: Action.BLOQUEAR });
           }}
         >
-          <h4>Contestar</h4>
+          <h4>Bloquear</h4>
         </div>
         <div
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
-            performChange({ action: Action.BLOQUEAR });
+            performChange({ action: Action.CONTESTAR });
           }}
         >
-          <h4>Bloquear</h4>
+          <h4>Contestar</h4>
         </div>
         <div
           className={optionStyles}
