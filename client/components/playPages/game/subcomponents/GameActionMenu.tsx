@@ -341,36 +341,32 @@ export default function GameActionMenu({
     type === MenuTypes.INVESTIGATING
     &&
     gameState.context.type === ContextType.INVESTIGATING
-  ) {
-    children = (
-      <>
-        <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
-          <InfluenceCard card={gameState.context.investigatedCard} />
-          <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
-          <div className="flex gap-4 items-center">
-            <div
-              className={optionStyles}
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ action: Action.TROCAR });
-              }}
-            >
-              <h4>Trocar</h4>
-            </div>
-            <div
-              className={optionStyles}
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ action: Action.CONTINUAR });
-              }}
-            >
-              <h4>Manter</h4>
-            </div>
-          </div>
+  ) children = (
+    <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
+      <InfluenceCard card={gameState.context.investigatedCard} />
+      <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
+      <div className="flex gap-4 items-center">
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.TROCAR });
+          }}
+        >
+          <h4>Trocar</h4>
         </div>
-      </>
-    )
-  }
+        <div
+          className={optionStyles}
+          onClick={e => {
+            e.stopPropagation();
+            performChange({ action: Action.CONTINUAR });
+          }}
+        >
+          <h4>Manter</h4>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <div
