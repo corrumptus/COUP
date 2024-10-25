@@ -128,6 +128,7 @@ export default function GameActionMenu({
       gameState.game.configs,
       (gameState.context as { action?: Action }).action
     );
+
     children = (
       <div className="flex flex-col gap-4 items-center">
         <h3 className="text-center text-2xl">Escolha que tipo de carta usar para {requeriments.action}</h3>
@@ -257,16 +258,16 @@ export default function GameActionMenu({
     <div className="flex flex-col gap-4 items-center">
       {gameState.context.attackedCard === undefined ? 
         <h2>
-          O player {gameState.context.attacker}
-          está te atacando com {gameState.context.action}
-          usando a carta {gameState.context.card}
+          O player {gameState.context.attacker + " "}
+          está te atacando com {gameState.context.action + " "}
+          usando a carta {gameState.context.card + " "}
         </h2>
         :
         <h2>
-          O player {gameState.context.attacker}
-          está atacando a sua {gameState.context.attackedCard}
-          com {gameState.context.action}
-          usando a carta {gameState.context.card}
+          O player {gameState.context.attacker + " "}
+          está atacando a sua {gameState.context.attackedCard + " "}
+          com {gameState.context.action + " "}
+          usando a carta {gameState.context.card + " "}
         </h2>
       }
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
@@ -309,9 +310,9 @@ export default function GameActionMenu({
   ) children = (
     <div className="flex flex-col gap-4 items-center">
       <h2 className="text-lg">
-        O player {gameState.context.attacker}
+        O player {gameState.context.attacker + " "}
         está te bloqueando
-        com a carta {gameState.context.card}
+        com a carta {gameState.context.card + " "}
       </h2>
       <h3 className="text-center text-2xl">Escolha a sua ação</h3>
       <div className="flex gap-6">
