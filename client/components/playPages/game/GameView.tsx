@@ -111,7 +111,6 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
-
     socket.on("gameActionError", (message: string) => {
       newToaster(message);
     });
