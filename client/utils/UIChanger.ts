@@ -142,7 +142,7 @@ function performUIChange(
         return [ MenuTypes.CARD_PICKING, newRequeriments ];
     }
 
-    if (cannotLeave)
+    if (cannotLeave && request.goTo === MenuTypes.CLOSED)
         return [ menuType, requeriments ];
 
     return [ getNextGoTo(newRequeriments.action as Action, menuType), newRequeriments ];
