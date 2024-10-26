@@ -254,7 +254,7 @@ export default class GameMessageService extends MessageService {
         if (
             name === infos.target
             &&
-            infos.action !== undefined
+            ![undefined, Action.CONTESTAR].includes(infos.action)
         )
             return {
                 type: ContextType.BEING_ATTACKED,
