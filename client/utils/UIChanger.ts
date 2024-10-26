@@ -19,7 +19,7 @@ export default function useUIChanger() {
     return [
         menuType,
         requeriments,
-        (socket: COUPSocket, gameState: GameState, newRequeriments: ChangeRequest) => {
+        (socket: COUPSocket, gameState: GameState, newRequeriments: ChangeRequest) =>
             setMenuTypeAndRequeriments(
                 performUIChange(
                     socket,
@@ -30,18 +30,19 @@ export default function useUIChanger() {
                     performUiChangesByToaster(
                         setMenuTypeAndRequeriments,
                         socket,
-                        (gameState.context as { action: Action }).action
+                        (gameState.context as { action: Action }).action,
+                        gameState.game.configs
                     )
                 )
-            );
-        }
+            )
     ] as const;
 }
 
 function performUiChangesByToaster(
     changeUi: Dispatch<SetStateAction<[ MenuTypes, ActionRequeriments ]>>,
     socket: COUPSocket,
-    notifiedAction: Action
+    notifiedAction: Action,
+    configs: Config
 ) {
     return (
         action: Action.BLOQUEAR | Action.CONTESTAR
@@ -53,6 +54,24 @@ function performUiChangesByToaster(
 
         if (action === Action.CONTESTAR && !contestableActionNeedsSelfCard(notifiedAction)) {
             socket.emit("contestar");
+            return;
+        }
+
+        const choosableCards = getChoosableCards(
+            action,
+            configs,
+            notifiedAction
+        );
+
+        if (choosableCards.length === 1) {
+            changeUi([
+                MenuTypes.CARD_PICKING,
+                {
+                    action: action,
+                    choosedCardType: choosableCards[0]
+                }
+            ]);
+
             return;
         }
 
