@@ -108,6 +108,10 @@ export default function LobbyView({
       });
     });
 
+    socket.on("reconnectingLobby", (lobbyId: number) => {
+      changeIdWhenCreating(lobbyId);
+    });
+
     socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
       initGame(gameState);
       localStorage.setItem("coup-sessionCode", sessionCode);
@@ -124,6 +128,7 @@ export default function LobbyView({
       socket.removeAllListeners("newPlayer");
       socket.removeAllListeners("leavingPlayer");
       socket.removeAllListeners("newOwner");
+      socket.removeAllListeners("reconnectingLobby");
       socket.removeAllListeners("beginMatch");
     };
   }, []);

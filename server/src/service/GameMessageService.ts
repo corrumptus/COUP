@@ -103,6 +103,13 @@ export default class GameMessageService extends MessageService {
 
         const game = lobby.getGame() as Game;
 
+        super.send(
+            lobbyId,
+            name,
+            "reconnectingLobby",
+            lobbyId
+        );
+
         super.sendDiscriminating(
             lobbyId,
             name,

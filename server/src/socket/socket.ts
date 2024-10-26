@@ -49,6 +49,7 @@ export interface ResponseSocketEmitEvents {
     "newPlayer": (player: string) => void;
     "leavingPlayer": (player: string) => void;
     "newOwner": (name: string) => void;
+    "reconnectingLobby": (id: number) => void;
     "beginMatch": (gameState: GameState, sessionCode: string) => void;
 
     "updatePlayer": (updates: GameState) => void;
