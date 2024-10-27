@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client"
 import { LobbyState } from "@pages/LobbyView";
 import { Card, GameState, Player } from "@pages/GameView";
@@ -108,68 +108,86 @@ type RequestSocketOnEvents = {
 
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
-export default function useSocket(id: string | undefined) {
-  const [ socket, setSocket ] = useState<COUPSocket>();
-  const [ error, setError ] = useState<string>();
+export default function useSocket(id?: string) {
+  const [ error, setError ] = useState<string | undefined>("page not initialized");
+  const socketRef = useRef<COUPSocket | undefined>(undefined);
 
-  window.addEventListener("unload", () => {
-    setSocket(undefined);
-  });
+  useEffect(() => {
+    function onUnload() {
+      socketRef.current = undefined;
+    }
 
-  if (
-    localStorage.getItem("coup-token") === null
-    &&
-    sessionStorage.getItem("coup-name") === null
-    &&
-    localStorage.getItem("coup-sessionCode") === null
-  )
-    return { error: "O usuário deve estar logado ou possuir um nome" };
+    window.addEventListener("unload", onUnload);
+
+    return () => {
+      window.removeEventListener("unload", onUnload);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(error);
+
+    if (socketRef.current !== undefined)
+      return;
+
+    if (
+      localStorage.getItem("coup-token") === null
+      &&
+      sessionStorage.getItem("coup-name") === null
+      &&
+      localStorage.getItem("coup-sessionCode") === null
+    ) {
+      setError("O usuário deve estar logado ou possuir um nome");
+      return;
+    }
+
+    if (
+      id !== undefined
+      &&
+      Number.isNaN(Number(id))
+    ) {
+      setError("Lobby inválido");
+      return;
+    }
+
+    const lobby = id === undefined ? undefined : Number(id);
+
+    let auth;
+
+    if (localStorage.getItem("coup-sessionCode") !== null)
+      auth = {
+        sessionCode: localStorage.getItem("coup-sessionCode")
+      }
+    else if (localStorage.getItem("coup-token") !== null)
+      auth = {
+        token: localStorage.getItem("coup-token"),
+        lobby: lobby
+      }
+    else
+      auth = {
+        name: sessionStorage.getItem("coup-name"),
+        lobby: lobby
+      }
+
+    socketRef.current = 
+      (io("http://localhost:5000", {
+        auth: auth
+      }) as COUPSocket)
+        .on("disconnectReason", (reason) => {
+          setError(reason);
+        })
+        .on("disconnect", () => {
+          localStorage.removeItem("coup-sessionCode");
+          setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
+        });
+
+    setError(undefined);
+  }, []);
 
   if (error !== undefined)
     return { error: error };
 
-  if (socket !== undefined)
-    return { socket: socket };
-
-  if (
-    id !== undefined
-    &&
-    Number.isNaN(Number(id))
-  )
-    return { error: "Lobby inválido" };
-
-  const lobby = id === undefined ? undefined : Number(id);
-
-  let auth;
-
-  if (localStorage.getItem("coup-sessionCode") !== null)
-    auth = {
-      sessionCode: localStorage.getItem("coup-sessionCode")
-    }
-  else if (localStorage.getItem("coup-token") !== null)
-    auth = {
-      token: localStorage.getItem("coup-token"),
-      lobby: lobby
-    }
-  else
-    auth = {
-      name: sessionStorage.getItem("coup-name"),
-      lobby: lobby
-    }
-
-  const newSocket = (io("http://localhost:5000", {
-    auth: auth
-  }) as COUPSocket)
-    .on("disconnectReason", (reason) => {
-      setError(reason);
-    }).on("disconnect", () => {
-      localStorage.removeItem("coup-sessionCode");
-      setError(err => err === undefined ? "Não foi possível se conectar ao servidor" : err);
-    });
-
-  setSocket(newSocket);
-
-  return { socket: newSocket };
+  return { socket: socketRef.current as COUPSocket };
 }
 
 export function configDiff(configs: Config): Differ<Config> {
