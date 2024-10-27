@@ -109,7 +109,7 @@ type RequestSocketOnEvents = {
 export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
 
 export default function useSocket(id?: string) {
-  const [ error, setError ] = useState<string | undefined>("page not initialized");
+  const [ error, setError ] = useState<string | undefined>("");
   const socketRef = useRef<COUPSocket | undefined>(undefined);
 
   useEffect(() => {
@@ -125,8 +125,6 @@ export default function useSocket(id?: string) {
   }, []);
 
   useEffect(() => {
-    console.log(error);
-
     if (socketRef.current !== undefined)
       return;
 
