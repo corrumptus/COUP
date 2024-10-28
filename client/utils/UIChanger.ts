@@ -68,7 +68,7 @@ function performUiChangesByToaster(
                 MenuTypes.CARD_PICKING,
                 {
                     action: action,
-                    choosedCardType: choosableCards[0]
+                    cardType: choosableCards[0]
                 }
             ]);
 
@@ -97,7 +97,7 @@ function performUIChange(
                 {
                     ...requeriments,
                     target: gameState.context.target,
-                    choosedTargetCard: gameState.context.targetCard
+                    targetCard: gameState.context.targetCard
                 }
             ];
 
@@ -157,7 +157,7 @@ function performUIChange(
     );
 
     if (choosableCards.length === 1) {
-        newRequeriments.choosedCardType = choosableCards[0];
+        newRequeriments.cardType = choosableCards[0];
         return [ MenuTypes.CARD_PICKING, newRequeriments ];
     }
 
@@ -274,20 +274,20 @@ function getRequestProblems(
         return "O player escolhido já está morto";
 
     if (
-        request.choosedSelfCard !== undefined
+        request.selfCard !== undefined
         &&
-        gameState.player.cards[request.choosedSelfCard].isDead
+        gameState.player.cards[request.selfCard].isDead
     )
         return "A carta escolhida está morta";
 
     if (
         request.target !== undefined
         &&
-        request.choosedTargetCard !== undefined
+        request.targetCard !== undefined
         &&
         (gameState.game.players
             .find(p => p.name === request.target) as Omit<Player, "state">)
-            .cards[request.choosedTargetCard].isDead
+            .cards[request.targetCard].isDead
     )
         return "A carta escolhida está morta";
 
@@ -318,13 +318,13 @@ function getRequestProblems(
         return "Você só pode dar golpe de estado neste turno";
 
     if (
-        request.choosedCardType !== undefined
+        request.cardType !== undefined
         &&
         request.action === Action.ASSASSINAR
         &&
         gameState.player.money <
             gameState.game.configs.tiposCartas[
-                request.choosedCardType as keyof typeof
+                request.cardType as keyof typeof
                 gameState.game.configs.tiposCartas
             ].quantidadeAssassinar
     )
@@ -381,13 +381,13 @@ function getRequestProblems(
         &&
         curRequeriments.action === Action.EXTORQUIR
         &&
-        request.choosedCardType !== undefined
+        request.cardType !== undefined
         &&
         (gameState.game.players
             .find(p => p.name === curRequeriments.target) as Omit<Player, "state">)
         .money <
         gameState.game.configs.tiposCartas[
-            request.choosedCardType as
+            request.cardType as
             keyof typeof gameState.game.configs.tiposCartas
         ]
         .quantidadeExtorquir
@@ -436,14 +436,14 @@ function isActionEmitable(
     if (
         requeriments.action === Action.TROCAR &&
         menuType === MenuTypes.CARD_PICKING &&
-        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 2
+        quantidadeTrocar(gameState.game.configs, requeriments.cardType as Card) === 2
     )
         return true;
 
     if (
         requeriments.action === Action.TROCAR &&
         menuType === MenuTypes.CARD_PICKING_CHANGE &&
-        quantidadeTrocar(gameState.game.configs, requeriments.choosedCardType as Card) === 1
+        quantidadeTrocar(gameState.game.configs, requeriments.cardType as Card) === 1
     )
         return true;
 
@@ -579,17 +579,17 @@ function emitAction(
 ) {
     const infos = [
         requeriments.action,
-        requeriments.choosedCardType,
-        requeriments.choosedSelfCard,
+        requeriments.cardType,
+        requeriments.selfCard,
         requeriments.target,
-        requeriments.choosedTargetCard
+        requeriments.targetCard
     ]
     .map((info, i) => {
         if (
             i === 4 &&
             requeriments.action === Action.TROCAR &&
             configs.tiposCartas[
-                requeriments.choosedCardType as keyof typeof configs.tiposCartas
+                requeriments.cardType as keyof typeof configs.tiposCartas
             ].quantidadeTrocar === 2
         )
             return undefined;

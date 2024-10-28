@@ -114,7 +114,7 @@ export default function GameView({
     socket.on("gameActionError", (message: string) => {
       newToaster(message);
     });
-  
+
     socket.on("updatePlayer", (newGameState: GameState) => {
       changeGameState(newGameState);
     });

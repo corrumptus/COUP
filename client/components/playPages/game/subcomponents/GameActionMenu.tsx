@@ -17,10 +17,10 @@ export enum MenuTypes {
 
 export type ActionRequeriments = {
   action?: Action,
-  choosedCardType?: Card,
-  choosedSelfCard?: number,
+  cardType?: Card,
+  selfCard?: number,
   target?: string,
-  choosedTargetCard?: number
+  targetCard?: number
 }
 
 export default function GameActionMenu({
@@ -139,7 +139,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.DUQUE });
+                performChange({ cardType: Card.DUQUE });
               }}
             />
           }
@@ -149,7 +149,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.CAPITAO });
+                performChange({ cardType: Card.CAPITAO });
               }}
             />
           }
@@ -159,7 +159,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.ASSASSINO });
+                performChange({ cardType: Card.ASSASSINO });
               }}
             />
           }
@@ -169,7 +169,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.CONDESSA });
+                performChange({ cardType: Card.CONDESSA });
               }}
             />
           }
@@ -179,7 +179,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.EMBAIXADOR });
+                performChange({ cardType: Card.EMBAIXADOR });
               }}
             />
           }
@@ -189,7 +189,7 @@ export default function GameActionMenu({
               customStyle="hover:scale-110 cursor-pointer"
               onClick={e => {
                 e.stopPropagation();
-                performChange({ choosedCardType: Card.INQUISIDOR });
+                performChange({ cardType: Card.INQUISIDOR });
               }}
             />
           }
@@ -208,7 +208,7 @@ export default function GameActionMenu({
             card={gameState.player.cards[0].card}
             onClick={e => {
               e.stopPropagation();
-              performChange({ choosedSelfCard: 0 });
+              performChange({ selfCard: 0 });
             }}
           />
         }
@@ -218,7 +218,7 @@ export default function GameActionMenu({
             card={gameState.player.cards[1].card}
             onClick={e => {
               e.stopPropagation();
-              performChange({ choosedSelfCard: 1 });
+              performChange({ selfCard: 1 });
             }}
           />
         }
@@ -235,7 +235,7 @@ export default function GameActionMenu({
           customStyle="hover:scale-110 cursor-pointer"
           onClick={e => {
             e.stopPropagation();
-            performChange({ choosedTargetCard: 0 });
+            performChange({ targetCard: 0 });
           }}
         />
         <InfluenceCard
@@ -243,7 +243,7 @@ export default function GameActionMenu({
           customStyle="hover:scale-110 cursor-pointer"
           onClick={e => {
             e.stopPropagation();
-            performChange({ choosedTargetCard: 1 });
+            performChange({ targetCard: 1 });
           }}
         />
       </div>

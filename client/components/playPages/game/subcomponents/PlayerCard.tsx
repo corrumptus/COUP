@@ -76,7 +76,7 @@ export default function PlayerCard({
           customStyle={`cursor-pointer${player.cards[0].isDead ? " brightness-50" : ""} hover:scale-110`}
           onClick={() => performChange({
             target: player.name,
-            choosedTargetCard: 0,
+            targetCard: 0,
             goTo: MenuTypes.ATTACK
           })}
         />
@@ -85,7 +85,7 @@ export default function PlayerCard({
           customStyle={`cursor-pointer${player.cards[1].isDead ? " brightness-50" : ""} hover:scale-110`}
           onClick={() => performChange({
             target: player.name,
-            choosedTargetCard: 1,
+            targetCard: 1,
             goTo: MenuTypes.ATTACK
           })}
         />
