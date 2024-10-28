@@ -41,10 +41,7 @@ export default function GamePcFooter({
         />
         <button
           className="bg-red-800 aspect-square p-2 rounded-full border-4 border-gray-800 hover:border-slate-500 font-bold"
-          onClick={() => performChange({
-            action: Action.TROCAR,
-            goTo: MenuTypes.CARD_CHOOSER
-          })}
+          onClick={() => performChange({ action: Action.TROCAR })}
         >
           Trocar
         </button>
