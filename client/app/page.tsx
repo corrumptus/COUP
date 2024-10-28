@@ -26,7 +26,7 @@ export default function Home() {
           <LobbysView closeView={() => setServersVisibility(false)} />
         }
         {hasSessionCode ?
-          <button className="home_button" onClick={() => router.push("/jogar/-1")}>Reconecater</button>
+          <button className="home_button" onClick={() => router.push("/jogar/-1")}>Reconectar</button>
           :
           <button className="home_button" onClick={() => setServersVisibility(true)}>Jogar</button>
         }
