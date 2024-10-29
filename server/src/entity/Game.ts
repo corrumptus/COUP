@@ -129,6 +129,10 @@ export default class Game {
         return this.turns.at(index);
     }
 
+    getLastTurn(): Turn {
+        return this.turns.at(-1) as Turn;
+    }
+
     removeLastTurn() {
         const lastTurn = this.turns[this.turns.length - 1];
 
@@ -139,6 +143,7 @@ export default class Game {
             return;
 
         this.turns.pop();
+        this.currentPlayer--;
     }
 
     getState() {

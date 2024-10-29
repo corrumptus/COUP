@@ -28,6 +28,9 @@ export default class ActionService {
 
         const turn = ActionValidator.getCorrectTurn(game, action);
 
+        if (turn !== game.getLastTurn())
+            game.removeLastTurn();
+
         const player = turn.getPlayer();
 
         const target = (

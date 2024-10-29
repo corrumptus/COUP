@@ -413,13 +413,16 @@ export default class ActionValidator {
     }
 
     static getCorrectTurn(game: Game, action: Action): Turn {
-        const lastTurn = game.getTurn(-1) as Turn;
+        const lastTurn = game.getLastTurn();
         const preLastTurn = game.getTurn(-2);
 
-        if (preLastTurn === undefined)
-            return lastTurn;
-
-        if (!preLastTurn.isfinished && ActionValidator.isDefenseAction(action))
+        if (
+            preLastTurn !== undefined
+            &&
+            !preLastTurn.isfinished
+            &&
+            ActionValidator.isDefenseAction(action)
+        )
             return preLastTurn;
 
         return lastTurn;
