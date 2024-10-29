@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { COUPSocket } from "@utils/socketAPI";
+import { COUPSocket } from "@types/socket";
 
 export default function Player({
   name,

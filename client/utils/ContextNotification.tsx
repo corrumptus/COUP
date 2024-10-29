@@ -1,4 +1,4 @@
-import { Action } from "@pages/GameView";
+import { Action } from "@types/game";
 
 function ContextNotification({
   message,

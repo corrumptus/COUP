@@ -1,4 +1,5 @@
-import { COUPSocket, Config } from "@utils/socketAPI";
+import Config from "@types/config";
+import { COUPSocket } from "@types/socket";
 
 export default function Configuracoes({
   configs,

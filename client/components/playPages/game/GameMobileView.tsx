@@ -1,14 +1,18 @@
 import Image from "next/image";
 import { useState } from "react";
-import { GameState } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu from "@components/GameActionMenu";
 import GameMobileMenu from "@components/GameMobileMenu";
 import Players from "@components/Players";
 import NextPerson from "@components/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { ChangeRequest } from "@utils/UIChanger";
+import { GameState } from "@types/game";
+import {
+  ActionRequeriments,
+  ChangeRequest,
+  MenuTypes
+} from "@types/gameUI";
 
 export default function GameMobileView({
   isDiffsVisible,

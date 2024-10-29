@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Player } from "@pages/GameView";
 import PlayerCard from "@components/PlayerCard";
-import { ChangeRequest } from "@utils/UIChanger";
+import { EnemyPlayer } from "@types/game";
+import { ChangeRequest } from "@types/gameUI";
 
 export default function Players({
   players,
   performChange
 }: {
-  players: Omit<Player, "state">[],
+  players: EnemyPlayer[],
   performChange: (changeRequest: ChangeRequest) => void
 }) {
   const [ isMouseDown, setIsMouseDown ] = useState(false);

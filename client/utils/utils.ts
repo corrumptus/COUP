@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Action, Card, PlayerState } from "@pages/GameView";
-import { MenuTypes } from "@components/GameActionMenu";
-import { Config } from "@utils/socketAPI";
+import Config from "@types/config";
+import { Action, Card, PlayerState } from "@types/game";
+import { MenuTypes } from "@types/gameUI";
+import { Differ } from "@types/utils";
 
 export interface CardColors {
     cardColor: string
@@ -107,10 +108,6 @@ export function useDeviceWidth() {
     }, []);
 
     return width
-}
-
-export type Differ<T> = {
-    [P in keyof T]?: T[P] extends object ? Differ<T[P]> : [T[P], T[P]];
 }
 
 export function objectDiff<T>(base: T, differ: T): Differ<T> {

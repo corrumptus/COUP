@@ -2,98 +2,11 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
-import { COUPSocket, Config } from "@utils/socketAPI";
 import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
 import { newToaster } from "@utils/Toasters";
-
-export enum Religion {
-  PROTESTANTE = "PROTESTANTE",
-  CATOLICA = "CATOLICA"
-}
-
-export enum Card {
-  DUQUE = "duque",
-  CAPITAO = "capitao",
-  ASSASSINO = "assassino",
-  CONDESSA = "condessa",
-  EMBAIXADOR = "embaixador",
-  INQUISIDOR = "inquisidor"
-}
-
-export enum Action {
-  RENDA = "renda",
-  AJUDA_EXTERNA = "ajudaExterna",
-  GOLPE_ESTADO = "golpeEstado",
-  TAXAR = "taxar",
-  ASSASSINAR = "assassinar",
-  EXTORQUIR = "extorquir",
-  TROCAR = "trocar",
-  INVESTIGAR = "investigar",
-  TROCAR_PROPRIA_RELIGIAO = "trocarPropriaReligiao",
-  TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
-  CORRUPCAO = "corrupcao",
-  CONTESTAR = "contestar",
-  BLOQUEAR = "bloquear",
-  CONTINUAR = "continuar"
-}
-
-export enum PlayerState {
-  WAITING_TURN = "waitingTurn",
-  THINKING = "thinking",
-  WAITING_REPLY = "waitingReply",
-  BEING_ATTACKED = "beingAttacked",
-  INVESTIGATING = "investigating",
-  BEING_BLOCKED = "beingBlocked",
-  NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
-}
-
-export type Player = {
-  name: string,
-  cards: { card: Card | undefined, isDead: boolean }[],
-  money: number,
-  religion?: Religion,
-  state: PlayerState
-}
-
-export enum ContextType {
-  INVESTIGATING,
-  BEING_ATTACKED,
-  OBSERVING
-}
-
-export type GameState = {
-  player: Player,
-  game: {
-    players: Omit<Player, "state">[],
-    currentPlayer: string,
-    asylum: number,
-    configs: Config
-  },
-  context: {
-    type: ContextType.INVESTIGATING,
-    card: Card,
-    target: string,
-    investigatedCard: Card,
-    targetCard: number
-  } | {
-    type: ContextType.BEING_ATTACKED,
-    attacker: string,
-    action: Action,
-    card: Card,
-    attackedCard?: number,
-    previousAction?: Action,
-    preBlockAction?: Action
-  } | {
-    type: ContextType.OBSERVING,
-    attacker: string,
-    action?: Action,
-    card?: Card,
-    target?: string,
-    attackedCard?: number,
-    isInvestigating: boolean
-  }
-}
+import { COUPSocket } from "@types/socket";
+import { EnemyPlayer, GameState } from "@types/game";
 
 export default function GameView({
   gameState,
@@ -119,7 +32,7 @@ export default function GameView({
       changeGameState(newGameState);
     });
 
-    socket.on("addPlayer", (player: Omit<Player, "state">) => {
+    socket.on("addPlayer", (player: EnemyPlayer) => {
       changeGameState(prevGameState => {
         const newGameState: GameState = JSON.parse(JSON.stringify(prevGameState));
 

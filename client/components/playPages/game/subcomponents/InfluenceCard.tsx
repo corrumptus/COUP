@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { MouseEventHandler, useEffect, useState } from "react";
-import { Card } from "@pages/GameView";
+import { Card } from "@types/game";
 
 export default function InfluenceCard({
   card,

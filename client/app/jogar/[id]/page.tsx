@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import GameView, { GameState } from "@pages/GameView";
+import GameView from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
 import useSocket from "@utils/socketAPI";
+import { GameState } from "@types/game";
 
 export default function EntrarLobby({ params: { id } }: { params: { id: string } }) {
   const [ gameState, setGameState ] = useState<GameState>();

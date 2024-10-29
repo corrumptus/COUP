@@ -1,27 +1,11 @@
-import { Action, Card, ContextType, GameState } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
-import { ChangeRequest } from "@utils/UIChanger";
-
-export enum MenuTypes {
-  CLOSED,
-  MONEY,
-  ATTACK,
-  CARD_CHOOSER,
-  CARD_PICKING,
-  CARD_PICKING_CHANGE,
-  INVESTIGATING,
-  DEFENSE,
-  BLOCK_DEFENSE
-}
-
-export type ActionRequeriments = {
-  action?: Action,
-  cardType?: Card,
-  selfCard?: number,
-  target?: string,
-  targetCard?: number
-}
+import { Action, Card, ContextType, GameState } from "@types/game";
+import {
+  ActionRequeriments,
+  ChangeRequest,
+  MenuTypes
+} from "@types/gameUI";
 
 export default function GameActionMenu({
   type,

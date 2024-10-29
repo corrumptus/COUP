@@ -1,13 +1,17 @@
 import Image from "next/image";
-import { Action, GameState, Religion } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
-import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
+import GameActionMenu from "@components/GameActionMenu";
 import GamePcFooter from "@components/GamePcFooter";
 import Players from "@components/Players";
 import NextPerson from "@components/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { ChangeRequest } from "@utils/UIChanger";
+import { Action, GameState, Religion } from "@types/game";
+import {
+  ActionRequeriments,
+  ChangeRequest,
+  MenuTypes
+} from "@types/gameUI";
 
 export default function GamePCView({
   isDiffsVisible,

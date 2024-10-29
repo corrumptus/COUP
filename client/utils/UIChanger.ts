@@ -1,14 +1,23 @@
 "use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
-import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
-import { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
-import { Config, COUPSocket } from "@utils/socketAPI";
 import { getChoosableCards } from "@utils/utils";
 import { newToaster } from "@utils/Toasters";
 import createContextNotification from "@utils/ContextNotification";
-
-export type ChangeRequest = ActionRequeriments & { goTo?: MenuTypes };
+import Config from "@types/config";
+import {
+    Action,
+    Card,
+    ContextType,
+    EnemyPlayer,
+    GameState
+ } from "@types/game";
+import {
+    ActionRequeriments,
+    ChangeRequest,
+    MenuTypes
+} from "@types/gameUI";
+import { COUPSocket } from "@types/socket";
 
 export default function useUIChanger() {
     const [
@@ -267,7 +276,7 @@ function getRequestProblems(
         request.target !== undefined
         &&
         (gameState.game.players
-            .find(p => p.name === request.target) as Omit<Player, "state">
+            .find(p => p.name === request.target) as EnemyPlayer
         ).cards
             .filter(c => !c.isDead)
             .length === 0
@@ -287,7 +296,7 @@ function getRequestProblems(
         request.targetCard !== undefined
         &&
         (gameState.game.players
-            .find(p => p.name === request.target) as Omit<Player, "state">)
+            .find(p => p.name === request.target) as EnemyPlayer)
             .cards[request.targetCard].isDead
     )
         return "A carta escolhida está morta";
@@ -364,7 +373,7 @@ function getRequestProblems(
         ).length === 1
         &&
         (gameState.game.players
-            .find(p => p.name === request.target) as Omit<Player, "state">
+            .find(p => p.name === request.target) as EnemyPlayer
         ).money <
         gameState.game.configs.tiposCartas[
             getChoosableCards(
@@ -385,7 +394,7 @@ function getRequestProblems(
         request.cardType !== undefined
         &&
         (gameState.game.players
-            .find(p => p.name === curRequeriments.target) as Omit<Player, "state">)
+            .find(p => p.name === curRequeriments.target) as EnemyPlayer)
         .money <
         gameState.game.configs.tiposCartas[
             request.cardType as

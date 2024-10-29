@@ -1,16 +1,15 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
-import { MenuTypes } from "@components/GameActionMenu";
 import { CardColors, generateColorCard } from "@utils/utils";
-import { ChangeRequest } from "@utils/UIChanger";
+import { Action, EnemyPlayer, Religion } from "@types/game";
+import { ChangeRequest, MenuTypes } from "@types/gameUI";
 
 export default function PlayerCard({
   player,
   performChange
 }: {
-  player: Omit<Player, "state">,
+  player: EnemyPlayer,
   performChange: (changeRequest: ChangeRequest) => void
 }) {
   const [ colors, setColors ] = useState<CardColors>()

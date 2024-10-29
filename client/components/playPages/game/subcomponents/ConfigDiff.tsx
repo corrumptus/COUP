@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Config } from "@utils/socketAPI";
-import { Differ } from "@utils/utils";
+import Config from "@types/config";
+import { Differ, Converter } from "@types/utils";
 
 const COUPConfigToText = {
   moedasIniciais: "Moedas iniciais",
@@ -125,10 +125,6 @@ const COUPConfigToText = {
       bloquearInvestigar: "Bloquear investigar(Inquisidor)",
     }
   }
-}
-
-type Converter<T> = {
-  [P in keyof T]: T[P] extends object ? Converter<T[P]> : string;
 }
 
 function diffsToString<T>(diff: Differ<T>, converter: Converter<T>): string[] {
