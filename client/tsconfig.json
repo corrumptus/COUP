@@ -18,22 +18,22 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
       "@pages/*": [
         "./components/home/*",
         "./components/form/*",
         "./components/playPages/lobby/*",
-        "./components/playPages/game/*",
+        "./components/playPages/game/*"
       ],
       "@components/*": [
         "./components/home/subcomponents/*",
         "./components/form/subcomponents/*",
         "./components/playPages/lobby/subcomponents/*",
-        "./components/playPages/game/subcomponents/*",
+        "./components/playPages/game/subcomponents/*"
       ],
       "@utils/*": ["./utils/*"],
       "@types/*": ["./types/*"]
-    }
+    },
+    "target": "ES2017"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
