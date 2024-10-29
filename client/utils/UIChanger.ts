@@ -141,7 +141,8 @@ function performUIChange(
         emitAction(
             socket,
             gameState.game.configs,
-            newRequeriments
+            newRequeriments,
+            gameState.player.name
         );
 
         return [ MenuTypes.CLOSED, {} ];
@@ -575,7 +576,8 @@ function contestableActionNeedsSelfCard(previousAction: Action, preBlockAction?:
 function emitAction(
     socket: COUPSocket,
     configs: Config,
-    requeriments: ActionRequeriments
+    requeriments: ActionRequeriments,
+    playerName: string
 ) {
     const infos = [
         requeriments.action,
@@ -586,13 +588,24 @@ function emitAction(
     ]
     .map((info, i) => {
         if (
-            i === 4 &&
-            requeriments.action === Action.TROCAR &&
+            i === 4
+            &&
+            requeriments.action === Action.TROCAR
+            &&
             configs.tiposCartas[
                 requeriments.cardType as keyof typeof configs.tiposCartas
             ].quantidadeTrocar === 2
         )
             return undefined;
+
+        if (
+            i === 3
+            &&
+            requeriments.action === Action.TROCAR
+            &&
+            requeriments.target === undefined
+        )
+            return playerName;
 
         return info;
     })
