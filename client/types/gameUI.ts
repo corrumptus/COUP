@@ -1,3 +1,5 @@
+import { Action, Card } from "@types/game";
+
 export enum MenuTypes {
     CLOSED,
     MONEY,
