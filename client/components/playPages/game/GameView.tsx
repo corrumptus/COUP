@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
 import { COUPSocket, Config } from "@utils/socketAPI";

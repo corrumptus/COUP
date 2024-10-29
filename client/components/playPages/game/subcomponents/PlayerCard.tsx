@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Action, Player, Religion } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { MenuTypes } from "@components/GameActionMenu";

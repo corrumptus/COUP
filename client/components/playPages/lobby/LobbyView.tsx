@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { GameState } from "@pages/GameView";
 import Player from "@components/Player";
 import Configuracoes from "@components/Configuracoes";

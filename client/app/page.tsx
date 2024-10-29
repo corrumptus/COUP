@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Header from "@pages/Header";
 import LobbysView from "@pages/LobbysView";
 import Toasters from "@utils/Toasters";

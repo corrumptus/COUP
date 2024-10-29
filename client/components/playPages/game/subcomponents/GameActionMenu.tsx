@@ -1,4 +1,4 @@
-import { Action, Card, ContextType, GameState, Player } from "@pages/GameView";
+import { Action, Card, ContextType, GameState } from "@pages/GameView";
 import InfluenceCard from "@components/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
 import { ChangeRequest } from "@utils/UIChanger";

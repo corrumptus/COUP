@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Action, Player, Religion } from "@pages/GameView";
 import CardGameInfos from "@components/CardGameInfos";
 import InfluenceCard from "@components/InfluenceCard";
-import { MenuTypes } from "@components/GameActionMenu";
 import { Config } from "@utils/socketAPI";
 import { ChangeRequest } from "@utils/UIChanger";
 

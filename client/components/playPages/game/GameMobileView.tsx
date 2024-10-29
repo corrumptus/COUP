@@ -1,5 +1,5 @@
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
 import { GameState } from "@pages/GameView";
 import ConfigDiff from "@components/ConfigDiff";
 import GameActionMenu, { ActionRequeriments, MenuTypes } from "@components/GameActionMenu";
