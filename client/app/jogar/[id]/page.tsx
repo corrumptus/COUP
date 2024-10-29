@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import GameView, { GameState } from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
@@ -9,9 +11,7 @@ export default function EntrarLobby({ params: { id } }: { params: { id: string }
   const [ gameState, setGameState ] = useState<GameState>();
   const { socket, error } = useSocket(id === "-1" ? undefined : id);
 
-  if (error !== undefined) return (
-    <div className="h-full flex justify-center items-center">{error}</div>
-  );
+  if (error !== undefined) return <Error error={error}/>
 
   return gameState === undefined ?
     <LobbyView
@@ -28,4 +28,29 @@ export default function EntrarLobby({ params: { id } }: { params: { id: string }
       socket={socket}
       changeGameState={setGameState}
     />
+}
+
+function Error({ error }: { error: string }) {
+  const router = useRouter();
+
+  return (
+    <div className="h-full flex justify-center items-center">
+      <div
+        className="absolute top-0 left-0 flex gap-3"
+        onClick={() => {
+          localStorage.removeItem("coup-sessionCode")
+          router.push("/");
+        }}
+      >
+        <Image
+          src="/coup-logo.png"
+          alt="logo"
+          width={50}
+          height={50}
+        />
+        <span>Sair</span>
+      </div>
+      {error}
+    </div>
+  );
 }
