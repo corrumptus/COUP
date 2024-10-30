@@ -143,7 +143,8 @@ export default class Game {
             return;
 
         this.turns.pop();
-        this.currentPlayer--;
+        this.currentPlayer = (this.currentPlayer - 1 + this.nonKilledPlayers.length)
+            % this.nonKilledPlayers.length;
     }
 
     getState() {
