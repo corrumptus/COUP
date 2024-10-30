@@ -54,7 +54,7 @@ export default function GameActionMenu({
         >
           <h4>Taxar</h4>
         </div>
-        {gameState.game.configs.religiao &&
+        {gameState.game.configs.religiao.reforma &&
           <div
             className={`${gameState.game.asylum === 0 && "bg-neutral-500"} ${optionStyles}`}
             onClick={e => {
