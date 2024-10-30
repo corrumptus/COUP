@@ -7,7 +7,7 @@ import { COUPSocket } from "@type/socket";
 import { Differ } from "@type/utils";
 
 export default function useSocket(id?: string) {
-  const [ error, setError ] = useState<string | undefined>("");
+  const [ error, setError ] = useState<string | undefined>("Loading...");
   const socketRef = useRef<COUPSocket | undefined>(undefined);
 
   useEffect(() => {
@@ -23,8 +23,6 @@ export default function useSocket(id?: string) {
   }, []);
 
   useEffect(() => {
-    return;
-
     if (socketRef.current !== undefined)
       return;
 

@@ -37,7 +37,7 @@ function Error({ error }: { error: string }) {
   return (
     <div className="h-full flex justify-center items-center">
       <div
-        className="absolute top-0 left-0 flex gap-3"
+        className="absolute top-2 left-2 flex gap-3 items-center cursor-pointer"
         onClick={() => {
           localStorage.removeItem("coup-sessionCode")
           router.push("/");
@@ -49,7 +49,7 @@ function Error({ error }: { error: string }) {
           width={50}
           height={50}
         />
-        <span>Sair</span>
+        <span>Voltar</span>
       </div>
       {error}
     </div>
