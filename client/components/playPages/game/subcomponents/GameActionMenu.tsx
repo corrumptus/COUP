@@ -56,7 +56,7 @@ export default function GameActionMenu({
         </div>
         {gameState.game.configs.religiao &&
           <div
-            className={optionStyles}
+            className={`${gameState.game.asylum === 0 && "bg-neutral-500"} ${optionStyles}`}
             onClick={e => {
               e.stopPropagation();
               performChange({ action: Action.CORRUPCAO });
