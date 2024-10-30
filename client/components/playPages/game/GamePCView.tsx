@@ -6,12 +6,12 @@ import Players from "@components/Players";
 import NextPerson from "@components/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { Action, GameState, Religion } from "@types/game";
+import { Action, GameState, Religion } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,
   MenuTypes
-} from "@types/gameUI";
+} from "@type/gameUI";
 
 export default function GamePCView({
   isDiffsVisible,

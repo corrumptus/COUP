@@ -1,4 +1,4 @@
-import Config from "@types/config";
+import Config from "@type/config";
 
 export enum Religion {
     PROTESTANTE = "PROTESTANTE",

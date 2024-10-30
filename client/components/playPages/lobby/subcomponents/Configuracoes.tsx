@@ -1,5 +1,5 @@
-import Config from "@types/config";
-import { COUPSocket } from "@types/socket";
+import Config from "@type/config";
+import { COUPSocket } from "@type/socket";
 
 export default function Configuracoes({
   configs,

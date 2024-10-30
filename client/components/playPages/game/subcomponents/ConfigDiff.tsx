@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import Config from "@types/config";
-import { Differ, Converter } from "@types/utils";
+import Config from "@type/config";
+import { Differ, Converter } from "@type/utils";
 
 const COUPConfigToText = {
   moedasIniciais: "Moedas iniciais",

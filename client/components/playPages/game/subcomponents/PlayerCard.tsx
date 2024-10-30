@@ -2,8 +2,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfluenceCard from "@components/InfluenceCard";
 import { CardColors, generateColorCard } from "@utils/utils";
-import { Action, EnemyPlayer, Religion } from "@types/game";
-import { ChangeRequest, MenuTypes } from "@types/gameUI";
+import { Action, EnemyPlayer, Religion } from "@type/game";
+import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function PlayerCard({
   player,

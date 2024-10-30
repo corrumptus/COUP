@@ -1,9 +1,9 @@
 import Image from "next/image";
 import CardGameInfos from "@components/CardGameInfos";
 import InfluenceCard from "@components/InfluenceCard";
-import Config from "@types/config";
-import { Action, Player } from "@types/game";
-import { ChangeRequest, MenuTypes } from "@types/gameUI";
+import Config from "@type/config";
+import { Action, Player } from "@type/game";
+import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function GamePcFooter({
   player,

@@ -1,11 +1,11 @@
 import InfluenceCard from "@components/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
-import { Action, Card, ContextType, GameState } from "@types/game";
+import { Action, Card, ContextType, GameState } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,
   MenuTypes
-} from "@types/gameUI";
+} from "@type/gameUI";
 
 export default function GameActionMenu({
   type,

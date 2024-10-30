@@ -31,7 +31,7 @@
         "./components/playPages/game/subcomponents/*"
       ],
       "@utils/*": ["./utils/*"],
-      "@types/*": ["./types/*"]
+      "@type/*": ["./type/*"]
     },
     "target": "ES2017"
   },

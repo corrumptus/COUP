@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { newToaster } from "@utils/Toasters";
-import { Lobby } from "@types/lobby";
+import { Lobby } from "@type/lobby";
 
 export default function LobbysView({
   closeView

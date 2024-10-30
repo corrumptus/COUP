@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { objectDiff } from "@utils/utils";
-import Config from "@types/config";
-import { COUPSocket } from "@types/socket";
-import { Differ } from "@types/utils";
+import Config from "@type/config";
+import { COUPSocket } from "@type/socket";
+import { Differ } from "@type/utils";
 
 export default function useSocket(id?: string) {
   const [ error, setError ] = useState<string | undefined>("");
@@ -23,6 +23,8 @@ export default function useSocket(id?: string) {
   }, []);
 
   useEffect(() => {
+    return;
+
     if (socketRef.current !== undefined)
       return;
 

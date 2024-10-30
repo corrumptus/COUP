@@ -1,4 +1,4 @@
-import { Action, Card } from "@types/game";
+import { Action, Card } from "@type/game";
 
 export enum MenuTypes {
     CLOSED,

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Config from "@types/config";
-import { Action, Card, PlayerState } from "@types/game";
-import { MenuTypes } from "@types/gameUI";
-import { Differ } from "@types/utils";
+import Config from "@type/config";
+import { Action, Card, PlayerState } from "@type/game";
+import { MenuTypes } from "@type/gameUI";
+import { Differ } from "@type/utils";
 
 export interface CardColors {
     cardColor: string

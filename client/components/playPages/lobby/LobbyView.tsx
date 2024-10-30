@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Player from "@components/Player";
 import Configuracoes from "@components/Configuracoes";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import { GameState } from "@types/game";
-import LobbyState from "@types/lobby";
-import { COUPSocket } from "@types/socket";
+import { GameState } from "@type/game";
+import LobbyState from "@type/lobby";
+import { COUPSocket } from "@type/socket";
 
 export default function LobbyView({
   initGame,

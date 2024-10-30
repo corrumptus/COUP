@@ -1,9 +1,9 @@
 import Image from "next/image";
 import CardGameInfos from "@components/CardGameInfos";
 import InfluenceCard from "@components/InfluenceCard";
-import Config from "@types/config";
-import { Action, Player, Religion } from "@types/game";
-import { ChangeRequest } from "@types/gameUI";
+import Config from "@type/config";
+import { Action, Player, Religion } from "@type/game";
+import { ChangeRequest } from "@type/gameUI";
 
 export default function GameMobileMenu({
   player,

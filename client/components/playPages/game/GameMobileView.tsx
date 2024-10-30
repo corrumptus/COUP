@@ -7,12 +7,12 @@ import Players from "@components/Players";
 import NextPerson from "@components/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { GameState } from "@types/game";
+import { GameState } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,
   MenuTypes
-} from "@types/gameUI";
+} from "@type/gameUI";
 
 export default function GameMobileView({
   isDiffsVisible,
