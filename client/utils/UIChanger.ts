@@ -124,7 +124,13 @@ function performUIChange(
             &&
             gameState.context.action !== undefined
         ) {
-            newToaster(contextToNotification(gameState.context, attackNotifiedAction));
+            newToaster(
+                contextToNotification(
+                    gameState.context,
+                    gameState.game.configs,
+                    attackNotifiedAction
+                )
+            );
         }
 
         return [ menuType, requeriments ];
@@ -179,6 +185,7 @@ function performUIChange(
 
 function contextToNotification(
     context: GameState["context"],
+    configs: Config,
     attackNotifiedAction: (action: Action.BLOQUEAR | Action.CONTESTAR) => void
 ): JSX.Element {
     if (context.type !== ContextType.OBSERVING)
@@ -204,12 +211,12 @@ function contextToNotification(
 
     if (context.action === Action.AJUDA_EXTERNA) {
         message = `O player ${context.attacker} pediu ajuda externa`;
-        blockAble = true;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
     }
 
     if (context.action === Action.TAXAR) {
         message = `O player ${context.attacker} taxou o banco`;
-        blockAble = true;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
@@ -220,19 +227,19 @@ function contextToNotification(
 
     if (context.action === Action.EXTORQUIR) {
         message = `O player ${context.attacker} extorquiu ${context.target} com ${context.card}`;
-        blockAble = true;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
     if (context.action === Action.ASSASSINAR) {
         message = `O player ${context.attacker} assassinou uma carta de ${context.target} com ${context.card}`;
-        blockAble = true;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
     if (context.action === Action.INVESTIGAR) {
         message = `O player ${context.attacker} quer ver uma carta de ${context.target} com ${context.card}`;
-        blockAble = true;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
@@ -244,7 +251,7 @@ function contextToNotification(
             `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta com ${context.card}`
             :
             `O player ${context.attacker} trocou as cartas com ${context.card}`;
-        blockAble = true;
+            blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
