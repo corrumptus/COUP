@@ -18,7 +18,7 @@ export default class Lobby {
         this.gamePlayers = undefined;
         this.owner = owner;
         this.password = undefined;
-        this.configs = COUPdefaultConfigs;
+        this.configs = JSON.parse(JSON.stringify(COUPdefaultConfigs));
     }
 
     addPlayer(player: Player) {
