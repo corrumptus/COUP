@@ -520,7 +520,7 @@ function isActionEmitable(
         (
             (
                 !contestableActionNeedsSelfCard(
-                    gameState.context.previousAction as Action,
+                    gameState.context.action as Action,
                     gameState.context.preBlockAction
                 )
                 &&
@@ -533,7 +533,7 @@ function isActionEmitable(
             ||
             (
                 contestableActionNeedsSelfCard(
-                    gameState.context.previousAction as Action,
+                    gameState.context.action as Action,
                     gameState.context.preBlockAction
                 )
                 &&
@@ -582,9 +582,9 @@ function blockableActionNeedsSelfCard(blockableAction: Action): boolean {
     return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(blockableAction);
 }
 
-function contestableActionNeedsSelfCard(previousAction: Action, preBlockAction?: Action): boolean {
-    if (previousAction !== Action.BLOQUEAR)
-        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(previousAction);
+function contestableActionNeedsSelfCard(action: Action, preBlockAction?: Action): boolean {
+    if (action !== Action.BLOQUEAR)
+        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
 
     return preBlockAction === Action.AJUDA_EXTERNA;
 }

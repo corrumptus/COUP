@@ -338,15 +338,27 @@ export default class ActionValidator {
         selfCard: number | undefined,
         turn: Turn
     ) {
-        if (turn.getLastAction() !== Action.BLOQUEAR) {
-            if (
-                [Action.ASSASSINAR, Action.INVESTIGAR]
-                    .includes(turn.getLastAction() as Action)
-            )
-                return;
-        } else
-            if (turn.getFirstAction() !== Action.AJUDA_EXTERNA)
-                return;
+        if (
+            turn.getLastAction() !== Action.BLOQUEAR
+            &&
+            [
+                Action.ASSASSINAR,
+                Action.INVESTIGAR
+            ]
+                .includes(turn.getLastAction() as Action)
+        )
+            return;
+
+        if (
+            turn.getLastAction() === Action.BLOQUEAR
+            &&
+            [
+                Action.TAXAR,
+                Action.AJUDA_EXTERNA
+            ]
+                .includes(turn.getFirstAction() as Action)
+        )
+            return;
 
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
