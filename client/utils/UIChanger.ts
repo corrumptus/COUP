@@ -110,12 +110,14 @@ function performUIChange(
                 }
             ];
 
-        if (gameState.context.type === ContextType.BEING_ATTACKED) {
-            if (gameState.context.action === Action.BLOQUEAR)
-                return [ MenuTypes.BLOCK_DEFENSE, requeriments ];
-
-            return [ MenuTypes.DEFENSE, requeriments ];
-        }
+        if (gameState.context.type === ContextType.BEING_ATTACKED)
+            return [
+                gameState.context.action === Action.BLOQUEAR ?
+                    MenuTypes.BLOCK_DEFENSE
+                    :
+                    MenuTypes.DEFENSE,
+                requeriments
+            ];
 
         if (
             gameState.context.type === ContextType.OBSERVING
