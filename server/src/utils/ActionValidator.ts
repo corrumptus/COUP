@@ -338,13 +338,13 @@ export default class ActionValidator {
         selfCard: number | undefined,
         turn: Turn
     ) {
-        if (turn.getLastAction() !== Action.BLOQUEAR)
+        if (turn.getLastAction() !== Action.BLOQUEAR) {
             if (
                 [Action.ASSASSINAR, Action.INVESTIGAR]
                     .includes(turn.getLastAction() as Action)
             )
                 return;
-        else
+        } else
             if (turn.getFirstAction() !== Action.AJUDA_EXTERNA)
                 return;
 
