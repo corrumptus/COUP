@@ -3,8 +3,9 @@ import { useState } from "react";
 import ConfigDiff from "@components/game/ConfigDiff";
 import GameActionMenu from "@components/game/GameActionMenu";
 import GameMobileMenu from "@components/game/GameMobileMenu";
-import Players from "@components/game/Players";
+import Header from "@components/game/Header";
 import NextPerson from "@components/game/NextPerson";
+import Players from "@components/game/Players";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
 import { GameState } from "@type/game";
@@ -39,29 +40,19 @@ export default function GameMobileView({
 
   return (
     <div className="w-full h-full flex flex-col">
-      <header className="flex justify-between text-2xl gap-2 p-1.5 pr-2 bg-[#eaaf73]">
-        <div
-          className="flex items-center gap-3 cursor-pointer"
-          onClick={leave}
-        >
+      <Header
+        leave={leave}
+        children={
           <Image
-            src="/sair-lobby.png"
-            alt="seta para a esquerda"
-            className="hover:drop-shadow-lg"
+            src="/menu-hamburguer-icon.png"
+            alt="menu hamburguer"
+            className=""
+            onClick={() => setIsMobileMenuOpen(is => !is)}
             width={40}
             height={40}
           />
-          <span>Sair</span>
-        </div>
-        <Image
-          src="/menu-hamburguer-icon.png"
-          alt="menu hamburguer"
-          className=""
-          onClick={() => setIsMobileMenuOpen(is => !is)}
-          width={40}
-          height={40}
-        />
-      </header>
+        }
+      />
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         <Toasters />
         {isDiffsVisible &&
