@@ -97,8 +97,8 @@ const config: Config = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^@pages/(.*)$': '<rootDir>/components/**/$1',
-    '^@components/(.*)$': '<rootDir>/components/**/subcomponents/$1',
+    '^@pages/(.*)$': '<rootDir>/pages/$1',
+    '^@components/(.*)$': '<rootDir>/components/$1',
     '^@utils/(.*)$': '<rootDir>/utils/$1',
     '^@type/(.*)$': '<rootDir>/type/$1',
   },
@@ -157,7 +157,7 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
