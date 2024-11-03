@@ -1,6 +1,6 @@
 import Image from "next/image";
-import CardGameInfos from "@components/CardGameInfos";
-import InfluenceCard from "@components/InfluenceCard";
+import CardGameInfos from "./CardGameInfos";
+import InfluenceCard from "../../InfluenceCard";
 import Config from "@type/config";
 import { Action, Player } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";

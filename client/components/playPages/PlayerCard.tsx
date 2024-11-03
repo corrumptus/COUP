@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import InfluenceCard from "@components/InfluenceCard";
+import InfluenceCard from "./InfluenceCard";
 import { CardColors, generateColorCard } from "@utils/utils";
 import { Action, EnemyPlayer, Religion } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";

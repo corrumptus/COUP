@@ -1,4 +1,4 @@
-import InfluenceCard from "@components/InfluenceCard";
+import InfluenceCard from "../../InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
 import { Action, Card, ContextType, GameState } from "@type/game";
 import {

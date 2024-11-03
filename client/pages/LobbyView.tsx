@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Player from "@components/Player";
-import Configuracoes from "@components/Configuracoes";
+import Player from "@pages/Player";
+import Configuracoes from "@pages/Configuracoes";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { GameState } from "@type/game";
 import LobbyState from "@type/lobby";
