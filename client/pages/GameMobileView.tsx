@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { useState } from "react";
-import ConfigDiff from "../components/playPages/ConfigDiff";
-import GameActionMenu from "@components/GameActionMenu";
-import GameMobileMenu from "@components/GameMobileMenu";
-import Players from "../components/playPages/Players";
-import NextPerson from "../components/playPages/NextPerson";
+import ConfigDiff from "@components/game/ConfigDiff";
+import GameActionMenu from "@components/game/GameActionMenu";
+import GameMobileMenu from "@components/game/GameMobileMenu";
+import Players from "@components/game/Players";
+import NextPerson from "@components/game/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
 import { GameState } from "@type/game";

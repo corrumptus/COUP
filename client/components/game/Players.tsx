@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PlayerCard from "./PlayerCard";
+import PlayerCard from "@components/game/PlayerCard";
 import { EnemyPlayer } from "@type/game";
 import { ChangeRequest } from "@type/gameUI";
 

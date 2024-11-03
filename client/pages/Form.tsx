@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import FormInput from "@pages/FormInput";
+import FormInput from "@components/form/FormInput";
 
 export default function Form({
   type,

@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import GameMobileView from "./GameMobileView";
-import GamePCView from "./GamePCView";
+import GameMobileView from "@pages/GameMobileView";
+import GamePCView from "@pages/GamePCView";
 import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
 import { newToaster } from "@utils/Toasters";

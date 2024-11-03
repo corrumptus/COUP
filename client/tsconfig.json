@@ -18,18 +18,8 @@
       }
     ],
     "paths": {
-      "@pages/*": [
-        "./components/home/*",
-        "./components/form/*",
-        "./components/playPages/lobby/*",
-        "./components/playPages/game/*"
-      ],
-      "@components/*": [
-        "./components/home/subcomponents/*",
-        "./components/form/subcomponents/*",
-        "./components/playPages/lobby/subcomponents/*",
-        "./components/playPages/game/subcomponents/*"
-      ],
+      "@pages/*": ["./pages/*"],
+      "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@type/*": ["./type/*"]
     },

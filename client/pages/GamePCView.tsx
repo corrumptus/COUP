@@ -1,9 +1,9 @@
 import Image from "next/image";
-import ConfigDiff from "../components/playPages/ConfigDiff";
-import GameActionMenu from "@components/GameActionMenu";
-import GamePcFooter from "@components/GamePcFooter";
-import Players from "../components/playPages/Players";
-import NextPerson from "../components/playPages/NextPerson";
+import ConfigDiff from "@components/game/ConfigDiff";
+import GameActionMenu from "@components/game/GameActionMenu";
+import GamePcFooter from "@components/game/GamePcFooter";
+import Players from "@components/game/Players";
+import NextPerson from "@components/game/NextPerson";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
 import { Action, GameState, Religion } from "@type/game";
