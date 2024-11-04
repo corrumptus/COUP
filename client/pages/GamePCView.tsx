@@ -36,7 +36,11 @@ export default function GamePCView({
   leave: () => void
 }) {
   return (
-    <div className="w-full h-full flex flex-col">
+    <div
+      className="w-full h-full flex flex-col"
+      id="gameView"
+      data-testid="gameView"
+    >
       <Header leave={leave} />
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         <Toasters />

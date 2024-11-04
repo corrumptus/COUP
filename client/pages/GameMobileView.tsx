@@ -39,14 +39,17 @@ export default function GameMobileView({
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div
+      className="w-full h-full flex flex-col"
+      id="gameView"
+      data-testid="gameView"
+    >
       <Header
         leave={leave}
         children={
           <Image
             src="/menu-hamburguer-icon.png"
             alt="menu hamburguer"
-            className=""
             onClick={() => setIsMobileMenuOpen(is => !is)}
             width={40}
             height={40}
