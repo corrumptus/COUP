@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Header from "@pages/Header";
-import LobbysView from "@pages/LobbysView";
+import Header from "@components/home/Header";
+import LobbysView from "@components/home/LobbysView";
 import Toasters from "@utils/Toasters";
 
 export default function Home() {
