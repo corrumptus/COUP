@@ -92,22 +92,19 @@ export function generateColorCard(isDead: boolean = false): CardColors {
 }
 
 export function useDeviceWidth() {
-    const [width, setWidth] = useState(0)
+    const [width, setWidth] = useState(() => window.screen.width);
 
     function resize() {
-        setWidth(window.screen.width)
+        setWidth(window.screen.width);
     }
 
     useEffect(() => {
-        resize();
-
         window.addEventListener('resize', resize);
 
-        return () =>
-            window.removeEventListener('resize', resize);
+        return () => window.removeEventListener('resize', resize);
     }, []);
 
-    return width
+    return width;
 }
 
 export function objectDiff<T>(base: T, differ: T): Differ<T> {
