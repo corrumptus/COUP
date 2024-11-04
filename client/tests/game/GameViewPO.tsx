@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import GameView from "@pages/GameView";
 import { GameState } from "@type/game";
 import { io, Socket } from "socket.io-client";
@@ -23,5 +23,9 @@ export default class GameViewPO {
         changeGameState={jest.fn()}
       />
     );
+  }
+
+  html() {
+    return screen.findByTestId("gameView");
   }
 }
