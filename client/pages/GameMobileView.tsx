@@ -59,13 +59,6 @@ export default function GameMobileView({
         }
       />
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
-        <Toasters />
-        {isDiffsVisible &&
-          <ConfigDiff
-            configDiff={configDiff(gameState.game.configs)}
-            disappear={closeDiffs}
-          />
-        }
         <GameMobileMenu
           player={gameState.player}
           performChange={performChange}
@@ -76,6 +69,16 @@ export default function GameMobileView({
           players={gameState.game.players}
           performChange={performChange}
         />
+        {isDiffsVisible &&
+          <ConfigDiff
+            configDiff={configDiff(gameState.game.configs)}
+            disappear={closeDiffs}
+          />
+        }
+        {isNextPersonVisible &&
+          <NextPerson person={gameState.game.currentPlayer} closeNextPerson={closeNextPerson} />
+        }
+        <Toasters />
         {menuType !== MenuTypes.CLOSED &&
           <GameActionMenu
             type={menuType}
@@ -83,9 +86,6 @@ export default function GameMobileView({
             requeriments={requeriments}
             performChange={performChange}
           />
-        }
-        {isNextPersonVisible &&
-          <NextPerson person={gameState.game.currentPlayer} closeNextPerson={closeNextPerson} />
         }
       </main>
     </div>

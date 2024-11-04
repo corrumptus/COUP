@@ -43,18 +43,11 @@ export default function GamePCView({
     >
       <Header leave={leave} />
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
-        <Toasters />
         {gameState.player.religion !== undefined &&
           <ReligionButton
             religion={gameState.player.religion}
             onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
             className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-          />
-        }
-        {isDiffsVisible &&
-          <ConfigDiff
-            configDiff={configDiff(gameState.game.configs)}
-            disappear={closeDiffs}
           />
         }
         <Players
@@ -66,6 +59,16 @@ export default function GamePCView({
           performChange={performChange}
           configs={gameState.game.configs}
         />
+        {isDiffsVisible &&
+          <ConfigDiff
+            configDiff={configDiff(gameState.game.configs)}
+            disappear={closeDiffs}
+          />
+        }
+        {isNextPersonVisible &&
+          <NextPerson person={gameState.game.currentPlayer} closeNextPerson={closeNextPerson} />
+        }
+        <Toasters />
         {menuType !== MenuTypes.CLOSED &&
           <GameActionMenu
             type={menuType}
@@ -73,9 +76,6 @@ export default function GamePCView({
             requeriments={requeriments}
             performChange={performChange}
           />
-        }
-        {isNextPersonVisible &&
-          <NextPerson person={gameState.game.currentPlayer} closeNextPerson={closeNextPerson} />
         }
       </main>
     </div>
