@@ -25,7 +25,7 @@ export default function GameActionMenu({
     <div className="flex flex-col gap-4 items-center">
       <h3 className="text-center text-2xl">Escolha uma forma de obter dinheiro</h3>
       <div className="flex gap-4">
-        <div
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -34,8 +34,8 @@ export default function GameActionMenu({
         >
           <h4>Renda</h4>
           <p>${gameState.game.configs.renda}</p>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -44,8 +44,8 @@ export default function GameActionMenu({
         >
           <h4>Ajuda Externa</h4>
           <p>${gameState.game.configs.ajudaExterna}</p>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -53,9 +53,9 @@ export default function GameActionMenu({
           }}
         >
           <h4>Taxar</h4>
-        </div>
+        </button>
         {gameState.game.configs.religiao.reforma &&
-          <div
+          <button
             className={`${gameState.game.asylum === 0 && "bg-neutral-500"} ${optionStyles}`}
             onClick={e => {
               e.stopPropagation();
@@ -64,7 +64,7 @@ export default function GameActionMenu({
           >
             <h4>Corrupção</h4>
             <p>${gameState.game.asylum}</p>
-          </div>
+          </button>
         }
       </div>
     </div>
@@ -74,7 +74,7 @@ export default function GameActionMenu({
     <div className="flex flex-col gap-4 items-center">
       <h3 className="text-center text-2xl">Escolha uma forma de atacar {requeriments.target}</h3>
       <div className="flex gap-4">
-        <div
+        <button
           className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
           onClick={e => {
             e.stopPropagation();
@@ -82,8 +82,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Assassinar</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
           onClick={e => {
             e.stopPropagation();
@@ -91,8 +91,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Investigar</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
           onClick={e => {
             e.stopPropagation();
@@ -101,7 +101,7 @@ export default function GameActionMenu({
         >
           <h4>Golpe de Estado</h4>
           <p>${gameState.game.configs.quantidadeMinimaGolpeEstado}</p>
-        </div>
+        </button>
       </div>
     </div>
   )
@@ -256,7 +256,7 @@ export default function GameActionMenu({
       }
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
       <div className="flex gap-6">
-        <div
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -264,8 +264,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Bloquear</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -273,8 +273,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Contestar</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -282,7 +282,7 @@ export default function GameActionMenu({
           }}
         >
           <h4>Aceitar</h4>
-        </div>
+        </button>
       </div>
     </div>
   )
@@ -300,7 +300,7 @@ export default function GameActionMenu({
       </h2>
       <h3 className="text-center text-2xl">Escolha a sua ação</h3>
       <div className="flex gap-6">
-        <div
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -308,8 +308,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Contestar</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -317,7 +317,7 @@ export default function GameActionMenu({
           }}
         >
           <h4>Aceitar</h4>
-        </div>
+        </button>
       </div>
     </div>
   )
@@ -331,7 +331,7 @@ export default function GameActionMenu({
       <InfluenceCard card={gameState.context.investigatedCard} />
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
       <div className="flex gap-4 items-center">
-        <div
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -339,8 +339,8 @@ export default function GameActionMenu({
           }}
         >
           <h4>Trocar</h4>
-        </div>
-        <div
+        </button>
+        <button
           className={optionStyles}
           onClick={e => {
             e.stopPropagation();
@@ -348,7 +348,7 @@ export default function GameActionMenu({
           }}
         >
           <h4>Manter</h4>
-        </div>
+        </button>
       </div>
     </div>
   )
