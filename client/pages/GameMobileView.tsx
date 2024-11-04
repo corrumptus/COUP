@@ -53,6 +53,8 @@ export default function GameMobileView({
             onClick={() => setIsMobileMenuOpen(is => !is)}
             width={40}
             height={40}
+            id="gameView-mobileMenuIcon"
+            data-testid="gameView-mobileMenuIcon"
           />
         }
       />
