@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfluenceCard from "@components/game/InfluenceCard";
+import ReligionButton from "@components/game/ReligionButton";
 import { CardColors, generateColorCard } from "@utils/utils";
-import { Action, EnemyPlayer, Religion } from "@type/game";
+import { Action, EnemyPlayer } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function PlayerCard({
@@ -25,33 +26,14 @@ export default function PlayerCard({
       <header className={`w-full text-center ${colors?.nameColor || ""} relative`}>
         {player.name}
         {player.religion !== undefined &&
-          (player.religion === Religion.PROTESTANTE ?
-            <Image
-              src="/protestante-icon.png"
-              alt="biblia"
-              title="protestante"
-              className="absolute -right-4 translate-x-[50%] -top-4 -translate-y-[50%]"
-              onClick={() => performChange({
-                action: Action.TROCAR_RELIGIAO_OUTRO,
-                target: player.name
-              })}
-              width={40}
-              height={40}
-            />
-            :
-            <Image
-              src="/catolico-icon.png"
-              alt="cruz catolica"
-              title="católico"
-              className="absolute -right-4 translate-x-[50%] -top-4 -translate-y-[50%]"
-              onClick={() => performChange({
-                action: Action.TROCAR_RELIGIAO_OUTRO,
-                target: player.name
-              })}
-              width={40}
-              height={40}
-            />
-          )
+          <ReligionButton
+            religion={player.religion}
+            onClick={() => performChange({
+              action: Action.TROCAR_RELIGIAO_OUTRO,
+              target: player.name
+            })}
+            className="absolute -right-4 translate-x-[50%] -top-4 -translate-y-[50%]"
+          />
         }
       </header>
       <p className={`w-full flex items-center justify-center gap-2 text-xl ${colors?.coinColor || ""}`}>

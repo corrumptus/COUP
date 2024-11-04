@@ -1,13 +1,13 @@
-import Image from "next/image";
 import ConfigDiff from "@components/game/ConfigDiff";
 import GameActionMenu from "@components/game/GameActionMenu";
 import GamePcFooter from "@components/game/GamePcFooter";
 import Header from "@components/game/Header";
 import NextPerson from "@components/game/NextPerson";
 import Players from "@components/game/Players";
+import ReligionButton from "@components/game/ReligionButton";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { Action, GameState, Religion } from "@type/game";
+import { Action, GameState } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,
@@ -44,28 +44,12 @@ export default function GamePCView({
       <Header leave={leave} />
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         <Toasters />
-        {gameState.player.religion && (
-          gameState.player.religion === Religion.CATOLICA ?
-            <Image
-              src="/catolico-icon.png"
-              alt="cruz católica"
-              title="católico"
-              className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
-              width={40}
-              height={40}
-            />
-            :
-            <Image
-              src="/protestante-icon.png"
-              alt="biblia"
-              title="protestante"
-              className="absolute top-0 left-0 cursor-pointer hover:scale-110"
-              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
-              width={40}
-              height={40}
-            />
-          )
+        {gameState.player.religion !== undefined &&
+          <ReligionButton
+            religion={gameState.player.religion}
+            onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
+            className="absolute top-0 left-0 cursor-pointer hover:scale-110"
+          />
         }
         {isDiffsVisible &&
           <ConfigDiff

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import CardGameInfos from "@components/game/CardGameInfos";
 import InfluenceCard from "@components/game/InfluenceCard";
+import ReligionButton from "@components/game/ReligionButton";
 import Config from "@type/config";
-import { Action, Player, Religion } from "@type/game";
+import { Action, Player } from "@type/game";
 import { ChangeRequest } from "@type/gameUI";
 
 export default function GameMobileMenu({
@@ -29,26 +30,11 @@ export default function GameMobileMenu({
             height={35}
           />
         </span>
-        {player.religion && (
-          player.religion === Religion.CATOLICA ?
-            <Image
-              src="/catolico-icon.png"
-              alt="cruz católica"
-              title="católico"
-              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
-              width={40}
-              height={40}
-            />
-            :
-            <Image
-              src="/protestante-icon.png"
-              alt="biblia"
-              title="protestante"
-              onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
-              width={40}
-              height={40}
-            />
-          )
+        {player.religion !== undefined &&
+          <ReligionButton
+            religion={player.religion}
+            onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
+          />
         }
       </div>
       <button
