@@ -17,6 +17,8 @@ export default function Players({
   return (
     <div
       className="h-full flex items-center gap-4 overflow-auto game_scrollbar"
+      id="gameView-players"
+      data-testid="gameView-players"
       onMouseLeave={() => setIsMouseDown(false)}
       onMouseUp={() => setIsMouseDown(false)}
       onMouseDown={e => {

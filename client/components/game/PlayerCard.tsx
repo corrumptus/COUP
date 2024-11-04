@@ -22,6 +22,8 @@ export default function PlayerCard({
   return (
     <div
       className={`w-auto p-4 mx-3 rounded-2xl ${colors?.cardColor || ""}`}
+      id="gameView-player"
+      data-testid="gameView-player"
     >
       <header className={`w-full text-center ${colors?.nameColor || ""} relative`}>
         {player.name}
@@ -43,6 +45,8 @@ export default function PlayerCard({
           alt="icone de menos"
           title="extorquir"
           className={`rounded-[100%] ${colors?.minusColor || ""} cursor-pointer hover:scale-110`}
+          id="gameView-extorquirButton"
+          data-testid="gameView-extorquirButton"
           onClick={() => performChange({
             action: Action.EXTORQUIR,
             target: player.name

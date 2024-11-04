@@ -410,7 +410,11 @@ export default function CardGameInfos({
   );
   
   return (
-    <div className={`h-[250px] w-[200px] p-4 bg-white rounded-2xl flex flex-col gap-1${" " + customStyles || ""}`}>
+    <div
+      className={`h-[250px] w-[200px] p-4 bg-white rounded-2xl flex flex-col gap-1${" " + customStyles || ""}`}
+      id="gameView-cardGameInfos"
+      data-testid="gameView-cardGameInfos"
+    >
       <select
         className="w-full bg-slate-400 border-none rounded-lg outline-none"
         onChange={e => setInfoType(e.target.value as InfoType)}

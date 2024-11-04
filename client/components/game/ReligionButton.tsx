@@ -17,6 +17,8 @@ export default function ReligionButton({
       alt="cruz católica"
       title="católico"
       className={className}
+      id="gameView-religion"
+      data-testid="gameView-religion"
       onClick={onClick}
       width={40}
       height={40}
@@ -27,6 +29,8 @@ export default function ReligionButton({
       alt="biblia"
       title="protestante"
       className={className}
+      id="gameView-religion"
+      data-testid="gameView-religion"
       onClick={onClick}
       width={40}
       height={40}

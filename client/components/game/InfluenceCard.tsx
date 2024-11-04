@@ -28,6 +28,8 @@ export default function InfluenceCard({
       alt="carta"
       title="duque"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -39,6 +41,8 @@ export default function InfluenceCard({
       alt="carta"
       title="duque"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -50,6 +54,8 @@ export default function InfluenceCard({
       alt="carta"
       title="duque"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -62,6 +68,8 @@ export default function InfluenceCard({
       alt="carta"
       title="capitao"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -73,6 +81,8 @@ export default function InfluenceCard({
       alt="carta"
       title="capitao"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -84,6 +94,8 @@ export default function InfluenceCard({
       alt="carta"
       title="capitao"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -96,6 +108,8 @@ export default function InfluenceCard({
       alt="carta"
       title="assassino"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -107,6 +121,8 @@ export default function InfluenceCard({
       alt="carta"
       title="assassino"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -118,6 +134,8 @@ export default function InfluenceCard({
       alt="carta"
       title="assassino"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -130,6 +148,8 @@ export default function InfluenceCard({
       alt="carta"
       title="condessa"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -141,6 +161,8 @@ export default function InfluenceCard({
       alt="carta"
       title="condessa"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -152,6 +174,8 @@ export default function InfluenceCard({
       alt="carta"
       title="condessa"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -164,6 +188,8 @@ export default function InfluenceCard({
       alt="carta"
       title="embaixador"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -175,6 +201,8 @@ export default function InfluenceCard({
       alt="carta"
       title="embaixador"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -186,6 +214,8 @@ export default function InfluenceCard({
       alt="carta"
       title="embaixador"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -198,6 +228,8 @@ export default function InfluenceCard({
       alt="carta"
       title="inquisidor"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -209,6 +241,8 @@ export default function InfluenceCard({
       alt="carta"
       title="inquisidor"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -220,6 +254,8 @@ export default function InfluenceCard({
       alt="carta"
       title="inquisidor"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}
@@ -232,6 +268,8 @@ export default function InfluenceCard({
       alt="carta"
       title="desconhecida"
       className={imageStyle}
+      id="gameView-influenceCard"
+      data-testid="gameView-influenceCard"
       onClick={onClick}
       width={cardWidth}
       height={cardHeight}

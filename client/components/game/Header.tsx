@@ -12,6 +12,8 @@ export default function Header({
       <button
         className="flex items-center gap-3 cursor-pointer"
         onClick={leave}
+        id="leave"
+        data-testid="leave"
       >
         <Image
           src="/sair-lobby.png"

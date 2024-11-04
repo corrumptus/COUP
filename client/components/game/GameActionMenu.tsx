@@ -23,7 +23,7 @@ export default function GameActionMenu({
 
   if (type === MenuTypes.MONEY) children = (
     <div className="flex flex-col gap-4 items-center">
-      <h3 className="text-center text-2xl">Escolha uma forma de conseguir dinheiro</h3>
+      <h3 className="text-center text-2xl">Escolha uma forma de obter dinheiro</h3>
       <div className="flex gap-4">
         <div
           className={optionStyles}
@@ -357,6 +357,8 @@ export default function GameActionMenu({
     <div
       className="w-full h-full flex items-center justify-center absolute bg-black/70 z-10"
       onClick={() => performChange({ goTo: MenuTypes.CLOSED })}
+      id="gameView-actionMenu"
+      data-testid="gameView-actionMenu"
     >
       <div
         className="w-[70%] h-[60%] flex items-center justify-center overflow-auto bg-stone-500 rounded-3xl"

@@ -20,6 +20,8 @@ export default function GamePcFooter({
         <button
           className="bg-[#27b127] border-green-800 border-t-[3px] border-r-[3px] rounded-tr-full aspect-square p-3 hover:scale-110 origin-bottom-left"
           onClick={() => performChange({ goTo: MenuTypes.MONEY })}
+          id="gameView-moneyButton"
+          data-testid="gameView-moneyButton"
         >
           <Image
             src="/openBank.png"
@@ -41,6 +43,8 @@ export default function GamePcFooter({
         <button
           className="bg-red-800 aspect-square p-2 rounded-full border-4 border-gray-800 hover:border-slate-500 font-bold"
           onClick={() => performChange({ action: Action.TROCAR })}
+          id="gameView-trocarButton"
+          data-testid="gameView-trocarButton"
         >
           Trocar
         </button>

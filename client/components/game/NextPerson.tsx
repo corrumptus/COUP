@@ -19,6 +19,8 @@ export default function NextPerson({
     <div
       className="w-full h-full absolute flex justify-center items-center z-[6] bg-zinc-700/50"
       onClick={close}
+      id="gameView-nextPerson"
+      data-testid="gameView-nextPerson"
     >
       <h1 className="w-[65%] text-2xl font-bold text-center bg-red-500 p-3 rounded-xl">
         {person}
