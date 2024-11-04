@@ -28,4 +28,8 @@ export default class GameViewPO {
   html() {
     return screen.findByTestId("gameView");
   }
+
+  mobileMenuIcon() {
+    return screen.findByTestId("gameView-mobileMenuIcon");
+  }
 }
