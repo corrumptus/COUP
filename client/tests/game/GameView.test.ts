@@ -103,4 +103,53 @@ describe("testing Game view game init render", () => {
             expect(text).toHaveTextContent(expectedConfigDiffs[i]);
         });
     });
+
+    it("should render correctly in the game beginning when player is the first player and default configurations in mobile view", async () => {
+        const gameView = new GameViewPO(gameInitState, 500);
+
+        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.mobileMenuIcon()).toBeInTheDocument();
+        expect(gameView.nextPerson()).toBeInTheDocument();
+        expect(gameView.nextPerson()).toHaveTextContent(playerName);
+        expect(gameView.configDiffs()).not.toBeInTheDocument();
+    });
+
+    it("should render correctly in the game beginning when player is not the first player and default configurations in mobile view", async () => {
+        const newGameState: GameState = JSON.parse(JSON.stringify(gameInitState));
+
+        newGameState.game.currentPlayer = newGameState.game.players[0].name;
+
+        const gameView = new GameViewPO(newGameState, 500);
+
+        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.mobileMenuIcon()).toBeInTheDocument();
+        expect(gameView.nextPerson()).toBeInTheDocument();
+        expect(gameView.nextPerson()).toHaveTextContent(newGameState.game.players[0].name);
+        expect(gameView.configDiffs()).not.toBeInTheDocument();
+    });
+
+    it("should render correctly in the game beginning when player is the first player and no default configurations in mobile view", async () => {
+        const newGameState: GameState = JSON.parse(JSON.stringify(gameInitState));
+
+        newGameState.game.configs.moedasIniciais++;
+        newGameState.game.configs.renda++;
+        newGameState.game.configs.ajudaExterna--;
+
+        const expectedConfigDiffs = [
+            "Moedas iniciais: 3 -> 4",
+            "Renda: 1 -> 2",
+            "Ajuda externa: 2 -> 1"
+        ];
+
+        const gameView = new GameViewPO(newGameState, 500);
+
+        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.mobileMenuIcon()).toBeInTheDocument();
+        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        expect(gameView.configDiffs()).toBeInTheDocument();
+
+        gameView.allConfigDiffTextContent().forEach((text, i) => {
+            expect(text).toHaveTextContent(expectedConfigDiffs[i]);
+        });
+    });
 });
