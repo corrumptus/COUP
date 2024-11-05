@@ -64,4 +64,18 @@ describe("testing Game view game init render", () => {
         expect(gameView.nextPerson()).toHaveTextContent(playerName);
         expect(gameView.configDiff()).not.toBeInTheDocument();
     });
+
+    it("should render correctly in the game beginning when player is not the first player and default configurations in pc view", async () => {
+        const newGameState: GameState = JSON.parse(JSON.stringify(gameInitState));
+
+        newGameState.game.currentPlayer = newGameState.game.players[0].name;
+
+        const gameView = new GameViewPO(newGameState);
+
+        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
+        expect(gameView.nextPerson()).toBeInTheDocument();
+        expect(gameView.nextPerson()).toHaveTextContent(newGameState.game.players[0].name);
+        expect(gameView.configDiff()).not.toBeInTheDocument();
+    });
 });
