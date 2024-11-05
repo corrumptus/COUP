@@ -143,24 +143,30 @@ export default function GameActionMenu({
       <h3 className="text-center text-2xl">Escolha qual das suas cartas usar</h3>
       <div className="flex gap-6">
         {!gameState.player.cards[0].isDead &&
-          <InfluenceCard
-            customStyle="hover:scale-110 cursor-pointer"
-            card={gameState.player.cards[0].card}
+          <button
             onClick={e => {
               e.stopPropagation();
               performChange({ selfCard: 0 });
             }}
-          />
+          >
+            <InfluenceCard
+              card={gameState.player.cards[0].card}
+              customStyle="hover:scale-110 cursor-pointer"
+            />
+          </button>
         }
         {!gameState.player.cards[1].isDead &&
-          <InfluenceCard
-            customStyle="hover:scale-110 cursor-pointer"
-            card={gameState.player.cards[1].card}
+          <button
             onClick={e => {
               e.stopPropagation();
               performChange({ selfCard: 1 });
             }}
-          />
+          >
+            <InfluenceCard
+              card={gameState.player.cards[1].card}
+              customStyle="hover:scale-110 cursor-pointer"
+            />
+          </button>
         }
       </div>
     </div>
@@ -170,22 +176,28 @@ export default function GameActionMenu({
     <div className="flex flex-col gap-4 items-center">
       <h3 className="text-center text-2xl">Escolha qual das suas cartas deve ser trocada</h3>
       <div className="flex gap-6">
-        <InfluenceCard
-          card={gameState.player.cards[0].card}
-          customStyle="hover:scale-110 cursor-pointer"
+        <button
           onClick={e => {
             e.stopPropagation();
             performChange({ targetCard: 0 });
           }}
-        />
-        <InfluenceCard
-          card={gameState.player.cards[1].card}
-          customStyle="hover:scale-110 cursor-pointer"
+        >
+          <InfluenceCard
+            card={gameState.player.cards[0].card}
+            customStyle="hover:scale-110 cursor-pointer"
+          />
+        </button>
+        <button
           onClick={e => {
             e.stopPropagation();
             performChange({ targetCard: 1 });
           }}
-        />
+        >
+          <InfluenceCard
+            card={gameState.player.cards[1].card}
+            customStyle="hover:scale-110 cursor-pointer"
+          />
+        </button>
       </div>
     </div>
   )
