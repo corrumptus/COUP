@@ -1,6 +1,6 @@
 import InfluenceCard from "@components/game/InfluenceCard";
 import { getChoosableCards } from "@utils/utils";
-import { Action, Card, ContextType, GameState } from "@type/game";
+import { Action, ContextType, GameState } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,
@@ -22,11 +22,17 @@ export default function GameActionMenu({
   const optionStyles = "bg-neutral-300 h-[72px] p-3 flex flex-col items-center justify-center rounded-xl hover:scale-110 cursor-pointer"
 
   if (type === MenuTypes.MONEY) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-moneyMenu"
+      data-testid="gameView-moneyMenu"
+    >
       <h3 className="text-center text-2xl">Escolha uma forma de obter dinheiro</h3>
       <div className="flex gap-4">
         <button
           className={optionStyles}
+          id="gameView-rendaButton"
+          data-testid="gameView-rendaButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.RENDA });
@@ -37,6 +43,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-ajudaExternaButton"
+          data-testid="gameView-ajudaExternaButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.AJUDA_EXTERNA });
@@ -47,6 +55,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-taxarButton"
+          data-testid="gameView-taxarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.TAXAR });
@@ -57,6 +67,8 @@ export default function GameActionMenu({
         {gameState.game.configs.religiao.reforma &&
           <button
             className={`${gameState.game.asylum === 0 && "bg-neutral-500"} ${optionStyles}`}
+            id="gameView-corrupcaoButton"
+            data-testid="gameView-corrupcaoButton"
             onClick={e => {
               e.stopPropagation();
               performChange({ action: Action.CORRUPCAO });
@@ -71,11 +83,17 @@ export default function GameActionMenu({
   )
 
   if (type === MenuTypes.ATTACK) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-attackMenu"
+      data-testid="gameView-attackMenu"
+    >
       <h3 className="text-center text-2xl">Escolha uma forma de atacar {requeriments.target}</h3>
       <div className="flex gap-4">
         <button
           className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          id="gameView-assassinarButton"
+          data-testid="gameView-assassinarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.ASSASSINAR });
@@ -85,6 +103,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={`${gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          id="gameView-investigarButton"
+          data-testid="gameView-investigarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.INVESTIGAR });
@@ -94,6 +114,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={`${gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado && "bg-neutral-500"} ${optionStyles}`}
+          id="gameView-golpeEstadoButton"
+          data-testid="gameView-golpeEstadoButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.GOLPE_ESTADO });
@@ -114,7 +136,11 @@ export default function GameActionMenu({
     );
 
     children = (
-      <div className="flex flex-col gap-4 items-center">
+      <div
+        className="flex flex-col gap-4 items-center"
+        id="gameView-cardChooserMenu"
+        data-testid="gameView-cardChooserMenu"
+      >
         <h3 className="text-center text-2xl">
           Escolha que tipo de carta usar para {requeriments.action}
         </h3>
@@ -122,6 +148,8 @@ export default function GameActionMenu({
           {choosableCards.map(card =>
             <button
               key={card}
+              id="gameView-choosableCard"
+              data-testid="gameView-choosableCard"
               onClick={e => {
                 e.stopPropagation();
                 performChange({ cardType: card });
@@ -139,11 +167,17 @@ export default function GameActionMenu({
   }
 
   if (type === MenuTypes.CARD_PICKING) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-cardPickingMenu"
+      data-testid="gameView-cardPickingMenu"
+    >
       <h3 className="text-center text-2xl">Escolha qual das suas cartas usar</h3>
       <div className="flex gap-6">
         {!gameState.player.cards[0].isDead &&
           <button
+            id="gameView-firstPickableCard"
+            data-testid="gameView-firstPickableCard"
             onClick={e => {
               e.stopPropagation();
               performChange({ selfCard: 0 });
@@ -157,6 +191,8 @@ export default function GameActionMenu({
         }
         {!gameState.player.cards[1].isDead &&
           <button
+            id="gameView-secondPickableCard"
+            data-testid="gameView-secondPickableCard"
             onClick={e => {
               e.stopPropagation();
               performChange({ selfCard: 1 });
@@ -173,10 +209,16 @@ export default function GameActionMenu({
   )
 
   if (type === MenuTypes.CARD_PICKING_CHANGE) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-cardPickingChangeMenu"
+      data-testid="gameView-cardPickingChangeMenu"
+    >
       <h3 className="text-center text-2xl">Escolha qual das suas cartas deve ser trocada</h3>
       <div className="flex gap-6">
         <button
+          id="gameView-firstPickableChangeCard"
+          data-testid="gameView-firstPickableChangeCard"
           onClick={e => {
             e.stopPropagation();
             performChange({ targetCard: 0 });
@@ -188,6 +230,8 @@ export default function GameActionMenu({
           />
         </button>
         <button
+          id="gameView-secondPickableChangeCard"
+          data-testid="gameView-secondPickableChangeCard"
           onClick={e => {
             e.stopPropagation();
             performChange({ targetCard: 1 });
@@ -207,7 +251,11 @@ export default function GameActionMenu({
     &&
     gameState.context.type === ContextType.BEING_ATTACKED
   ) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-defenseMenu"
+      data-testid="gameView-defenseMenu"
+    >
       {gameState.context.attackedCard === undefined ? 
         <h2>
           O player {gameState.context.attacker + " "}
@@ -226,6 +274,8 @@ export default function GameActionMenu({
       <div className="flex gap-6">
         <button
           className={optionStyles}
+          id="gameView-bloquearButton"
+          data-testid="gameView-bloquearButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.BLOQUEAR });
@@ -235,6 +285,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-contestarButton"
+          data-testid="gameView-contestarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.CONTESTAR });
@@ -244,6 +296,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-continuarButton"
+          data-testid="gameView-continuarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.CONTINUAR });
@@ -260,7 +314,11 @@ export default function GameActionMenu({
     &&
     gameState.context.type === ContextType.BEING_ATTACKED
   ) children = (
-    <div className="flex flex-col gap-4 items-center">
+    <div
+      className="flex flex-col gap-4 items-center"
+      id="gameView-blockDefenseMenu"
+      data-testid="gameView-blockDefenseMenu"
+    >
       <h2 className="text-lg">
         O player {gameState.context.attacker + " "}
         está te bloqueando
@@ -270,6 +328,8 @@ export default function GameActionMenu({
       <div className="flex gap-6">
         <button
           className={optionStyles}
+          id="gameView-contestarButton"
+          data-testid="gameView-contestarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.CONTESTAR });
@@ -279,6 +339,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-continuarButton"
+          data-testid="gameView-continuarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.CONTINUAR });
@@ -295,12 +357,18 @@ export default function GameActionMenu({
     &&
     gameState.context.type === ContextType.INVESTIGATING
   ) children = (
-    <div className="flex flex-col flex-wrap gap-4 items-center justify-center">
+    <div
+      className="flex flex-col flex-wrap gap-4 items-center justify-center"
+      id="gameView-investigatingMenu"
+      data-testid="gameView-investigatingMenu"
+    >
       <InfluenceCard card={gameState.context.investigatedCard} />
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
       <div className="flex gap-4 items-center">
         <button
           className={optionStyles}
+          id="gameView-trocarButton"
+          data-testid="gameView-trocarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.TROCAR });
@@ -310,6 +378,8 @@ export default function GameActionMenu({
         </button>
         <button
           className={optionStyles}
+          id="gameView-continuarButton"
+          data-testid="gameView-continuarButton"
           onClick={e => {
             e.stopPropagation();
             performChange({ action: Action.CONTINUAR });
