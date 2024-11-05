@@ -175,12 +175,20 @@ export default function ConfigDiff({
   return (
     <div
       className="w-full h-full absolute flex flex-col justify-center items-center z-[4] bg-zinc-700/50"
-      id="gameView-configDiff"
-      data-testid="gameView-configDiff"
+      id="gameView-configDiffs"
+      data-testid="gameView-configDiffs"
     >
       <h1 className="text-white text-2xl font-bold">Configurações diferentes</h1>
       <div className="w-[80%] h-[50%] grid grid-cols-2 gap-y-2 bg-neutral-400 p-3 rounded-3xl overflow-auto">
-        {getDiffs.map((d => <span key={d}>{d}</span>))}
+        {getDiffs.map((d =>
+          <span
+            key={d}
+            id="gameView-configDiff"
+            data-testid="gameView-configDiff"
+          >
+            {d}
+          </span>
+        ))}
       </div>
     </div>
   )

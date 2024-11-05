@@ -41,7 +41,11 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-nextPerson");
   }
 
-  configDiff() {
-    return screen.queryByTestId("gameView-configDiff");
+  configDiffs() {
+    return screen.queryByTestId("gameView-configDiffs");
+  }
+
+  allConfigDiffTextContent() {
+    return screen.queryAllByTestId("gameView-configDiff");
   }
 }
