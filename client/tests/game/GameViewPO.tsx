@@ -26,10 +26,22 @@ export default class GameViewPO {
   }
 
   html() {
-    return screen.findByTestId("gameView");
+    return screen.queryByTestId("gameView");
+  }
+
+  leaveButton() {
+    return screen.queryByTestId("leave");
   }
 
   mobileMenuIcon() {
-    return screen.findByTestId("gameView-mobileMenuIcon");
+    return screen.queryByTestId("gameView-mobileMenuIcon");
+  }
+
+  nextPerson() {
+    return screen.queryByTestId("gameView-nextPerson");
+  }
+
+  configDiff() {
+    return screen.queryByTestId("gameView-configDiff");
   }
 }
