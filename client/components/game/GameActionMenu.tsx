@@ -115,68 +115,24 @@ export default function GameActionMenu({
 
     children = (
       <div className="flex flex-col gap-4 items-center">
-        <h3 className="text-center text-2xl">Escolha que tipo de carta usar para {requeriments.action}</h3>
+        <h3 className="text-center text-2xl">
+          Escolha que tipo de carta usar para {requeriments.action}
+        </h3>
         <div className="flex gap-6">
-          {choosableCards.includes(Card.DUQUE) &&
-            <InfluenceCard
-              card={Card.DUQUE}
-              customStyle="hover:scale-110 cursor-pointer"
+          {choosableCards.map(card =>
+            <button
+              key={card}
               onClick={e => {
                 e.stopPropagation();
-                performChange({ cardType: Card.DUQUE });
+                performChange({ cardType: card });
               }}
-            />
-          }
-          {choosableCards.includes(Card.CAPITAO) &&
-            <InfluenceCard
-              card={Card.CAPITAO}
-              customStyle="hover:scale-110 cursor-pointer"
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ cardType: Card.CAPITAO });
-              }}
-            />
-          }
-          {choosableCards.includes(Card.ASSASSINO) &&
-            <InfluenceCard
-              card={Card.ASSASSINO}
-              customStyle="hover:scale-110 cursor-pointer"
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ cardType: Card.ASSASSINO });
-              }}
-            />
-          }
-          {choosableCards.includes(Card.CONDESSA) &&
-            <InfluenceCard
-              card={Card.CONDESSA}
-              customStyle="hover:scale-110 cursor-pointer"
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ cardType: Card.CONDESSA });
-              }}
-            />
-          }
-          {choosableCards.includes(Card.EMBAIXADOR) &&
-            <InfluenceCard
-              card={Card.EMBAIXADOR}
-              customStyle="hover:scale-110 cursor-pointer"
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ cardType: Card.EMBAIXADOR });
-              }}
-            />
-          }
-          {choosableCards.includes(Card.INQUISIDOR) &&
-            <InfluenceCard
-              card={Card.INQUISIDOR}
-              customStyle="hover:scale-110 cursor-pointer"
-              onClick={e => {
-                e.stopPropagation();
-                performChange({ cardType: Card.INQUISIDOR });
-              }}
-            />
-          }
+            >
+              <InfluenceCard
+                card={card}
+                customStyle="hover:scale-110 cursor:pointer"
+              />
+            </button>
+          )}
         </div>
       </div>
     )
