@@ -6,7 +6,7 @@ jest.mock("next/navigation", () => ({
     useRouter: jest.fn()
 }));
 
-describe("testing Game view game init render", () => {
+describe("Game view render in game init", () => {
     it("should render correctly in the game beginning when player is the first player and default configurations in pc view", async () => {
         const gameState = new GameStateFactory().create();
 
