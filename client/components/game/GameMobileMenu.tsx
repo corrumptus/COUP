@@ -19,9 +19,13 @@ export default function GameMobileMenu({
 }) {
   return (
     <aside className={`h-full p-3 flex flex-col items-center gap-6 absolute ${isOpen ? "right-0" : "-right-full"} z-[4] ease-linear duration-1000 bg-slate-700 overflow-auto`}>
-      <div className="flex justify-between w-full">
-        <span className="flex items-center gap-2 text-yellow-200 text-lg">
-          {player.money}
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center gap-2">
+          <span
+            className="text-yellow-200 text-lg"
+          >
+            {player.money}
+          </span>
           <Image
             src="/openBank.png"
             alt="plus icon"
@@ -29,7 +33,7 @@ export default function GameMobileMenu({
             width={35}
             height={35}
           />
-        </span>
+        </div>
         {player.religion !== undefined &&
           <ReligionButton
             religion={player.religion}
