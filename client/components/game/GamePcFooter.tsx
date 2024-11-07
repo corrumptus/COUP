@@ -31,7 +31,11 @@ export default function GamePcFooter({
             height={40}
           />
         </button>
-        <span className="flex items-center pl-[26px] pr-4 absolute right-4 z-[-1] border-[3px] border-black h-[75%] bg-red-600 text-yellow-300 translate-x-[90%]">
+        <span
+          className="flex items-center pl-[26px] pr-4 absolute right-4 z-[-1] border-[3px] border-black h-[75%] bg-red-600 text-yellow-300 translate-x-[90%]"
+          id="gameView-playerMoney"
+          data-testid="gameView-playerMoney"
+        >
           {player.money}
         </span>
       </div>

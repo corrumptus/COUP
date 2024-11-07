@@ -4,7 +4,7 @@ import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionButton from "@components/game/ReligionButton";
 import Config from "@type/config";
 import { Action, Player } from "@type/game";
-import { ChangeRequest } from "@type/gameUI";
+import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function GameMobileMenu({
   player,
@@ -23,16 +23,24 @@ export default function GameMobileMenu({
         <div className="flex items-center gap-2">
           <span
             className="text-yellow-200 text-lg"
+            id="gameView-playerMoney"
+            data-testid="gameView-playerMoney"
           >
             {player.money}
           </span>
-          <Image
-            src="/openBank.png"
-            alt="plus icon"
-            className="bg-green-300 rounded-3xl"
-            width={35}
-            height={35}
-          />
+          <button
+            onClick={() => performChange({ goTo: MenuTypes.MONEY })}
+            id="gameView-moneyButton"
+            data-testid="gameView-moneyButton"
+          >
+            <Image
+              src="/openBank.png"
+              alt="plus icon"
+              className="bg-green-300 rounded-3xl"
+              width={35}
+              height={35}
+            />
+          </button>
         </div>
         {player.religion !== undefined &&
           <ReligionButton
