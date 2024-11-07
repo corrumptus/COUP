@@ -55,7 +55,14 @@ export default class Game {
     }
 
     private deliverCardsAndMoney() {
-        this.players.forEach(player => player.initRound(this.configs.moedasIniciais));
+        const reforma = this.configs.religiao.reforma;
+
+        this.players.forEach(player => {
+            player.initRound(this.configs.moedasIniciais);
+
+            if (reforma)
+                player.initReligion();
+        });
     }
 
     private tellPlayers() {
