@@ -1,5 +1,7 @@
+import { waitFor } from "@testing-library/dom";
 import GameViewPO from "./GameViewPO";
 import GameStateFactory from "./GameStateFactory";
+import { SocketEmitMock } from "./SocketMock";
 
 jest.mock("next/navigation", () => ({
     ...jest.requireActual("next/navigation"),
@@ -103,5 +105,35 @@ describe("Game view render in game init", () => {
         gameView.allConfigDiffTextContent().forEach((text, i) => {
             expect(text).toHaveTextContent(expectedConfigDiffs[i]);
         });
+    });
+});
+
+describe("Game View render in game actions", () => {
+    it("should perform a renda action correctly", async () => {
+        const gameState = new GameStateFactory().create();
+
+        const gameView = new GameViewPO(gameState);
+
+        gameView.closeNextPerson();
+
+        await waitFor(() => {
+            expect(gameView.nextPerson()).not.toBeInTheDocument();
+        });
+
+        gameView.openMoneyMenu();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).toBeInTheDocument();
+            expect(gameView.moneyMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectRenda();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).not.toBeInTheDocument();
+            expect(gameView.moneyMenu()).not.toBeInTheDocument();
+        });
+
+        expect(socketEmitMock).toHaveBeenCalledWith("renda");
     });
 });
