@@ -81,4 +81,12 @@ export default class GameViewPO {
   async selectRenda() {
     await userEvent.click(this.rendaButton() as HTMLElement);
   }
+
+  ajudaExternaButton() {
+    return screen.queryByTestId("gameView-rendaButton");
+  }
+
+  async selectAjudaExterna() {
+    await userEvent.click(this.rendaButton() as HTMLElement);
+  }
 }

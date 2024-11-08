@@ -153,4 +153,32 @@ describe("Game View render in game actions", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("renda");
     });
+
+    it("should perform a ajuda externa action correctly", async () => {
+        const gameState = new GameStateFactory().create();
+
+        const gameView = new GameViewPO(gameState);
+
+        gameView.closeNextPerson();
+
+        await waitFor(() => {
+            expect(gameView.nextPerson()).not.toBeInTheDocument();
+        });
+
+        gameView.openMoneyMenu();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).toBeInTheDocument();
+            expect(gameView.moneyMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectAjudaExterna();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).not.toBeInTheDocument();
+            expect(gameView.moneyMenu()).not.toBeInTheDocument();
+        });
+
+        expect(socketEmitMock).toHaveBeenCalledWith("ajudaExterna");
+    });
 });
