@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import GameView from "@pages/GameView";
 import { GameState } from "@type/game";
 import { io, Socket } from "socket.io-client";
@@ -47,5 +48,37 @@ export default class GameViewPO {
 
   allConfigDiffTextContent() {
     return screen.queryAllByTestId("gameView-configDiff");
+  }
+
+  async closeNextPerson() {
+    await userEvent.click(this.nextPerson() as HTMLElement);
+  }
+
+  moneyButton() {
+    return screen.queryByTestId("gameView-moneyButton");
+  }
+
+  playerMoney() {
+    return screen.queryByTestId("gameView-playerMoney");
+  }
+
+  async openMoneyMenu() {
+    await userEvent.click(this.moneyButton() as HTMLElement);
+  }
+
+  actionMenu() {
+    return screen.queryByTestId("gameView-actionMenu");
+  }
+
+  moneyMenu() {
+    return screen.queryByTestId("gameView-moneyMenu");
+  }
+
+  rendaButton() {
+    return screen.queryByTestId("gameView-rendaButton");
+  }
+
+  async selectRenda() {
+    await userEvent.click(this.rendaButton() as HTMLElement);
   }
 }
