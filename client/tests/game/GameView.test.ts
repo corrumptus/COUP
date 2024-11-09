@@ -333,7 +333,7 @@ describe("Game View render in game actions", () => {
     it("should perform a taxar action correctly when more than one card can perform it", async () => {
         const gameState = new GameStateFactory()
             .newConfig(["religiao", "reforma"], true)
-            .newConfig(["religiao", "reforma", "cartasParaCorrupcao", "capitao"], true)
+            .newConfig(["religiao", "cartasParaCorrupcao", "capitao"], true)
             .asylumCoins(1)
             .create();
 
