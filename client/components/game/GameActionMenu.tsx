@@ -148,8 +148,8 @@ export default function GameActionMenu({
           {choosableCards.map(card =>
             <button
               key={card}
-              id="gameView-choosableCard"
-              data-testid="gameView-choosableCard"
+              id={`gameView-${card}ChoosableCard`}
+              data-testid={`gameView-${card}ChoosableCard`}
               onClick={e => {
                 e.stopPropagation();
                 performChange({ cardType: card });
