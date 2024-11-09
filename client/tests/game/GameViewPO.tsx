@@ -105,6 +105,54 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-cardPickingMenu");
   }
 
+  duqueChoosableCard() {
+    return screen.queryByTestId("gameView-duqueChoosableCard");
+  }
+
+  async selectDuqueChoosableCard() {
+    await userEvent.click(this.duqueChoosableCard() as HTMLElement);
+  }
+
+  capitaoChoosableCard() {
+    return screen.queryByTestId("gameView-capitaoChoosableCard");
+  }
+
+  async selectCapitaoChoosableCard() {
+    await userEvent.click(this.capitaoChoosableCard() as HTMLElement);
+  }
+
+  assassinoChoosableCard() {
+    return screen.queryByTestId("gameView-assassinoChoosableCard");
+  }
+
+  async selectAssassinoChoosableCard() {
+    await userEvent.click(this.assassinoChoosableCard() as HTMLElement);
+  }
+
+  condessaChoosableCard() {
+    return screen.queryByTestId("gameView-condessaChoosableCard");
+  }
+
+  async selectCondessaChoosableCard() {
+    await userEvent.click(this.condessaChoosableCard() as HTMLElement);
+  }
+
+  embaixadorChoosableCard() {
+    return screen.queryByTestId("gameView-embaixadorChoosableCard");
+  }
+
+  async selectEmbaixadorChoosableCard() {
+    await userEvent.click(this.embaixadorChoosableCard() as HTMLElement);
+  }
+
+  inquisidorChoosableCard() {
+    return screen.queryByTestId("gameView-inquisidorChoosableCard");
+  }
+
+  async selectInquisidorChoosableCard() {
+    await userEvent.click(this.inquisidorChoosableCard() as HTMLElement);
+  }
+
   firstPickableCard() {
     return screen.queryByTestId("gameView-firstPickableCard");
   }
