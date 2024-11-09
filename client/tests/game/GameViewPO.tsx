@@ -112,4 +112,12 @@ export default class GameViewPO {
   async selectFirstPickableCard() {
     await userEvent.click(this.firstPickableCard() as HTMLElement);
   }
+
+  secondPickableCard() {
+    return screen.queryByTestId("gameView-secondPickableCard");
+  }
+
+  async selectSecondPickableCard() {
+    await userEvent.click(this.secondPickableCard() as HTMLElement);
+  }
 }
