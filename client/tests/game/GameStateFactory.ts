@@ -79,7 +79,7 @@ export default class GameStateFactory {
         let config: any = this.gameState.game.configs;
 
         for (let i = 0; i < keys.length - 1; i++) {
-            if (!(config[keys[i]] in config))
+            if (!(keys[i] in config))
                 return this;
 
             config = config[keys[i]];
