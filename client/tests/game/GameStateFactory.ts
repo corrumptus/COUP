@@ -64,6 +64,12 @@ export default class GameStateFactory {
         return this.gameState;
     }
 
+    asylumCoins(coins: number): this {
+        this.gameState.game.asylum = coins;
+
+        return this;
+    }
+
     toOtherPlayerTurn(): this {
         this.gameState.game.currentPlayer = this.isPlayerTurn ?
             this.otherPlayerName
