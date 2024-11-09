@@ -97,6 +97,14 @@ export default class GameViewPO {
     await userEvent.click(this.taxarButton() as HTMLElement);
   }
 
+  corrupcaoButton() {
+    return screen.queryByTestId("gameView-corrupcaoButton");
+  }
+
+  async selectCorrupcao() {
+    await userEvent.click(this.corrupcaoButton() as HTMLElement);
+  }
+
   cardChooserMenu() {
     return screen.queryByTestId("gameView-cardChooserMenu");
   }
