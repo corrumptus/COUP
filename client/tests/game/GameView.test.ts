@@ -217,4 +217,50 @@ describe("Game View render in game actions", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("taxar", "duque", 0);
     });
+
+    it("should perform a taxar action correctly when more than one card can perform it", async () => {
+        const gameState = new GameStateFactory()
+            .newConfig(["tiposCartas", "capitao", "taxar"], true)
+            .create();
+
+        const gameView = new GameViewPO(gameState);
+
+        gameView.closeNextPerson();
+
+        await waitFor(() => {
+            expect(gameView.nextPerson()).not.toBeInTheDocument();
+        });
+
+        gameView.openMoneyMenu();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).toBeInTheDocument();
+            expect(gameView.moneyMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectTaxar();
+
+        await waitFor(() => {
+            expect(gameView.moneyMenu()).not.toBeInTheDocument();
+            expect(gameView.cardChooserMenu()).toBeInTheDocument();
+            expect(gameView.duqueChoosableCard()).toBeInTheDocument();
+            expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
+        });
+
+        gameView.selectDuqueChoosableCard();
+
+        await waitFor(() => {
+            expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectFirstPickableCard();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+        });
+
+        expect(socketEmitMock).toHaveBeenCalledWith("taxar", "duque", 0);
+    });
 });
