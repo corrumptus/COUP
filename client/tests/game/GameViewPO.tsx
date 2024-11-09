@@ -82,10 +82,34 @@ export default class GameViewPO {
   }
 
   ajudaExternaButton() {
-    return screen.queryByTestId("gameView-rendaButton");
+    return screen.queryByTestId("gameView-ajudaExternaButton");
   }
 
   async selectAjudaExterna() {
-    await userEvent.click(this.rendaButton() as HTMLElement);
+    await userEvent.click(this.ajudaExternaButton() as HTMLElement);
+  }
+
+  taxarButton() {
+    return screen.queryByTestId("gameView-taxarButton");
+  }
+
+  async selectTaxar() {
+    await userEvent.click(this.taxarButton() as HTMLElement);
+  }
+
+  cardChooserMenu() {
+    return screen.queryByTestId("gameView-cardChooserMenu");
+  }
+
+  cardPickingMenu() {
+    return screen.queryByTestId("gameView-cardPickingMenu");
+  }
+
+  firstPickableCard() {
+    return screen.queryByTestId("gameView-firstPickableCard");
+  }
+
+  async selectFirstPickableCard() {
+    await userEvent.click(this.firstPickableCard() as HTMLElement);
   }
 }
