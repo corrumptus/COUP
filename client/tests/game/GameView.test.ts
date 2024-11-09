@@ -24,7 +24,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
         expect(gameView.nextPerson()).toBeInTheDocument();
         expect(gameView.nextPerson()).toHaveTextContent(gameState.game.currentPlayer);
@@ -36,7 +36,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
         expect(gameView.nextPerson()).toBeInTheDocument();
         expect(gameView.nextPerson()).toHaveTextContent(gameState.game.players[0].name);
@@ -58,7 +58,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).toBeInTheDocument();
         expect(gameView.nextPerson()).toBeInTheDocument();
         expect(gameView.nextPerson()).toHaveTextContent(gameState.game.currentPlayer);
@@ -85,7 +85,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).toBeInTheDocument();
         expect(gameView.nextPerson()).toBeInTheDocument();
         expect(gameView.nextPerson()).toHaveTextContent(gameState.game.players[0].name);
@@ -107,7 +107,7 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
-        expect(gameView.html()).toBeInTheDocument();
+        expect(gameView.view()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).toBeInTheDocument();
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();

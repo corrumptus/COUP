@@ -25,7 +25,7 @@ export default class GameViewPO {
     );
   }
 
-  html() {
+  view() {
     return screen.queryByTestId("gameView");
   }
 
