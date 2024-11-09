@@ -3,7 +3,6 @@ import { userEvent } from "@testing-library/user-event";
 import GameView from "@pages/GameView";
 import { GameState } from "@type/game";
 import { io, Socket } from "socket.io-client";
-import "./socketMock";
 
 export default class GameViewPO {
   private socket: Socket;
