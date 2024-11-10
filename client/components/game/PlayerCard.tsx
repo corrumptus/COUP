@@ -44,7 +44,11 @@ export default function PlayerCard({
         }
       </header>
       <div className="w-full flex items-center justify-center gap-2">
-        <p className={`text-xl ${colors?.coinColor || ""}`}>
+        <p
+          className={`text-xl ${colors?.coinColor || ""}`}
+          id={`gameView-${player.name}Money`}
+          data-testid={`gameView-${player.name}Money`}
+        >
           {player.money}
         </p>
         <button

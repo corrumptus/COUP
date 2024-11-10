@@ -61,6 +61,10 @@ export default class GameViewPO {
     await userEvent.click(this.religionButton(name) as HTMLElement);
   }
 
+  money(name: string) {
+    return screen.queryByTestId(`gameView-${name}Money`);
+  }
+
   extorquirButton(name: string) {
     return screen.queryByTestId(`gameView-${name}ExtorquirButton`);
   }
