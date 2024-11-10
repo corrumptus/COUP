@@ -24,10 +24,39 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
+        const player = gameState.player;
+        const enemyPlayer = gameState.game.players[0];
+
         expect(gameView.view()).toBeInTheDocument();
+
+        expect(gameView.leaveButton()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
+
+        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+
+        expect(gameView.playerCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.religionButton(enemyPlayer.name)).not.toBeInTheDocument();
+        expect(gameView.money(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.money(enemyPlayer.name)).toHaveTextContent(`${enemyPlayer.money}`);
+        expect(gameView.extorquirButton(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.firstAttackableCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.firstAttackableCardType(enemyPlayer.name)).toBe("desconhecida");
+        expect(gameView.secondAttackableCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.secondAttackableCardType(enemyPlayer.name)).toBe("desconhecida");
+
+        expect(gameView.moneyButton()).toBeInTheDocument();
+        expect(gameView.playerMoney()).toHaveTextContent(`${player.money}`);
+
+        expect(gameView.firstInfluenceCard()).toBeInTheDocument();
+        expect(gameView.firstInfluenceCardType()).toBe(player.cards[0].card);
+        expect(gameView.secondInfluenceCard()).toBeInTheDocument();
+        expect(gameView.secondInfluenceCardType()).toBe(player.cards[1].card);
+        expect(gameView.changePlayerCardsButton()).toBeInTheDocument();
+
+        expect(gameView.gameInfos()).toBeInTheDocument();
+
         expect(gameView.nextPerson()).toBeInTheDocument();
-        expect(gameView.nextPerson()).toHaveTextContent(gameState.game.currentPlayer);
+        expect(gameView.nextPerson()).toHaveTextContent(player.name);
         expect(gameView.configDiffs()).not.toBeInTheDocument();
     });
 
@@ -73,10 +102,39 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
+        const player = gameState.player;
+        const enemyPlayer = gameState.game.players[0];
+
         expect(gameView.view()).toBeInTheDocument();
+
+        expect(gameView.leaveButton()).toBeInTheDocument();
         expect(gameView.mobileMenuIcon()).toBeInTheDocument();
+
+        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+
+        expect(gameView.playerCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.religionButton(enemyPlayer.name)).not.toBeInTheDocument();
+        expect(gameView.money(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.money(enemyPlayer.name)).toHaveTextContent(`${enemyPlayer.money}`);
+        expect(gameView.extorquirButton(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.firstAttackableCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.firstAttackableCardType(enemyPlayer.name)).toBe("desconhecida");
+        expect(gameView.secondAttackableCard(enemyPlayer.name)).toBeInTheDocument();
+        expect(gameView.secondAttackableCardType(enemyPlayer.name)).toBe("desconhecida");
+
+        expect(gameView.moneyButton()).toBeInTheDocument();
+        expect(gameView.playerMoney()).toHaveTextContent(`${player.money}`);
+
+        expect(gameView.firstInfluenceCard()).toBeInTheDocument();
+        expect(gameView.firstInfluenceCardType()).toBe(player.cards[0].card);
+        expect(gameView.secondInfluenceCard()).toBeInTheDocument();
+        expect(gameView.secondInfluenceCardType()).toBe(player.cards[1].card);
+        expect(gameView.changePlayerCardsButton()).toBeInTheDocument();
+
+        expect(gameView.gameInfos()).toBeInTheDocument();
+
         expect(gameView.nextPerson()).toBeInTheDocument();
-        expect(gameView.nextPerson()).toHaveTextContent(gameState.game.currentPlayer);
+        expect(gameView.nextPerson()).toHaveTextContent(player.name);
         expect(gameView.configDiffs()).not.toBeInTheDocument();
     });
 
