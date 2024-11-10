@@ -41,16 +41,24 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-mobileMenuIcon");
   }
 
-  religionButton() {
+  playerReligionButton() {
     return screen.queryByTestId("gameView-religion");
   }
 
-  async changeReligion() {
-    await userEvent.click(this.religionButton() as HTMLElement);
+  async changePlayerReligion() {
+    await userEvent.click(this.playerReligionButton() as HTMLElement);
   }
 
   playerCard(name: string) {
     return screen.queryByTestId(`gameView-${name}Player`);
+  }
+
+  religionButton(name: string) {
+    return screen.queryByTestId(`gameView-${name}ReligionButton`);
+  }
+
+  async changeReligion(name: string) {
+    await userEvent.click(this.religionButton(name) as HTMLElement);
   }
 
   extorquirButton(name: string) {
