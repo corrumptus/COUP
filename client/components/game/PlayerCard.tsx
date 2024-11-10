@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionIcon from "@components/game/ReligionIcon";
 import { CardColors, generateColorCard } from "@utils/utils";
@@ -13,19 +13,15 @@ export default function PlayerCard({
   player: EnemyPlayer,
   performChange: (changeRequest: ChangeRequest) => void
 }) {
-  const [ colors, setColors ] = useState<CardColors>()
-
-  useEffect(() => {
-    setColors(generateColorCard());
-  }, []);
+  const [ colors ] = useState<CardColors>(generateColorCard())
 
   return (
     <div
-      className={`w-auto p-4 mx-3 rounded-2xl ${colors?.cardColor || ""}`}
+      className={`w-auto p-4 mx-3 rounded-2xl ${colors.cardColor}`}
       id={`gameView-${player.name}Player`}
       data-testid={`gameView-${player.name}Player`}
     >
-      <header className={`w-full text-center ${colors?.nameColor || ""} relative`}>
+      <header className={`w-full text-center ${colors.nameColor} relative`}>
         {player.name}
         {player.religion !== undefined &&
           <button
@@ -45,7 +41,7 @@ export default function PlayerCard({
       </header>
       <div className="w-full flex items-center justify-center gap-2">
         <p
-          className={`text-xl ${colors?.coinColor || ""}`}
+          className={`text-xl ${colors.coinColor}`}
           id={`gameView-${player.name}Money`}
           data-testid={`gameView-${player.name}Money`}
         >
@@ -63,7 +59,7 @@ export default function PlayerCard({
             src="/extorquir.png"
             alt="icone de menos"
             title="extorquir"
-            className={`rounded-[100%] ${colors?.minusColor || ""} cursor-pointer hover:scale-110`}
+            className={`rounded-[100%] ${colors.minusColor} cursor-pointer hover:scale-110`}
             width={24}
             height={24}
           />
