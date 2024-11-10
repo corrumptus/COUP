@@ -33,36 +33,80 @@ export default class GameViewPO {
     return screen.queryByTestId("leave");
   }
 
+  async leave() {
+    await userEvent.click(this.leaveButton() as HTMLElement);
+  }
+
   mobileMenuIcon() {
     return screen.queryByTestId("gameView-mobileMenuIcon");
   }
 
-  nextPerson() {
-    return screen.queryByTestId("gameView-nextPerson");
+  religionButton() {
+    return screen.queryByTestId("gameView-religion");
   }
 
-  configDiffs() {
-    return screen.queryByTestId("gameView-configDiffs");
+  async changeReligion() {
+    await userEvent.click(this.religionButton() as HTMLElement);
   }
 
-  allConfigDiffTextContent() {
-    return screen.queryAllByTestId("gameView-configDiff");
+  playerCard(name: string) {
+    return screen.queryByTestId(`gameView-${name}Player`);
   }
 
-  async closeNextPerson() {
-    await userEvent.click(this.nextPerson() as HTMLElement);
+  extorquirButton(name: string) {
+    return screen.queryByTestId(`gameView-${name}ExtorquirButton`);
+  }
+
+  async extorquir(name: string) {
+    await userEvent.click(this.extorquirButton(name) as HTMLElement);
+  }
+
+  firstAttackableCard(name: string) {
+    return screen.queryByTestId(`gameView-${name}FirstAttackableCard`);
+  }
+
+  async attackFistCard(name: string) {
+    await userEvent.click(this.firstAttackableCard(name) as HTMLElement);
+  }
+
+  secondAttackableCard(name: string) {
+    return screen.queryByTestId(`gameView-${name}SecondAttackableCard`);
+  }
+
+  async attackSecondCard(name: string) {
+    await userEvent.click(this.secondAttackableCard(name) as HTMLElement);
   }
 
   moneyButton() {
     return screen.queryByTestId("gameView-moneyButton");
   }
 
+  async openMoneyMenu() {
+    await userEvent.click(this.moneyButton() as HTMLElement);
+  }
+
   playerMoney() {
     return screen.queryByTestId("gameView-playerMoney");
   }
 
-  async openMoneyMenu() {
-    await userEvent.click(this.moneyButton() as HTMLElement);
+  firstInfluenceCard() {
+    return screen.queryByTestId("gameView-playerFirstInfluenceCard");
+  }
+
+  secondInfluenceCard() {
+    return screen.queryByTestId("gameView-playerSecondInfluenceCard");
+  }
+
+  changePlayerCardsButton() {
+    return screen.queryByTestId("gameView-playerChangeButton");
+  }
+
+  async changePlayerCards() {
+    await userEvent.click(this.changePlayerCardsButton() as HTMLElement);
+  }
+
+  gameInfos() {
+    return screen.queryByTestId("gameView-cardGameInfos");
   }
 
   actionMenu() {
@@ -175,5 +219,20 @@ export default class GameViewPO {
 
   async selectSecondPickableCard() {
     await userEvent.click(this.secondPickableCard() as HTMLElement);
+  }
+  nextPerson() {
+    return screen.queryByTestId("gameView-nextPerson");
+  }
+
+  configDiffs() {
+    return screen.queryByTestId("gameView-configDiffs");
+  }
+
+  allConfigDiffTextContent() {
+    return screen.queryAllByTestId("gameView-configDiff");
+  }
+
+  async closeNextPerson() {
+    await userEvent.click(this.nextPerson() as HTMLElement);
   }
 }
