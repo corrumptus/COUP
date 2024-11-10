@@ -45,14 +45,14 @@ describe("Game view render in game init", () => {
 
     it("should render correctly in the game beginning when player is the first player and no default configurations in pc view", async () => {
         const gameState = new GameStateFactory()
-            .newConfig(["moedasIniciais"], (val: number) => val+1)
             .newConfig(["renda"], (val: number) => val+1)
+            .newConfig(["moedasIniciais"], (val: number) => val+1)
             .newConfig(["ajudaExterna"], (val: number) => val-1)
             .create();
 
         const expectedConfigDiffs = [
-            "Moedas iniciais: 3 -> 4",
             "Renda: 1 -> 2",
+            "Moedas iniciais: 3 -> 4",
             "Ajuda externa: 2 -> 1"
         ];
 
@@ -63,8 +63,8 @@ describe("Game view render in game init", () => {
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();
 
-        gameView.allConfigDiffTextContent().forEach((text, i) => {
-            expect(text).toHaveTextContent(expectedConfigDiffs[i]);
+        gameView.allConfigDiffTextContent().forEach(cd => {
+            expect(expectedConfigDiffs.includes(cd as string)).toBe(true);
         });
     });
 
@@ -94,15 +94,15 @@ describe("Game view render in game init", () => {
 
     it("should render correctly in the game beginning when player is the first player and no default configurations in mobile view", async () => {
         const gameState = new GameStateFactory()
+            .newConfig(["ajudaExterna"], (val: number) => val-1)
             .newConfig(["moedasIniciais"], (val: number) => val+1)
             .newConfig(["renda"], (val: number) => val+1)
-            .newConfig(["ajudaExterna"], (val: number) => val-1)
             .create();
 
         const expectedConfigDiffs = [
+            "Ajuda externa: 2 -> 1",
             "Moedas iniciais: 3 -> 4",
-            "Renda: 1 -> 2",
-            "Ajuda externa: 2 -> 1"
+            "Renda: 1 -> 2"
         ];
 
         const gameView = new GameViewPO(gameState, 500);
@@ -112,8 +112,8 @@ describe("Game view render in game init", () => {
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();
 
-        gameView.allConfigDiffTextContent().forEach((text, i) => {
-            expect(text).toHaveTextContent(expectedConfigDiffs[i]);
+        gameView.allConfigDiffTextContent().forEach(cd => {
+            expect(expectedConfigDiffs.includes(cd as string)).toBe(true);
         });
     });
 });

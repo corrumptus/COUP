@@ -229,7 +229,8 @@ export default class GameViewPO {
   }
 
   allConfigDiffTextContent() {
-    return screen.queryAllByTestId("gameView-configDiff");
+    return screen.queryAllByTestId("gameView-configDiff")
+      .map(cd => cd.textContent);
   }
 
   async closeNextPerson() {
