@@ -54,13 +54,15 @@ export default function GameMobileMenu({
       </div>
       <button
         className="bg-red-600 p-2 rounded-full border-4 border-gray-800 hover:border-slate-500 font-bold"
+        id="gameView-playerChangeButton"
+        data-testid="gameView-playerChangeButton"
         onClick={() => performChange({ action: Action.TROCAR })}
       >
         Trocar Cartas
       </button>
       <span
-        id="gameView-playerInfluenceCard"
-        data-testid="gameView-playerInfluenceCard"
+        id="gameView-playerFirstInfluenceCard"
+        data-testid="gameView-playerFirstInfluenceCard"
       >
         <InfluenceCard
           card={player.cards[0].card}
@@ -68,8 +70,8 @@ export default function GameMobileMenu({
         />
       </span>
       <span
-        id="gameView-playerInfluenceCard"
-        data-testid="gameView-playerInfluenceCard"
+        id="gameView-playerSecondInfluenceCard"
+        data-testid="gameView-playerSecondInfluenceCard"
       >
         <InfluenceCard
           card={player.cards[1].card}
