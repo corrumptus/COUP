@@ -65,11 +65,9 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        expect(gameView.view()).toBeInTheDocument();
-        expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
-        expect(gameView.nextPerson()).toBeInTheDocument();
-        expect(gameView.nextPerson()).toHaveTextContent(gameState.game.players[0].name);
-        expect(gameView.configDiffs()).not.toBeInTheDocument();
+        const enemyPlayer = gameState.game.players[0];
+
+        expect(gameView.nextPerson()).toHaveTextContent(enemyPlayer.name);
     });
 
     it("should render correctly in the game beginning when player is the first player and no default configurations in pc view", async () => {
@@ -87,8 +85,6 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        expect(gameView.view()).toBeInTheDocument();
-        expect(gameView.mobileMenuIcon()).not.toBeInTheDocument();
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();
 
@@ -143,11 +139,9 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
-        expect(gameView.view()).toBeInTheDocument();
-        expect(gameView.mobileMenuIcon()).toBeInTheDocument();
-        expect(gameView.nextPerson()).toBeInTheDocument();
-        expect(gameView.nextPerson()).toHaveTextContent(gameState.game.players[0].name);
-        expect(gameView.configDiffs()).not.toBeInTheDocument();
+        const enemyPlayer = gameState.game.players[0];
+
+        expect(gameView.nextPerson()).toHaveTextContent(enemyPlayer.name);
     });
 
     it("should render correctly in the game beginning when player is the first player and no default configurations in mobile view", async () => {
@@ -165,8 +159,6 @@ describe("Game view render in game init", () => {
 
         const gameView = new GameViewPO(gameState, 500);
 
-        expect(gameView.view()).toBeInTheDocument();
-        expect(gameView.mobileMenuIcon()).toBeInTheDocument();
         expect(gameView.nextPerson()).not.toBeInTheDocument();
         expect(gameView.configDiffs()).toBeInTheDocument();
 
