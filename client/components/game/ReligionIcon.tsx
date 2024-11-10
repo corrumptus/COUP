@@ -1,14 +1,11 @@
 import Image from "next/image";
-import { MouseEventHandler } from "react";
 import { Religion } from "@type/game";
 
-export default function ReligionButton({
+export default function ReligionIcon({
   religion,
-  onClick,
   className
 }: {
   religion: Religion,
-  onClick?: MouseEventHandler<HTMLImageElement>,
   className?: string
 }) {
   return religion === Religion.CATOLICA ?
@@ -17,9 +14,6 @@ export default function ReligionButton({
       alt="cruz católica"
       title="católico"
       className={className}
-      id="gameView-religion"
-      data-testid="gameView-religion"
-      onClick={onClick}
       width={40}
       height={40}
     />
@@ -29,9 +23,6 @@ export default function ReligionButton({
       alt="biblia"
       title="protestante"
       className={className}
-      id="gameView-religion"
-      data-testid="gameView-religion"
-      onClick={onClick}
       width={40}
       height={40}
     />
