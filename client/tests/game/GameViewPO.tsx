@@ -77,12 +77,24 @@ export default class GameViewPO {
     return screen.queryByTestId(`gameView-${name}FirstAttackableCard`);
   }
 
+  firstAttackableCardType(name: string) {
+    return screen.queryByTestId(`gameView-${name}FirstAttackableCard`)
+      ?.querySelector("img")
+      ?.title || null;
+  }
+
   async attackFistCard(name: string) {
     await userEvent.click(this.firstAttackableCard(name) as HTMLElement);
   }
 
   secondAttackableCard(name: string) {
     return screen.queryByTestId(`gameView-${name}SecondAttackableCard`);
+  }
+
+  secondAttackableCardType(name: string) {
+    return screen.queryByTestId(`gameView-${name}SecondAttackableCard`)
+      ?.querySelector("img")
+      ?.title || null;
   }
 
   async attackSecondCard(name: string) {
@@ -105,8 +117,20 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-playerFirstInfluenceCard");
   }
 
+  firstInfluenceCardType() {
+    return screen.queryByTestId("gameView-playerFirstInfluenceCard")
+      ?.querySelector("img")
+      ?.title || null;
+  }
+
   secondInfluenceCard() {
     return screen.queryByTestId("gameView-playerSecondInfluenceCard");
+  }
+
+  secondInfluenceCardType() {
+    return screen.queryByTestId("gameView-playerSecondInfluenceCard")
+      ?.querySelector("img")
+      ?.title || null;
   }
 
   changePlayerCardsButton() {
