@@ -40,22 +40,32 @@ export default function GamePcFooter({
         </span>
       </div>
       <div className="flex justify-center items-center gap-10 absolute bottom-0 translate-y-[calc(100%-40px)] group hover:translate-y-0 right-[50%] translate-x-[50%] duration-700 bg-slate-600 p-2.5 rounded-t-2xl">
-        <InfluenceCard
-          card={player.cards[0].card}
-          customStyle={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
-        />
+        <span
+          id="gameView-playerFirstInfluenceCard"
+          data-testid="gameView-playerFirstInfluenceCard"
+        >
+          <InfluenceCard
+            card={player.cards[0].card}
+            className={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
+          />
+        </span>
         <button
           className="bg-red-800 aspect-square p-2 rounded-full border-4 border-gray-800 hover:border-slate-500 font-bold"
           onClick={() => performChange({ action: Action.TROCAR })}
-          id="gameView-trocarButton"
-          data-testid="gameView-trocarButton"
+          id="gameView-playerChangeButton"
+          data-testid="gameView-playerChangeButton"
         >
           Trocar
         </button>
-        <InfluenceCard
-          card={player.cards[1].card}
-          customStyle={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
-        />
+        <span
+          id="gameView-playerSecondInfluenceCard"
+          data-testid="gameView-playerSecondInfluenceCard"
+        >
+          <InfluenceCard
+            card={player.cards[1].card}
+            className={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
+          />
+        </span>
       </div>
       <CardGameInfos
         configs={configs}

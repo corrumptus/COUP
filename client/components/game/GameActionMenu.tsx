@@ -157,7 +157,7 @@ export default function GameActionMenu({
             >
               <InfluenceCard
                 card={card}
-                customStyle="hover:scale-110 cursor:pointer"
+                className="hover:scale-110 cursor:pointer"
               />
             </button>
           )}
@@ -185,7 +185,7 @@ export default function GameActionMenu({
           >
             <InfluenceCard
               card={gameState.player.cards[0].card}
-              customStyle="hover:scale-110 cursor-pointer"
+              className="hover:scale-110 cursor-pointer"
             />
           </button>
         }
@@ -200,7 +200,7 @@ export default function GameActionMenu({
           >
             <InfluenceCard
               card={gameState.player.cards[1].card}
-              customStyle="hover:scale-110 cursor-pointer"
+              className="hover:scale-110 cursor-pointer"
             />
           </button>
         }
@@ -226,7 +226,7 @@ export default function GameActionMenu({
         >
           <InfluenceCard
             card={gameState.player.cards[0].card}
-            customStyle="hover:scale-110 cursor-pointer"
+            className="hover:scale-110 cursor-pointer"
           />
         </button>
         <button
@@ -239,7 +239,7 @@ export default function GameActionMenu({
         >
           <InfluenceCard
             card={gameState.player.cards[1].card}
-            customStyle="hover:scale-110 cursor-pointer"
+            className="hover:scale-110 cursor-pointer"
           />
         </button>
       </div>
@@ -362,7 +362,12 @@ export default function GameActionMenu({
       id="gameView-investigatingMenu"
       data-testid="gameView-investigatingMenu"
     >
-      <InfluenceCard card={gameState.context.investigatedCard} />
+      <span
+        id="gameView-investigatedCard"
+        data-testid="gameView-investigatedCard"
+      >
+        <InfluenceCard card={gameState.context.investigatedCard} />
+      </span>
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
       <div className="flex gap-4 items-center">
         <button

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import CardGameInfos from "@components/game/CardGameInfos";
 import InfluenceCard from "@components/game/InfluenceCard";
-import ReligionButton from "@components/game/ReligionButton";
+import ReligionIcon from "@components/game/ReligionIcon";
 import Config from "@type/config";
 import { Action, Player } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";
@@ -43,10 +43,13 @@ export default function GameMobileMenu({
           </button>
         </div>
         {player.religion !== undefined &&
-          <ReligionButton
-            religion={player.religion}
+          <button
+            id="gameView-playerReligionButton"
+            data-testid="gameView-playerReligionButton"
             onClick={() => performChange({ action: Action.TROCAR_PROPRIA_RELIGIAO })}
-          />
+          >
+            <ReligionIcon religion={player.religion} />
+          </button>
         }
       </div>
       <button
@@ -55,14 +58,24 @@ export default function GameMobileMenu({
       >
         Trocar Cartas
       </button>
-      <InfluenceCard
-        card={player.cards[0].card}
-        customStyle={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
-      />
-      <InfluenceCard
-        card={player.cards[1].card}
-        customStyle={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
-      />
+      <span
+        id="gameView-playerInfluenceCard"
+        data-testid="gameView-playerInfluenceCard"
+      >
+        <InfluenceCard
+          card={player.cards[0].card}
+          className={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
+        />
+      </span>
+      <span
+        id="gameView-playerInfluenceCard"
+        data-testid="gameView-playerInfluenceCard"
+      >
+        <InfluenceCard
+          card={player.cards[1].card}
+          className={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
+        />
+      </span>
       <CardGameInfos configs={configs}/>
     </aside>
   )
