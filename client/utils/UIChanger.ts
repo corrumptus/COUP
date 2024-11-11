@@ -311,6 +311,13 @@ function getRequestProblems(
         return "A carta escolhida está morta";
 
     if (
+        request.action === Action.GOLPE_ESTADO
+        &&
+        gameState.player.money < gameState.game.configs.quantidadeMinimaGolpeEstado
+    )
+        return "Você não tem dinheiro suficiente para dar golpe de estado";
+
+    if (
         gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado
         &&
         gameState.game.currentPlayer === gameState.player.name
