@@ -405,7 +405,7 @@ describe("Game View render in game actions", () => {
         expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
     });
 
-    it("should perform a taxar action correctly when more than one card can perform it", async () => {
+    it("should perform a corrupcao action correctly when more than one card can perform it", async () => {
         const gameState = new GameStateFactory()
             .newConfig(["religiao", "reforma"], true)
             .newConfig(["religiao", "cartasParaCorrupcao", "capitao"], true)
@@ -451,5 +451,77 @@ describe("Game View render in game actions", () => {
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
+    });
+
+    it("should perform a extorquir action correctly when one card can perform it", async () => {
+        const gameState = new GameStateFactory().create();
+
+        const gameView = new GameViewPO(gameState);
+
+        const enemyPlayerName = gameState.game.players[0].name;
+
+        gameView.closeNextPerson();
+
+        await waitFor(() => {
+            expect(gameView.nextPerson()).not.toBeInTheDocument();
+        });
+
+        gameView.extorquir(enemyPlayerName);
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).toBeInTheDocument();
+            expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectFirstPickableCard();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+        });
+
+        expect(socketEmitMock).toHaveBeenCalledWith("extorquir", "capitao", 0, enemyPlayerName);
+    });
+
+    it("should perform a extorquir action correctly when more than one card can perform it", async () => {
+        const gameState = new GameStateFactory()
+            .newConfig(["tiposCartas", "duque", "extorquir"], true)    
+            .create();
+
+        const gameView = new GameViewPO(gameState);
+
+        const enemyPlayerName = gameState.game.players[0].name;
+
+        gameView.closeNextPerson();
+
+        await waitFor(() => {
+            expect(gameView.nextPerson()).not.toBeInTheDocument();
+        });
+
+        gameView.extorquir(enemyPlayerName);
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).toBeInTheDocument();
+            expect(gameView.cardChooserMenu()).toBeInTheDocument();
+            expect(gameView.duqueChoosableCard()).toBeInTheDocument();
+            expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
+        });
+
+        gameView.selectDuqueChoosableCard();
+
+        await waitFor(() => {
+            expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).toBeInTheDocument();
+        });
+
+        gameView.selectFirstPickableCard();
+
+        await waitFor(() => {
+            expect(gameView.actionMenu()).not.toBeInTheDocument();
+            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+        });
+
+        expect(socketEmitMock).toHaveBeenCalledWith("extorquir", "duque", 0, enemyPlayerName);
     });
 });
