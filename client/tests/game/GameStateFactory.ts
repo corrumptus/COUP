@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { ContextType, GameState, PlayerState } from "@type/game";
-import { randomCardType } from "./utils";
+import { randomCardType, randomReligion } from "./utils";
 
 export default class GameStateFactory {
     private gameState: GameState;
@@ -65,7 +65,8 @@ export default class GameStateFactory {
     }
 
     asylumCoins(coins: number): this {
-        this.gameState.game.asylum = coins;
+        if (this.gameState.game.configs.religiao.reforma)
+            this.gameState.game.asylum = coins;
 
         return this;
     }
@@ -98,6 +99,26 @@ export default class GameStateFactory {
             :
             newValue;
 
+        if (
+            keys[0] === "religiao" &&
+            keys[1] === "reforma" &&
+            (
+                typeof newValue === "function" ?
+                    newValue(config[keys[last]])
+                    :
+                    newValue
+            ) === true
+        )
+            this.addReligion()
+
         return this;
+    }
+
+    private addReligion() {
+        this.gameState.player.religion = randomReligion();
+
+        this.gameState.game.players.forEach(p => {
+            p.religion = randomReligion();
+        });
     }
 }
