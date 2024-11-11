@@ -304,7 +304,7 @@ describe("Game View render in game actions", () => {
         expect(gameView.duqueChoosableCard()).toBeInTheDocument();
         expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
 
-        await gameView.selectDuqueChoosableCard();
+        await gameView.selectCapitaoChoosableCard();
 
         expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
         expect(gameView.cardPickingMenu()).toBeInTheDocument();
@@ -313,7 +313,7 @@ describe("Game View render in game actions", () => {
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("taxar", "duque", 0);
+        expect(socketEmitMock).toHaveBeenCalledWith("taxar", "capitao", 0);
     });
 
     it("should not perform a corrupcao action when there is no religion", async () => {
@@ -371,7 +371,7 @@ describe("Game View render in game actions", () => {
         expect(gameView.duqueChoosableCard()).toBeInTheDocument();
         expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
 
-        await gameView.selectDuqueChoosableCard();
+        await gameView.selectCapitaoChoosableCard();
 
         expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
         expect(gameView.cardPickingMenu()).toBeInTheDocument();
@@ -380,7 +380,7 @@ describe("Game View render in game actions", () => {
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
+        expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "capitao", 0);
     });
 
     it("should perform a extorquir action correctly when one card can perform it", async () => {
