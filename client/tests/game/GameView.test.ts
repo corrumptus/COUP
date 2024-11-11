@@ -1,3 +1,4 @@
+import { waitForElementToBeRemoved } from "@testing-library/dom";
 import GameViewPO from "./GameViewPO";
 import GameStateFactory from "./GameStateFactory";
 
@@ -108,6 +109,16 @@ describe("Game view render in game init", () => {
         expect(gameView.configDiffs()).toBeInTheDocument();
     });
 
+    it("should close next person when default configs in pc view", async () => {
+        const gameState = new GameStateFactory().create();
+
+        const gameView = new GameViewPO(gameState);
+
+        await gameView.closeNextPerson();
+
+        expect(gameView.nextPerson()).not.toBeInTheDocument();
+    });
+
     it("should render correctly in the game beginning when player is the first player and default configurations in mobile view", async () => {
         const gameState = new GameStateFactory().create();
 
@@ -197,17 +208,40 @@ describe("Game view render in game init", () => {
 
         expect(gameView.configDiffs()).toBeInTheDocument();
     });
-});
 
-describe("Game View render in game actions", () => {
-    it("should perform a renda action correctly", async () => {
+    it("should close next person when default configs in mobile view", async () => {
         const gameState = new GameStateFactory().create();
 
-        const gameView = new GameViewPO(gameState);
+        const gameView = new GameViewPO(gameState, 500);
 
         await gameView.closeNextPerson();
 
         expect(gameView.nextPerson()).not.toBeInTheDocument();
+    });
+});
+
+describe("Game View render in game actions", () => {
+    async function initializeView(
+        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+    ) {
+        const gameState = configFactory(new GameStateFactory()).create();
+
+        const gameView = new GameViewPO(gameState);
+
+        if (gameView.configDiffs() !== null)
+            await waitForElementToBeRemoved(gameView.configDiffs(), { timeout: 5000 });
+
+        await gameView.closeNextPerson();
+
+        return {
+            gameState,
+            gameView,
+            enemyPlayerName: gameState.game.players[0].name
+        };
+    }
+
+    it("should perform a renda action correctly", async () => {
+        const { gameView } = await initializeView();
 
         await gameView.openMoneyMenu();
 
@@ -221,13 +255,7 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a ajuda externa action correctly", async () => {
-        const gameState = new GameStateFactory().create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        const { gameView } = await initializeView();
 
         await gameView.openMoneyMenu();
 
@@ -241,13 +269,7 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a taxar action correctly when one card can perform it", async () => {
-        const gameState = new GameStateFactory().create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        const { gameView } = await initializeView();
 
         await gameView.openMoneyMenu();
 
@@ -267,15 +289,9 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a taxar action correctly when more than one card can perform it", async () => {
-        const gameState = new GameStateFactory()
+        const { gameView } = await initializeView(factory => factory
             .newConfig(["tiposCartas", "capitao", "taxar"], true)
-            .create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        );
 
         await gameView.openMoneyMenu();
 
@@ -301,13 +317,7 @@ describe("Game View render in game actions", () => {
     });
 
     it("should not perform a corrupcao action when there is no religion", async () => {
-        const gameState = new GameStateFactory().create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        const { gameView } = await initializeView();
 
         await gameView.openMoneyMenu();
 
@@ -321,16 +331,10 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a corrupcao action correctly when one card can perform it", async () => {
-        const gameState = new GameStateFactory()
+        const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
             .asylumCoins(1)
-            .create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        );
 
         await gameView.openMoneyMenu();
 
@@ -350,17 +354,11 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a corrupcao action correctly when more than one card can perform it", async () => {
-        const gameState = new GameStateFactory()
+        const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
             .newConfig(["religiao", "cartasParaCorrupcao", "capitao"], true)
             .asylumCoins(1)
-            .create();
-
-        const gameView = new GameViewPO(gameState);
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        );
 
         await gameView.openMoneyMenu();
 
@@ -386,15 +384,7 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a extorquir action correctly when one card can perform it", async () => {
-        const gameState = new GameStateFactory().create();
-
-        const gameView = new GameViewPO(gameState);
-
-        const enemyPlayerName = gameState.game.players[0].name;
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        const { enemyPlayerName, gameView } = await initializeView();
 
         await gameView.extorquir(enemyPlayerName);
 
@@ -409,17 +399,9 @@ describe("Game View render in game actions", () => {
     });
 
     it("should perform a extorquir action correctly when more than one card can perform it", async () => {
-        const gameState = new GameStateFactory()
-            .newConfig(["tiposCartas", "duque", "extorquir"], true)    
-            .create();
-
-        const gameView = new GameViewPO(gameState);
-
-        const enemyPlayerName = gameState.game.players[0].name;
-
-        await gameView.closeNextPerson();
-
-        expect(gameView.nextPerson()).not.toBeInTheDocument();
+        const { enemyPlayerName, gameView } = await initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "extorquir"], true)
+        );
 
         await gameView.extorquir(enemyPlayerName);
 
