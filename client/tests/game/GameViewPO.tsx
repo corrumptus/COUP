@@ -185,6 +185,34 @@ export default class GameViewPO {
     await userEvent.click(this.corrupcaoButton() as HTMLElement);
   }
 
+  attackMenu() {
+    return screen.queryByTestId("gameView-attackMenu");
+  }
+
+  assassinarButton() {
+    return screen.queryByTestId("gameView-assassinarButton");
+  }
+
+  async assassinar() {
+    await userEvent.click(this.assassinarButton() as HTMLElement);
+  }
+
+  investigarButton() {
+    return screen.queryByTestId("gameView-investigarButton");
+  }
+
+  async investigar() {
+    await userEvent.click(this.investigarButton() as HTMLElement);
+  }
+
+  golpeEstadoButton() {
+    return screen.queryByTestId("gameView-golpeEstadoButton");
+  }
+
+  async golpeEstado() {
+    await userEvent.click(this.golpeEstadoButton() as HTMLElement);
+  }
+
   cardChooserMenu() {
     return screen.queryByTestId("gameView-cardChooserMenu");
   }
