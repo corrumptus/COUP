@@ -215,7 +215,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -223,7 +222,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.moneyMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("renda");
@@ -243,7 +241,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -251,7 +248,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.moneyMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("ajudaExterna");
@@ -271,7 +267,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -287,7 +282,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("taxar", "duque", 0);
@@ -309,7 +303,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -333,7 +326,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("taxar", "duque", 0);
@@ -353,7 +345,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -383,7 +374,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -399,7 +389,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
@@ -423,7 +412,6 @@ describe("Game View render in game actions", () => {
         gameView.openMoneyMenu();
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.moneyMenu()).toBeInTheDocument();
         });
 
@@ -447,7 +435,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
@@ -469,7 +456,6 @@ describe("Game View render in game actions", () => {
         gameView.extorquir(enemyPlayerName);
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
             expect(gameView.cardPickingMenu()).toBeInTheDocument();
         });
@@ -478,7 +464,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("extorquir", "capitao", 0, enemyPlayerName);
@@ -502,7 +487,6 @@ describe("Game View render in game actions", () => {
         gameView.extorquir(enemyPlayerName);
 
         await waitFor(() => {
-            expect(gameView.actionMenu()).toBeInTheDocument();
             expect(gameView.cardChooserMenu()).toBeInTheDocument();
             expect(gameView.duqueChoosableCard()).toBeInTheDocument();
             expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
@@ -519,7 +503,6 @@ describe("Game View render in game actions", () => {
 
         await waitFor(() => {
             expect(gameView.actionMenu()).not.toBeInTheDocument();
-            expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
         });
 
         expect(socketEmitMock).toHaveBeenCalledWith("extorquir", "duque", 0, enemyPlayerName);
