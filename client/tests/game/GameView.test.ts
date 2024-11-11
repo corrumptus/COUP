@@ -466,4 +466,50 @@ describe("Game View render in game actions", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("assassinar", "duque", 0, enemyPlayerName, 0);
     });
+
+    it("should perform a investigar action correctly when one card can perform it", async () => {
+        const { enemyPlayerName, gameView } = await initializeView();
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        expect(gameView.attackMenu()).toBeInTheDocument();
+
+        await gameView.investigar();
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("investigar", "inquisidor", 0, enemyPlayerName, 0);
+    });
+
+    it("should perform a investigar action correctly when more than one card can perform it", async () => {
+        const { enemyPlayerName, gameView } = await initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "investigar"], true)
+        );
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        expect(gameView.attackMenu()).toBeInTheDocument();
+
+        await gameView.investigar();
+
+        expect(gameView.cardChooserMenu()).toBeInTheDocument();
+        expect(gameView.duqueChoosableCard()).toBeInTheDocument();
+        expect(gameView.inquisidorChoosableCard()).toBeInTheDocument();
+
+        await gameView.selectDuqueChoosableCard();
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("investigar", "duque", 0, enemyPlayerName, 0);
+    });
 });
