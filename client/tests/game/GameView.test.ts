@@ -70,7 +70,7 @@ describe("Game view render in game init", () => {
         expect(gameView.nextPerson()).toHaveTextContent(enemyPlayer.name);
     });
 
-    it("should render correctly in the game beginning when player is the first player and no default configurations in pc view", async () => {
+    it("should render correctly in the game beginning when no default configurations in pc view", async () => {
         const gameState = new GameStateFactory()
             .newConfig(["renda"], (val: number) => val+1)
             .newConfig(["moedasIniciais"], (val: number) => val+1)
@@ -91,6 +91,22 @@ describe("Game view render in game init", () => {
         gameView.allConfigDiffTextContent().forEach(cd => {
             expect(expectedConfigDiffs.includes(cd as string)).toBe(true);
         });
+    });
+
+    it("should render correctly when their is religion in pc view", () => {
+        const gameState = new GameStateFactory()
+            .newConfig(["religiao", "reforma"], true)
+            .create();
+
+        const gameView = new GameViewPO(gameState);
+
+        const enemyPlayerName = gameState.game.players[0].name;
+
+        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+
+        expect(gameView.religionButton(enemyPlayerName)).toBeInTheDocument();
+
+        expect(gameView.configDiffs()).toBeInTheDocument();
     });
 
     it("should render correctly in the game beginning when player is the first player and default configurations in mobile view", async () => {
@@ -165,6 +181,22 @@ describe("Game view render in game init", () => {
         gameView.allConfigDiffTextContent().forEach(cd => {
             expect(expectedConfigDiffs.includes(cd as string)).toBe(true);
         });
+    });
+
+    it("should render correctly when their is religion in mobile view", () => {
+        const gameState = new GameStateFactory()
+            .newConfig(["religiao", "reforma"], true)
+            .create();
+
+        const gameView = new GameViewPO(gameState, 500);
+
+        const enemyPlayerName = gameState.game.players[0].name;
+
+        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+
+        expect(gameView.religionButton(enemyPlayerName)).toBeInTheDocument();
+
+        expect(gameView.configDiffs()).toBeInTheDocument();
     });
 });
 
