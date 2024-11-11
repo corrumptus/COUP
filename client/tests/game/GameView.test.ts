@@ -512,4 +512,32 @@ describe("Game View render in game actions", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("investigar", "duque", 0, enemyPlayerName, 0);
     });
+
+    it("should not perform a golpe de estado action when their is no enough money", async () => {
+        const { enemyPlayerName, gameView } = await initializeView();
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        expect(gameView.attackMenu()).toBeInTheDocument();
+
+        await gameView.golpeEstado();
+
+        expect(gameView.attackMenu()).toBeInTheDocument();
+    });
+
+    it("should perform a golpe de estado action correctly", async () => {
+        const { enemyPlayerName, gameView } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 7)
+        );
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        expect(gameView.attackMenu()).toBeInTheDocument();
+
+        await gameView.golpeEstado();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("golpeEstado", enemyPlayerName, 0);
+    });
 });
