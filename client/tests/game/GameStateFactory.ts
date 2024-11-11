@@ -109,7 +109,15 @@ export default class GameStateFactory {
                     newValue
             ) === true
         )
-            this.addReligion()
+            this.addReligion();
+
+        if (keys[0] === "moedasIniciais")
+            this.changeInitialMoney(
+                typeof newValue === "function" ?
+                    newValue(config[keys[last]])
+                    :
+                    newValue
+            );
 
         return this;
     }
@@ -120,5 +128,10 @@ export default class GameStateFactory {
         this.gameState.game.players.forEach(p => {
             p.religion = randomReligion();
         });
+    }
+
+    private changeInitialMoney(newValue: number) {
+        this.gameState.player.money = newValue;
+        this.gameState.game.players[0].money = newValue;
     }
 }
