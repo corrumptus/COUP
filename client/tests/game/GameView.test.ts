@@ -102,7 +102,7 @@ describe("Game view render in game init", () => {
 
         const enemyPlayerName = gameState.game.players[0].name;
 
-        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+        expect(gameView.playerReligionButton()).toBeInTheDocument();
 
         expect(gameView.religionButton(enemyPlayerName)).toBeInTheDocument();
 
@@ -202,7 +202,7 @@ describe("Game view render in game init", () => {
 
         const enemyPlayerName = gameState.game.players[0].name;
 
-        expect(gameView.playerReligionButton()).not.toBeInTheDocument();
+        expect(gameView.playerReligionButton()).toBeInTheDocument();
 
         expect(gameView.religionButton(enemyPlayerName)).toBeInTheDocument();
 
