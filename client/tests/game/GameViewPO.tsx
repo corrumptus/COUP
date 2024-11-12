@@ -42,7 +42,7 @@ export default class GameViewPO {
   }
 
   playerReligionButton() {
-    return screen.queryByTestId("gameView-religion");
+    return screen.queryByTestId("gameView-playerReligionButton");
   }
 
   async changePlayerReligion() {
