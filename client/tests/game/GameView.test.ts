@@ -330,6 +330,22 @@ describe("Game View render in game actions", () => {
         expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
     });
 
+    it("should not perform a corrupcao action when there is no money in asylum", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+        );
+
+        await gameView.openMoneyMenu();
+
+        expect(gameView.moneyMenu()).toBeInTheDocument();
+
+        await gameView.selectCorrupcao();
+
+        expect(gameView.moneyMenu()).toBeInTheDocument();
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+    });
+
     it("should perform a corrupcao action correctly when one card can perform it", async () => {
         const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
