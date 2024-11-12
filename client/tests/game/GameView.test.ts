@@ -556,4 +556,46 @@ describe("Game View render in game actions", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("golpeEstado", enemyPlayerName, 0);
     });
+
+    it("should not perform a self trocar religiao action when their is no enough money", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+            .newConfig(["moedasIniciais"], 0)
+        );
+
+        await gameView.changePlayerReligion();
+
+        expect(socketEmitMock).not.toHaveBeenCalledWith("trocarPropriaReligiao");
+    });
+
+    it("should perform a self trocar religiao action correctly", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+        );
+
+        await gameView.changePlayerReligion();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("trocarPropriaReligiao");
+    });
+
+    it("should not perform a trocar religiao action when their is no enough money", async () => {
+        const { enemyPlayerName, gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+            .newConfig(["moedasIniciais"], 1)
+        );
+
+        await gameView.changeReligion(enemyPlayerName);
+
+        expect(socketEmitMock).not.toHaveBeenCalledWith("trocarReligiaoOutro", enemyPlayerName);
+    });
+
+    it("should perform a trocar religiao action correctly", async () => {
+        const { enemyPlayerName, gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+        );
+
+        await gameView.changeReligion(enemyPlayerName);
+
+        expect(socketEmitMock).toHaveBeenCalledWith("trocarReligiaoOutro", enemyPlayerName);
+    });
 });
