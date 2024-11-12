@@ -217,13 +217,13 @@ function contextToNotification(
     }
 
     if (context.action === Action.TAXAR) {
-        message = `O player ${context.attacker} taxou o banco`;
+        message = `O player ${context.attacker} taxou o banco com ${context.card}`;
         blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
     if (context.action === Action.CORRUPCAO) {
-        message = `O player ${context.attacker} se corrompeu`;
+        message = `O player ${context.attacker} se corrompeu com ${context.card}`;
         contestable = true;
     }
 
@@ -240,7 +240,7 @@ function contextToNotification(
     }
 
     if (context.action === Action.INVESTIGAR) {
-        message = `O player ${context.attacker} quer ver uma carta de ${context.target} com ${context.card}`;
+        message = `O player ${context.attacker} quer investigar uma carta de ${context.target} com ${context.card}`;
         blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
@@ -248,23 +248,45 @@ function contextToNotification(
     if (context.action === Action.GOLPE_ESTADO)
         message = `O player ${context.attacker} deu um golpe de estado em ${context.target}`;
 
-    if (context.action === Action.TROCAR && !context.isInvestigating) {
-        message = context.attackedCard !== undefined ?
-            `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta com ${context.card}`
-            :
-            `O player ${context.attacker} trocou as cartas com ${context.card}`;
-            blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
+    if (
+        context.action === Action.TROCAR &&
+        !context.isInvestigating &&
+        context.attackedCard === undefined
+    ) {
+        message = `O player ${context.attacker} trocou as cartas com ${context.card}`;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
         contestable = true;
     }
 
-    if (context.action === Action.TROCAR && context.isInvestigating)
-        message = `O player ${context.attacker} trocou a ${context.attackedCard as number + 1}º carta de ${context.target}`;
+    if (
+        context.action === Action.TROCAR &&
+        !context.isInvestigating &&
+        context.attackedCard !== undefined
+    ) {
+        message = `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta com ${context.card}`;
+        blockAble = getChoosableCards(Action.BLOQUEAR, configs, context.action).length > 0;
+        contestable = true;
+    }
+
+    if (
+        context.action === Action.TROCAR &&
+        context.isInvestigating &&
+        context.attackedCard === undefined
+    )
+        message = `O player ${context.attacker} trocou as cartas de ${context.target}`;
+
+    if (
+        context.action === Action.TROCAR &&
+        context.isInvestigating &&
+        context.attackedCard !== undefined
+    )
+        message = `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta de ${context.target}`;
 
     if (context.action === Action.CONTESTAR)
         message = `O player ${context.attacker} contestou ${context.target}`;
 
     if (context.action === Action.BLOQUEAR) {
-        message = `O player ${context.attacker} bloqueou ${context.target}`;
+        message = `O player ${context.attacker} bloqueou ${context.target} com ${context.card}`;
         contestable = true;
     }
 
