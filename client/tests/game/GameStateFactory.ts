@@ -29,7 +29,8 @@ export default class GameStateFactory {
                     }
                 ],
                 money: COUPDefaultConfigs.moedasIniciais,
-                state: PlayerState.WAITING_TURN
+                state: PlayerState.WAITING_TURN,
+                religion: undefined
             },
             game: {
                 asylum: 0,
@@ -48,6 +49,7 @@ export default class GameStateFactory {
                             }
                         ],
                         money: COUPDefaultConfigs.moedasIniciais,
+                        religion: undefined
                     }
                 ],
                 currentPlayer: this.playerName,
