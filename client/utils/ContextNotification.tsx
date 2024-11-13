@@ -13,11 +13,18 @@ function ContextNotification({
 }) {
   return (
     <div>
-      {message}
+      <span
+        id="gameView-gameUpdateToasterContent"
+        data-testid="gameView-gameUpdateToasterContent"
+      >
+        {message}
+      </span>
       <div className="flex gap-3">
         {blockable &&
           <button
             className="bg-red-400 p-1 rounded-lg border-zinc-900 border-2 hover:shadow hover:shadow-gray-400"
+            id="gameView-gameUpdateToasterBlockButton"
+            data-testid="gameView-gameUpdateToasterBlockButton"
             onClick={e => {
               e.stopPropagation();
 
@@ -30,6 +37,8 @@ function ContextNotification({
         {contestable &&
           <button
             className="bg-orange-400 p-1 rounded-lg border-zinc-900 border-2 hover:shadow hover:shadow-gray-400"
+            id="gameView-gameUpdateToasterContestButton"
+            data-testid="gameView-gameUpdateToasterContestButton"
             onClick={e => {
               e.stopPropagation();
 

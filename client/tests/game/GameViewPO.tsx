@@ -300,4 +300,38 @@ export default class GameViewPO {
   async closeNextPerson() {
     await userEvent.click(this.nextPerson() as HTMLElement);
   }
+
+  alltoasters() {
+    return screen.queryAllByTestId("toaster");
+  }
+
+  gameUpdateToasterContents() {
+    return screen.queryAllByTestId("gameView-gameUpdateToasterContent")
+      .map(tc => tc.textContent);
+  }
+
+  async closeToaster(index: number) {
+    await userEvent.click(this.alltoasters()[index]);
+  }
+
+  async closeAllToaster() {
+    for (let toaster of this.alltoasters())
+      await userEvent.click(toaster);
+  }
+
+  gameUpdateToasterBlockButtons() {
+    return screen.queryAllByTestId("gameView-gameUpdateToasterBlockButton");
+  }
+
+  async block(index: number) {
+    await userEvent.click(this.gameUpdateToasterBlockButtons()[index]);
+  }
+
+  gameUpdateToasterContestButtons() {
+    return screen.queryAllByTestId("gameView-gameUpdateToasterContestButton");
+  }
+
+  async contest(index: number) {
+    await userEvent.click(this.gameUpdateToasterContestButtons()[index]);
+  }
 }
