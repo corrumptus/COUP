@@ -220,7 +220,7 @@ describe("Game view render in game init", () => {
     });
 });
 
-describe("Game View render in game actions", () => {
+describe("Game View interactivity for game actions", () => {
     async function initializeView(
         configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
     ) {
