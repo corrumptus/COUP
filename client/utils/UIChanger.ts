@@ -283,6 +283,9 @@ function contextToNotification(
         contestable = true;
     }
 
+    if (context.action === Action.CONTINUAR && context.isInvestigating)
+        message = `O player ${context.attacker} não trocou a carta de ${context.target}`;
+
     return createContextNotification(
         message,
         blockAble,
