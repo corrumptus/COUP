@@ -271,13 +271,6 @@ function contextToNotification(
     if (
         context.action === Action.TROCAR &&
         context.isInvestigating &&
-        context.attackedCard === undefined
-    )
-        message = `O player ${context.attacker} trocou as cartas de ${context.target}`;
-
-    if (
-        context.action === Action.TROCAR &&
-        context.isInvestigating &&
         context.attackedCard !== undefined
     )
         message = `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta de ${context.target}`;
