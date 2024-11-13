@@ -27,11 +27,7 @@ export default function Toasters() {
   externalSetState = setToasters;
 
   return (
-    <div
-      className="flex flex-col gap-2 absolute top-1 right-1 z-50"
-      id="toasters"
-      data-testid="toasters"
-    >
+    <div className="flex flex-col gap-2 absolute top-1 right-1 z-50">
       {toasters}
     </div>
   )
