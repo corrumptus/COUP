@@ -1,7 +1,21 @@
 import { faker } from "@faker-js/faker";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import { ContextType, GameState, PlayerState } from "@type/game";
+import { Action, Card, ContextType, GameState, PlayerState } from "@type/game";
 import { randomCardType, randomReligion } from "./utils";
+
+type NonCard = Action.RENDA |
+    Action.AJUDA_EXTERNA |
+    Action.GOLPE_ESTADO |
+    Action.TROCAR_PROPRIA_RELIGIAO |
+    Action.TROCAR_RELIGIAO_OUTRO |
+    Action.CONTINUAR |
+    Action.CONTESTAR;
+
+type WithTargetCard = Action.ASSASSINAR |
+    Action.INVESTIGAR |
+    Action.GOLPE_ESTADO;
+
+type PosInvestigar = Action.TROCAR | Action.CONTINUAR;
 
 export default class GameStateFactory {
     private gameState: GameState;
@@ -135,5 +149,26 @@ export default class GameStateFactory {
     private changeInitialMoney(newValue: number) {
         this.gameState.player.money = newValue;
         this.gameState.game.players[0].money = newValue;
+    }
+
+    ofSeeingEnemy<A extends Action, C extends Card>(
+        action: A,
+        card: A extends NonCard ? undefined : C,
+        targetCard: A extends WithTargetCard ? number
+            : C extends Card.INQUISIDOR ? number
+                : undefined,
+        isInvestigating: A extends PosInvestigar ? boolean : false
+    ): this {
+        this.gameState.context = {
+            type: ContextType.OBSERVING,
+            attacker: this.gameState.game.players[0].name,
+            action: action,
+            card: card,
+            target: this.gameState.player.name,
+            attackedCard: targetCard,
+            isInvestigating: isInvestigating
+        };
+
+        return this;
     }
 }
