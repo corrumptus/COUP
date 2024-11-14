@@ -790,4 +790,18 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
+
+    it("should render correctly when a player uses golpe de estado", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} deu um golpe de estado em ${playerName}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
 });
