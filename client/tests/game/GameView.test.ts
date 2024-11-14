@@ -629,4 +629,33 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
     });
+
+    it("should render correctly when a player uses ajuda externa", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} pediu ajuda externa`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
+
+    it("should render correctly when a player uses ajuda externa when no card can block it", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "taxar"], false)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} pediu ajuda externa`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
 });
