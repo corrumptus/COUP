@@ -1,4 +1,5 @@
 import { waitForElementToBeRemoved } from "@testing-library/dom";
+import { Action } from "@type/game";
 import GameStateFactory from "@tests/GameStateFactory";
 import GameViewPO from "@tests/GameViewPO";
 
@@ -597,5 +598,35 @@ describe("Game View interactivity for game actions", () => {
         await gameView.changeReligion(enemyPlayerName);
 
         expect(socketEmitMock).toHaveBeenCalledWith("trocarReligiaoOutro", enemyPlayerName);
+    });
+});
+
+describe("Game View render in game update", () => {
+    function initializeView(
+        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+    ) {
+        const gameState = configFactory(new GameStateFactory()).create();
+
+        const gameView = new GameViewPO(gameState);
+
+        return {
+            gameState,
+            gameView,
+            enemyPlayerName: gameState.game.players[0].name,
+            playerName: gameState.player.name
+        };
+    }
+
+    it("should render correctly when a player uses renda", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.RENDA, undefined, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0]).toBe(`O player ${enemyPlayerName} pediu renda`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
     });
 });
