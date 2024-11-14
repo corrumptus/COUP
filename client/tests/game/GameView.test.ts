@@ -761,4 +761,33 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
+
+    it("should render correctly when a player uses investigar", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} quer investigar uma carta de ${playerName} com ${Card.INQUISIDOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses investigar and a card can block it", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} quer investigar uma carta de ${playerName} com ${Card.INQUISIDOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
 });
