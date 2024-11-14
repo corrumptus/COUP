@@ -687,4 +687,18 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
+
+    it("should render correctly when a player uses corrupcao", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} se corrompeu com ${Card.DUQUE}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
 });
