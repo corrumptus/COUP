@@ -103,7 +103,7 @@ export default class GameStateFactory {
 
         for (let i = 0; i < keys.length - 1; i++) {
             if (!(keys[i] in config))
-                return this;
+                throw new Error(`No key \`${keys[i]}\` in the object ${JSON.stringify(config)}`);
 
             config = config[keys[i]];
         }
