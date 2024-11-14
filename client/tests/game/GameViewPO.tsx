@@ -305,7 +305,7 @@ export default class GameViewPO {
     return screen.queryAllByTestId("toaster");
   }
 
-  gameUpdateToasterContents() {
+  toasterContents() {
     return screen.queryAllByTestId("gameView-gameUpdateToasterContent")
       .map(tc => tc.textContent);
   }
@@ -314,24 +314,19 @@ export default class GameViewPO {
     await userEvent.click(this.alltoasters()[index]);
   }
 
-  async closeAllToaster() {
-    for (let toaster of this.alltoasters())
-      await userEvent.click(toaster);
-  }
-
-  gameUpdateToasterBlockButtons() {
+  toasterBlockButtons() {
     return screen.queryAllByTestId("gameView-gameUpdateToasterBlockButton");
   }
 
-  async block(index: number) {
-    await userEvent.click(this.gameUpdateToasterBlockButtons()[index]);
+  async blockByToaster(index: number) {
+    await userEvent.click(this.toasterBlockButtons()[index]);
   }
 
-  gameUpdateToasterContestButtons() {
+  toasterContestButtons() {
     return screen.queryAllByTestId("gameView-gameUpdateToasterContestButton");
   }
 
-  async contest(index: number) {
-    await userEvent.click(this.gameUpdateToasterContestButtons()[index]);
+  async contestByToaster(index: number) {
+    await userEvent.click(this.toasterContestButtons()[index]);
   }
 }

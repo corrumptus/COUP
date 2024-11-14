@@ -625,9 +625,9 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0]).toBe(`O player ${enemyPlayerName} pediu renda`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContents()[0]).toBe(`O player ${enemyPlayerName} pediu renda`);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses ajuda externa", () => {
@@ -638,10 +638,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} pediu ajuda externa`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses ajuda externa when no card can block it", () => {
@@ -653,10 +653,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} pediu ajuda externa`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses taxar", () => {
@@ -667,10 +667,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} taxou o banco com ${Card.DUQUE}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses taxar and a card can block it", () => {
@@ -682,10 +682,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} taxou o banco com ${Card.DUQUE}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses corrupcao", () => {
@@ -696,10 +696,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} se corrompeu com ${Card.DUQUE}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses extorquir", () => {
@@ -710,10 +710,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} extorquiu ${playerName} com ${Card.CAPITAO}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses extorquir when no card can block it", () => {
@@ -727,10 +727,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} extorquiu ${playerName} com ${Card.CAPITAO}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses assassinar", () => {
@@ -741,10 +741,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} assassinou uma carta de ${playerName} com ${Card.ASSASSINO}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses assassinar when no card can block it", () => {
@@ -756,10 +756,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} assassinou uma carta de ${playerName} com ${Card.ASSASSINO}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses investigar", () => {
@@ -770,10 +770,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} quer investigar uma carta de ${playerName} com ${Card.INQUISIDOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses investigar and a card can block it", () => {
@@ -785,10 +785,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} quer investigar uma carta de ${playerName} com ${Card.INQUISIDOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses golpe de estado", () => {
@@ -799,10 +799,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} deu um golpe de estado em ${playerName}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses trocar with a card that can change all cards", () => {
@@ -813,10 +813,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou as cartas com ${Card.EMBAIXADOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses trocar with a card that can change all cards and a card can block it", () => {
@@ -828,10 +828,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou as cartas com ${Card.EMBAIXADOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses trocar with a card that can change only one card", () => {
@@ -842,10 +842,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou a 1º carta com ${Card.INQUISIDOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses trocar with a card that can change only one card and a card can block it", () => {
@@ -857,10 +857,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou a 1º carta com ${Card.INQUISIDOR}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses trocar after a investigar", () => {
@@ -871,10 +871,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou a 1º carta de ${playerName}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses continuar after a investigar", () => {
@@ -885,10 +885,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} não trocou a carta de ${playerName}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses self trocar religiao", () => {
@@ -899,10 +899,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou a própria religião`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses trocar religiao", () => {
@@ -913,10 +913,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} trocou a religião de ${playerName}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 
     it("should render correctly when a player uses bloquear", () => {
@@ -927,10 +927,10 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} bloqueou ${playerName} com ${Card.DUQUE}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
     it("should render correctly when a player uses contestar", () => {
@@ -941,9 +941,9 @@ describe("Game View render in game update", () => {
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
-        expect(gameView.gameUpdateToasterContents()[0])
+        expect(gameView.toasterContents()[0])
             .toBe(`O player ${enemyPlayerName} contestou ${playerName}`);
-        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
-        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 });
