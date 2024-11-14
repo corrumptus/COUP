@@ -1,5 +1,5 @@
 import { waitForElementToBeRemoved } from "@testing-library/dom";
-import { Action } from "@type/game";
+import { Action, Card } from "@type/game";
 import GameStateFactory from "@tests/GameStateFactory";
 import GameViewPO from "@tests/GameViewPO";
 
@@ -657,5 +657,34 @@ describe("Game View render in game update", () => {
             .toBe(`O player ${enemyPlayerName} pediu ajuda externa`);
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
+
+    it("should render correctly when a player uses taxar", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} taxou o banco com ${Card.DUQUE}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses taxar and a card can block it", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "capitao", "bloquearTaxar"], true)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} taxou o banco com ${Card.DUQUE}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
 });
