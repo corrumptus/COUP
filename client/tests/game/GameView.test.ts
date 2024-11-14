@@ -1,6 +1,6 @@
 import { waitForElementToBeRemoved } from "@testing-library/dom";
-import GameViewPO from "./GameViewPO";
-import GameStateFactory from "./GameStateFactory";
+import GameStateFactory from "@tests/GameStateFactory";
+import GameViewPO from "@tests/GameViewPO";
 
 jest.mock("next/navigation", () => ({
     ...jest.requireActual("next/navigation"),

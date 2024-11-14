@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { Action, Card, ContextType, GameState, PlayerState } from "@type/game";
-import { randomCardType, randomReligion } from "./utils";
+import { randomCardType, randomReligion } from "@tests/utils";
 
 type NonCard = Action.RENDA |
     Action.AJUDA_EXTERNA |

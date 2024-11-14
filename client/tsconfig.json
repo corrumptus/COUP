@@ -21,7 +21,8 @@
       "@pages/*": ["./pages/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
-      "@type/*": ["./type/*"]
+      "@type/*": ["./type/*"],
+      "@tests/*": ["./tests/game/*"],
     },
     "target": "ES2017"
   },
