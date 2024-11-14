@@ -804,4 +804,62 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
     });
+
+    it("should render correctly when a player uses trocar with a card that can change all cards", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou as cartas com ${Card.EMBAIXADOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses trocar with a card that can change all cards and a card can block it", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou as cartas com ${Card.EMBAIXADOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses trocar with a card that can change only one card", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou a 1º carta com ${Card.INQUISIDOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses trocar with a card that can change only one card and a card can block it", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
+            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou a 1º carta com ${Card.INQUISIDOR}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
 });
