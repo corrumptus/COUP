@@ -732,4 +732,33 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
+
+    it("should render correctly when a player uses assassinar", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} assassinou uma carta de ${playerName} com ${Card.ASSASSINO}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses assassinar when no card can block it", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "condessa", "bloquearAssassinar"], false)
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} assassinou uma carta de ${playerName} com ${Card.ASSASSINO}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
 });
