@@ -701,4 +701,35 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
     });
+
+    it("should render correctly when a player uses extorquir", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} extorquiu ${playerName} com ${Card.CAPITAO}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player uses extorquir when no card can block it", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "capitao", "bloquearExtorquir"], false)
+            .newConfig(["tiposCartas", "embaixador", "bloquearExtorquir"], false)
+            .newConfig(["tiposCartas", "inquisidor", "bloquearExtorquir"], false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} extorquiu ${playerName} com ${Card.CAPITAO}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBeInTheDocument();
+    });
 });
