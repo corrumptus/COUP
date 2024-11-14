@@ -890,4 +890,32 @@ describe("Game View render in game update", () => {
         expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
     });
+
+    it("should render correctly when a player uses self trocar religiao", () => {
+        const { enemyPlayerName, gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou a própria religião`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
+
+    it("should render correctly when a player uses trocar religiao", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, 0, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.gameUpdateToasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} trocou a religião de ${playerName}`);
+        expect(gameView.gameUpdateToasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.gameUpdateToasterContestButtons()[0]).toBe(undefined);
+    });
 });
