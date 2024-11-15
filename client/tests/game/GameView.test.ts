@@ -235,7 +235,6 @@ describe("Game View interactivity for game actions", () => {
         await gameView.closeNextPerson();
 
         return {
-            gameState,
             gameView,
             enemyPlayerName: gameState.game.players[0].name
         };
@@ -610,7 +609,6 @@ describe("Game View render in game update", () => {
         const gameView = new GameViewPO(gameState);
 
         return {
-            gameState,
             gameView,
             enemyPlayerName: gameState.game.players[0].name,
             playerName: gameState.player.name
@@ -956,16 +954,11 @@ describe("Game View interactivity in post game update when observing", () => {
 
         const gameView = new GameViewPO(gameState);
 
-        return {
-            gameState,
-            gameView,
-            enemyPlayerName: gameState.game.players[0].name,
-            playerName: gameState.player.name
-        };
+        return gameView;
     }
 
     it("should render correctly when using bloquear after ajuda externa when one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
         );
 
@@ -982,7 +975,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after ajuda externa when more than one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "capitao", "taxar"], true)
             .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
         );
@@ -1004,7 +997,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after taxar when one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTaxar"], true)
             .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
         );
@@ -1022,7 +1015,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after taxar when more than one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTaxar"], true)
             .newConfig(["tiposCartas", "capitao", "bloquearTaxar"], true)
             .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
@@ -1045,7 +1038,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after extorquir when one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "embaixador", "bloquearExtorquir"], false)
             .newConfig(["tiposCartas", "inquisidor", "bloquearExtorquir"], false)
             .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
@@ -1064,7 +1057,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after extorquir when more than one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
         );
 
@@ -1085,7 +1078,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after assassinar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
         );
 
@@ -1097,7 +1090,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after investigar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
             .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
         );
@@ -1110,7 +1103,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after trocar when one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
             .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
         );
@@ -1128,7 +1121,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using bloquear after trocar when more than one card can block it", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
             .newConfig(["tiposCartas", "capitao", "bloquearTrocar"], true)
             .ofSeeingEnemy(Action.EXTORQUIR, Card.EMBAIXADOR, undefined, false)
@@ -1151,7 +1144,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after taxar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
         );
 
@@ -1167,7 +1160,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after corrupcao", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false)
         );
 
@@ -1183,7 +1176,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after extorquir", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
         );
 
@@ -1199,7 +1192,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after assassinar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
         );
 
@@ -1211,7 +1204,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after investigar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
         );
 
@@ -1223,7 +1216,7 @@ describe("Game View interactivity in post game update when observing", () => {
     });
 
     it("should render correctly when using contestar after trocar", async () => {
-        const { gameView } = initializeView(factory => factory
+        const gameView = initializeView(factory => factory
             .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
         );
 
