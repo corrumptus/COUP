@@ -217,10 +217,6 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-cardChooserMenu");
   }
 
-  cardPickingMenu() {
-    return screen.queryByTestId("gameView-cardPickingMenu");
-  }
-
   duqueChoosableCard() {
     return screen.queryByTestId("gameView-duqueChoosableCard");
   }
@@ -269,6 +265,10 @@ export default class GameViewPO {
     await userEvent.click(this.inquisidorChoosableCard() as HTMLElement);
   }
 
+  cardPickingMenu() {
+    return screen.queryByTestId("gameView-cardPickingMenu");
+  }
+
   firstPickableCard() {
     return screen.queryByTestId("gameView-firstPickableCard");
   }
@@ -284,6 +284,39 @@ export default class GameViewPO {
   async selectSecondPickableCard() {
     await userEvent.click(this.secondPickableCard() as HTMLElement);
   }
+
+  defenseMenu() {
+    return screen.queryByTestId("gameView-defenseMenu");
+  }
+
+  blockButton() {
+    return screen.queryByTestId("gameView-bloquearButton");
+  }
+
+  async block() {
+    await userEvent.click(this.blockButton() as HTMLElement);
+  }
+
+  contestButton() {
+    return screen.queryByTestId("gameView-contestarButton");
+  }
+
+  async contest() {
+    await userEvent.click(this.contestButton() as HTMLElement);
+  }
+
+  acceptButton() {
+    return screen.queryByTestId("gameView-continuarButton");
+  }
+
+  async accept() {
+    await userEvent.click(this.acceptButton() as HTMLElement);
+  }
+
+  blockDefenseMenu() {
+    return screen.queryByTestId("gameView-BlockDefenseMenu");
+  }
+
   nextPerson() {
     return screen.queryByTestId("gameView-nextPerson");
   }
