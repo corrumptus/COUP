@@ -1531,4 +1531,115 @@ describe("Game View interactivity in post game update when being attacked", () =
 
         expect(socketEmitMock).toHaveBeenCalledWith("contestar");
     });
+
+    it("should render correctly when using continuar after extorquir", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.EXTORQUIR, Card.CAPITAO, undefined, undefined)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after assassinar", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.ASSASSINAR, Card.ASSASSINO, 0, undefined)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after investigar", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.INVESTIGAR, Card.INQUISIDOR, 0, undefined)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a ajuda externa", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.AJUDA_EXTERNA)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a taxar", async () => {
+        const gameView = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTaxar"], true)
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.TAXAR)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a extorquir", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.BLOQUEAR, Card.CAPITAO, undefined, Action.EXTORQUIR)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a assassinar", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.BLOQUEAR, Card.CONDESSA, undefined, Action.ASSASSINAR)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a investigar", async () => {
+        const gameView = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.INVESTIGAR)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
+
+    it("should render correctly when using continuar after blocking a trocar", async () => {
+        const gameView = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.TROCAR)
+        );
+
+        await gameView.accept();
+
+        expect(gameView.defenseMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("continuar");
+    });
 });
