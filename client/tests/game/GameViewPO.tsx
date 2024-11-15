@@ -314,7 +314,7 @@ export default class GameViewPO {
   }
 
   blockDefenseMenu() {
-    return screen.queryByTestId("gameView-BlockDefenseMenu");
+    return screen.queryByTestId("gameView-blockDefenseMenu");
   }
 
   nextPerson() {
