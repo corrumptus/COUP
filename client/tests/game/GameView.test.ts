@@ -1329,4 +1329,20 @@ describe("Game View interactivity in post game update when being attacked", () =
 
         expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
     });
+
+    it("should render correctly when using contestar after extorquir", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.EXTORQUIR, Card.CAPITAO, undefined, undefined)
+        );
+
+        await gameView.contest();
+
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
+    });
 });
