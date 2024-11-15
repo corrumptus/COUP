@@ -1043,4 +1043,44 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "capitao", 0);
     });
+
+    it("should render correctly when using bloquear after extorquir when one card can block it", async () => {
+        const { gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "embaixador", "bloquearExtorquir"], false)
+            .newConfig(["tiposCartas", "inquisidor", "bloquearExtorquir"], false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+        );
+
+        await gameView.blockByToaster(0);
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "capitao", 0);
+    });
+
+    it("should render correctly when using bloquear after extorquir when more than one card can block it", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+        );
+
+        await gameView.blockByToaster(0);
+
+        expect(gameView.cardChooserMenu()).toBeInTheDocument();
+
+        await gameView.selectEmbaixadorChoosableCard();
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "embaixador", 0);
+    });
 });
