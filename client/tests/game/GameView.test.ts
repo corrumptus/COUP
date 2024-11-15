@@ -1029,6 +1029,17 @@ describe("Game View render in game update", () => {
         expect(gameView.contestButton()).toBeInTheDocument();
         expect(gameView.acceptButton()).toBeInTheDocument();
     });
+
+    it("should render correctly when a player attack with bloquear after a trocar", () => {
+        const { gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.TROCAR)
+        );
+
+        expect(gameView.blockDefenseMenu()).toBeInTheDocument();
+        expect(gameView.contestButton()).toBeInTheDocument();
+        expect(gameView.acceptButton()).toBeInTheDocument();
+    });
 });
 
 describe("Game View interactivity in post game update when observing", () => {
@@ -1499,6 +1510,19 @@ describe("Game View interactivity in post game update when being attacked", () =
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
             .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.INVESTIGAR)
+        );
+
+        await gameView.contest();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar");
+    });
+
+    it("should render correctly when using contestar after blocking a trocar", async () => {
+        const gameView = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
+            .ofBeingAttacked(Action.BLOQUEAR, Card.DUQUE, undefined, Action.TROCAR)
         );
 
         await gameView.contest();
