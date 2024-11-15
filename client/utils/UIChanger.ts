@@ -613,7 +613,11 @@ function contestableActionNeedsSelfCard(action: Action, preBlockAction?: Action)
     if (action !== Action.BLOQUEAR)
         return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
 
-    return preBlockAction === Action.AJUDA_EXTERNA;
+    return [
+        Action.AJUDA_EXTERNA,
+        Action.TAXAR,
+        Action.EXTORQUIR
+    ].includes(preBlockAction as Action);
 }
 
 function emitAction(
