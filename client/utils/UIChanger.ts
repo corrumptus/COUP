@@ -504,13 +504,13 @@ function isActionEmitable(
         &&
         (
             (
-                !blockableActionNeedsSelfCard(gameState.context.previousAction as Action)
+                !blockableActionNeedsSelfCard(gameState.context.action as Action)
                 &&
                 menuType === MenuTypes.DEFENSE
             )
             ||
             (
-                blockableActionNeedsSelfCard(gameState.context.previousAction as Action)
+                blockableActionNeedsSelfCard(gameState.context.action as Action)
                 &&
                 menuType === MenuTypes.CARD_PICKING
             )
