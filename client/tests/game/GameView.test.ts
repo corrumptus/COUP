@@ -1330,6 +1330,18 @@ describe("Game View interactivity in post game update when being attacked", () =
         expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
     });
 
+    it("should render correctly when using bloquear after investigar", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.INVESTIGAR, Card.INQUISIDOR, 0, undefined)
+        );
+
+        await gameView.block();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+    });
+
     it("should render correctly when using contestar after extorquir", async () => {
         const gameView = initializeView(factory => factory
             .ofBeingAttacked(Action.EXTORQUIR, Card.CAPITAO, undefined, undefined)
