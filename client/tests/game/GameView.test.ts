@@ -1165,4 +1165,20 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
     });
+
+    it("should render correctly when using contestar after corrupcao", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false)
+        );
+
+        await gameView.contestByToaster(0);
+
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
+    });
 });
