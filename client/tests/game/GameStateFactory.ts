@@ -196,8 +196,7 @@ export default class GameStateFactory {
             action: action,
             card: card,
             attackedCard: targetCard,
-            previousAction: previousAction,
-            preBlockAction: undefined
+            previousAction: previousAction
         };
 
         return this;
