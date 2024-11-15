@@ -1083,4 +1083,16 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "embaixador", 0);
     });
+
+    it("should render correctly when using bloquear after assassinar", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+        );
+
+        await gameView.blockByToaster(0);
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+    });
 });
