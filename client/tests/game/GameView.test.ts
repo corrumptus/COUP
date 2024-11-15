@@ -1197,4 +1197,16 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
     });
+
+    it("should render correctly when using contestar after assassinar", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+        );
+
+        await gameView.contestByToaster(0);
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar");
+    });
 });
