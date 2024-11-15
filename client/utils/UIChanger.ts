@@ -548,7 +548,7 @@ function isActionEmitable(
             (
                 !contestableActionNeedsSelfCard(
                     gameState.context.action as Action,
-                    gameState.context.preBlockAction
+                    gameState.context.previousAction
                 )
                 &&
                 (
@@ -561,7 +561,7 @@ function isActionEmitable(
             (
                 contestableActionNeedsSelfCard(
                     gameState.context.action as Action,
-                    gameState.context.preBlockAction
+                    gameState.context.previousAction
                 )
                 &&
                 menuType === MenuTypes.CARD_PICKING
