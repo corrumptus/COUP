@@ -947,3 +947,59 @@ describe("Game View render in game update", () => {
         expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
 });
+
+describe("Game View interactivity in post game update when observing", () => {
+    function initializeView(
+        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+    ) {
+        const gameState = configFactory(new GameStateFactory()).create();
+
+        const gameView = new GameViewPO(gameState);
+
+        return {
+            gameState,
+            gameView,
+            enemyPlayerName: gameState.game.players[0].name,
+            playerName: gameState.player.name
+        };
+    }
+
+    it("should render correctly when using bloquear after ajuda externa when one card can block it", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+        );
+
+        await gameView.blockByToaster(0);
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "duque", 0);
+    });
+
+    it("should render correctly when using bloquear after ajuda externa when more than one card can block it", async () => {
+        const { gameView } = initializeView(factory => factory
+            .newConfig(["tiposCartas", "capitao", "taxar"], true)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+        );
+
+        await gameView.blockByToaster(0);
+
+        expect(gameView.cardChooserMenu()).toBeInTheDocument();
+
+        await gameView.selectCapitaoChoosableCard();
+
+        expect(gameView.cardChooserMenu()).not.toBeInTheDocument();
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "capitao", 0);
+    });
+});
