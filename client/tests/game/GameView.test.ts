@@ -1221,4 +1221,20 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("contestar");
     });
+
+    it("should render correctly when using contestar after trocar", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+        );
+
+        await gameView.contestByToaster(0);
+
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
+    });
 });
