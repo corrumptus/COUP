@@ -1008,6 +1008,16 @@ describe("Game View render in game update", () => {
         expect(gameView.contestButton()).toBeInTheDocument();
         expect(gameView.acceptButton()).toBeInTheDocument();
     });
+
+    it("should render correctly when a player attack with bloquear after a assassinar", () => {
+        const { gameView } = initializeView(factory => factory
+            .ofBeingAttacked(Action.BLOQUEAR, Card.CONDESSA, undefined, Action.ASSASSINAR)
+        );
+
+        expect(gameView.blockDefenseMenu()).toBeInTheDocument();
+        expect(gameView.contestButton()).toBeInTheDocument();
+        expect(gameView.acceptButton()).toBeInTheDocument();
+    });
 });
 
 describe("Game View interactivity in post game update when observing", () => {
@@ -1460,5 +1470,17 @@ describe("Game View interactivity in post game update when being attacked", () =
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
         expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
+    });
+
+    it("should render correctly when using contestar after blocking a assassinar", async () => {
+        const gameView = initializeView(factory => factory
+            .ofBeingAttacked(Action.BLOQUEAR, Card.CONDESSA, undefined, Action.ASSASSINAR)
+        );
+
+        await gameView.contest();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar");
     });
 });
