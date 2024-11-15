@@ -1149,4 +1149,20 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "capitao", 0);
     });
+
+    it("should render correctly when using contestar after taxar", async () => {
+        const { gameView } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+        );
+
+        await gameView.contestByToaster(0);
+
+        expect(gameView.cardPickingMenu()).toBeInTheDocument();
+
+        await gameView.selectFirstPickableCard();
+
+        expect(gameView.cardPickingMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("contestar", 0);
+    });
 });
