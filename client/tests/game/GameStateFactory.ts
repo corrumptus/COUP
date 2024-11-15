@@ -151,7 +151,7 @@ export default class GameStateFactory {
         this.gameState.game.players[0].money = newValue;
     }
 
-    ofSeeingEnemy<A extends Action, C extends Card>(
+    ofSeeingEnemy<A extends Action, C extends Card | undefined>(
         action: A,
         card: A extends NonCard ? undefined : C,
         targetCard: A extends WithTargetCard ? number

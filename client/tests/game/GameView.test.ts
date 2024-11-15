@@ -891,7 +891,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses self trocar religiao", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, 0, false)
+            .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, undefined, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -905,7 +905,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses trocar religiao", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, 0, false)
+            .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
