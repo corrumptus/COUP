@@ -17,6 +17,18 @@ type WithTargetCard = Action.ASSASSINAR |
 
 type PosInvestigar = Action.TROCAR | Action.CONTINUAR;
 
+type AttackerActions = Action.EXTORQUIR |
+    Action.ASSASSINAR |
+    Action.INVESTIGAR |
+    Action.BLOQUEAR;
+
+type BloquearPreAction = Action.AJUDA_EXTERNA |
+    Action.TAXAR |
+    Action.EXTORQUIR |
+    Action.ASSASSINAR |
+    Action.INVESTIGAR |
+    Action.TROCAR;
+
 export default class GameStateFactory {
     private gameState: GameState;
     private isPlayerTurn: boolean;
@@ -167,6 +179,25 @@ export default class GameStateFactory {
             target: this.gameState.player.name,
             attackedCard: targetCard,
             isInvestigating: isInvestigating
+        };
+
+        return this;
+    }
+
+    ofBeingAttacked<A extends AttackerActions>(
+        action: A,
+        card: Card,
+        targetCard: A extends WithTargetCard ? number : undefined,
+        previousAction: A extends Action.BLOQUEAR ? BloquearPreAction : undefined
+    ): this {
+        this.gameState.context = {
+            type: ContextType.BEING_ATTACKED,
+            attacker: this.gameState.game.players[0].name,
+            action: action,
+            card: card,
+            attackedCard: targetCard,
+            previousAction: previousAction,
+            preBlockAction: undefined
         };
 
         return this;
