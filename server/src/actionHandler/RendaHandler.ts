@@ -14,8 +14,10 @@ export default class RendaHandler implements ActionHandler {
         return true;
     }
 
-    finish(_: number, game: Game): void {
+    finish(game: Game): boolean {
         game.getLastTurn().finish();
+
+        return false;
     }
 
     actionInfos({

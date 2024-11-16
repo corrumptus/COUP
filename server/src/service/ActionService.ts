@@ -3,12 +3,17 @@ import ActionHandlerFactory from "../actionHandler/ActionHandlerFactory";
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import { CardSlot } from "../entity/player";
+import Turn from "../entity/Turn";
 import ActionValidator from "../utils/ActionValidator";
 import { ActionInfos } from "./GameMessageService";
 import GameService from "./GameService";
 import PlayerService from "./PlayerService";
 
 export default class ActionService {
+    static lobbys: {
+        [id: number]: Turn
+    } = {};
+
     static makeAction(
         socketId: string,
         action: Action,
@@ -46,9 +51,28 @@ export default class ActionService {
             targetCard: targetCard as CardSlot | undefined
         });
 
-        actionHandler.finish(lobbyId, game);
+        if (
+            lobbyId in ActionService.lobbys
+            &&
+            game.getLastTurn() !== ActionService.lobbys[lobbyId]
+        ) {
+            ActionService.lobbys[lobbyId].finish(false);
+            delete ActionService.lobbys[lobbyId];
+        }
 
-        return actionHandler.actionInfos(game, card, targetCard as CardSlot | undefined);
+        const needTowait = actionHandler.finish(game);
+
+        if (needTowait)
+            ActionService.lobbys[lobbyId] = game.getLastTurn();
+
+        return actionHandler.actionInfos({
+            game,
+            player,
+            card,
+            selfCard: selfCard as CardSlot | undefined,
+            target,
+            targetCard: targetCard as CardSlot | undefined
+        });
     }
 
     static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {

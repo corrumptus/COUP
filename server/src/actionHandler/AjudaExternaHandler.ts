@@ -1,20 +1,33 @@
-import CardType from "../entity/CardType";
+import Action from "../entity/Action";
 import Game from "../entity/Game";
-import { CardSlot } from "../entity/player";
 import { ActionInfos } from "../service/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "./ActionHandler";
+import ActionHandler, { ValidActionRequest } from "./ActionHandler";
 
 export default class AjudaExternaHandler implements ActionHandler {
-    validate(request: ActionRequest): void {
-        throw new Error("Method not implemented.");
+    validate(): void {}
+
+    save({ game, player }: ValidActionRequest): boolean {
+        player.addMoney(game.getConfigs().ajudaExterna);
+
+        game.getLastTurn().addAction(Action.AJUDA_EXTERNA);
+
+        return true;
     }
-    save(request: ValidActionRequest): boolean {
-        throw new Error("Method not implemented.");
+
+    finish(game: Game): boolean {
+        game.nextPlayer();
+
+        return true;
     }
-    finish(lobbyId: number, game: Game): void {
-        throw new Error("Method not implemented.");
-    }
-    actionInfos(game: Game, card: CardType | undefined, targetCard: CardSlot | undefined): ActionInfos {
-        throw new Error("Method not implemented.");
+
+    actionInfos({ player }: ValidActionRequest): ActionInfos {
+        return {
+            attacker: player.name,
+            action: Action.AJUDA_EXTERNA,
+            card: undefined,
+            target: undefined,
+            attackedCard: undefined,
+            isInvestigating: false
+        };
     }
 }

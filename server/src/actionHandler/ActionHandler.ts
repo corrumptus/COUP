@@ -24,6 +24,6 @@ export type ValidActionRequest = {
 export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): boolean;
-    abstract finish(lobbyId: number, game: Game): void;
+    abstract finish(game: Game): boolean;
     abstract actionInfos(request: ValidActionRequest): ActionInfos;
 }
