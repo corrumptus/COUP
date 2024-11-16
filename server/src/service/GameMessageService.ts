@@ -74,7 +74,7 @@ export type GameState = {
 
 export type ActionInfos = {
     attacker: string,
-    action?: Action,
+    action: Action,
     card?: CardType,
     target?: string,
     attackedCard?: CardSlot,
