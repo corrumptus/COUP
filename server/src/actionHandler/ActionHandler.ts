@@ -25,5 +25,5 @@ export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): boolean;
     abstract finish(lobbyId: number, game: Game): void;
-    abstract actionInfos(game: Game, card: CardType | undefined, targetCard: CardSlot | undefined): ActionInfos;
+    abstract actionInfos(request: ValidActionRequest): ActionInfos;
 }
