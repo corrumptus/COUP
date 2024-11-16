@@ -3,7 +3,7 @@ import CardGameInfos from "@components/game/CardGameInfos";
 import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionIcon from "@components/game/ReligionIcon";
 import Config from "@type/config";
-import { Action, Player } from "@type/game";
+import { Action, SelfPlayer } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function GameMobileMenu({
@@ -12,7 +12,7 @@ export default function GameMobileMenu({
   configs,
   isOpen
 }: {
-  player: Player,
+  player: SelfPlayer,
   performChange: (changeRequest: ChangeRequest) => void,
   configs: Config,
   isOpen: boolean

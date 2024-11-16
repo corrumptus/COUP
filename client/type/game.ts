@@ -41,15 +41,20 @@ export enum PlayerState {
     NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
 }
 
-export type Player = {
+type PlayerBase = {
     name: string,
-    cards: { card: Card | undefined, isDead: boolean }[],
     money: number,
-    religion?: Religion,
-    state: PlayerState
+    religion?: Religion
 }
 
-export type EnemyPlayer = Omit<Player, "state">;
+export type SelfPlayer = {
+    cards: { card: Card, isDead: boolean }[],
+    state: PlayerState
+} & PlayerBase;
+
+export type EnemyPlayer = {
+    cards: { card: Card | undefined, isDead: boolean }[]
+} & PlayerBase;
 
 export enum ContextType {
     INVESTIGATING,
@@ -58,7 +63,7 @@ export enum ContextType {
 }
 
 export type GameState = {
-    player: Player,
+    player: SelfPlayer,
     game: {
         players: EnemyPlayer[],
         currentPlayer: string,

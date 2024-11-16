@@ -19,13 +19,20 @@ export enum PlayerStateType {
     NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
 }
 
-export type PlayerState = {
+type PlayerBase = {
     name: string,
-    cards: { card: CardType | undefined, isDead: boolean }[],
     money: number,
-    religion?: Religion,
-    state: PlayerStateType
+    religion?: Religion
 }
+
+export type SelfPlayer = {
+    cards: { card: CardType, isDead: boolean }[],
+    state: PlayerStateType
+} & PlayerBase;
+
+export type EnemyPlayer = {
+    cards: { card: CardType | undefined, isDead: boolean }[]
+} & PlayerBase;
 
 export enum ContextType {
     INVESTIGATING,
@@ -34,9 +41,9 @@ export enum ContextType {
 }
 
 export type GameState = {
-    player: PlayerState,
+    player: SelfPlayer,
     game: {
-        players: Omit<PlayerState, "state">[],
+        players: EnemyPlayer[],
         currentPlayer: string,
         asylum: number,
         configs: Config
@@ -53,8 +60,7 @@ export type GameState = {
         action: Action,
         card: CardType,
         attackedCard?: CardSlot,
-        previousAction?: Action,
-        preBlockAction?: Action
+        previousAction?: Action
     } | {
         type: ContextType.OBSERVING,
         attacker: string,
@@ -214,7 +220,7 @@ export default class GameMessageService extends MessageService {
         if (
             name === gameState.currentPlayer
             &&
-            (gameState.players.find(p => p.name === name) as Omit<PlayerState, "state">)
+            (gameState.players.find(p => p.name === name) as EnemyPlayer)
                 .money >= gameState.configs.quantidadeMaximaGolpeEstado
         )
             return PlayerStateType.NEED_TO_GOLPE_ESTADO;
@@ -273,8 +279,7 @@ export default class GameMessageService extends MessageService {
                 action: infos.action as Action,
                 card: infos.card as CardType,
                 attackedCard: infos.attackedCard,
-                previousAction: currentTurn.getAllActions().at(-2),
-                preBlockAction: currentTurn.getFirstAction()
+                previousAction: currentTurn.getAllActions().at(-2)
             }
 
         return {
@@ -290,7 +295,7 @@ export default class GameMessageService extends MessageService {
         return { ...gameState, players: gameState.players.filter(p => p.name !== playerName) }
     }
 
-    static sendPlayerReconnecting(lobbyId: number, player: Omit<PlayerState, "state">) {
+    static sendPlayerReconnecting(lobbyId: number, player: EnemyPlayer) {
         const lobby = super.getLobby(lobbyId);
 
         if (lobby === undefined)

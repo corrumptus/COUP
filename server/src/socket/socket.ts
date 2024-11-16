@@ -5,7 +5,7 @@ import LobbyService from "../service/LobbyService";
 import PlayerService from "../service/PlayerService";
 import CardType from "../entity/CardType";
 import { LobbyState } from "../service/LobbyMessageService";
-import { GameState, PlayerState } from "../service/GameMessageService";
+import { GameState, EnemyPlayer } from "../service/GameMessageService";
 import SocketValidatorService from "../service/SocketValidatorService";
 
 interface RequestSocketOnEvents {
@@ -53,7 +53,7 @@ export interface ResponseSocketEmitEvents {
     "beginMatch": (gameState: GameState, sessionCode: string) => void;
 
     "updatePlayer": (updates: GameState) => void;
-    "addPlayer": (player: Omit<PlayerState, "state">) => void;
+    "addPlayer": (player: EnemyPlayer) => void;
     "gameActionError": (message: string) => void;
 }
 
