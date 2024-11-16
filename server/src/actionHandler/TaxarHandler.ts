@@ -1,23 +1,65 @@
+import Action from "../entity/Action";
 import CardType from "../entity/CardType";
 import Game from "../entity/Game";
-import { CardSlot } from "../entity/player";
+import { CardSlot, isCardSlot } from "../entity/player";
 import { ActionInfos } from "../service/GameMessageService";
 import ActionHandler, { ActionRequest, ValidActionRequest } from "./ActionHandler";
 
 export default class TaxarHandler implements ActionHandler {
-    validate(request: ActionRequest): void {
-        throw new Error("Method not implemented.");
+    validate({
+        game,
+        player,
+        card,
+        selfCard,
+    }: ActionRequest): void {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
+        if (!game.getConfigs().tiposCartas[card].taxar)
+            throw new Error("O tipo de carta escolhida não pode taxar");
+
+        if (player.getCard(selfCard).getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
     }
 
-    save(request: ValidActionRequest): boolean {
-        throw new Error("Method not implemented.");
+    save({
+        game,
+        player,
+        card,
+        selfCard
+    }: ValidActionRequest): boolean {
+        player.addMoney(game.getConfigs().tiposCartas[card as CardType].quantidadeTaxar);
+
+        game.getLastTurn().addAction(Action.TAXAR);
+        game.getLastTurn().addCardType(card as CardType);
+        game.getLastTurn().addCard(selfCard as CardSlot);
+
+        return true;
     }
 
-    finish(lobbyId: number, game: Game): void {
-        throw new Error("Method not implemented.");
+    finish(game: Game): boolean {
+        game.nextPlayer();
+
+        return true;
     }
 
-    actionInfos(game: Game, card: CardType | undefined, targetCard: CardSlot | undefined): ActionInfos {
-        throw new Error("Method not implemented.");
+    actionInfos({
+        player,
+        card
+    }: ValidActionRequest): ActionInfos {
+        return {
+            attacker: player.name,
+            action: Action.TAXAR,
+            card: card,
+            target: undefined,
+            attackedCard: undefined,
+            isInvestigating: false
+        };
     }
 }
