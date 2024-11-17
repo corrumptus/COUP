@@ -2,9 +2,9 @@ import ActionHandler from "../actionHandler/ActionHandler";
 import ActionHandlerFactory from "../actionHandler/ActionHandlerFactory";
 import Action from "../entity/Action";
 import CardType from "../entity/CardType";
-import { CardSlot } from "../entity/player";
+import Game from "../entity/Game";
+import Player, { CardSlot } from "../entity/player";
 import Turn from "../entity/Turn";
-import ActionValidator from "../utils/ActionValidator";
 import { ActionInfos } from "./GameMessageService";
 import GameService from "./GameService";
 import PlayerService from "./PlayerService";
@@ -29,7 +29,7 @@ export default class ActionService {
             target
         } = ActionService.getInfosForAction(socketId, action, targetName);
 
-        ActionValidator.validateSocketTurn(PlayerService.getPlayer(socketId), game.getLastTurn());
+        ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), game.getLastTurn());
 
         const actionHandler: ActionHandler = ActionHandlerFactory.create(action);
 
@@ -75,7 +75,38 @@ export default class ActionService {
         });
     }
 
-    static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
+    private static validateSocketTurn(socketPlayer: Player, turn: Turn) {
+        const [ player, target ] = [ turn.getPlayer(), turn.getTarget() ];
+
+        if (
+            socketPlayer === player
+            &&
+            turn.getAllActions().length%2 === 0
+        )
+            return;
+
+        if (
+            target !== undefined
+            &&
+            socketPlayer === target
+            &&
+            turn.getAllActions().length%2 === 1
+        )
+            return;
+
+        if (
+            target === undefined
+            &&
+            socketPlayer !== player
+            &&
+            turn.getAllActions().length%2 === 1
+        )
+            return;
+
+        throw new Error("Não é a vez do player");
+    }
+
+    private static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
         const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
 
         const game = GameService.getPlayersGame(socketId);
@@ -83,7 +114,7 @@ export default class ActionService {
         if (game === undefined)
             throw new Error("Player is not playing a game");
 
-        const turn = ActionValidator.getCorrectTurn(game, action);
+        const turn = ActionService.getCorrectTurn(game, action);
 
         if (turn !== game.getLastTurn())
             game.removeLastTurn();
@@ -103,5 +134,25 @@ export default class ActionService {
             player,
             target
         }
+    }
+
+    private static getCorrectTurn(game: Game, action: Action): Turn {
+        const lastTurn = game.getLastTurn();
+        const preLastTurn = game.getTurn(-2);
+
+        if (
+            preLastTurn !== undefined
+            &&
+            !preLastTurn.isfinished
+            &&
+            ActionService.isDefenseAction(action)
+        )
+            return preLastTurn;
+
+        return lastTurn;
+    }
+
+    private static isDefenseAction(action: Action): boolean {
+        return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
     }
 }
