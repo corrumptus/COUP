@@ -1,23 +1,48 @@
-import CardType from "../entity/CardType";
+import Action from "../entity/Action";
 import Game from "../entity/Game";
-import { CardSlot } from "../entity/player";
 import { ActionInfos } from "../service/GameMessageService";
 import ActionHandler, { ActionRequest, ValidActionRequest } from "./ActionHandler";
 
 export default class trocarPropriaReligiaoHandler implements ActionHandler {
-    validate(request: ActionRequest): void {
-        throw new Error("Method not implemented.");
+    validate({
+        game,
+        player
+    }: ActionRequest): void {
+        if (!game.getConfigs().religiao.reforma)
+            throw new Error("O jogo não passou pela reforma e não possui religião");
+
+        if (player.getMoney() < game.getConfigs().religiao.quantidadeTrocarPropria)
+            throw new Error("O player não tem dinheiro suficiente para trocar sua própria religião");
     }
 
-    save(request: ValidActionRequest): boolean {
-        throw new Error("Method not implemented.");
+    save({
+        game,
+        player
+    }: ValidActionRequest): boolean {
+        player.removeMoney(game.getConfigs().religiao.quantidadeTrocarPropria);
+        player.changeReligion();
+
+        game.getLastTurn().addAction(Action.TROCAR_PROPRIA_RELIGIAO);
+
+        return false;
     }
 
-    finish(lobbyId: number, game: Game): void {
-        throw new Error("Method not implemented.");
+    finish(game: Game): boolean {
+        game.getLastTurn().finish();
+
+        return false;
     }
 
-    actionInfos(game: Game, card: CardType | undefined, targetCard: CardSlot | undefined): ActionInfos {
-        throw new Error("Method not implemented.");
+    actionInfos({
+        player
+    }: ValidActionRequest): ActionInfos {
+        return {
+            attacker: player.name,
+            action: Action.TROCAR_PROPRIA_RELIGIAO,
+            card: undefined,
+            target: undefined,
+            attackedCard: undefined,
+            isInvestigating: false
+        }
     }
 }
