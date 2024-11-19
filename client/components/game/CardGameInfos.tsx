@@ -17,6 +17,8 @@ export default function CardGameInfos({
     <div className="h-full overflow-auto">
       <h3 className="text-xl font-bold">Ações</h3>
       <p className="text-[16px]">Cada <span className="text-red-500">jogador</span> pode efetuar apenas <span className="text-red-500">uma ação</span> por vez.</p>
+      <p className="text-[16px]">Um jogador só pode fazer ações se puder pagar por elas.</p>
+      <p className="text-[16px]">Toda ação se torna bem sucedida se não houver uma contra-ação.</p>
       <div className="pt-3">
         <h4 className="text-xl text-orange-500">Renda</h4>
         <p className="text-[16px]">
@@ -34,7 +36,7 @@ export default function CardGameInfos({
       <div className="pt-3">
         <h4 className="text-xl text-rose-600">Golpe de Estado</h4>
         <p className="text-[16px]">
-          O golpe de estado é uma ação que <span className="text-red-500">requer</span> pelo menos <span className="text-red-500">{configs.quantidadeMinimaGolpeEstado}</span> e é <span className="text-red-500">obrigatório</span> quando se tem <span className="text-red-500">{configs.quantidadeMaximaGolpeEstado}</span>.
+          O golpe de estado é uma ação que <span className="text-red-500">requer</span> pelo menos <span className="text-red-500">{configs.quantidadeMinimaGolpeEstado}</span> e é <span className="text-red-500">obrigatório</span> quando se começa um turno com <span className="text-red-500">{configs.quantidadeMaximaGolpeEstado}</span>.
           <span className="text-red-500"> Não</span> pode ser <span className="text-red-500">bloquado</span> ou <span className="text-red-500">contestado</span>.
         </p>
       </div>
@@ -53,41 +55,63 @@ export default function CardGameInfos({
         As contra-ações se tornam <span className="text-red-500">inválidas</span> a partir do momento em que o <span className="text-red-500">novo jogador</span> escolheu a sua <span className="text-red-500">ação</span>.
       </p>
       <div className="pt-3">
+        <h4 className="text-xl text-rose-600">Bloqueio</h4>
+        <p className="text-[16px]">Um bloqueio deve ser usado para <span className="text-red-500">impedir</span> a <span className="text-red-500">ação</span> de um jogador.
+        <span className="text-lime-700"> Pode</span> ser <span className="text-lime-700">contestado</span>.</p>
+      </div>
+      <div className="pt-3">
         <h4 className="text-xl text-zinc-600">Contestação</h4>
         <p className="text-[16px]">Uma contestação serve para <span className="text-red-500">verificar</span> se um jogador <span className="text-red-500">realmente</span> poderia fazer uma <span className="text-red-500">ação</span>.</p>
       </div>
-      <div className="pt-3">
-        <h4 className="text-xl text-rose-600">Bloqueio</h4>
-        <p className="text-[16px]">Um bloqueio deve ser usado para <span className="text-red-500">impedir</span> a <span className="text-red-500">ação</span> de um jogador.</p>
-      </div>
     </div>
   );
+
+  function getTaxarValuesString() {
+    return Object.entries(configs.tiposCartas)
+      .filter(([_, infos]) => infos.taxar)
+      .map(([card, infos]) => `+$${infos.quantidadeTaxar}(${card})`)
+      .join(", ");
+  }
+
+  function getExtorquirValuesString() {
+    return Object.entries(configs.tiposCartas)
+      .filter(([_, infos]) => infos.extorquir)
+      .map(([card, infos]) => `+$${infos.quantidadeExtorquir}(${card})`)
+      .join(", ");
+  }
+
+  function getAssassinarValuesString() {
+    return Object.entries(configs.tiposCartas)
+      .filter(([_, infos]) => infos.assassinar)
+      .map(([card, infos]) => `-$${infos.quantidadeAssassinar}(${card})`)
+      .join(", ");
+  }
+
+  function getTrocarValuesString() {
+    return Object.entries(configs.tiposCartas)
+      .filter(([_, infos]) => infos.trocar)
+      .map(([card, infos]) => `${infos.quantidadeTrocar}(${card})`)
+      .join(", ");
+  }
 
   if (infoType === "açõesCartas") children = (
     <div className="h-full overflow-auto">
       <h3 className="text-xl font-bold">Ações de carta</h3>
       <div>
         <h4 className="text-xl text-fuchsia-600">Taxar</h4>
-        <p className="text-[16px]">É uma ação que <span className="text-red-500">aumenta</span> dinheiro do banco.</p>
+        <p className="text-[16px]">É uma ação que <span className="text-red-500">aumenta</span> o seu dinheiro em {getTaxarValuesString()}.</p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-green-600">Extorquir</h4>
-        <p className="text-[16px]">É uma ação que <span className="text-red-500">rouba</span> dinheiro de outro jogador.</p>
+        <p className="text-[16px]">É uma ação que <span className="text-red-500">rouba</span> dinheiro de outro jogador em {getExtorquirValuesString()}.</p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-red-600">Assassinar</h4>
-        <p className="text-[16px]">É uma ação que <span className="text-red-500">mata</span> uma influência de outro jogador.</p>
+        <p className="text-[16px]">É uma ação que <span className="text-red-500">mata</span> uma influência de outro jogador pelo preço de {getAssassinarValuesString()}.</p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-blue-700">Trocar(própria)</h4>
-        <p className="text-[16px]">É uma ação que <span className="text-red-500">troca</span> sua(s) <span className="text-red-500">própria(s)</span> cartas.</p>
-      </div>
-      <div className="pt-3">
-        <h4 className="text-xl text-blue-700">Trocar(outro)</h4>
-        <p className="text-[16px]">
-          É uma ação que força o outro <span className="text-red-500">jogador</span> a <span className="text-red-500">trocar</span> de carta.
-          Deve ser <span className="text-red-500">precedida</span> de uma ação de <span className="text-red-500">investigar</span>.
-        </p>
+        <p className="text-[16px]">É uma ação que <span className="text-red-500">troca</span> {getTrocarValuesString()} suas <span className="text-red-500">próprias</span> cartas.</p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-orange-500">Investigar</h4>
@@ -97,17 +121,17 @@ export default function CardGameInfos({
         </p>
       </div>
     </div>
-  )
+  );
 
-  if (infoType === "religião") children = (
+  if (configs.religiao.reforma && infoType === "religião") children = (
     <div className="h-full overflow-auto">
       <h3 className="text-xl font-bold">Religião</h3>
-      <p className="text-[16px]">
-        Cada jogador receberá uma <span className="text-red-500">religião</span> de forma <span className="text-red-500">aleatória</span>.
-        Se todos os <span className="text-red-500">jogadores</span> forem da <span className="text-red-500">mesma</span> religião ela <span className="text-red-500">pode</span> ser ou <span className="text-red-500">não ignorada</span>.
-      </p>
+      <p className="text-[16px]">Cada jogador receberá uma <span className="text-red-500">religião</span> de forma <span className="text-red-500">aleatória</span>.</p>
+      <p className="text-[16px]"> Jogadores de uma <span className="text-lime-700">mesma religião</span> não podem usar ações dos <span className="text-red-500">Impedimentos religiosos</span>.</p>
+      <p className="text-[16px]"> Se todos os <span className="text-lime-700">jogadores</span> forem da <span className="text-red-500">mesma</span> religião ela <span className="text-red-500">pode</span> ser ou <span className="text-red-500">não ignorada</span>.</p>
       <div className="pt-3">
         <h4 className="text-xl text-blue-700">Conversão</h4>
+        <p className="text-[16px]">Troca a religião.</p>
         <ul>
           <li>Própria(<span className="text-red-500">-${configs.religiao.quantidadeTrocarPropria}</span>)</li>
           <li>Outro(<span className="text-red-500">-${configs.religiao.quantidadeTrocarOutro}</span>)</li>
@@ -131,7 +155,7 @@ export default function CardGameInfos({
         </ul>
       </div>
     </div>
-  )
+  );
 
   if (infoType === "duque") children = (
     <div className="h-full overflow-auto">
@@ -408,7 +432,7 @@ export default function CardGameInfos({
       </div>
     </div>
   );
-  
+
   return (
     <div
       className={`h-[250px] w-[200px] p-4 bg-white rounded-2xl flex flex-col gap-1${" " + customStyles || ""}`}
@@ -422,7 +446,7 @@ export default function CardGameInfos({
         <option value="ações">Ações</option>
         <option value="contra-ações">Contra-ações</option>
         <option value="açõesCartas">Ações de carta</option>
-        {configs.religiao &&
+        {configs.religiao.reforma &&
           <option value="religião">Religião</option>
         }
         <option value="duque">Duque</option>
