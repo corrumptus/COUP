@@ -24,6 +24,9 @@ export type ValidActionRequest = {
 export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): void;
+    /**
+     * @returns {boolean} return if the action needs to wait another player to act
+     */
     abstract finish(game: Game): boolean;
     abstract actionInfos(request: ValidActionRequest): ActionInfos;
 }
