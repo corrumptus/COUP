@@ -17,6 +17,8 @@ export default class ContinuarHandler implements ActionHandler {
     }: ValidActionRequest): boolean {
         const action = game.getLastTurn().getLastAction();
 
+        game.getLastTurn().addAction(Action.CONTINUAR);
+
         switch (action) {
             case Action.EXTORQUIR: return this.saveExtorquir(game, player, target as Player);
             case Action.ASSASSINAR: return this.saveAssassinar(game, target as Player);

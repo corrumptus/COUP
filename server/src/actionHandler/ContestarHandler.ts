@@ -65,7 +65,9 @@ export default class ContestarHandler implements ActionHandler {
         selfCard
     }: ValidActionRequest): boolean {
         const action = game.getLastTurn().getLastAction();
-        
+
+        game.getLastTurn().addAction(Action.CONTESTAR);
+
         switch (action) {
             case Action.TAXAR: return this.saveTaxar(game, player, selfCard as CardSlot, target as Player);
             case Action.CORRUPCAO: return this.saveCorrupcao(game, player, selfCard as CardSlot, target as Player);

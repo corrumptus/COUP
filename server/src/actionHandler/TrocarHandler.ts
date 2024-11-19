@@ -13,7 +13,6 @@ export default class TrocarHandler implements ActionHandler {
         selfCard,
         targetCard
     }: ActionRequest): void {
-        
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
 
