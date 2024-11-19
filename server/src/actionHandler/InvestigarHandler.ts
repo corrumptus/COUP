@@ -47,14 +47,12 @@ export default class InvestigarHandler implements ActionHandler {
         selfCard,
         target,
         targetCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         game.getLastTurn().addAction(Action.INVESTIGAR);
         game.getLastTurn().addTarget(target as Player);
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
         game.getLastTurn().addCard(targetCard as CardSlot);
-
-        return true;
     }
 
     finish(): boolean {

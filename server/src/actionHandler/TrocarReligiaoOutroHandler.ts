@@ -27,14 +27,12 @@ export default class trocarReligiaoOutroHandler implements ActionHandler {
         game,
         player,
         target
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.removeMoney(game.getConfigs().religiao.quantidadeTrocarOutro);
         (target as Player).changeReligion();
 
         game.getLastTurn().addAction(Action.TROCAR_RELIGIAO_OUTRO);
         game.getLastTurn().addTarget(target as Player);
-
-        return false;
     }
 
     finish(game: Game): boolean {

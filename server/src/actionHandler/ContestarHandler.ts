@@ -63,19 +63,19 @@ export default class ContestarHandler implements ActionHandler {
         player,
         target,
         selfCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         const action = game.getLastTurn().getLastAction();
 
         game.getLastTurn().addAction(Action.CONTESTAR);
 
         switch (action) {
-            case Action.TAXAR: return this.saveTaxar(game, player, selfCard as CardSlot, target as Player);
-            case Action.CORRUPCAO: return this.saveCorrupcao(game, player, selfCard as CardSlot, target as Player);
-            case Action.EXTORQUIR: return this.saveExtorquir(game, player, selfCard as CardSlot, target as Player);
-            case Action.ASSASSINAR: return this.saveAssassinar(game, player, target as Player);
-            case Action.INVESTIGAR: return this.saveInvestigar(game, player, target as Player);
-            case Action.TROCAR: return this.saveTrocar(game, player, selfCard as CardSlot, target as Player);
-            case Action.BLOQUEAR: return this.saveBloquear(game, player, selfCard as CardSlot, target as Player);
+            case Action.TAXAR: this.saveTaxar(game, player, selfCard as CardSlot, target as Player); break;
+            case Action.CORRUPCAO: this.saveCorrupcao(game, player, selfCard as CardSlot, target as Player); break;
+            case Action.EXTORQUIR: this.saveExtorquir(game, player, selfCard as CardSlot, target as Player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(game, player, target as Player); break;
+            case Action.INVESTIGAR: this.saveInvestigar(game, player, target as Player); break;
+            case Action.TROCAR: this.saveTrocar(game, player, selfCard as CardSlot, target as Player); break;
+            case Action.BLOQUEAR: this.saveBloquear(game, player, selfCard as CardSlot, target as Player); break;
             default: throw new Error(`Action ${action} cannot be contested`);
         }
     }
@@ -93,8 +93,6 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         game.getLastTurn().addCard(selfCard);
-
-        return false;
     }
 
     private saveCorrupcao(game: Game, player: Player, selfCard: CardSlot, target: Player) {
@@ -110,8 +108,6 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         game.getLastTurn().addCard(selfCard);
-
-        return false;
     }
 
     private saveExtorquir(game: Game, player: Player, selfCard: CardSlot, target: Player) {
@@ -130,8 +126,6 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(extorquirCard);
 
         game.getLastTurn().addCard(selfCard);
-
-        return false;
     }
 
     private saveAssassinar(game: Game, player: Player, target: Player) {
@@ -148,8 +142,6 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(cardKilledByContestar);
         } else
             player.killCard(assassinarCard);
-
-        return false;
     }
 
     private saveInvestigar(game: Game, player: Player, target: Player) {
@@ -157,21 +149,17 @@ export default class ContestarHandler implements ActionHandler {
 
         const investigarCardType = player.getCard(investigarCard).getType();
 
-        if (game.getConfigs().tiposCartas[investigarCardType].investigar) {
-            const investigatedCard = game.getLastTurn().getLastCard() as CardSlot;
+        if (!game.getConfigs().tiposCartas[investigarCardType].investigar) {
+            player.killCard(investigarCard);
 
-            const cardKilledByContestar = (investigatedCard+1)%2 as CardSlot;
-
-            target.killCard(cardKilledByContestar);
-
-            this.isInvestigating = true;
-
-            return true;
+            return;
         }
-        
-        player.killCard(investigarCard);
 
-        return false;
+        const investigatedCard = game.getLastTurn().getLastCard() as CardSlot;
+
+        const cardKilledByContestar = (investigatedCard+1)%2 as CardSlot;
+
+        target.killCard(cardKilledByContestar);
     }
 
     private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player) {
@@ -187,25 +175,23 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         game.getLastTurn().addCard(selfCard);
-
-        return false;
     }
 
     private saveBloquear(game: Game, player: Player, selfCard: CardSlot, target: Player) {
         const action = game.getLastTurn().getFirstAction();
 
         switch (action) {
-            case Action.AJUDA_EXTERNA: return this.saveBloquearAjudaExterna(
+            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(
                 game,
                 player,
                 selfCard,
                 target
-            );
-            case Action.TAXAR: return this.saveBloquearTaxar(game, player, target);
-            case Action.EXTORQUIR: return this.saveBloquearExtorquir(game, player, target);
-            case Action.ASSASSINAR: return this.saveBloquearAssassinar(game, player, target);
-            case Action.INVESTIGAR: return this.saveBloquearInvestigar(game, player, target);
-            case Action.TROCAR: return this.saveBloquearTrocar(game, player, target);
+            ); break;
+            case Action.TAXAR: this.saveBloquearTaxar(game, player, target); break;
+            case Action.EXTORQUIR: this.saveBloquearExtorquir(game, player, target); break;
+            case Action.ASSASSINAR: this.saveBloquearAssassinar(game, player, target); break;
+            case Action.INVESTIGAR: this.saveBloquearInvestigar(game, player, target); break;
+            case Action.TROCAR: this.saveBloquearTrocar(game, player, target); break;
             default: throw new Error(`Cannot contest the blocked action ${action}`);
         }
     }
@@ -222,8 +208,6 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(bloquearCard);
 
         game.getLastTurn().addCard(selfCard);
-
-        return false;
     }
 
     private saveBloquearTaxar(game: Game, player: Player, target: Player) {
@@ -238,8 +222,6 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(taxarCard);
         } else
             target.killCard(bloquearCard);
-
-        return false;
     }
 
     private saveBloquearExtorquir(game: Game, player: Player, target: Player) {
@@ -261,8 +243,6 @@ export default class ContestarHandler implements ActionHandler {
 
             target.killCard(bloquearCard);
         }
-
-        return false;
     }
 
     private saveBloquearAssassinar(game: Game, player: Player, target: Player) {
@@ -280,8 +260,6 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(bloquearCard);
             target.killCard(cardKilledByContestar);
         }
-
-        return false;
     }
 
     private saveBloquearInvestigar(game: Game, player: Player, target: Player) {
@@ -298,8 +276,6 @@ export default class ContestarHandler implements ActionHandler {
 
             target.killCard(cardKilledByContestar);
         }
-
-        return false;
     }
 
     private saveBloquearTrocar(game: Game, player: Player, target: Player) {
@@ -314,8 +290,6 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(trocarCard);
         } else
             target.killCard(bloquearCard);
-
-        return false;
     }
 
     finish(game: Game): boolean {

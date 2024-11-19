@@ -33,14 +33,12 @@ export default class TaxarHandler implements ActionHandler {
         player,
         card,
         selfCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.addMoney(game.getConfigs().tiposCartas[card as CardType].quantidadeTaxar);
 
         game.getLastTurn().addAction(Action.TAXAR);
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
-
-        return true;
     }
 
     finish(game: Game): boolean {

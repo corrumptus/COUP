@@ -39,13 +39,11 @@ export default class ExtorquirHandler implements ActionHandler {
         card,
         selfCard,
         target
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         game.getLastTurn().addAction(Action.EXTORQUIR);
         game.getLastTurn().addTarget(target as Player);
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
-
-        return true;
     }
 
     finish(): boolean {

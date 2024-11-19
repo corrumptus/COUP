@@ -18,13 +18,11 @@ export default class trocarPropriaReligiaoHandler implements ActionHandler {
     save({
         game,
         player
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.removeMoney(game.getConfigs().religiao.quantidadeTrocarPropria);
         player.changeReligion();
 
         game.getLastTurn().addAction(Action.TROCAR_PROPRIA_RELIGIAO);
-
-        return false;
     }
 
     finish(game: Game): boolean {

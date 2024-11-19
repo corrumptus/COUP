@@ -39,7 +39,7 @@ export default class CorrupcaoHandler implements ActionHandler {
         player,
         card,
         selfCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.addMoney(game.getAsylumCoins());
 
         game.resetAsylumCoins();
@@ -47,8 +47,6 @@ export default class CorrupcaoHandler implements ActionHandler {
         game.getLastTurn().addAction(Action.CORRUPCAO);
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
-
-        return true;
     }
 
     finish(game: Game): boolean {

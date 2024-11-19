@@ -14,16 +14,16 @@ export default class ContinuarHandler implements ActionHandler {
         game,
         player,
         target
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         const action = game.getLastTurn().getLastAction();
 
         game.getLastTurn().addAction(Action.CONTINUAR);
 
         switch (action) {
-            case Action.EXTORQUIR: return this.saveExtorquir(game, player, target as Player);
-            case Action.ASSASSINAR: return this.saveAssassinar(game, target as Player);
-            case Action.INVESTIGAR: return this.saveInvestigar();
-            case Action.BLOQUEAR: return this.saveBloquear(game, player);
+            case Action.EXTORQUIR: this.saveExtorquir(game, player, target as Player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(game, target as Player); break;
+            case Action.INVESTIGAR: this.saveInvestigar(); break;
+            case Action.BLOQUEAR: this.saveBloquear(game, player); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
         }
     }
@@ -35,68 +35,50 @@ export default class ContinuarHandler implements ActionHandler {
 
         player.addMoney(extorquirAmount);
         target.removeMoney(extorquirAmount);
-
-        return false;
     }
 
     private saveAssassinar(game: Game, target: Player) {
         const card = game.getLastTurn().getLastCard() as CardSlot;
 
         target.killCard(card);
-
-        return false;
     }
 
     private saveInvestigar() {
         this.isInvestigating = true;
-
-        return true;
     }
 
     private saveBloquear(game: Game, player: Player) {
         const action = game.getLastTurn().getFirstAction() as Action;
 
         switch (action) {
-            case Action.AJUDA_EXTERNA: return this.saveBloquearAjudaExterna(game, player);
-            case Action.TAXAR: return this.saveBloquearTaxar(game, player);
-            case Action.EXTORQUIR: return this.saveBloquearExtorquir();
-            case Action.ASSASSINAR: return this.saveBloquearAssassinar();
-            case Action.INVESTIGAR: return this.saveBloquearInvestigar();
-            case Action.TROCAR: return this.saveBloquearTrocar(player);
+            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(game, player); break;
+            case Action.TAXAR: this.saveBloquearTaxar(game, player); break;
+            case Action.EXTORQUIR: this.saveBloquearExtorquir(); break;
+            case Action.ASSASSINAR: this.saveBloquearAssassinar(); break;
+            case Action.INVESTIGAR: this.saveBloquearInvestigar(); break;
+            case Action.TROCAR: this.saveBloquearTrocar(player); break;
             default: throw new Error(`Cannot accept blocked action ${action}`);
         }
     }
 
     private saveBloquearAjudaExterna(game: Game, player: Player) {
         player.removeMoney(game.getConfigs().ajudaExterna);
-
-        return false;
     }
     
     private saveBloquearTaxar(game: Game, player: Player) {
         const cardType = game.getLastTurn().getFirstCardType() as CardType;
 
         player.removeMoney(game.getConfigs().tiposCartas[cardType].quantidadeTaxar);
-
-        return false;
     }
 
-    private saveBloquearExtorquir() {
-        return false;
-    }
+    private saveBloquearExtorquir() {}
 
-    private saveBloquearAssassinar() {
-        return false;
-    }
+    private saveBloquearAssassinar() {}
 
-    private saveBloquearInvestigar() {
-        return false;
-    }
+    private saveBloquearInvestigar() {}
 
     private saveBloquearTrocar(player: Player) {
         player.rollbackCards();
-
-        return false;
     }
 
     finish(game: Game): boolean {

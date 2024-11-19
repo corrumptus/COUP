@@ -63,25 +63,23 @@ export default class TrocarHandler implements ActionHandler {
         selfCard,
         target,
         targetCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         game.getLastTurn().addAction(Action.TROCAR);
 
         if (game.getLastTurn().getFirstAction() !== Action.TROCAR) {
             (target as Player).changeCard(targetCard as CardSlot);
-            return false;
+            return;
         }
 
         game.getLastTurn().addCard(selfCard as CardSlot);
 
         if (game.getConfigs().tiposCartas[card as CardType].quantidadeTrocar === 2) {
             player.changeCards();
-            return false;
+            return;
         }
 
         player.changeCard(targetCard as CardSlot);
         game.getLastTurn().addCard(targetCard as CardSlot);
-
-        return false;
     }
 
     finish(game: Game): boolean {

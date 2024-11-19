@@ -51,7 +51,7 @@ export default class AssassinarHandler implements ActionHandler {
         selfCard,
         target,
         targetCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.removeMoney(game.getConfigs().tiposCartas[card as CardType].quantidadeAssassinar);
 
         game.getLastTurn().addAction(Action.ASSASSINAR);
@@ -59,8 +59,6 @@ export default class AssassinarHandler implements ActionHandler {
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
         game.getLastTurn().addCard(targetCard as CardSlot);
-
-        return true;
     }
 
     finish(): boolean {

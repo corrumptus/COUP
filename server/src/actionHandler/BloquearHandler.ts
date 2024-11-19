@@ -77,7 +77,7 @@ export default class BloquearHandler implements ActionHandler {
         card,
         selfCard,
         target
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         const lastAction = game.getLastTurn().getLastAction() as Action;
 
         const dontNeedAddSelfCardActions = [
@@ -94,15 +94,13 @@ export default class BloquearHandler implements ActionHandler {
         game.getLastTurn().addAction(Action.BLOQUEAR);
 
         if (dontNeedAddSelfCardActions.includes(lastAction))
-            return false;
+            return;
 
         game.getLastTurn().addCardType(card as CardType);
         game.getLastTurn().addCard(selfCard as CardSlot);
 
         if (needTargetActions.includes(lastAction))
             game.getLastTurn().addTarget(target as Player);
-
-        return false;
     }
 
     finish(): boolean {

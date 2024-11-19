@@ -32,7 +32,7 @@ export default class GolpeEstadoHandler implements ActionHandler {
         player,
         target,
         targetCard
-    }: ValidActionRequest): boolean {
+    }: ValidActionRequest) {
         player.removeMoney(game.getConfigs().quantidadeMinimaGolpeEstado);
 
         (target as Player).killCard(targetCard as CardSlot);
@@ -40,8 +40,6 @@ export default class GolpeEstadoHandler implements ActionHandler {
         game.getLastTurn().addAction(Action.GOLPE_ESTADO);
         game.getLastTurn().addTarget(target as Player);
         game.getLastTurn().addCard(targetCard as CardSlot);
-
-        return true;
     }
 
     finish(game: Game): boolean {
