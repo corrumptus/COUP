@@ -557,6 +557,117 @@ describe("Game View interactivity for game actions", () => {
         expect(socketEmitMock).toHaveBeenCalledWith("golpeEstado", enemyPlayerName, 0);
     });
 
+    it("should prevent player changing self religion when may do a golpe de estado", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.changePlayerReligion();
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player changing enemy religion menu when may do a golpe de estado", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .newConfig(["religiao", "reforma"], true)
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.changeReligion(enemyPlayerName);
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player using extorquir when may do a golpe de estado", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.extorquir(enemyPlayerName);
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player using assassinar when may do a golpe de estado", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        await gameView.assassinar();
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player using investigar when may do a golpe de estado", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        await gameView.investigar();
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player going to the money menu when may do a golpe de estado", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.openMoneyMenu();
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should prevent player using trocar when may do a golpe de estado", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.changePlayerCards();
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.allToastersChildrenContents()[0])
+            .toBe("Você só pode dar golpe de estado neste turno");
+    });
+
+    it("should perfom a golpe de estado when may do a golpe de estado", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .newConfig(["moedasIniciais"], 10)
+        );
+
+        await gameView.attackFistCard(enemyPlayerName);
+
+        await gameView.golpeEstado();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock).toHaveBeenCalledWith("golpeEstado", enemyPlayerName, 0);
+    });
+
     it("should not perform a self trocar religiao action when their is no enough money", async () => {
         const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
