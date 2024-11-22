@@ -297,7 +297,7 @@ function contextToNotification(
 function getRequestProblems(
     gameState: GameState,
     request: ChangeRequest,
-    curRequeriments: ActionRequeriments
+    requeriments: ActionRequeriments
 ): string | undefined {
     if (
         request.target !== undefined
@@ -340,17 +340,12 @@ function getRequestProblems(
         &&
         gameState.game.currentPlayer === gameState.player.name
         &&
-        request.goTo !== MenuTypes.ATTACK
-    )
-        return "Você só pode dar golpe de estado neste turno";
-
-    if (
-        gameState.player.money >= gameState.game.configs.quantidadeMaximaGolpeEstado
-        &&
-        gameState.game.currentPlayer === gameState.player.name
-        &&
         (
-            request.goTo !== MenuTypes.ATTACK
+            (
+                request.action === undefined
+                &&
+                request.goTo !== MenuTypes.ATTACK
+            )
             ||
             (
                 request.goTo === undefined
@@ -421,14 +416,14 @@ function getRequestProblems(
         return "Este player não tem dinheiro suficiente para ser extorquido";
 
     if (
-        curRequeriments.target !== undefined
+        requeriments.target !== undefined
         &&
-        curRequeriments.action === Action.EXTORQUIR
+        requeriments.action === Action.EXTORQUIR
         &&
         request.cardType !== undefined
         &&
         (gameState.game.players
-            .find(p => p.name === curRequeriments.target) as EnemyPlayer)
+            .find(p => p.name === requeriments.target) as EnemyPlayer)
         .money <
         gameState.game.configs.tiposCartas[
             request.cardType as
