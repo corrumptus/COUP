@@ -338,6 +338,15 @@ export default class GameViewPO {
     return screen.queryAllByTestId("toaster");
   }
 
+  allToastersChildren() {
+    return screen.queryAllByTestId("toaster-children");
+  }
+
+  allToastersChildrenContents() {
+    return screen.queryAllByTestId("toaster-children")
+      .map(tc => tc.textContent);
+  }
+
   toasterContents() {
     return screen.queryAllByTestId("gameView-gameUpdateToasterContent")
       .map(tc => tc.textContent);

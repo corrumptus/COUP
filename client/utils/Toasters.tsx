@@ -47,7 +47,11 @@ function Toaster({
       id="toaster"
       data-testid="toaster"
     >
-      <div className="w-full max-w-[250px] max-h-[150px] overflow-hidden p-1.5">
+      <div
+        className="w-full max-w-[250px] max-h-[150px] overflow-hidden p-1.5"
+        id="toaster-children"
+        data-testid="toaster-children"
+      >
         {children}
       </div>
       <div className="h-0.5 absolute bottom-0 animate-toast"></div>
