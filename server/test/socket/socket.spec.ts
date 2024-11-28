@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { faker } from "@faker-js/faker";
-import PlayerService from "./PlayerService";
-import LobbyService from "./LobbyService";
+import LobbyService from "../../src/service/LobbyService";
+import PlayerService from "../../src/service/PlayerService";
 
 function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
     return {
@@ -9,37 +9,45 @@ function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
         handshake: {
             auth: {
                 name: faker.person.fullName(),
-                lobbyId: lobbyId
+                lobby: lobbyId
             },
             headers: {
                 "user-agent": faker.internet.userAgent()
             }
         },
         emit: jest.fn(),
-        on: jest.fn()
+        on: jest.fn(),
+        disconnect: jest.fn()
     } as any;
 }
 
-describe("game init", () => {
-    it("should add a player correctly", () => {
+function getSocketOnCB(socket: jest.Mocked<Socket>, event: string): Function {
+    return (
+        socket.on.mock.calls
+            .find(([ ev ]) => ev === event) as [ string, Function ]
+    )[1];
+}
+
+describe("lobby interactions", () => {
+    it("should add a player correctly", async () => {
         const socket1 = createSocket(undefined);
 
-        PlayerService.setListeners(socket1);
+        await PlayerService.setListeners(socket1);
         LobbyService.setListeners(socket1);
 
         expect(PlayerService.getPlayer(socket1.id)).not.toBeUndefined();
         expect(LobbyService.getLobby(0)).not.toBeUndefined();
     });
 
-    it("should add two players correctly", () => {
+    it("should add two players correctly", async () => {
         const socket1 = createSocket(undefined);
 
-        PlayerService.setListeners(socket1);
+        await PlayerService.setListeners(socket1);
         LobbyService.setListeners(socket1);
 
         const socket2 = createSocket(0);
 
-        PlayerService.setListeners(socket2);
+        await PlayerService.setListeners(socket2);
         LobbyService.setListeners(socket2);
 
         expect(PlayerService.getPlayer(socket2.id)).not.toBeUndefined();
