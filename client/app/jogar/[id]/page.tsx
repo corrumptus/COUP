@@ -1,14 +1,16 @@
 "use client"
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import GameView from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
 import useSocket from "@utils/socketAPI";
 import { GameState } from "@type/game";
 
-export default function EntrarLobby({ params: { id } }: { params: { id: string } }) {
+export default function EntrarLobby() {
+  const { id } = useParams() as { id: string };
+
   const [ gameState, setGameState ] = useState<GameState>();
   const { socket, error } = useSocket(id === "-1" ? undefined : id);
 
