@@ -21,13 +21,6 @@ function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
     } as any;
 }
 
-function getSocketOnCB(socket: jest.Mocked<Socket>, event: string): Function {
-    return (
-        socket.on.mock.calls
-            .find(([ ev ]) => ev === event) as [ string, Function ]
-    )[1];
-}
-
 describe("lobby interactions", () => {
     it("should add a player correctly", async () => {
         const socket1 = createSocket(undefined);
