@@ -198,7 +198,7 @@ export default class LobbyService {
             LobbyMessageService.sendLobbyStateChanges(
                 lobbyId,
                 "newOwner",
-                player.name
+                (lobby.getOwner() as Player).name
             );
 
         if (!lobby.isEmpty)
