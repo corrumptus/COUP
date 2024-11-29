@@ -44,20 +44,17 @@ export default function GameMobileView({
       id="gameView"
       data-testid="gameView"
     >
-      <Header
-        leave={leave}
-        children={
-          <Image
-            src="/menu-hamburguer-icon.png"
-            alt="menu hamburguer"
-            onClick={() => setIsMobileMenuOpen(is => !is)}
-            width={40}
-            height={40}
-            id="gameView-mobileMenuIcon"
-            data-testid="gameView-mobileMenuIcon"
-          />
-        }
-      />
+      <Header leave={leave}>
+        <Image
+          src="/menu-hamburguer-icon.png"
+          alt="menu hamburguer"
+          onClick={() => setIsMobileMenuOpen(is => !is)}
+          width={40}
+          height={40}
+          id="gameView-mobileMenuIcon"
+          data-testid="gameView-mobileMenuIcon"
+        />
+      </Header>
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         <GameMobileMenu
           player={gameState.player}

@@ -18,7 +18,7 @@
       }
     ],
     "paths": {
-      "@pages/*": ["./pages/*"],
+      "@pages/*": ["./appPages/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@type/*": ["./type/*"],
