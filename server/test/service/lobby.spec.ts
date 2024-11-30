@@ -228,5 +228,6 @@ describe("lobby interactions", () => {
 
         expect(socket1.emit).toHaveBeenCalledWith("beginMatch", player1GameState, socket1SessionCode);
         expect(socket2.emit).toHaveBeenCalledWith("beginMatch", player2GameState, socket2SessionCode);
+        expect(LobbyService.allLobbys.length).toBe(0);
     });
 });
