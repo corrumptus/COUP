@@ -45,6 +45,13 @@ export default function LobbysView({
     if (token === null)
       sessionStorage.setItem("coup-name", name);
 
+    if (
+      selected !== -1
+      &&
+      !lobbys[selected].aberto
+    )
+      sessionStorage.setItem("coup-lobbyPassword", senha);
+
     router.push(`/jogar/${i}`);
   }
 
@@ -56,6 +63,13 @@ export default function LobbysView({
 
     if (token === null)
       sessionStorage.setItem("coup-name", name);
+
+    if (
+      selected !== -1
+      &&
+      !lobbys[selected].aberto
+    )
+      sessionStorage.setItem("coup-lobbyPassword", senha);
 
     router.push("/jogar/-1");
   }

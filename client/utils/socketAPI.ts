@@ -48,7 +48,7 @@ export default function useSocket(id?: string) {
 
     const lobby = id === undefined ? undefined : Number(id);
 
-    let auth;
+    let auth: any;
 
     if (localStorage.getItem("coup-sessionCode") !== null)
       auth = {
@@ -64,6 +64,9 @@ export default function useSocket(id?: string) {
         name: sessionStorage.getItem("coup-name"),
         lobby: lobby
       }
+
+    if (sessionStorage.getItem("coup-lobbyPassword") !== null)
+      auth["password"] = sessionStorage.getItem("coup-lobbyPassword");
 
     socketRef.current = 
       (io("http://localhost:5000", {
