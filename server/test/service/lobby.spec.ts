@@ -29,6 +29,64 @@ function getSocketOnCB(socket: jest.Mocked<Socket>, event: string): Function {
 }
 
 describe("lobby interactions", () => {
+    it("should not remove lobby from the lobby discovery before game starts", async () => {
+        const socket1 = createSocket(undefined);
+
+        await PlayerService.setListeners(socket1);
+        LobbyService.setListeners(socket1);
+
+        getSocketOnCB(socket1, "canReceive")();
+
+        const socket2 = createSocket(0);
+
+        await PlayerService.setListeners(socket2);
+        LobbyService.setListeners(socket2);
+
+        getSocketOnCB(socket2, "canReceive")();
+
+        expect(LobbyService.allLobbys.length).toBe(1);
+    });
+
+    it("should not remove lobby from the lobby discovery before game starts when a owner player leaves", async () => {
+        const socket1 = createSocket(undefined);
+
+        await PlayerService.setListeners(socket1);
+        LobbyService.setListeners(socket1);
+
+        getSocketOnCB(socket1, "canReceive")();
+
+        const socket2 = createSocket(0);
+
+        await PlayerService.setListeners(socket2);
+        LobbyService.setListeners(socket2);
+
+        getSocketOnCB(socket2, "canReceive")();
+
+        getSocketOnCB(socket1, "disconnect")("client namespace disconnect");
+
+        expect(LobbyService.allLobbys.length).toBe(1);
+    });
+
+    it("should not remove lobby from the lobby discovery before game starts when a non-owner player leaves", async () => {
+        const socket1 = createSocket(undefined);
+
+        await PlayerService.setListeners(socket1);
+        LobbyService.setListeners(socket1);
+
+        getSocketOnCB(socket1, "canReceive")();
+
+        const socket2 = createSocket(0);
+
+        await PlayerService.setListeners(socket2);
+        LobbyService.setListeners(socket2);
+
+        getSocketOnCB(socket2, "canReceive")();
+
+        getSocketOnCB(socket2, "disconnect")("client namespace disconnect");
+
+        expect(LobbyService.allLobbys.length).toBe(1);
+    });
+
     it("should remove first player and turn the second into the owner", async () => {
         const socket1 = createSocket(undefined);
 
