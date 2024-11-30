@@ -194,7 +194,7 @@ export default class LobbyService {
 
         LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", player.name);
 
-        if (wasOwner)
+        if (wasOwner && !lobby.isEmpty)
             LobbyMessageService.sendLobbyStateChanges(
                 lobbyId,
                 "newOwner",
