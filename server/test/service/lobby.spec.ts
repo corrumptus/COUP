@@ -3,6 +3,8 @@ import { faker } from "@faker-js/faker";
 import PlayerService from "../../src/service/PlayerService";
 import LobbyService from "../../src/service/LobbyService";
 import { RequestSocketOnEvents } from "../../src/socket/socket";
+import Game from "../../src/entity/Game";
+import { ContextType, PlayerStateType } from "../../src/service/GameMessageService";
 
 function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
     return {
@@ -178,5 +180,53 @@ describe("lobby interactions", () => {
 
         expect(socket1.emit).toHaveBeenCalledWith("passwordUpdated");
         expect(socket2.emit).toHaveBeenCalledWith("passwordUpdated");
+    });
+
+    it("should initiate lobby when lobby owner begins it", async () => {
+        const { socket1, player1, socket2, player2 } = await initLobby();
+
+        getSocketOnCB(socket1, "beginMatch")();
+
+        const gameState = (PlayerService.getPlayersLobby(socket1.id).getGame() as Game).getState();
+
+        const player1GameState = {
+            player: {
+                ...player1.getState(),
+                state: gameState.currentPlayer === player1.name
+                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
+            },
+            game: {
+                ...gameState,
+                players: gameState.players.filter(p => p.name !== player1.name)
+            },
+            context: {
+                type: ContextType.OBSERVING,
+                attacker: gameState.currentPlayer,
+                isInvestigating: false
+            }
+        };
+
+        const player2GameState = {
+            player: {
+                ...player2.getState(),
+                state: gameState.currentPlayer === player2.name
+                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
+            },
+            game: {
+                ...gameState,
+                players: gameState.players.filter(p => p.name !== player2.name)
+            },
+            context: {
+                type: ContextType.OBSERVING,
+                attacker: gameState.currentPlayer,
+                isInvestigating: false
+            }
+        };
+
+        const socket1SessionCode = PlayerService.getSessionCode(socket1.id);
+        const socket2SessionCode = PlayerService.getSessionCode(socket2.id);
+
+        expect(socket1.emit).toHaveBeenCalledWith("beginMatch", player1GameState, socket1SessionCode);
+        expect(socket2.emit).toHaveBeenCalledWith("beginMatch", player2GameState, socket2SessionCode);
     });
 });
