@@ -5,14 +5,19 @@ import LobbyService from "../../src/service/LobbyService";
 import { RequestSocketOnEvents } from "../../src/socket/socket";
 import Game from "../../src/entity/Game";
 import { ContextType, PlayerStateType } from "../../src/service/GameMessageService";
+import SocketValidatorService from "../../src/service/SocketValidatorService";
 
-function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
+function createSocket(
+    lobbyId: number | undefined,
+    password?: string
+): jest.Mocked<Socket> {
     return {
         id: faker.number.int().toString(),
         handshake: {
             auth: {
                 name: faker.person.fullName(),
-                lobby: lobbyId
+                lobby: lobbyId,
+                password: password
             },
             headers: {
                 "user-agent": faker.internet.userAgent()
@@ -171,6 +176,34 @@ describe("lobby interactions", () => {
 
         expect(socket1.emit).toHaveBeenCalledWith("passwordUpdated", password);
         expect(socket2.emit).toHaveBeenCalledWith("passwordUpdated", password);
+    });
+
+    it("should enter in lobby when pass the correct password", async () => {
+        const { socket1 } = await initLobby();
+
+        const password = faker.internet.password();
+
+        getSocketOnCB(socket1, "changePassword")(password);
+
+        const socket3 = createSocket(0, password);
+
+        const error = SocketValidatorService.validate(socket3);
+
+        expect(error).toBeUndefined();
+    });
+
+    it("should not enter in lobby when pass the incorrect password", async () => {
+        const { socket1 } = await initLobby();
+
+        const password = faker.internet.password();
+
+        getSocketOnCB(socket1, "changePassword")(password);
+
+        const socket3 = createSocket(0, faker.internet.password());
+
+        const error = SocketValidatorService.validate(socket3);
+
+        expect(error).toBe("A senha está incorreta");
     });
 
     it("should remove lobby password when lobby owner removes it", async () => {
