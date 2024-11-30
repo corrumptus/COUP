@@ -8,7 +8,7 @@ import { LobbyState } from "../service/LobbyMessageService";
 import { GameState, EnemyPlayer } from "../service/GameMessageService";
 import SocketValidatorService from "../service/SocketValidatorService";
 
-interface RequestSocketOnEvents {
+export interface RequestSocketOnEvents {
     "canReceive": () => void;
     "cantReceive": () => void;
 

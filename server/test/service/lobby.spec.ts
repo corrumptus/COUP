@@ -2,6 +2,7 @@ import { Socket } from "socket.io";
 import { faker } from "@faker-js/faker";
 import PlayerService from "../../src/service/PlayerService";
 import LobbyService from "../../src/service/LobbyService";
+import { RequestSocketOnEvents } from "../../src/socket/socket";
 
 function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
     return {
@@ -21,10 +22,19 @@ function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
     } as any;
 }
 
-function getSocketOnCB(socket: jest.Mocked<Socket>, event: string): Function {
+function getSocketOnCB<T extends keyof RequestSocketOnEvents | string>(
+    socket: jest.Mocked<Socket>,
+    event: T
+): T extends keyof RequestSocketOnEvents ? RequestSocketOnEvents[T] : Function {
     return (
         socket.on.mock.calls
-            .find(([ ev ]) => ev === event) as [ string, Function ]
+            .find(([ ev ]) => ev === event) as [
+                string,
+                T extends keyof RequestSocketOnEvents ?
+                    RequestSocketOnEvents[T]
+                    :
+                    Function
+            ]
     )[1];
 }
 
@@ -120,5 +130,17 @@ describe("lobby interactions", () => {
         expect(socket2.emit).toHaveBeenCalledWith("newOwner", player1.name);
         expect(LobbyService.getLobby(0)?.isOwner(player1)).toBe(true);
         expect(LobbyService.getLobby(0)?.isOwner(player2)).toBe(false);
+    });
+
+    it("should remove the second player when owner removes it", async () => {
+        const { socket1, socket2, player2 } = await initLobby();
+
+        getSocketOnCB(socket1, "removePlayer")(player2.name);
+
+        expect(socket1.emit).toHaveBeenCalledWith("leavingPlayer", player2.name);
+        expect(socket2.disconnect).toHaveBeenCalled();
+        expect(socket2.emit).toHaveBeenCalledWith("disconnectReason", "Jogador removido pelo dono do jogo");
+        expect(() => PlayerService.getPlayer(socket2.id))
+            .toThrow(new TypeError("Cannot read properties of undefined (reading 'player')"));
     });
 });
