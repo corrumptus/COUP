@@ -56,6 +56,12 @@ describe("lobby interactions", () => {
         };
     }
 
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
     it("should not remove lobby from the lobby discovery before game starts", async () => {
         await initLobby();
 
