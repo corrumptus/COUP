@@ -143,4 +143,40 @@ describe("lobby interactions", () => {
         expect(() => PlayerService.getPlayer(socket2.id))
             .toThrow(new TypeError("Cannot read properties of undefined (reading 'player')"));
     });
+
+    it("should change configs when lobby owner changes it", async () => {
+        const { socket1, socket2 } = await initLobby();
+
+        getSocketOnCB(socket1, "updateConfigs")(["religiao", "reforma"], true);
+        getSocketOnCB(socket1, "updateConfigs")(["renda"], 3);
+        getSocketOnCB(socket1, "updateConfigs")(["tiposCartas", "duque", "investigar"], true);
+
+        expect(socket1.emit).toHaveBeenCalledWith("configsUpdated", ["religiao", "reforma"], true);
+        expect(socket1.emit).toHaveBeenCalledWith("configsUpdated", ["renda"], 3);
+        expect(socket1.emit).toHaveBeenCalledWith("configsUpdated", ["tiposCartas", "duque", "investigar"], true);
+
+        expect(socket2.emit).toHaveBeenCalledWith("configsUpdated", ["religiao", "reforma"], true);
+        expect(socket2.emit).toHaveBeenCalledWith("configsUpdated", ["renda"], 3);
+        expect(socket2.emit).toHaveBeenCalledWith("configsUpdated", ["tiposCartas", "duque", "investigar"], true);
+    });
+
+    it("should change lobby password when lobby owner changes it", async () => {
+        const { socket1, socket2 } = await initLobby();
+
+        const password = faker.internet.password();
+
+        getSocketOnCB(socket1, "changePassword")(password);
+
+        expect(socket1.emit).toHaveBeenCalledWith("passwordUpdated", password);
+        expect(socket2.emit).toHaveBeenCalledWith("passwordUpdated", password);
+    });
+
+    it("should remove lobby password when lobby owner removes it", async () => {
+        const { socket1, socket2 } = await initLobby();
+
+        getSocketOnCB(socket1, "removePassword")();
+
+        expect(socket1.emit).toHaveBeenCalledWith("passwordUpdated");
+        expect(socket2.emit).toHaveBeenCalledWith("passwordUpdated");
+    });
 });
