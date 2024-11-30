@@ -61,6 +61,13 @@ export default class SocketValidatorService {
         )
             return "Este nome já está sendo usado nesse lobby";
 
+        if (
+            "lobby" in auth
+            &&
+            !LobbyService.isPasswordFromLobby(auth.password, auth.lobby)
+        )
+            return "A senha está incorreta";
+
         return undefined;
     }
 
