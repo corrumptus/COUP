@@ -97,4 +97,28 @@ describe("lobby interactions", () => {
         expect(socket2.emit).toHaveBeenCalledWith("leavingPlayer", player1.name);
         expect(socket2.emit).toHaveBeenCalledWith("newOwner", player2.name);
     });
+
+    it("should turn the second player into the onwer", async () => {
+        const { socket1, player1, socket2, player2 } = await initLobby();
+
+        getSocketOnCB(socket1, "newOwner")(player2.name);
+
+        expect(socket1.emit).toHaveBeenCalledWith("newOwner", player2.name);
+        expect(socket2.emit).toHaveBeenCalledWith("newOwner", player2.name);
+        expect(LobbyService.getLobby(0)?.isOwner(player1)).toBe(false);
+        expect(LobbyService.getLobby(0)?.isOwner(player2)).toBe(true);
+    });
+
+    it("should turn the first player into the onwer after the second being turned into the owner", async () => {
+        const { socket1, player1, socket2, player2 } = await initLobby();
+
+        getSocketOnCB(socket1, "newOwner")(player2.name);
+
+        getSocketOnCB(socket2, "newOwner")(player1.name);
+
+        expect(socket1.emit).toHaveBeenCalledWith("newOwner", player1.name);
+        expect(socket2.emit).toHaveBeenCalledWith("newOwner", player1.name);
+        expect(LobbyService.getLobby(0)?.isOwner(player1)).toBe(true);
+        expect(LobbyService.getLobby(0)?.isOwner(player2)).toBe(false);
+    });
 });
