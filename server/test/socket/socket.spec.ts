@@ -1,25 +1,6 @@
-import { Socket } from "socket.io";
-import { faker } from "@faker-js/faker";
 import LobbyService from "../../src/service/LobbyService";
 import PlayerService from "../../src/service/PlayerService";
-
-function createSocket(lobbyId: number | undefined): jest.Mocked<Socket> {
-    return {
-        id: faker.number.int().toString(),
-        handshake: {
-            auth: {
-                name: faker.person.fullName(),
-                lobby: lobbyId
-            },
-            headers: {
-                "user-agent": faker.internet.userAgent()
-            }
-        },
-        emit: jest.fn(),
-        on: jest.fn(),
-        disconnect: jest.fn()
-    } as any;
-}
+import { createSocket } from "../utils";
 
 describe("lobby interactions", () => {
     it("should add a player correctly", async () => {
