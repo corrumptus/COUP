@@ -73,6 +73,7 @@ export type GameState = {
     context: {
         type: ContextType.INVESTIGATING,
         card: Card,
+        selfCard: number,
         target: string,
         investigatedCard: Card,
         targetCard: number

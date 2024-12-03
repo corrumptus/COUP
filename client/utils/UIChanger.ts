@@ -105,6 +105,8 @@ function performUIChange(
                 MenuTypes.INVESTIGATING,
                 {
                     ...requeriments,
+                    cardType: gameState.context.card,
+                    selfCard: gameState.context.selfCard,
                     target: gameState.context.target,
                     targetCard: gameState.context.targetCard
                 }
