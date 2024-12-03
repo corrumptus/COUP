@@ -103,7 +103,7 @@ export default class GameStateFactory {
         this.gameState.game.currentPlayer = this.isPlayerTurn ?
             this.otherPlayerName
             :
-            this.playerName;;
+            this.playerName;
 
         this.isPlayerTurn != this.isPlayerTurn;
 
@@ -197,6 +197,24 @@ export default class GameStateFactory {
             card: card,
             attackedCard: targetCard,
             previousAction: previousAction
+        };
+
+        return this;
+    }
+
+    ofInvestigating(
+        card: Card,
+        selfCard: number,
+        targetCardType: Card,
+        targetCard: number
+    ): this {
+        this.gameState.context = {
+            type: ContextType.INVESTIGATING,
+            card: card,
+            selfCard: selfCard,
+            target: this.gameState.game.players[0].name,
+            investigatedCard: targetCardType,
+            targetCard: targetCard
         };
 
         return this;
