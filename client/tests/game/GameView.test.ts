@@ -668,6 +668,32 @@ describe("Game View interactivity for game actions", () => {
         expect(socketEmitMock).toHaveBeenCalledWith("golpeEstado", enemyPlayerName, 0);
     });
 
+    it("should perform a trocar after investigar", async () => {
+        const { gameView, enemyPlayerName } = await initializeView(factory => factory
+            .ofInvestigating(Card.INQUISIDOR, 0, Card.DUQUE, 0)
+        );
+
+        await gameView.change();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock)
+            .toHaveBeenCalledWith("trocar", Card.INQUISIDOR, 0, enemyPlayerName, 0);
+    });
+
+    it("should perform a continuar after investigar", async () => {
+        const { gameView } = await initializeView(factory => factory
+            .ofInvestigating(Card.INQUISIDOR, 0, Card.DUQUE, 0)
+        );
+
+        await gameView.keep();
+
+        expect(gameView.actionMenu()).not.toBeInTheDocument();
+
+        expect(socketEmitMock)
+            .toHaveBeenCalledWith("continuar");
+    });
+
     it("should not perform a self trocar religiao action when their is no enough money", async () => {
         const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
@@ -1150,6 +1176,18 @@ describe("Game View render in game update", () => {
         expect(gameView.blockDefenseMenu()).toBeInTheDocument();
         expect(gameView.contestButton()).toBeInTheDocument();
         expect(gameView.acceptButton()).toBeInTheDocument();
+    });
+
+    it("should render correctly when a player investigate", () => {
+        const { gameView } = initializeView(factory => factory
+            .ofInvestigating(Card.INQUISIDOR, 0, Card.DUQUE, 0)
+        );
+
+        expect(gameView.investigatingMenu()).toBeInTheDocument();
+        expect(gameView.investigatedCard()).toBeInTheDocument();
+        expect(gameView.investigatedCardType()).toBe("duque");
+        expect(gameView.changeButton()).toBeInTheDocument();
+        expect(gameView.keepButton()).toBeInTheDocument();
     });
 });
 
