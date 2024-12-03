@@ -317,6 +317,36 @@ export default class GameViewPO {
     return screen.queryByTestId("gameView-blockDefenseMenu");
   }
 
+  investigatingMenu() {
+    return screen.queryByTestId("gameView-investigatingMenu");
+  }
+
+  investigatedCard() {
+    return screen.queryByTestId("gameView-investigatedCard");
+  }
+
+  investigatedCardType() {
+    return screen.queryByTestId("gameView-investigatedCard")
+      ?.querySelector("img")
+      ?.title || null;
+  }
+
+  changeButton() {
+    return screen.queryByTestId("gameView-trocarButton");
+  }
+
+  async change() {
+    await userEvent.click(this.changeButton() as HTMLElement);
+  }
+
+  keepButton() {
+    return screen.queryByTestId("gameView-continuarButton");
+  }
+
+  async keep() {
+    await userEvent.click(this.keepButton() as HTMLElement);
+  }
+
   nextPerson() {
     return screen.queryByTestId("gameView-nextPerson");
   }
