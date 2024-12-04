@@ -51,6 +51,7 @@ export type GameState = {
     context: {
         type: ContextType.INVESTIGATING,
         card: CardType,
+        selfCard: CardSlot,
         target: string,
         investigatedCard: CardType,
         targetCard: CardSlot
@@ -259,6 +260,7 @@ export default class GameMessageService extends MessageService {
             return {
                 type: ContextType.INVESTIGATING,
                 card: currentTurn.getFirstCardType() as CardType,
+                selfCard: currentTurn.getFirstCard() as CardSlot,
                 target: (currentTurn.getTarget() as Player).name,
                 investigatedCard: currentTurn.getLastCardType() as CardType,
                 targetCard: currentTurn.getLastCard() as CardSlot
