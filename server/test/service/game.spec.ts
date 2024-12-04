@@ -6,7 +6,7 @@ describe("game state in update", () => {
     it("should send the correct game state for renda", async () => {
         const gameClient = await GameClient.create();
 
-        gameClient.firstPlayerDo("renda");
+        gameClient.firstPlayerDo(Action.RENDA);
 
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(

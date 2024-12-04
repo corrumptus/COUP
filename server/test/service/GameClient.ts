@@ -7,6 +7,7 @@ import LobbyService from "../../src/service/LobbyService";
 import PlayerService from "../../src/service/PlayerService";
 import { RequestSocketOnEvents } from "../../src/socket/socket";
 import { createSocket, getSocketOnCB } from "../utils";
+import Action from "../../src/entity/Action";
 
 export default class GameClient {
     private player1: Player;
@@ -69,13 +70,13 @@ export default class GameClient {
         return this.isFirstPlayerFirst ? this.player2 : this.player1;
     }
 
-    firstPlayerDo<T extends keyof RequestSocketOnEvents>(event: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
+    firstPlayerDo<T extends Action>(action: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
         // @ts-ignore
-        getSocketOnCB(this.first, event)(...args);
+        getSocketOnCB(this.first, action)(...args);
     }
 
-    secondPlayerDo<T extends keyof RequestSocketOnEvents>(event: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
+    secondPlayerDo<T extends Action>(action: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
         // @ts-ignore
-        getSocketOnCB(this.first, event)(...args);
+        getSocketOnCB(this.first, action)(...args);
     }
 }
