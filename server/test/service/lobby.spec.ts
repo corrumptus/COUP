@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import PlayerService from "../../src/service/PlayerService";
 import LobbyService from "../../src/service/LobbyService";
 import Game from "../../src/entity/Game";
-import { ContextType, PlayerStateType } from "../../src/service/GameMessageService";
+import { ContextType } from "../../src/service/GameMessageService";
 import SocketValidatorService from "../../src/service/SocketValidatorService";
 import { createSocket, getSocketOnCB } from "../utils";
 
@@ -184,11 +184,7 @@ describe("lobby interactions", () => {
         const gameState = (PlayerService.getPlayersLobby(socket1.id).getGame() as Game).getState();
 
         const player1GameState = {
-            player: {
-                ...player1.getState(),
-                state: gameState.currentPlayer === player1.name
-                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
-            },
+            player: player1.getState(),
             game: {
                 ...gameState,
                 players: gameState.players.filter(p => p.name !== player1.name)
@@ -201,11 +197,7 @@ describe("lobby interactions", () => {
         };
 
         const player2GameState = {
-            player: {
-                ...player2.getState(),
-                state: gameState.currentPlayer === player2.name
-                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
-            },
+            player: player2.getState(),
             game: {
                 ...gameState,
                 players: gameState.players.filter(p => p.name !== player2.name)
