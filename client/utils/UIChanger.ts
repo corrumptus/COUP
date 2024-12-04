@@ -651,6 +651,13 @@ function emitAction(
         )
             return playerName;
 
+        if (
+            i > 0
+            &&
+            requeriments.action === Action.CONTINUAR
+        )
+            return undefined;
+
         return info;
     })
     .filter(info => info !== undefined);
