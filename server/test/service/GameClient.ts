@@ -5,26 +5,25 @@ import Player from "../../src/entity/player";
 import GameService from "../../src/service/GameService";
 import LobbyService from "../../src/service/LobbyService";
 import PlayerService from "../../src/service/PlayerService";
+import { RequestSocketOnEvents } from "../../src/socket/socket";
 import { createSocket, getSocketOnCB } from "../utils";
 
 export default class GameClient {
-    private socket1: jest.Mocked<Socket>;
-    private socket2: jest.Mocked<Socket>;
     private player1: Player;
     private player2: Player;
     private game: Game;
+    private isFirstPlayerFirst: boolean;
     private first: jest.Mocked<Socket>;
     private second: jest.Mocked<Socket>;
 
     private constructor(socket1: jest.Mocked<Socket>, socket2: jest.Mocked<Socket>) {
-        this.socket1 = socket1;
-        this.socket2 = socket2;
         this.player1 = PlayerService.getPlayer(socket1.id);
         this.player2 = PlayerService.getPlayer(socket2.id);
         this.game = (LobbyService.getLobby(0) as Lobby).getGame() as Game;
 
         const isPlayer1First = this.game.getLastTurn().getPlayer() === this.player1;
 
+        this.isFirstPlayerFirst = isPlayer1First;
         this.first = isPlayer1First ? socket1 : socket2;
         this.second = isPlayer1First ? socket2 : socket1;
     }
@@ -50,11 +49,33 @@ export default class GameClient {
         return new this(socket1, socket2);
     }
 
+    getGame() {
+        return this.game;
+    }
+
     firstSocket() {
         return this.first;
     }
 
+    firstPlayer() {
+        return this.isFirstPlayerFirst ? this.player1 : this.player2;
+    }
+
     secondSocket() {
         return this.second;
+    }
+
+    secondPlayer() {
+        return this.isFirstPlayerFirst ? this.player2 : this.player1;
+    }
+
+    firstPlayerDo<T extends keyof RequestSocketOnEvents>(event: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
+        // @ts-ignore
+        getSocketOnCB(this.first, event)(...args);
+    }
+
+    secondPlayerDo<T extends keyof RequestSocketOnEvents>(event: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
+        // @ts-ignore
+        getSocketOnCB(this.first, event)(...args);
     }
 }
