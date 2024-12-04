@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import { Action, Card, ContextType, GameState, PlayerState } from "@type/game";
+import { Action, Card, ContextType, GameState } from "@type/game";
 import { randomCardType, randomReligion } from "@tests/utils";
 
 type NonCard = Action.RENDA |
@@ -55,7 +55,6 @@ export default class GameStateFactory {
                     }
                 ],
                 money: COUPDefaultConfigs.moedasIniciais,
-                state: PlayerState.WAITING_TURN,
                 religion: undefined
             },
             game: {

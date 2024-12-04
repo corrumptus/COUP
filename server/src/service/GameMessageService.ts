@@ -9,16 +9,6 @@ import Config from "../utils/Config";
 import MessageService from "./MessageService";
 import PlayerService from "./PlayerService";
 
-export enum PlayerStateType {
-    WAITING_TURN = "waitingTurn",
-    THINKING = "thinking",
-    WAITING_REPLY = "waitingReply",
-    BEING_ATTACKED = "beingAttacked",
-    INVESTIGATING = "investigating",
-    BEING_BLOCKED = "beingBlocked",
-    NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
-}
-
 type PlayerBase = {
     name: string,
     money: number,
@@ -26,8 +16,7 @@ type PlayerBase = {
 }
 
 export type SelfPlayer = {
-    cards: { card: CardType, isDead: boolean }[],
-    state: PlayerStateType
+    cards: { card: CardType, isDead: boolean }[]
 } & PlayerBase;
 
 export type EnemyPlayer = {
@@ -135,9 +124,7 @@ export default class GameMessageService extends MessageService {
 
         return {
             player: {
-                ...player.getState(),
-                state: state.currentPlayer === player.name
-                    ? PlayerStateType.THINKING : PlayerStateType.WAITING_TURN
+                ...player.getState()
             },
             game: GameMessageService.gameStateForPlayer(state, player.name),
             context: {
@@ -179,68 +166,10 @@ export default class GameMessageService extends MessageService {
         const gameState = game.getState();
 
         return {
-            player: {
-                ...player.getState(),
-                state: GameMessageService.calculatePlayerState(gameState, name, infos)
-            },
+            player: player.getState(),
             game: GameMessageService.gameStateForPlayer(gameState, name),
             context: GameMessageService.calculateGameContext(game, name, infos)
         }
-    }
-
-    private static calculatePlayerState(
-        gameState: ReturnType<Game["getState"]>,
-        name: string,
-        infos: ActionInfos
-    ): PlayerStateType {
-        if (
-            name !== gameState.currentPlayer
-            &&
-            name !== infos.target
-        )
-            return PlayerStateType.WAITING_TURN;
-
-        if (
-            name !== gameState.currentPlayer
-            &&
-            name === infos.target
-            &&
-            infos.action !== Action.BLOQUEAR
-        )
-            return PlayerStateType.BEING_ATTACKED;
-
-        if (
-            name !== gameState.currentPlayer
-            &&
-            name === infos.target
-            &&
-            infos.action === Action.BLOQUEAR
-        )
-            return PlayerStateType.BEING_BLOCKED;
-
-        if (
-            name === gameState.currentPlayer
-            &&
-            (gameState.players.find(p => p.name === name) as EnemyPlayer)
-                .money >= gameState.configs.quantidadeMaximaGolpeEstado
-        )
-            return PlayerStateType.NEED_TO_GOLPE_ESTADO;
-
-        if (
-            name === gameState.currentPlayer
-            &&
-            infos.isInvestigating
-        )
-            return PlayerStateType.INVESTIGATING;
-
-        if (
-            name === gameState.currentPlayer
-            &&
-            name === infos.attacker
-        )
-            return PlayerStateType.WAITING_REPLY;
-
-        return PlayerStateType.THINKING;
     }
 
     private static calculateGameContext(

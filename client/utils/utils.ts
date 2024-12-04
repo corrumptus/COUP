@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Config from "@type/config";
-import { Action, Card, PlayerState } from "@type/game";
+import { Action, Card, ContextType, GameState } from "@type/game";
 import { MenuTypes } from "@type/gameUI";
 import { Differ } from "@type/utils";
 
@@ -162,14 +162,14 @@ export function getChoosableCards<T extends Action>(
         .map(([card, _]) => card) as Card[];
 }
 
-export function menuTypeFrom(playerState: PlayerState): MenuTypes | undefined {
-    if (playerState === PlayerState.BEING_ATTACKED)
-        return MenuTypes.DEFENSE;
+export function menuTypeFrom(context: GameState["context"]): MenuTypes | undefined {
+    if (context.type === ContextType.BEING_ATTACKED)
+        return context.action === Action.BLOQUEAR ?
+            MenuTypes.BLOCK_DEFENSE
+            :
+            MenuTypes.DEFENSE;
 
-    if (playerState === PlayerState.BEING_BLOCKED)
-        return MenuTypes.BLOCK_DEFENSE;
-
-    if (playerState === PlayerState.INVESTIGATING)
+    if (context.type === ContextType.INVESTIGATING)
         return MenuTypes.INVESTIGATING;
 
     return undefined;

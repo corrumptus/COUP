@@ -31,16 +31,6 @@ export enum Action {
     CONTINUAR = "continuar"
 }
 
-export enum PlayerState {
-    WAITING_TURN = "waitingTurn",
-    THINKING = "thinking",
-    WAITING_REPLY = "waitingReply",
-    BEING_ATTACKED = "beingAttacked",
-    INVESTIGATING = "investigating",
-    BEING_BLOCKED = "beingBlocked",
-    NEED_TO_GOLPE_ESTADO = "needToGolpeEstado"
-}
-
 type PlayerBase = {
     name: string,
     money: number,
@@ -49,7 +39,6 @@ type PlayerBase = {
 
 export type SelfPlayer = {
     cards: { card: Card, isDead: boolean }[],
-    state: PlayerState
 } & PlayerBase;
 
 export type EnemyPlayer = {
