@@ -47,6 +47,9 @@ export default class GameClient {
 
         getSocketOnCB(socket1, "beginMatch")();
 
+        socket1.emit.mockClear();
+        socket2.emit.mockClear();
+
         return new this(socket1, socket2);
     }
 
@@ -77,6 +80,6 @@ export default class GameClient {
 
     secondPlayerDo<T extends Action>(action: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
         // @ts-ignore
-        getSocketOnCB(this.first, action)(...args);
+        getSocketOnCB(this.second, action)(...args);
     }
 }
