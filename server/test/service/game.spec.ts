@@ -79,6 +79,33 @@ describe("game state in update", () => {
             );
     });
 
+    it("should send the correct game state for using bloquear after a ajuda externa", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+    });
+
     it("should send the correct game state for using a contestar after using a bloquear after a ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
