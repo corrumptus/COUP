@@ -21,7 +21,8 @@ type PosInvestigar = Action.TROCAR | Action.CONTINUAR;
 type AttackerActions = Action.EXTORQUIR |
     Action.ASSASSINAR |
     Action.INVESTIGAR |
-    Action.BLOQUEAR;
+    Action.BLOQUEAR |
+    Action.CONTESTAR;
 
 type BloquearPreAction = Action.AJUDA_EXTERNA |
     Action.TAXAR |
