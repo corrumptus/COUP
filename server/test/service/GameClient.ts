@@ -27,6 +27,8 @@ export default class GameClient {
         this.isFirstPlayerFirst = isPlayer1First;
         this.first = isPlayer1First ? socket1 : socket2;
         this.second = isPlayer1First ? socket2 : socket1;
+
+        this.clearMocks();
     }
 
     static async create() {
@@ -46,9 +48,6 @@ export default class GameClient {
         getSocketOnCB(socket2, "canReceive")();
 
         getSocketOnCB(socket1, "beginMatch")();
-
-        socket1.emit.mockClear();
-        socket2.emit.mockClear();
 
         return new this(socket1, socket2);
     }
@@ -81,5 +80,10 @@ export default class GameClient {
     secondPlayerDo<T extends Action>(action: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
         // @ts-ignore
         getSocketOnCB(this.second, action)(...args);
+    }
+
+    clearMocks() {
+        this.first.emit.mockClear();
+        this.second.emit.mockClear();
     }
 }
