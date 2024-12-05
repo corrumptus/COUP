@@ -1,9 +1,17 @@
 import Action from "../../src/entity/Action";
 import CardType from "../../src/entity/CardType";
+import LobbyService from "../../src/service/LobbyService";
+import PlayerService from "../../src/service/PlayerService";
 import GameClient from "./GameClient";
 import GameStateFactory from "./GameStateFactory";
 
 describe("game state in update", () => {
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
     it("should send the correct game state for renda", async () => {
         const gameClient = await GameClient.create();
 
