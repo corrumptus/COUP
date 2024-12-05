@@ -23,7 +23,7 @@ export default class ContestarHandler implements ActionHandler {
             this.validateNonBloquear(player, action, selfCard);
     }
 
-    private validateBloquear(game: Game, player: Player, selfCard: number | undefined) {
+    private validateBloquear(game: Game, player: Player, selfCard: number | undefined): void {
         const action = game.getLastTurn().getFirstAction() as Action;
 
         if (this.contestarBloquearDontNeedSelfCard(action))
@@ -32,22 +32,22 @@ export default class ContestarHandler implements ActionHandler {
         this.validateSelfCard(player, selfCard);
     }
 
-    private contestarBloquearDontNeedSelfCard(action: Action) {
+    private contestarBloquearDontNeedSelfCard(action: Action): boolean {
         return [Action.AJUDA_EXTERNA, Action.TAXAR].includes(action);
     }
 
-    private validateNonBloquear(player: Player, action: Action, selfCard: number | undefined) {
+    private validateNonBloquear(player: Player, action: Action, selfCard: number | undefined): void {
         if (this.contestarNonBloquearDontNeedSelfCard(action))
             return;
 
         this.validateSelfCard(player, selfCard);
     }
 
-    private contestarNonBloquearDontNeedSelfCard(action: Action) {
+    private contestarNonBloquearDontNeedSelfCard(action: Action): boolean {
         return [Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
     }
 
-    private validateSelfCard(player: Player, selfCard: number | undefined) {
+    private validateSelfCard(player: Player, selfCard: number | undefined): void {
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
 
@@ -63,7 +63,7 @@ export default class ContestarHandler implements ActionHandler {
         player,
         target,
         selfCard
-    }: ValidActionRequest) {
+    }: ValidActionRequest): void {
         const action = game.getLastTurn().getLastAction();
 
         game.getLastTurn().addAction(Action.CONTESTAR);
@@ -80,7 +80,7 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveTaxar(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveTaxar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const taxarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const taxarCardType = player.getCard(taxarCard).getType();
@@ -95,7 +95,7 @@ export default class ContestarHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard);
     }
 
-    private saveCorrupcao(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveCorrupcao(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const corrupcaoCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const corrupcaoCardType = player.getCard(corrupcaoCard).getType();
@@ -110,7 +110,7 @@ export default class ContestarHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard);
     }
 
-    private saveExtorquir(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveExtorquir(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const extorquirCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const extorquirCardType = player.getCard(extorquirCard).getType();
@@ -128,7 +128,7 @@ export default class ContestarHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard);
     }
 
-    private saveAssassinar(game: Game, player: Player, target: Player) {
+    private saveAssassinar(game: Game, player: Player, target: Player): void {
         const assassinarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const assassinarCardType = player.getCard(assassinarCard).getType();
@@ -144,7 +144,7 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(assassinarCard);
     }
 
-    private saveInvestigar(game: Game, player: Player, target: Player) {
+    private saveInvestigar(game: Game, player: Player, target: Player): void {
         const investigarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const investigarCardType = player.getCard(investigarCard).getType();
@@ -162,7 +162,7 @@ export default class ContestarHandler implements ActionHandler {
         target.killCard(cardKilledByContestar);
     }
 
-    private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const trocarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const trocarCardType = player.getCard(trocarCard).getType();
@@ -177,7 +177,7 @@ export default class ContestarHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard);
     }
 
-    private saveBloquear(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveBloquear(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const action = game.getLastTurn().getFirstAction();
 
         switch (action) {
@@ -196,7 +196,7 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearAjudaExterna(game: Game, player: Player, selfCard: CardSlot, target: Player) {
+    private saveBloquearAjudaExterna(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const bloquearCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const bloquearCardType = target.getCard(bloquearCard).getType();
@@ -210,7 +210,7 @@ export default class ContestarHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard);
     }
 
-    private saveBloquearTaxar(game: Game, player: Player, target: Player) {
+    private saveBloquearTaxar(game: Game, player: Player, target: Player): void {
         const taxarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const bloquearCard = game.getLastTurn().getLastCard() as CardSlot;
@@ -224,7 +224,7 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(bloquearCard);
     }
 
-    private saveBloquearExtorquir(game: Game, player: Player, target: Player) {
+    private saveBloquearExtorquir(game: Game, player: Player, target: Player): void {
         const extorquirCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const extorquirCardType = player.getCard(extorquirCard).getType();
@@ -245,7 +245,7 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearAssassinar(game: Game, player: Player, target: Player) {
+    private saveBloquearAssassinar(game: Game, player: Player, target: Player): void {
         const assassinarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const bloquearCard = game.getLastTurn().getLastCard() as CardSlot;
@@ -262,7 +262,7 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearInvestigar(game: Game, player: Player, target: Player) {
+    private saveBloquearInvestigar(game: Game, player: Player, target: Player): void {
         const investigarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const bloquearCard = game.getLastTurn().getLastCard() as CardSlot;
@@ -278,7 +278,7 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearTrocar(game: Game, player: Player, target: Player) {
+    private saveBloquearTrocar(game: Game, player: Player, target: Player): void {
         const trocarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const bloquearCard = game.getLastTurn().getLastCard() as CardSlot;

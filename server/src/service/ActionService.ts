@@ -119,14 +119,16 @@ export default class ActionService {
         if (turn !== game.getLastTurn())
             game.removeLastTurn();
 
-        const player = turn.getPlayer();
+        const player = PlayerService.getPlayer(socketId);
 
-        const target = (
-            targetName === undefined ?
-                turn.getTarget()
-                :
-                PlayerService.getPlayerByName(targetName, lobbyId)
-        ) || PlayerService.getPlayer(socketId);
+        let target: Player | undefined = undefined;
+
+        if (player !== turn.getPlayer())
+            target = turn.getPlayer();
+        else if (turn.getTarget() === undefined)
+            target = PlayerService.getPlayerByName(targetName as string, lobbyId);
+        else
+            target = turn.getTarget();
 
         return {
             lobbyId,

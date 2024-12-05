@@ -24,11 +24,11 @@ export default class BloquearHandler implements ActionHandler {
             this.validateActionsNeedSelfCard(game, player, action, card, selfCard);
     }
 
-    private dontNeedSelfCard(action: Action) {
+    private dontNeedSelfCard(action: Action): boolean {
         return [Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
     }
 
-    private validateActionsDontNeedSelfCard(game: Game, action: Action) {
+    private validateActionsDontNeedSelfCard(game: Game, action: Action): void {
         if (!this.canBlock(
             action,
             game.getLastTurn().getFirstCardType() as CardType,
@@ -43,7 +43,7 @@ export default class BloquearHandler implements ActionHandler {
         action: Action,
         card: CardType | undefined,
         selfCard: number | undefined
-    ) {
+    ): void {
         if (card === undefined)
             throw new Error("Um tipo de carta deve ser escolhido");
 
@@ -60,7 +60,7 @@ export default class BloquearHandler implements ActionHandler {
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
     }
 
-    private canBlock(action: Action, card: CardType, configs: Config) {
+    private canBlock(action: Action, card: CardType, configs: Config): boolean {
         switch (action) {
             case Action.AJUDA_EXTERNA: return configs.tiposCartas[card].taxar;
             case Action.TAXAR: return configs.tiposCartas[card].bloquearTaxar;
@@ -74,10 +74,10 @@ export default class BloquearHandler implements ActionHandler {
 
     save({
         game,
+        player,
         card,
-        selfCard,
-        target
-    }: ValidActionRequest) {
+        selfCard
+    }: ValidActionRequest): void {
         const lastAction = game.getLastTurn().getLastAction() as Action;
 
         const dontNeedAddSelfCardActions = [
@@ -100,7 +100,7 @@ export default class BloquearHandler implements ActionHandler {
         game.getLastTurn().addCard(selfCard as CardSlot);
 
         if (needTargetActions.includes(lastAction))
-            game.getLastTurn().addTarget(target as Player);
+            game.getLastTurn().addTarget(player);
     }
 
     finish(): boolean {
@@ -116,7 +116,7 @@ export default class BloquearHandler implements ActionHandler {
             attacker: player.name,
             action: Action.BLOQUEAR,
             card: card,
-            target: target?.name,
+            target: (target as Player).name,
             attackedCard: undefined,
             isInvestigating: false
         };

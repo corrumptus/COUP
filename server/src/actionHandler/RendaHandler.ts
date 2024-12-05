@@ -6,7 +6,7 @@ import ActionHandler, { ValidActionRequest } from "./ActionHandler";
 export default class RendaHandler implements ActionHandler {
     validate(): void {}
 
-    save({ game, player}: ValidActionRequest) {
+    save({ game, player }: ValidActionRequest): void {
         player.addMoney(game.getConfigs().renda);
 
         game.getLastTurn().addAction(Action.RENDA);

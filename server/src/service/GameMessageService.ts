@@ -123,9 +123,7 @@ export default class GameMessageService extends MessageService {
         const state = game.getState();
 
         return {
-            player: {
-                ...player.getState()
-            },
+            player: player.getState(),
             game: GameMessageService.gameStateForPlayer(state, player.name),
             context: {
                 type: ContextType.OBSERVING,
@@ -189,9 +187,9 @@ export default class GameMessageService extends MessageService {
             return {
                 type: ContextType.INVESTIGATING,
                 card: currentTurn.getFirstCardType() as CardType,
+                investigatedCard: currentTurn.getLastCardType() as CardType,
                 selfCard: currentTurn.getFirstCard() as CardSlot,
                 target: (currentTurn.getTarget() as Player).name,
-                investigatedCard: currentTurn.getLastCardType() as CardType,
                 targetCard: currentTurn.getLastCard() as CardSlot
             }
 
@@ -206,10 +204,10 @@ export default class GameMessageService extends MessageService {
         )
             return {
                 type: ContextType.BEING_ATTACKED,
-                attacker: infos.attacker,
                 action: infos.action as Action,
-                card: infos.card as CardType,
                 attackedCard: infos.attackedCard,
+                attacker: infos.attacker,
+                card: infos.card as CardType,
                 previousAction: currentTurn.getAllActions().at(-2)
             }
 
