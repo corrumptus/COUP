@@ -25,7 +25,7 @@ export default class BloquearHandler implements ActionHandler {
     }
 
     private dontNeedSelfCard(action: Action) {
-        return [Action.AJUDA_EXTERNA, Action.INVESTIGAR].includes(action);
+        return [Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
     }
 
     private validateActionsDontNeedSelfCard(game: Game, action: Action) {
