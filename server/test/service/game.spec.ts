@@ -1,5 +1,6 @@
 import Action from "../../src/entity/Action";
 import CardType from "../../src/entity/CardType";
+import { CardSlot } from "../../src/entity/player";
 import LobbyService from "../../src/service/LobbyService";
 import PlayerService from "../../src/service/PlayerService";
 import GameClient from "./GameClient";
@@ -131,5 +132,90 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
+    });
+});
+
+describe("game and players state in update", () => {
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
+    it("should update player money when player use renda", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.RENDA);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+    });
+
+    it("should update player money when player use ajuda externa", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+    });
+
+    it("should not update player money when using bloquear after player use ajuda externa", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+    });
+
+    it("should update player money when using contestar after a bloquear after player use ajuda externa when enemy player cant block it", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CAPITAO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+
+        restoreMocks();
+    });
+
+    it("should not update player money when using contestar after a bloquear after player use ajuda externa when enemy player can block it", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CAPITAO,
+            CardType.DUQUE,
+            CardType.CONDESSA
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+
+        restoreMocks();
     });
 });
