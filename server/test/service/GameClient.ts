@@ -8,6 +8,7 @@ import PlayerService from "../../src/service/PlayerService";
 import { RequestSocketOnEvents } from "../../src/socket/socket";
 import { createSocket, getSocketOnCB } from "../utils";
 import Action from "../../src/entity/Action";
+import CardType, * as CardTypeModule from "../../src/entity/CardType";
 
 export default class GameClient {
     private player1: Player;
@@ -50,6 +51,20 @@ export default class GameClient {
         getSocketOnCB(socket1, "beginMatch")();
 
         return new this(socket1, socket2);
+    }
+
+    static createMockImplementations(cards: CardType[] = []) {
+        let i = 0;
+
+        const randomCardTypeMock = jest.spyOn(CardTypeModule, "randomCardType")
+            .mockImplementation(() => cards[i++]);
+
+        const randomMock = jest.spyOn(Math, "random").mockReturnValue(0);
+
+        return () => {
+            randomCardTypeMock.mockRestore();
+            randomMock.mockRestore();
+        }
     }
 
     getGame() {
