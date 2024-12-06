@@ -1,7 +1,7 @@
-import CardType from "../entity/CardType"
-import Game from "../entity/Game"
-import Player, { CardSlot } from "../entity/player"
-import { ActionInfos } from "../service/GameMessageService"
+import { ActionInfos } from "@services/GameMessageService";
+import CardType from "@entitys/CardType";
+import Game from "@entitys/Game";
+import Player, { CardSlot } from "@entitys/player";
 
 export type ActionRequest = {
     game: Game,

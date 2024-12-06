@@ -1,7 +1,7 @@
-import { UserLogin, UserToken } from "../entity/User";
-import { SignJWT, jwtVerify } from "jose";
-import UserRepository from "../repository/UserRepository";
 import { AES } from "crypto-js";
+import { SignJWT, jwtVerify } from "jose";
+import { UserLogin, UserToken } from "@entitys/User";
+import UserRepository from "@repositorys/UserRepository";
 
 export default class UserService {
     private static mySecret: Uint8Array = new TextEncoder().encode(process.env.SECRET_KEY);

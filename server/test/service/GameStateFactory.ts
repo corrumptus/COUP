@@ -1,8 +1,8 @@
-import Action from "../../src/entity/Action";
-import CardType from "../../src/entity/CardType";
-import { GameState, ContextType } from "../../src/service/GameMessageService";
-import Player, { CardSlot } from "../../src/entity/player";
-import Game from "../../src/entity/Game";
+import { GameState, ContextType } from "@services/GameMessageService";
+import Action from "@entitys/Action";
+import CardType from "@entitys/CardType";
+import Game from "@entitys/Game";
+import Player, { CardSlot } from "@entitys/player";
 
 type NonCard = Action.RENDA |
     Action.AJUDA_EXTERNA |

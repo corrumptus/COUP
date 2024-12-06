@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
-import Game from "../../src/entity/Game";
-import Lobby from "../../src/entity/Lobby";
-import Player from "../../src/entity/player";
-import GameService from "../../src/service/GameService";
-import LobbyService from "../../src/service/LobbyService";
-import PlayerService from "../../src/service/PlayerService";
-import { RequestSocketOnEvents } from "../../src/socket/socket";
-import { createSocket, getSocketOnCB } from "../utils";
-import Action from "../../src/entity/Action";
-import CardType, * as CardTypeModule from "../../src/entity/CardType";
+import GameService from "@services/GameService";
+import LobbyService from "@services/LobbyService";
+import PlayerService from "@services/PlayerService";
+import { RequestSocketOnEvents } from "@socket/socket";
+import Action from "@entitys/Action";
+import CardType, * as CardTypeModule from "@entitys/CardType";
+import Game from "@entitys/Game";
+import Lobby from "@entitys/Lobby";
+import Player from "@entitys/player";
+import { createSocket, getSocketOnCB } from "@tests/utils";
 
 export default class GameClient {
     private player1: Player;

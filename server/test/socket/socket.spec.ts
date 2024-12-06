@@ -1,6 +1,6 @@
-import LobbyService from "../../src/service/LobbyService";
-import PlayerService from "../../src/service/PlayerService";
-import { createSocket } from "../utils";
+import LobbyService from "@services/LobbyService";
+import PlayerService from "@services/PlayerService";
+import { createSocket } from "@tests/utils";
 
 describe("lobby interactions", () => {
     it("should add a player correctly", async () => {

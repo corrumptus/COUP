@@ -1,8 +1,8 @@
-import Action from "../entity/Action";
-import CardType from "../entity/CardType";
-import Player, { CardSlot, isCardSlot } from "../entity/player";
-import { ActionInfos } from "../service/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "./ActionHandler";
+import { ActionInfos } from "@services/GameMessageService";
+import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import Action from "@entitys/Action";
+import CardType from "@entitys/CardType";
+import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class AssassinarHandler implements ActionHandler {
     validate({

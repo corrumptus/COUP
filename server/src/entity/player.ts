@@ -1,6 +1,6 @@
-import Card from "./Card";
-import CardType, { randomCardType } from "./CardType";
-import Religion, { inverseReligion, randomReligion } from "./Religion";
+import Card from "@entitys/Card";
+import CardType, { randomCardType } from "@entitys/CardType";
+import Religion, { inverseReligion, randomReligion } from "@entitys/Religion";
 
 declare const cardSlotSymbol: unique symbol;
 

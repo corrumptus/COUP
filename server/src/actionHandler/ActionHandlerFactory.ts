@@ -1,19 +1,19 @@
-import Action from "../entity/Action";
-import ActionHandler from "./ActionHandler";
-import AjudaExternaHandler from "./AjudaExternaHandler";
-import AssassinarHandler from "./AssassinarHandler";
-import BloquearHandler from "./BloquearHandler";
-import ContestarHandler from "./ContestarHandler";
-import ContinuarHandler from "./ContinuarHandler";
-import CorrupcaoHandler from "./CorrupcaoHandler";
-import ExtorquirHandler from "./ExtorquirHandler";
-import GolpeEstadoHandler from "./GolpeEstadoHandler";
-import InvestigarHandler from "./InvestigarHandler";
-import RendaHandler from "./RendaHandler";
-import TaxarHandler from "./TaxarHandler";
-import TrocarHandler from "./TrocarHandler";
-import trocarPropriaReligiaoHandler from "./TrocarPropriaReligiao";
-import trocarReligiaoOutroHandler from "./TrocarReligiaoOutroHandler";
+import ActionHandler from "@actionHandlers/ActionHandler";
+import AjudaExternaHandler from "@actionHandlers/AjudaExternaHandler";
+import AssassinarHandler from "@actionHandlers/AssassinarHandler";
+import BloquearHandler from "@actionHandlers/BloquearHandler";
+import ContestarHandler from "@actionHandlers/ContestarHandler";
+import ContinuarHandler from "@actionHandlers/ContinuarHandler";
+import CorrupcaoHandler from "@actionHandlers/CorrupcaoHandler";
+import ExtorquirHandler from "@actionHandlers/ExtorquirHandler";
+import GolpeEstadoHandler from "@actionHandlers/GolpeEstadoHandler";
+import InvestigarHandler from "@actionHandlers/InvestigarHandler";
+import RendaHandler from "@actionHandlers/RendaHandler";
+import TaxarHandler from "@actionHandlers/TaxarHandler";
+import TrocarHandler from "@actionHandlers/TrocarHandler";
+import trocarPropriaReligiaoHandler from "@actionHandlers/TrocarPropriaReligiao";
+import trocarReligiaoOutroHandler from "@actionHandlers/TrocarReligiaoOutroHandler";
+import Action from "@entitys/Action";
 
 export default class ActionHandlerFactory {
     static create(action: Action): ActionHandler {

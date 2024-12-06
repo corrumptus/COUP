@@ -1,9 +1,9 @@
 import { DisconnectReason } from "socket.io";
-import Player from "../entity/player";
-import LobbyService from "./LobbyService";
-import Lobby from "../entity/Lobby";
-import { COUPSocket } from "../socket/socket";
-import UserService from "./UserService";
+import { COUPSocket } from "@socket/socket";
+import LobbyService from "@services/LobbyService";
+import UserService from "@services/UserService";
+import Player from "@entitys/player";
+import Lobby from "@entitys/Lobby";
 
 export default class PlayerService {
     private static players: {

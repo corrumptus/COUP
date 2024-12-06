@@ -1,6 +1,6 @@
-import Turn from "./Turn";
-import Player from "./player";
-import Config from "../utils/Config";
+import Turn from "@entitys/Turn";
+import Player from "@entitys/player";
+import Config from "@utils/Config";
 
 export default class Game {
     private players: Player[];

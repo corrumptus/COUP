@@ -1,10 +1,10 @@
-import Action from "../../src/entity/Action";
-import CardType from "../../src/entity/CardType";
-import { CardSlot } from "../../src/entity/player";
-import LobbyService from "../../src/service/LobbyService";
-import PlayerService from "../../src/service/PlayerService";
-import GameClient from "./GameClient";
-import GameStateFactory from "./GameStateFactory";
+import LobbyService from "@services/LobbyService";
+import PlayerService from "@services/PlayerService";
+import Action from "@entitys/Action";
+import CardType from "@entitys/CardType";
+import { CardSlot } from "@entitys/player";
+import GameClient from "@tests/service/GameClient";
+import GameStateFactory from "@tests/service/GameStateFactory";
 
 describe("game state in update", () => {
     afterEach(() => {

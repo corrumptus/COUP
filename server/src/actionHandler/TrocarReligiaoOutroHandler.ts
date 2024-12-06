@@ -1,8 +1,8 @@
-import Action from "../entity/Action";
-import Game from "../entity/Game";
-import Player from "../entity/player";
-import { ActionInfos } from "../service/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "./ActionHandler";
+import { ActionInfos } from "@services/GameMessageService";
+import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import Action from "@entitys/Action";
+import Game from "@entitys/Game";
+import Player from "@entitys/player";
 
 export default class trocarReligiaoOutroHandler implements ActionHandler {
     validate({

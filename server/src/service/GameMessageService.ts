@@ -1,13 +1,13 @@
-import Action from "../entity/Action";
-import CardType from "../entity/CardType";
-import Game from "../entity/Game";
-import Player, { CardSlot } from "../entity/player";
-import Religion from "../entity/Religion";
-import Turn from "../entity/Turn";
-import { COUPSocket } from "../socket/socket";
-import Config from "../utils/Config";
-import MessageService from "./MessageService";
-import PlayerService from "./PlayerService";
+import { COUPSocket } from "@socket/socket";
+import MessageService from "@services/MessageService";
+import PlayerService from "@services/PlayerService";
+import Action from "@entitys/Action";
+import CardType from "@entitys/CardType";
+import Game from "@entitys/Game";
+import Player, { CardSlot } from "@entitys/player";
+import Religion from "@entitys/Religion";
+import Turn from "@entitys/Turn";
+import Config from "@utils/Config";
 
 type PlayerBase = {
     name: string,

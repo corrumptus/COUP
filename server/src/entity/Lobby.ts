@@ -1,7 +1,7 @@
-import Game from "./Game";
-import Player from "./player";
-import Config from "../utils/Config";
-import COUPdefaultConfigs from "../../resources/COUPdefaultConfigs.json";
+import Game from "@entitys/Game";
+import Player from "@entitys/player";
+import Config from "@utils/Config";
+import COUPdefaultConfigs from "@resources/COUPdefaultConfigs.json";
 
 export default class Lobby {
     readonly id: number;

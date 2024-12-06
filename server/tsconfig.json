@@ -9,7 +9,18 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@api/*": ["./src/api/*"],
+      "@socket/*": ["./src/socket/*"],
+      "@services/*": ["./src/service/*"],
+      "@actionHandlers/*": ["./src/actionHandler/*"],
+      "@repositorys/*": ["./src/repository/*"],
+      "@entitys/*": ["./src/entity/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@resources/*": ["./resources/*"],
+      "@tests/*": ["./test/*"]
+    }
   },
   "include": [
     "src/**/*",

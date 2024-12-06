@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Socket } from "socket.io";
-import { RequestSocketOnEvents } from "../src/socket/socket";
+import { RequestSocketOnEvents } from "@socket/socket";
 
 export function createSocket(
     lobbyId: number | undefined,

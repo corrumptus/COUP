@@ -1,4 +1,4 @@
-import { UserProps, UserLogin, UserToken } from "../entity/User";
+import { UserProps, UserLogin, UserToken } from "@entitys/User";
 
 export default class UserValidator {
     static isProps(obj: any): obj is UserProps {

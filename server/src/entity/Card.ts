@@ -1,4 +1,4 @@
-import CardType from "./CardType";
+import CardType from "@entitys/CardType";
 
 export default class Card {
     private type: CardType;

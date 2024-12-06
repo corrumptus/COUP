@@ -1,12 +1,12 @@
-import { Server, Socket } from "socket.io";
 import { Server as HTTPServer} from "http";
-import GameService from "../service/GameService";
-import LobbyService from "../service/LobbyService";
-import PlayerService from "../service/PlayerService";
-import CardType from "../entity/CardType";
-import { LobbyState } from "../service/LobbyMessageService";
-import { GameState, EnemyPlayer } from "../service/GameMessageService";
-import SocketValidatorService from "../service/SocketValidatorService";
+import { Server, Socket } from "socket.io";
+import GameService from "@services/GameService";
+import { GameState, EnemyPlayer } from "@services/GameMessageService";
+import LobbyService from "@services/LobbyService";
+import { LobbyState } from "@services/LobbyMessageService";
+import PlayerService from "@services/PlayerService";
+import SocketValidatorService from "@services/SocketValidatorService";
+import CardType from "@entitys/CardType";
 
 export interface RequestSocketOnEvents {
     "canReceive": () => void;

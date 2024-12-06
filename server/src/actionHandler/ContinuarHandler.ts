@@ -1,9 +1,9 @@
-import Action from "../entity/Action";
-import CardType from "../entity/CardType";
-import Game from "../entity/Game";
-import Player, { CardSlot } from "../entity/player";
-import { ActionInfos } from "../service/GameMessageService";
-import ActionHandler, { ValidActionRequest } from "./ActionHandler";
+import { ActionInfos } from "@services/GameMessageService";
+import ActionHandler, { ValidActionRequest } from "@actionHandlers/ActionHandler";
+import Action from "@entitys/Action";
+import CardType from "@entitys/CardType";
+import Game from "@entitys/Game";
+import Player, { CardSlot } from "@entitys/player";
 
 export default class ContinuarHandler implements ActionHandler {
     private isInvestigating: boolean = false;

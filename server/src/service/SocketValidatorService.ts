@@ -1,6 +1,6 @@
-import { COUPSocket } from "../socket/socket";
-import LobbyService from "./LobbyService";
-import PlayerService from "./PlayerService";
+import { COUPSocket } from "@socket/socket";
+import LobbyService from "@services/LobbyService";
+import PlayerService from "@services/PlayerService";
 
 export default class SocketValidatorService {
     static validate(socket: COUPSocket): string | undefined {

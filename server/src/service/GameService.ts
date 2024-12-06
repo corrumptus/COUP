@@ -1,10 +1,10 @@
-import PlayerService from "./PlayerService";
-import Action from "../entity/Action";
-import Game from "../entity/Game";
-import { COUPSocket } from "../socket/socket";
-import ActionService from "./ActionService";
-import GameMessageService from "./GameMessageService";
-import LobbyService from "./LobbyService";
+import { COUPSocket } from "@socket/socket";
+import ActionService from "@services/ActionService";
+import GameMessageService from "@services/GameMessageService";
+import LobbyService from "@services/LobbyService";
+import PlayerService from "@services/PlayerService";
+import Action from "@entitys/Action";
+import Game from "@entitys/Game";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {

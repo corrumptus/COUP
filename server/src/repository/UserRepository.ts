@@ -1,6 +1,6 @@
 import { FieldPacket, ResultSetHeader, RowDataPacket } from "mysql2";
-import { UserLogin, UserProps } from "../entity/User";
-import pool from "../utils/connection";
+import { UserLogin, UserProps } from "@entitys/User";
+import pool from "@utils/connection";
 
 export default class UserRepository {
     static async getUser(name: string): Promise<UserProps | null> {

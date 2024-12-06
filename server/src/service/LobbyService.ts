@@ -1,9 +1,9 @@
-import Lobby from "../entity/Lobby";
-import Player from "../entity/player";
-import { COUPSocket } from "../socket/socket";
-import GameService from "./GameService";
-import LobbyMessageService from "./LobbyMessageService";
-import PlayerService from "./PlayerService";
+import { COUPSocket } from "@socket/socket";
+import GameService from "@services/GameService";
+import LobbyMessageService from "@services/LobbyMessageService";
+import PlayerService from "@services/PlayerService";
+import Lobby from "@entitys/Lobby";
+import Player from "@entitys/player";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];

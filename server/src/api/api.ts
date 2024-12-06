@@ -1,9 +1,9 @@
 import express, { Express } from "express";
 import cors from "cors";
-import { UserLogin, UserToken } from "../entity/User";
-import UserService from "../service/UserService";
-import UserValidator from "../utils/UserValidator";
-import LobbyService from "../service/LobbyService";
+import LobbyService from "@services/LobbyService";
+import UserService from "@services/UserService";
+import { UserLogin, UserToken } from "@entitys/User";
+import UserValidator from "@utils/UserValidator";
 
 const api: Express = express();
 
