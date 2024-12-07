@@ -135,7 +135,7 @@ describe("game state in update", () => {
     });
 });
 
-describe("game and players state in update", () => {
+describe("game, turn and players state in update", () => {
     afterEach(() => {
         LobbyService.getLobby(0)?.getState().players.forEach(p => {
             PlayerService.deletePlayerByName(0, p, "");
@@ -145,23 +145,61 @@ describe("game and players state in update", () => {
     it("should update player money when player use renda", async () => {
         const gameClient = await GameClient.create();
 
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
         gameClient.firstPlayerDo(Action.RENDA);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(4);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.RENDA]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
     });
 
     it("should update player money when player use ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+    });
+
+    it("should not update player money back to the original when using bloquear after player use ajuda externa", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
     });
 
     it("should not update player money when using bloquear after player use ajuda externa", async () => {
         const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
@@ -171,6 +209,11 @@ describe("game and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
     it("should update player money when using contestar after a bloquear after player use ajuda externa when enemy player cant block it", async () => {
@@ -183,6 +226,9 @@ describe("game and players state in update", () => {
 
         const gameClient = await GameClient.create();
 
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
@@ -192,6 +238,11 @@ describe("game and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
 
         restoreMocks();
     });
@@ -206,6 +257,9 @@ describe("game and players state in update", () => {
 
         const gameClient = await GameClient.create();
 
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
@@ -215,6 +269,11 @@ describe("game and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
 
         restoreMocks();
     });
