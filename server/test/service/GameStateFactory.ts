@@ -56,7 +56,7 @@ export default class GameStateFactory {
         return this.gameState;
     }
 
-    ofSeeingSelf<A extends Action, C extends CardType | undefined>(
+    ofSeeingSelf<A extends Action, C extends A extends NonCard ? undefined : CardType>(
         action: A,
         card: A extends NonCard ? undefined : C,
         hasTarget: A extends AttackerActions ? true : false,
@@ -78,7 +78,7 @@ export default class GameStateFactory {
         return this;
     }
 
-    ofSeeingEnemy<A extends Action, C extends CardType | undefined>(
+    ofSeeingEnemy<A extends Action, C extends A extends NonCard ? undefined : CardType>(
         action: A,
         card: A extends NonCard ? undefined : C,
         hasTarget: A extends AttackerActions ? true : false,
