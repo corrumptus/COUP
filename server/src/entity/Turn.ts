@@ -65,6 +65,14 @@ export default class Turn {
         return this.actions;
     }
 
+    getAllCards(): CardSlot[] {
+        return this.cards;
+    }
+
+    getAllCardTypes(): CardType[] {
+        return this.cardTypes;
+    }
+
     getFirstCardType(): CardType | undefined {
         return this.cardTypes[0];
     }
