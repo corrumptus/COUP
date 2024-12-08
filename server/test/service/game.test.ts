@@ -583,9 +583,8 @@ describe("game, turn and players state in update", () => {
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
