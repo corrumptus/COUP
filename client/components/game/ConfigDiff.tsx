@@ -9,9 +9,10 @@ const COUPConfigToText = {
   quantidadeMinimaGolpeEstado: "Golpe de estado(minimo)",
   quantidadeMaximaGolpeEstado: "Golpe de estado(máxima)",
   religiao: {
-    reforma: "religiao",
-    quantidadeTrocarPropria: "Trocar Religião(própria)",
-    quantidadeTrocarOutro: "Trocar Religião(inimigo)",
+    reforma: "religião",
+    quantidadeTrocarPropria: "Trocar religião(própria)",
+    quantidadeTrocarOutro: "Trocar religião(inimigo)",
+    moedasIniciaisAsilo: "Moedas iniciais(asilo)",
     deveres: {
       golpeEstado: "Golpe de estado(Religião)",
       assassinar: "Assassinar(Religião)",

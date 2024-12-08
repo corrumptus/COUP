@@ -8,6 +8,7 @@
         "reforma": false,
         "quantidadeTrocarPropria": 1,
         "quantidadeTrocarOutro": 2,
+        "moedasIniciaisAsilo": 0,
         "deveres": {
             "golpeEstado": true,
             "assassinar": true,

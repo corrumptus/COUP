@@ -18,7 +18,7 @@ export default class Game {
         this.nonKilledPlayers = players.map(p => p.name);
         this.turns = [ new Turn(this.players[this.currentPlayer], () => this.nextPlayer()) ];
         this.onWin = onWin;
-        this.asylum = 0;
+        this.asylum = configs.religiao.moedasIniciaisAsilo;
         this.configs = configs;
 
         this.deliverCardsAndMoney();

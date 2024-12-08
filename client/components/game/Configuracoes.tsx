@@ -110,6 +110,17 @@ export default function Configuracoes({
                   }
                 />
               </div>
+              <div className="config_outer_div">
+                <label>Moedas inicias(Asilo)</label>
+                <input
+                  type="number"
+                  value={configs.religiao.moedasIniciaisAsilo}
+                  min={0}
+                  onChange={e =>
+                    socket.emit("updateConfigs", ["religiao", "moedasIniciaisAsilo"], Number(e.target.value))
+                  }
+                />
+              </div>
               <div className="w-full">
                 <p>Mandamentos da Religião</p>
                 <div className="w-full flex flex-col items-start">
@@ -1189,6 +1200,10 @@ export default function Configuracoes({
           <div>
             <p className="text-xl">Trocar Religião(Inimigo)</p>
             <p className="text-lg">{configs.religiao.quantidadeTrocarOutro}</p>
+          </div>
+          <div>
+            <p className="text-xl">Moedas Iniciais(asilo)</p>
+            <p className="text-lg">{configs.religiao.moedasIniciaisAsilo}</p>
           </div>
           <div className="config_diferenciation">
             <p className="text-xl">Mandamentos da Religião</p>

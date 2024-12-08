@@ -22,21 +22,21 @@ export default function CardGameInfos({
       <div className="pt-3">
         <h4 className="text-xl text-orange-500">Renda</h4>
         <p className="text-[16px]">
-          A renda é uma ação que <span className="text-lime-700">aumenta</span> o seu dinheiro em <span className="text-lime-700">{configs.renda}</span>.
+          A renda é uma ação que <span className="text-lime-700">aumenta</span> o seu dinheiro em <span className="text-lime-700">${configs.renda}</span>.
           <span className="text-red-500"> Não</span> pode ser <span className="text-red-500">bloqueado</span> ou <span className="text-red-500">contestado</span>.
         </p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-indigo-700">Ajuda Externa</h4>
         <p className="text-[16px]">
-          A ajuda externa é uma ação que <span className="text-lime-700">aumenta</span> o seu dinheiro em <span className="text-lime-700">{configs.ajudaExterna}</span>.
+          A ajuda externa é uma ação que <span className="text-lime-700">aumenta</span> o seu dinheiro em <span className="text-lime-700">${configs.ajudaExterna}</span>.
           <span className="text-lime-700"> Pode</span> ser <span className="text-lime-700">bloqueado</span> por quem pode <span className="text-fuchsia-600">taxar</span>, mas <span className="text-red-500">não</span> pode ser <span className="text-red-500">contestado</span>.
         </p>
       </div>
       <div className="pt-3">
         <h4 className="text-xl text-rose-600">Golpe de Estado</h4>
         <p className="text-[16px]">
-          O golpe de estado é uma ação que <span className="text-red-500">requer</span> pelo menos <span className="text-red-500">{configs.quantidadeMinimaGolpeEstado}</span> e é <span className="text-red-500">obrigatório</span> quando se começa um turno com <span className="text-red-500">{configs.quantidadeMaximaGolpeEstado}</span>.
+          O golpe de estado é uma ação que <span className="text-red-500">requer</span> pelo menos <span className="text-red-500">${configs.quantidadeMinimaGolpeEstado}</span> e é <span className="text-red-500">obrigatório</span> quando se começa um turno com <span className="text-red-500">${configs.quantidadeMaximaGolpeEstado}</span>.
           <span className="text-red-500"> Não</span> pode ser <span className="text-red-500">bloquado</span> ou <span className="text-red-500">contestado</span>.
         </p>
       </div>
@@ -131,7 +131,8 @@ export default function CardGameInfos({
       <p className="text-[16px]"> Se todos os <span className="text-lime-700">jogadores</span> forem da <span className="text-red-500">mesma</span> religião ela <span className="text-red-500">pode</span> ser ou <span className="text-red-500">não ignorada</span>.</p>
       <div className="pt-3">
         <h4 className="text-xl text-blue-700">Conversão</h4>
-        <p className="text-[16px]">Troca a religião.</p>
+        <p className="text-[16px]">Troca a religião e coloca o dinheiro no asilo.</p>
+        <p className="text-[16px]">O asilo começa com ${configs.religiao.moedasIniciaisAsilo}</p>
         <ul>
           <li>Própria(<span className="text-red-500">-${configs.religiao.quantidadeTrocarPropria}</span>)</li>
           <li>Outro(<span className="text-red-500">-${configs.religiao.quantidadeTrocarOutro}</span>)</li>
