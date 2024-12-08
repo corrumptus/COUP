@@ -83,13 +83,15 @@ export default class ContestarHandler implements ActionHandler {
     private saveTaxar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const taxarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
-        const taxarCardType = player.getCard(taxarCard).getType();
+        const taxarCardType = target.getCard(taxarCard).getType();
+        
+        game.getLastTurn().addTarget(player);
 
         if (game.getConfigs().tiposCartas[taxarCardType].taxar)
-            target.killCard(selfCard);
+            player.killCard(selfCard);
         else {
-            player.killCard(taxarCard);
-            player.rollbackMoney();
+            target.killCard(taxarCard);
+            target.rollbackMoney();
         }
 
         game.getLastTurn().addCard(selfCard);
