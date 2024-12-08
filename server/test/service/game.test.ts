@@ -55,7 +55,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using bloquear after a ajuda externa", async () => {
+    it("should send the correct game state for bloquear after ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
@@ -80,7 +80,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a continuar after a bloquear after a ajuda externa", async () => {
+    it("should send the correct game state for continuar after bloquear after ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
@@ -107,7 +107,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a contestar after using a bloquear after a ajuda externa", async () => {
+    it("should send the correct game state for contestar after bloquear after ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
@@ -134,7 +134,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a taxar", async () => {
+    it("should send the correct game state for taxar", async () => {
         const gameClient = await GameClient.create();
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
@@ -155,7 +155,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a bloquear after a taxar when a card can block it", async () => {
+    it("should send the correct game state for bloquear after taxar", async () => {
         const gameClient = await GameClient.create([
             [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
         ]);
@@ -182,7 +182,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a continuar after a bloquear after a taxar when a card can block it", async () => {
+    it("should send the correct game state for continuar after bloquear after taxar", async () => {
         const gameClient = await GameClient.create([
             [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
         ]);
@@ -211,7 +211,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a contestar after a bloquear after a taxar when a card can block it", async () => {
+    it("should send the correct game state for contestar after bloquear after taxar", async () => {
         const gameClient = await GameClient.create([
             [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
         ]);
@@ -240,7 +240,7 @@ describe("game state in update", () => {
             );
     });
 
-    it("should send the correct game state for using a contestar after a taxar", async () => {
+    it("should send the correct game state for contestar after taxar", async () => {
         const gameClient = await GameClient.create();
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
@@ -273,7 +273,7 @@ describe("game, turn and players state in update", () => {
         });
     });
 
-    it("should update player money when player use renda", async () => {
+    it("should update player money for using renda", async () => {
         const gameClient = await GameClient.create();
 
         const game = gameClient.getGame();
@@ -289,7 +289,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getAsylumCoins()).toBe(0);
     });
 
-    it("should update player money when player use ajuda externa", async () => {
+    it("should update player money for using ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         const game = gameClient.getGame();
@@ -306,7 +306,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
-    it("should not update player money back to the original when using bloquear after player use ajuda externa", async () => {
+    it("should update player money for using bloquear after ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         const game = gameClient.getGame();
@@ -326,7 +326,7 @@ describe("game, turn and players state in update", () => {
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
     });
 
-    it("should not update player money when using bloquear after player use ajuda externa", async () => {
+    it("should not update player money for using continuar after bloquear after ajuda externa", async () => {
         const gameClient = await GameClient.create();
 
         const game = gameClient.getGame();
@@ -347,7 +347,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
-    it("should update player money when using contestar after a bloquear after player use ajuda externa when enemy player cant block it", async () => {
+    it("should update player money for using contestar after bloquear after ajuda externa", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CAPITAO,
@@ -378,7 +378,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should not update player money when using contestar after a bloquear after player use ajuda externa when enemy player can block it", async () => {
+    it("should not update player money for using contestar after bloquear after ajuda externa", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CAPITAO,
@@ -409,7 +409,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should update player money when using taxar", async () => {
+    it("should update player money for using taxar", async () => {
         const gameClient = await GameClient.create();
 
         const game = gameClient.getGame();
@@ -426,7 +426,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
-    it("should not update player money when using bloquear after taxar", async () => {
+    it("should update player money for using bloquear after taxar", async () => {
         const gameClient = await GameClient.create([
             [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
         ]);
@@ -447,7 +447,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).toStrictEqual(turn);
     });
 
-    it("should update player money back when using continuar after bloquear after taxar", async () => {
+    it("should not update player money for using continuar after bloquear after taxar", async () => {
         const gameClient = await GameClient.create([
             [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
         ]);
@@ -470,7 +470,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
-    it("should not update player money back when using contestar after bloquear after taxar", async () => {
+    it("should update player money for using contestar after bloquear after taxar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CAPITAO,
@@ -503,7 +503,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should =update player money back when using contestar after bloquear after taxar", async () => {
+    it("should not update player money for using contestar after bloquear after taxar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CAPITAO,
@@ -536,7 +536,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should not update player money back when using contestar after taxar", async () => {
+    it("should update player money for using contestar after taxar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.DUQUE,
             CardType.ASSASSINO,
@@ -565,7 +565,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should update player money back when using contestar after taxar", async () => {
+    it("should not update player money for using contestar after taxar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CAPITAO,
