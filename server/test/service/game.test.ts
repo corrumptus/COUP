@@ -316,6 +316,156 @@ describe("game state in update", () => {
                     .create()
             );
     });
+
+    it("should send the correct game state for extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.EXTORQUIR, CardType.CAPITAO, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofBeingAttacked(Action.EXTORQUIR, CardType.CAPITAO, undefined, undefined)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofBeingAttacked(Action.BLOQUEAR, CardType.CAPITAO, undefined, Action.EXTORQUIR)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.BLOQUEAR, CardType.CAPITAO, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for continuar after bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+    });
 });
 
 describe("game, turn and players state in update", () => {
@@ -730,5 +880,198 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
 
         restoreMocks();
+    });
+
+    it("should not update player moneys for using extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toStrictEqual(turn);
+    });
+
+    it("should not update player moneys for using bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toStrictEqual(turn);
+    });
+
+    it("should not update player moneys for using continuar after bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+    });
+
+    it("should update player moneys for using contestar after bloquear after extorquir", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.CAPITAO,
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should not update player moneys for using contestar after bloquear after extorquir", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.CAPITAO,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should update player moneys for using contestar after extorquir", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.CAPITAO,
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should not update player moneys for using contestar after extorquir", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.CAPITAO,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should update player moneys for using continuar after extorquir", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 });
