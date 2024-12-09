@@ -33,7 +33,7 @@ export default class ContestarHandler implements ActionHandler {
     }
 
     private contestarBloquearDontNeedSelfCard(action: Action): boolean {
-        return [Action.AJUDA_EXTERNA, Action.TAXAR].includes(action);
+        return [Action.AJUDA_EXTERNA, Action.TAXAR, Action.EXTORQUIR].includes(action);
     }
 
     private validateNonBloquear(player: Player, action: Action, selfCard: number | undefined): void {
@@ -117,17 +117,17 @@ export default class ContestarHandler implements ActionHandler {
     private saveExtorquir(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const extorquirCard = game.getLastTurn().getFirstCard() as CardSlot;
 
-        const extorquirCardType = player.getCard(extorquirCard).getType();
+        const extorquirCardType = target.getCard(extorquirCard).getType();
 
         if (game.getConfigs().tiposCartas[extorquirCardType].extorquir) {
             const extorquirAmount = game.getConfigs().tiposCartas[extorquirCardType].quantidadeExtorquir;
 
-            target.removeMoney(extorquirAmount);
-            player.addMoney(extorquirAmount);
+            player.removeMoney(extorquirAmount);
+            target.addMoney(extorquirAmount);
 
-            target.killCard(selfCard);
+            player.killCard(selfCard);
         } else
-            player.killCard(extorquirCard);
+            target.killCard(extorquirCard);
 
         game.getLastTurn().addCard(selfCard);
     }

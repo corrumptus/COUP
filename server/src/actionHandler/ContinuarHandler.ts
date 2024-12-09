@@ -33,8 +33,8 @@ export default class ContinuarHandler implements ActionHandler {
 
         const extorquirAmount = game.getConfigs().tiposCartas[cardType].quantidadeExtorquir;
 
-        player.addMoney(extorquirAmount);
-        target.removeMoney(extorquirAmount);
+        player.removeMoney(extorquirAmount);
+        target.addMoney(extorquirAmount);
     }
 
     private saveAssassinar(game: Game, target: Player) {
