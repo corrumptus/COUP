@@ -264,6 +264,58 @@ describe("game state in update", () => {
                     .create()
             );
     });
+
+    it("should send the correct game state for corrupcao", async () => {
+        const gameClient = await GameClient.create([
+            [ ["religiao", "reforma"], true ],
+            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+        ]);
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after corrupcao", async () => {
+        const gameClient = await GameClient.create([
+            [ ["religiao", "reforma"], true ],
+            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+        ]);
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+    });
 });
 
 describe("game, turn and players state in update", () => {
@@ -589,6 +641,92 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should update player money for using corrupcao", async () => {
+        const gameClient = await GameClient.create([
+            [ ["religiao", "reforma"], true ],
+            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+        ]);
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        expect(game.getAsylumCoins()).toBe(1);
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+    });
+
+    it("should update player money for using contestar after corrupcao", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.DUQUE,
+            CardType.ASSASSINO,
+            CardType.CAPITAO,
+            CardType.CONDESSA
+        ]);
+        
+        const gameClient = await GameClient.create([
+            [ ["religiao", "reforma"], true ],
+            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+        ]);
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should not update player money for using contestar after corrupcao", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CAPITAO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create([
+            [ ["religiao", "reforma"], true ],
+            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+        ]);
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(1);
         expect(game.getLastTurn()).not.toStrictEqual(turn);
 
         restoreMocks();
