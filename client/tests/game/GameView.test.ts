@@ -1337,7 +1337,7 @@ describe("Game View interactivity in post game update when observing", () => {
     it("should render correctly when using bloquear after investigar", async () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
-            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
         );
 
         await gameView.blockByToaster(0);
