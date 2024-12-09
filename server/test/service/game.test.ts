@@ -466,6 +466,156 @@ describe("game state in update", () => {
                     .create()
             );
     });
+
+    it("should send the correct game state for assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.ASSASSINAR, CardType.ASSASSINO, true, 0 as CardSlot, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofBeingAttacked(Action.ASSASSINAR, CardType.ASSASSINO, 0 as CardSlot, undefined)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofBeingAttacked(Action.BLOQUEAR, CardType.CONDESSA, undefined, Action.ASSASSINAR)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.BLOQUEAR, CardType.CONDESSA, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for continuar after bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+        
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+        
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
+                    .create()
+            );
+    });
 });
 
 describe("game, turn and players state in update", () => {
@@ -1071,6 +1221,215 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+    });
+
+    it("should not update player cards for using assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toStrictEqual(turn);
+    });
+
+    it("should not update player cards for using bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toStrictEqual(turn);
+    });
+
+    it("should update player cards for using continuar after bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+    });
+
+    it("should update player cards for using contestar after bloquear after assassinar", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.CAPITAO,
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should not update player moneys for using contestar after bloquear after assassinar", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.CAPITAO,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should update player cards for using contestar after assassinar", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.CAPITAO,
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should not update player cards for using contestar after assassinar", async () => {
+        const restoreMocks = GameClient.createMockImplementations([
+            CardType.ASSASSINO,
+            CardType.CONDESSA,
+            CardType.CAPITAO,
+            CardType.DUQUE
+        ]);
+
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toStrictEqual(turn);
+
+        restoreMocks();
+    });
+
+    it("should update player cards for using continuar after assassinar", async () => {
+        const gameClient = await GameClient.create();
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
