@@ -21,7 +21,7 @@ export default class ContinuarHandler implements ActionHandler {
 
         switch (action) {
             case Action.EXTORQUIR: this.saveExtorquir(game, player, target as Player); break;
-            case Action.ASSASSINAR: this.saveAssassinar(game, target as Player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(game, player); break;
             case Action.INVESTIGAR: this.saveInvestigar(); break;
             case Action.BLOQUEAR: this.saveBloquear(game, player); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
@@ -37,10 +37,10 @@ export default class ContinuarHandler implements ActionHandler {
         target.addMoney(extorquirAmount);
     }
 
-    private saveAssassinar(game: Game, target: Player) {
+    private saveAssassinar(game: Game, player: Player) {
         const card = game.getLastTurn().getLastCard() as CardSlot;
 
-        target.killCard(card);
+        player.killCard(card);
     }
 
     private saveInvestigar() {
