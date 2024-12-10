@@ -19,7 +19,7 @@ export default class BloquearHandler implements ActionHandler {
             throw new Error("Bloquear não pode ser a primeira ação");
 
         if (this.dontNeedSelfCard(action))
-            this.validateActionsDontNeedSelfCard(game, action);
+            this.validateActionsDontNeedSelfCard(game, action, card);
         else
             this.validateActionsNeedSelfCard(game, player, action, card, selfCard);
     }
@@ -28,10 +28,17 @@ export default class BloquearHandler implements ActionHandler {
         return [Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
     }
 
-    private validateActionsDontNeedSelfCard(game: Game, action: Action): void {
+    private validateActionsDontNeedSelfCard(
+        game: Game,
+        action: Action,
+        card: CardType | undefined
+    ): void {
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
         if (!this.canBlock(
             action,
-            game.getLastTurn().getFirstCardType() as CardType,
+            card,
             game.getConfigs()
         ))
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
@@ -93,11 +100,10 @@ export default class BloquearHandler implements ActionHandler {
 
         game.getLastTurn().addAction(Action.BLOQUEAR);
 
-        if (dontNeedAddSelfCardActions.includes(lastAction))
-            return;
-
         game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
+
+        if (!dontNeedAddSelfCardActions.includes(lastAction))
+            game.getLastTurn().addCard(selfCard as CardSlot);
 
         if (needTargetActions.includes(lastAction))
             game.getLastTurn().addTarget(player);
