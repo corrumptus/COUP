@@ -26,14 +26,12 @@ export default class ContestarHandler implements ActionHandler {
     private validateBloquear(game: Game, player: Player, selfCard: number | undefined): void {
         const action = game.getLastTurn().getFirstAction() as Action;
 
-        if (this.contestarBloquearDontNeedSelfCard(action))
-            return;
-
-        this.validateSelfCard(player, selfCard);
+        if (this.contestarBloquearNeedSelfCard(action))
+            this.validateSelfCard(player, selfCard);
     }
 
-    private contestarBloquearDontNeedSelfCard(action: Action): boolean {
-        return [Action.AJUDA_EXTERNA, Action.TAXAR, Action.EXTORQUIR].includes(action);
+    private contestarBloquearNeedSelfCard(action: Action): boolean {
+        return action === Action.AJUDA_EXTERNA;
     }
 
     private validateNonBloquear(player: Player, action: Action, selfCard: number | undefined): void {
@@ -135,17 +133,17 @@ export default class ContestarHandler implements ActionHandler {
     private saveAssassinar(game: Game, player: Player, target: Player): void {
         const assassinarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
-        const assassinarCardType = player.getCard(assassinarCard).getType();
+        const assassinarCardType = target.getCard(assassinarCard).getType();
 
         if (game.getConfigs().tiposCartas[assassinarCardType].assassinar) {
             const cardKilledByKiller = game.getLastTurn().getLastCard() as CardSlot;
 
             const cardKilledByContestar = (cardKilledByKiller+1)%2 as CardSlot;
 
-            target.killCard(cardKilledByKiller);
-            target.killCard(cardKilledByContestar);
+            player.killCard(cardKilledByKiller);
+            player.killCard(cardKilledByContestar);
         } else
-            player.killCard(assassinarCard);
+            target.killCard(assassinarCard);
     }
 
     private saveInvestigar(game: Game, player: Player, target: Player): void {
@@ -185,12 +183,7 @@ export default class ContestarHandler implements ActionHandler {
         const action = game.getLastTurn().getFirstAction();
 
         switch (action) {
-            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(
-                game,
-                player,
-                selfCard,
-                target
-            ); break;
+            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(game, player, selfCard, target); break;
             case Action.TAXAR: this.saveBloquearTaxar(game, player, target); break;
             case Action.EXTORQUIR: this.saveBloquearExtorquir(game, player, target); break;
             case Action.ASSASSINAR: this.saveBloquearAssassinar(game, player, target); break;
