@@ -1331,7 +1331,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "condessa");
     });
 
     it("should render correctly when using bloquear after investigar", async () => {
@@ -1344,7 +1344,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "duque");
     });
 
     it("should render correctly when using bloquear after trocar when one card can block it", async () => {
@@ -1539,11 +1539,12 @@ describe("Game View interactivity in post game update when being attacked", () =
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "condessa");
     });
 
     it("should render correctly when using bloquear after investigar", async () => {
         const gameView = initializeView(factory => factory
+            .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
             .ofBeingAttacked(Action.INVESTIGAR, Card.INQUISIDOR, 0, undefined)
         );
 
@@ -1551,7 +1552,7 @@ describe("Game View interactivity in post game update when being attacked", () =
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("bloquear");
+        expect(socketEmitMock).toHaveBeenCalledWith("bloquear", "duque");
     });
 
     it("should render correctly when using contestar after extorquir", async () => {
