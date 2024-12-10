@@ -142,9 +142,9 @@ export default class GameService {
             }
         });
 
-        socket.on("contestar", (selfCard) => {
+        socket.on("bloquear", (card, selfCard) => {
             try {
-                const actionInfos = ActionService.makeAction(socket.id, Action.CONTESTAR, undefined, selfCard);
+                const actionInfos = ActionService.makeAction(socket.id, Action.BLOQUEAR, card, selfCard);
 
                 const game = GameService.getPlayersGame(socket.id) as Game;
 
@@ -154,9 +154,9 @@ export default class GameService {
             }
         });
 
-        socket.on("bloquear", (card, selfCard) => {
+        socket.on("contestar", (selfCard) => {
             try {
-                const actionInfos = ActionService.makeAction(socket.id, Action.BLOQUEAR, card, selfCard);
+                const actionInfos = ActionService.makeAction(socket.id, Action.CONTESTAR, undefined, selfCard);
 
                 const game = GameService.getPlayersGame(socket.id) as Game;
 
