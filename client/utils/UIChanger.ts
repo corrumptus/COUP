@@ -56,28 +56,32 @@ function performUiChangesByToaster(
     return (
         action: Action.BLOQUEAR | Action.CONTESTAR
     ) => {
-        if (action === Action.BLOQUEAR && !blockableActionNeedsSelfCard(notifiedAction)) {
-            socket.emit("bloquear");
-            return;
-        }
-
         if (action === Action.CONTESTAR && !contestableActionNeedsSelfCard(notifiedAction)) {
             socket.emit("contestar");
             return;
         }
 
-        const choosableCards = getChoosableCards(
-            action,
+        const bloquearCards = getChoosableCards(
+            Action.BLOQUEAR,
             configs,
             notifiedAction
         );
 
-        if (choosableCards.length === 1) {
+        if (
+            action === Action.BLOQUEAR &&
+            !blockableActionNeedsSelfCard(notifiedAction) &&
+            bloquearCards.length === 1
+        ) {
+            socket.emit("bloquear", bloquearCards[0]);
+            return;
+        }
+
+        if (action === Action.BLOQUEAR && bloquearCards.length === 1) {
             changeUi([
                 MenuTypes.CARD_PICKING,
                 {
                     action: action,
-                    cardType: choosableCards[0]
+                    cardType: bloquearCards[0]
                 }
             ]);
 
@@ -156,6 +160,18 @@ function performUIChange(
     if (goTo === MenuTypes.CLOSED && !cannotLeave)
         return [ MenuTypes.CLOSED, {} ];
 
+    const choosableCards = getChoosableCards(
+        newRequeriments.action as Action,
+        gameState.game.configs,
+        (gameState.context as { action?: Action }).action
+    );
+
+    if (
+        newRequeriments.action === Action.BLOQUEAR &&
+        choosableCards.length === 1
+    )
+        newRequeriments.cardType = choosableCards[0];
+
     if (isActionEmitable(gameState, newRequeriments, menuType)) {
         emitAction(
             socket,
@@ -169,12 +185,6 @@ function performUIChange(
 
     if (goTo !== undefined)
         return [ goTo, newRequeriments ];
-
-    const choosableCards = getChoosableCards(
-        newRequeriments.action as Action,
-        gameState.game.configs,
-        (gameState.context as { action?: Action }).action
-    );
 
     if (choosableCards.length === 1) {
         newRequeriments.cardType = choosableCards[0];
@@ -503,7 +513,7 @@ function isActionEmitable(
             (
                 !blockableActionNeedsSelfCard(gameState.context.action as Action)
                 &&
-                menuType === MenuTypes.DEFENSE
+                requeriments.cardType !== undefined
             )
             ||
             (
@@ -524,7 +534,7 @@ function isActionEmitable(
             (
                 !blockableActionNeedsSelfCard(gameState.context.action as Action)
                 &&
-                menuType === MenuTypes.CLOSED
+                requeriments.cardType !== undefined
             )
             ||
             (
