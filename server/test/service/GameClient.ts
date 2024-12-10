@@ -32,7 +32,7 @@ export default class GameClient {
         this.clearMocks();
     }
 
-    static async create(configs: [string[], number | boolean][] = []) {
+    static async create(configs: [string[], number | boolean][] = [], createAnotherPlayer: boolean = false) {
         const socket1 = createSocket(undefined);
         const socket2 = createSocket(0);
 
@@ -49,6 +49,16 @@ export default class GameClient {
         getSocketOnCB(socket2, "canReceive")();
 
         configs.forEach(c => getSocketOnCB(socket1, "updateConfigs")(...c));
+
+        if (createAnotherPlayer) {
+            const socket3 = createSocket(0);
+
+            await PlayerService.setListeners(socket3);
+            LobbyService.setListeners(socket3);
+            GameService.setListeners(socket3);
+
+            getSocketOnCB(socket3, "canReceive")();
+        }
 
         getSocketOnCB(socket1, "beginMatch")();
 
