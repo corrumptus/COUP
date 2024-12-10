@@ -1280,7 +1280,7 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(0);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
@@ -1289,7 +1289,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toStrictEqual(turn);
     });
 
-    it("should update player cards for using contestar after bloquear after assassinar", async () => {
+    it("should not update player cards for using contestar after bloquear after assassinar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.CAPITAO,
             CardType.ASSASSINO,
@@ -1321,7 +1321,7 @@ describe("game, turn and players state in update", () => {
         restoreMocks();
     });
 
-    it("should not update player moneys for using contestar after bloquear after assassinar", async () => {
+    it("should update target cards for using contestar after bloquear after assassinar", async () => {
         const restoreMocks = GameClient.createMockImplementations([
             CardType.ASSASSINO,
             CardType.CONDESSA,
@@ -1329,7 +1329,7 @@ describe("game, turn and players state in update", () => {
             CardType.DUQUE
         ]);
 
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create([], true);
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1391,7 +1391,7 @@ describe("game, turn and players state in update", () => {
             CardType.DUQUE
         ]);
 
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create([], true);
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
