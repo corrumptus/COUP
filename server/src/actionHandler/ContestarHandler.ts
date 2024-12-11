@@ -99,6 +99,8 @@ export default class ContestarHandler implements ActionHandler {
         const corrupcaoCard = game.getLastTurn().getFirstCard() as CardSlot;
 
         const corrupcaoCardType = target.getCard(corrupcaoCard).getType();
+        
+        game.getLastTurn().addTarget(player);
 
         if (game.getConfigs().religiao.cartasParaCorrupcao[corrupcaoCardType])
             player.killCard(selfCard);
