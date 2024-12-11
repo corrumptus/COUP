@@ -4,7 +4,7 @@ import Action from "@entitys/Action";
 import CardType from "@entitys/CardType";
 import { CardSlot } from "@entitys/player";
 import GameClient from "@tests/service/GameClient";
-import GameStateFactory from "@tests/service/GameStateFactory";
+import GameStateBuilder from "@tests/service/GameStateBuilder";
 
 describe("game state in update", () => {
     afterEach(() => {
@@ -21,14 +21,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.RENDA, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.RENDA, undefined, false, undefined, false)
                     .create()
             );
@@ -42,14 +42,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.AJUDA_EXTERNA, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, false, undefined, false)
                     .create()
             );
@@ -67,14 +67,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofBeingAttacked(Action.BLOQUEAR, CardType.DUQUE, undefined, Action.AJUDA_EXTERNA)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.BLOQUEAR, CardType.DUQUE, true, undefined, false)
                     .create()
             );
@@ -94,14 +94,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
@@ -121,14 +121,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -142,14 +142,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.TAXAR, CardType.DUQUE, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.TAXAR, CardType.DUQUE, false, undefined, false)
                     .create()
             );
@@ -169,14 +169,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofBeingAttacked(Action.BLOQUEAR, CardType.DUQUE, undefined, Action.TAXAR)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.BLOQUEAR, CardType.DUQUE, true, undefined, false)
                     .create()
             );
@@ -198,14 +198,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
@@ -227,14 +227,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -252,14 +252,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -276,14 +276,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false)
                     .create()
             );
@@ -304,14 +304,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -325,14 +325,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.EXTORQUIR, CardType.CAPITAO, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofBeingAttacked(Action.EXTORQUIR, CardType.CAPITAO, undefined, undefined)
                     .create()
             );
@@ -350,14 +350,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofBeingAttacked(Action.BLOQUEAR, CardType.CAPITAO, undefined, Action.EXTORQUIR)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.BLOQUEAR, CardType.CAPITAO, true, undefined, false)
                     .create()
             );
@@ -377,14 +377,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
@@ -404,14 +404,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -429,14 +429,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -454,14 +454,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
@@ -475,14 +475,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.ASSASSINAR, CardType.ASSASSINO, true, 0 as CardSlot, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofBeingAttacked(Action.ASSASSINAR, CardType.ASSASSINO, 0 as CardSlot, undefined)
                     .create()
             );
@@ -500,14 +500,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofBeingAttacked(Action.BLOQUEAR, CardType.CONDESSA, undefined, Action.ASSASSINAR)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.BLOQUEAR, CardType.CONDESSA, true, undefined, false)
                     .create()
             );
@@ -527,14 +527,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
@@ -554,14 +554,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -579,14 +579,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
@@ -604,14 +604,14 @@ describe("game state in update", () => {
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.firstPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
-                new GameStateFactory(gameClient.getGame(), gameClient.secondPlayer())
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false)
                     .create()
             );

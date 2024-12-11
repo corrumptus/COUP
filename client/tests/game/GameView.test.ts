@@ -1,6 +1,6 @@
 import { waitForElementToBeRemoved } from "@testing-library/dom";
 import { Action, Card } from "@type/game";
-import GameStateFactory from "@tests/GameStateFactory";
+import GameStateBuilder from "@tests/GameStateBuilder";
 import GameViewPO from "@tests/GameViewPO";
 
 jest.mock("next/navigation", () => ({
@@ -21,7 +21,7 @@ jest.mock("socket.io-client", () => ({
 
 describe("Game view render in game init", () => {
     it("should render correctly in the game beginning when player is the first player and default configurations in pc view", async () => {
-        const gameState = new GameStateFactory().create();
+        const gameState = new GameStateBuilder().create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -62,7 +62,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly in the game beginning when player is not the first player and default configurations in pc view", async () => {
-        const gameState = new GameStateFactory().toOtherPlayerTurn().create();
+        const gameState = new GameStateBuilder().toOtherPlayerTurn().create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -72,7 +72,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly in the game beginning when no default configurations in pc view", async () => {
-        const gameState = new GameStateFactory()
+        const gameState = new GameStateBuilder()
             .newConfig(["renda"], (val: number) => val+1)
             .newConfig(["moedasIniciais"], (val: number) => val+1)
             .newConfig(["ajudaExterna"], (val: number) => val-1)
@@ -95,7 +95,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly when their is religion in pc view", () => {
-        const gameState = new GameStateFactory()
+        const gameState = new GameStateBuilder()
             .newConfig(["religiao", "reforma"], true)
             .create();
 
@@ -111,7 +111,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should close next person when default configs in pc view", async () => {
-        const gameState = new GameStateFactory().create();
+        const gameState = new GameStateBuilder().create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -121,7 +121,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly in the game beginning when player is the first player and default configurations in mobile view", async () => {
-        const gameState = new GameStateFactory().create();
+        const gameState = new GameStateBuilder().create();
 
         const gameView = new GameViewPO(gameState, 500);
 
@@ -162,7 +162,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly in the game beginning when player is not the first player and default configurations in mobile view", async () => {
-        const gameState = new GameStateFactory().toOtherPlayerTurn().create();
+        const gameState = new GameStateBuilder().toOtherPlayerTurn().create();
 
         const gameView = new GameViewPO(gameState, 500);
 
@@ -172,7 +172,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly in the game beginning when player is the first player and no default configurations in mobile view", async () => {
-        const gameState = new GameStateFactory()
+        const gameState = new GameStateBuilder()
             .newConfig(["ajudaExterna"], (val: number) => val-1)
             .newConfig(["moedasIniciais"], (val: number) => val+1)
             .newConfig(["renda"], (val: number) => val+1)
@@ -195,7 +195,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should render correctly when their is religion in mobile view", () => {
-        const gameState = new GameStateFactory()
+        const gameState = new GameStateBuilder()
             .newConfig(["religiao", "reforma"], true)
             .create();
 
@@ -211,7 +211,7 @@ describe("Game view render in game init", () => {
     });
 
     it("should close next person when default configs in mobile view", async () => {
-        const gameState = new GameStateFactory().create();
+        const gameState = new GameStateBuilder().create();
 
         const gameView = new GameViewPO(gameState, 500);
 
@@ -223,9 +223,9 @@ describe("Game view render in game init", () => {
 
 describe("Game View interactivity for game actions", () => {
     async function initializeView(
-        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+        configFactory: (factory: GameStateBuilder) => GameStateBuilder = factory => factory
     ) {
-        const gameState = configFactory(new GameStateFactory()).create();
+        const gameState = configFactory(new GameStateBuilder()).create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -739,9 +739,9 @@ describe("Game View interactivity for game actions", () => {
 
 describe("Game View render in game update", () => {
     function initializeView(
-        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+        configFactory: (factory: GameStateBuilder) => GameStateBuilder = factory => factory
     ) {
-        const gameState = configFactory(new GameStateFactory()).create();
+        const gameState = configFactory(new GameStateBuilder()).create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -1193,9 +1193,9 @@ describe("Game View render in game update", () => {
 
 describe("Game View interactivity in post game update when observing", () => {
     function initializeView(
-        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+        configFactory: (factory: GameStateBuilder) => GameStateBuilder = factory => factory
     ) {
-        const gameState = configFactory(new GameStateFactory()).create();
+        const gameState = configFactory(new GameStateBuilder()).create();
 
         const gameView = new GameViewPO(gameState);
 
@@ -1479,9 +1479,9 @@ describe("Game View interactivity in post game update when observing", () => {
 
 describe("Game View interactivity in post game update when being attacked", () => {
     function initializeView(
-        configFactory: (factory: GameStateFactory) => GameStateFactory = factory => factory
+        configFactory: (factory: GameStateBuilder) => GameStateBuilder = factory => factory
     ) {
-        const gameState = configFactory(new GameStateFactory()).create();
+        const gameState = configFactory(new GameStateBuilder()).create();
 
         const gameView = new GameViewPO(gameState);
 

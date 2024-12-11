@@ -31,7 +31,7 @@ type BloquearPreAction = Action.AJUDA_EXTERNA |
     Action.INVESTIGAR |
     Action.TROCAR;
 
-export default class GameStateFactory {
+export default class GameStateBuilder {
     private gameState: GameState;
 
     constructor(game: Game, ofPlayer: Player) {
