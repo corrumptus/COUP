@@ -635,10 +635,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(4);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.RENDA]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using ajuda externa", async () => {
@@ -651,11 +657,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using bloquear after ajuda externa", async () => {
@@ -670,12 +681,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update player money for using continuar after bloquear after ajuda externa", async () => {
@@ -692,11 +707,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using contestar after bloquear after ajuda externa", async () => {
@@ -720,12 +740,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -750,13 +774,17 @@ describe("game, turn and players state in update", () => {
         gameClient.firstPlayerDo(Action.CONTESTAR, 0);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -771,11 +799,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(6);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using bloquear after taxar", async () => {
@@ -792,11 +825,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(6);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update player money for using continuar after bloquear after taxar", async () => {
@@ -815,11 +853,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using contestar after bloquear after taxar", async () => {
@@ -845,12 +888,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(6);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -877,13 +924,17 @@ describe("game, turn and players state in update", () => {
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -907,12 +958,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(6);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -935,13 +990,17 @@ describe("game, turn and players state in update", () => {
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -961,11 +1020,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(4);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using contestar after corrupcao", async () => {
@@ -990,12 +1054,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(4);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1021,13 +1089,17 @@ describe("game, turn and players state in update", () => {
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.firstPlayer().getCard(0 as CardSlot).getIsKilled()).toBe(true);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(1);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1042,12 +1114,17 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update player moneys for using bloquear after extorquir", async () => {
@@ -1062,11 +1139,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update player moneys for using continuar after bloquear after extorquir", async () => {
@@ -1083,11 +1165,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player moneys for using contestar after bloquear after extorquir", async () => {
@@ -1111,11 +1198,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1141,11 +1233,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1169,11 +1266,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1197,11 +1299,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1218,11 +1325,16 @@ describe("game, turn and players state in update", () => {
 
         expect(gameClient.firstPlayer().getMoney()).toBe(5);
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should not update player cards for using assassinar", async () => {
@@ -1237,12 +1349,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update player cards for using bloquear after assassinar", async () => {
@@ -1259,11 +1373,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toStrictEqual(turn);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should update player cards for using continuar after bloquear after assassinar", async () => {
@@ -1282,11 +1399,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should not update player cards for using contestar after bloquear after assassinar", async () => {
@@ -1312,11 +1432,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1344,11 +1467,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1374,11 +1500,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1404,11 +1533,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
 
         restoreMocks();
     });
@@ -1427,10 +1559,14 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toStrictEqual(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 });
