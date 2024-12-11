@@ -44,6 +44,10 @@ export default class Player {
         this.religion = inverseReligion(this.religion as Religion);
     }
 
+    getReligion(): Religion | undefined {
+        return this.religion;
+    }
+
     getMoney(): number {
         return this.money;
     }
