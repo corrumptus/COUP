@@ -1104,7 +1104,7 @@ describe("Game View render in game update", () => {
         expect(gameView.acceptButton()).toBeInTheDocument();
     });
 
-    it("should render correctly when a player attack with assassinar", () => {
+    it("should render correctly when a player attack with investigar", () => {
         const { gameView } = initializeView(factory => factory
             .ofBeingAttacked(Action.INVESTIGAR, Card.INQUISIDOR, 0, undefined)
         );
