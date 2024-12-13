@@ -103,6 +103,13 @@ export default class ActionService {
         )
             return;
 
+        if (
+            turn.getAllActions().length === 3
+            &&
+            socketPlayer === turn.getPlayer()
+        )
+            return;
+
         throw new Error("Não é a vez do player");
     }
 
