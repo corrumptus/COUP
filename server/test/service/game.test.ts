@@ -14,7 +14,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for renda", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.RENDA);
 
@@ -35,7 +44,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
@@ -56,7 +74,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for bloquear after ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
@@ -81,7 +108,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after bloquear after ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
@@ -108,7 +144,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after bloquear after ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
@@ -135,7 +180,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for taxar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
@@ -156,9 +210,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for bloquear after taxar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
@@ -183,9 +246,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after bloquear after taxar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
@@ -212,9 +284,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after bloquear after taxar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTaxar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
@@ -241,7 +322,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after taxar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
@@ -266,10 +356,19 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for corrupcao", async () => {
-        const gameClient = await GameClient.create([
-            [ ["religiao", "reforma"], true ],
-            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
 
@@ -290,10 +389,19 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after corrupcao", async () => {
-        const gameClient = await GameClient.create([
-            [ ["religiao", "reforma"], true ],
-            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
 
@@ -318,7 +426,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -339,7 +456,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for bloquear after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -364,7 +490,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after bloquear after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -391,7 +526,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after bloquear after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -418,7 +562,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -443,7 +596,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
@@ -468,7 +630,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -489,7 +660,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for bloquear after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -514,7 +694,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after bloquear after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -541,7 +730,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after bloquear after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -568,7 +766,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -593,7 +800,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
 
@@ -618,7 +834,16 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for investigar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -639,9 +864,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for bloquear after investigar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -666,9 +900,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for continuar after bloquear after investigar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -695,16 +938,18 @@ describe("game state in update", () => {
     });
 
     it("should send the correct game state for contestar after bloquear after investigar when will investigate", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -728,21 +973,21 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for trocar after contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -768,21 +1013,21 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.TROCAR, CardType.INQUISIDOR, true, 0 as CardSlot, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for continuar after contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -808,21 +1053,21 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for contestar after bloquear after investigar when will not investigate", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-        
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -846,19 +1091,19 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for contestar after investigar when will investigate", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -880,19 +1125,19 @@ describe("game state in update", () => {
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for trocar after contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -916,19 +1161,19 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.TROCAR, CardType.INQUISIDOR, true, 0 as CardSlot, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for continuar after contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -952,19 +1197,19 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for contestar after investigar when will not investigate", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -986,19 +1231,19 @@ describe("game state in update", () => {
                     .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for continuar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -1020,19 +1265,19 @@ describe("game state in update", () => {
                     .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for trocar after continuar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -1056,19 +1301,19 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.TROCAR, CardType.INQUISIDOR, true, 0 as CardSlot, true)
                     .create()
             );
-
-        restoreMocks();
     });
 
     it("should send the correct game state for continuar after continuar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO
+            ]
+        );
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
@@ -1092,8 +1337,6 @@ describe("game state in update", () => {
                     .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, true)
                     .create()
             );
-
-        restoreMocks();
     });
 });
 
@@ -1105,7 +1348,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using renda", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1116,6 +1368,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(undefined);
@@ -1127,7 +1381,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1138,6 +1401,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(undefined);
@@ -1149,7 +1414,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using bloquear after ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1162,6 +1436,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1173,7 +1449,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update player money for using continuar after bloquear after ajuda externa", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1188,6 +1473,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1199,14 +1486,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using contestar after bloquear after ajuda externa", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1221,6 +1510,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1229,19 +1520,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player money for using contestar after bloquear after ajuda externa", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1256,6 +1547,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1264,12 +1557,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player money for using taxar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1280,6 +1580,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(undefined);
@@ -1291,9 +1593,19 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using bloquear after taxar", async () => {
-        const gameClient = await GameClient.create([
-            [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1306,6 +1618,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1317,9 +1631,19 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update player money for using continuar after bloquear after taxar", async () => {
-        const gameClient = await GameClient.create([
-            [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1334,6 +1658,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1345,16 +1671,19 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using contestar after bloquear after taxar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1369,6 +1698,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1377,21 +1708,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player money for using contestar after bloquear after taxar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ [ "tiposCartas", "duque", "bloquearTaxar" ], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1406,6 +1737,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1414,19 +1747,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player money for using contestar after taxar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.DUQUE,
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1439,6 +1772,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1447,19 +1782,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player money for using contestar after taxar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1472,6 +1807,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1480,15 +1817,22 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player money for using corrupcao", async () => {
-        const gameClient = await GameClient.create([
-            [ ["religiao", "reforma"], true ],
-            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1501,6 +1845,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
         expect(turn.getTarget()).toBe(undefined);
@@ -1512,17 +1858,19 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player money for using contestar after corrupcao", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.DUQUE,
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA
-        ]);
-        
-        const gameClient = await GameClient.create([
-            [ ["religiao", "reforma"], true ],
-            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1535,6 +1883,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1543,22 +1893,22 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player money for using contestar after corrupcao", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["religiao", "reforma"], true ],
-            [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1571,6 +1921,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1579,12 +1931,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(1);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player moneys for using extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1595,6 +1954,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1607,7 +1968,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update player moneys for using bloquear after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1620,6 +1990,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1631,7 +2003,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update player moneys for using continuar after bloquear after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1646,6 +2027,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1657,14 +2040,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update player moneys for using contestar after bloquear after extorquir", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1679,6 +2064,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1687,19 +2074,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player moneys for using contestar after bloquear after extorquir", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1714,6 +2101,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1722,19 +2111,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player moneys for using contestar after extorquir", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1747,6 +2136,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1755,19 +2146,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update player moneys for using contestar after extorquir", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1780,6 +2171,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1788,12 +2181,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player moneys for using continuar after extorquir", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1806,6 +2206,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(1);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1817,7 +2219,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1828,6 +2239,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1839,7 +2252,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using bloquear after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1852,6 +2274,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1863,7 +2287,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using continuar after bloquear after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1878,6 +2311,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1889,14 +2324,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using contestar after bloquear after assassinar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1911,6 +2348,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1919,19 +2358,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using contestar after bloquear after assassinar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([], true);
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1946,6 +2387,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1954,19 +2397,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update target cards for using contestar after assassinar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.CAPITAO,
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -1979,6 +2422,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -1987,19 +2432,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using contestar after assassinar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([], true);
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.CAPITAO
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2012,6 +2459,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2020,12 +2469,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using continuar after assassinar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2038,6 +2494,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2050,7 +2508,16 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using investigar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2061,6 +2528,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2072,9 +2541,18 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using bloquear after investigar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2087,6 +2565,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2098,9 +2578,18 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should not update target cards for using continuar after bloquear after investigar", async () => {
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2115,6 +2604,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2126,16 +2617,18 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update target cards for using contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.ASSASSINO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2150,6 +2643,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2158,22 +2653,22 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using trocar after contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2200,21 +2695,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using continuar after contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2241,21 +2736,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player cards for using contestar after bloquear after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.ASSASSINO,
-            CardType.DUQUE,
-            CardType.CONDESSA
-        ]);
-
-        const gameClient = await GameClient.create([
-            [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
-        ]);
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2270,6 +2765,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2278,19 +2775,21 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([], true);
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.EMBAIXADOR
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2303,6 +2802,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2311,20 +2812,20 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using trocar after contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create([]);
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.ASSASSINO
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2349,19 +2850,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards for using continuar after contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CONDESSA,
-            CardType.CAPITAO,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create([]);
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2386,19 +2887,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update player cards for using contestar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.ASSASSINO,
-            CardType.CAPITAO,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2421,12 +2922,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update target cards for using continuar after investigar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2439,6 +2947,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2451,15 +2961,17 @@ describe("game, turn and players state in update", () => {
     });
 
     it("should update target cards to diferents for using trocar after continuar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA,
-            CardType.ASSASSINO
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2485,20 +2997,20 @@ describe("game, turn and players state in update", () => {
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should update target cards to the same for using trocar after continuar after investigar", async () => {
-        const restoreMocks = GameClient.createMockImplementations([
-            CardType.INQUISIDOR,
-            CardType.CAPITAO,
-            CardType.DUQUE,
-            CardType.CONDESSA,
-            CardType.DUQUE
-        ]);
-
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2524,12 +3036,19 @@ describe("game, turn and players state in update", () => {
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
-
-        restoreMocks();
     });
 
     it("should not update target cards for using continuar after continuar after investigar", async () => {
-        const gameClient = await GameClient.create();
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
 
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
@@ -2544,6 +3063,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getMoney()).toBe(3);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
@@ -2554,21 +3075,4 @@ describe("game, turn and players state in update", () => {
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
-
-    /*
-        - investigar*
-        - investigar bloquear*
-        - investigar bloquear contestar +*
-        - investigar bloquear contestar + trocar*
-        - investigar bloquear contestar + continuar*
-        - investigar bloquear contestar -*
-        - investigar bloquear continuar*
-        - investigar contestar +*
-        - investigar contestar + trocar*
-        - investigar contestar + continuar*
-        - investigar contestar -*
-        - investigar continuar*
-        - investigar continuar trocar*
-        - investigar continuar continuar*
-    */
 });
