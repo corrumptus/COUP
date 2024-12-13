@@ -183,11 +183,24 @@ export default class GameMessageService extends MessageService {
             name === gameState.currentPlayer
             &&
             infos.isInvestigating
+            &&
+            infos.action !== Action.TROCAR
+            &&
+            (
+                (
+                    infos.action === Action.CONTINUAR
+                    &&
+                    currentTurn.getAllActions().length === 2
+                )
+                ||
+                infos.action !== Action.CONTINUAR
+            )
         )
             return {
                 type: ContextType.INVESTIGATING,
                 card: currentTurn.getFirstCardType() as CardType,
-                investigatedCard: currentTurn.getLastCardType() as CardType,
+                investigatedCard: (currentTurn.getTarget() as Player)
+                    .getCard(currentTurn.getLastCard() as CardSlot).getType(),
                 selfCard: currentTurn.getFirstCard() as CardSlot,
                 target: (currentTurn.getTarget() as Player).name,
                 targetCard: currentTurn.getLastCard() as CardSlot
@@ -199,7 +212,8 @@ export default class GameMessageService extends MessageService {
             ![
                 undefined,
                 Action.CONTESTAR,
-                Action.GOLPE_ESTADO
+                Action.GOLPE_ESTADO,
+                Action.TROCAR
             ].includes(infos.action)
         )
             return {
