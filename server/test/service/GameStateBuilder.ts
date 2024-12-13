@@ -16,7 +16,7 @@ type WithTargetCard = Action.ASSASSINAR |
     Action.INVESTIGAR |
     Action.GOLPE_ESTADO;
 
-type PosInvestigar = Action.TROCAR | Action.CONTINUAR;
+type PosInvestigar = Action.TROCAR | Action.CONTINUAR | Action.CONTESTAR;
 
 type AttackerActions = Action.EXTORQUIR |
     Action.ASSASSINAR |
@@ -58,8 +58,8 @@ export default class GameStateBuilder {
 
     ofSeeingSelf<A extends Action, C extends A extends NonCard ? undefined : CardType>(
         action: A,
-        card: A extends NonCard ? undefined : C,
-        hasTarget: A extends AttackerActions ? true : false,
+        card: C,
+        hasTarget: A extends AttackerActions ? true : A extends Action.TROCAR ? boolean : false,
         targetCard: A extends WithTargetCard ? CardSlot
             : C extends CardType.INQUISIDOR ? CardSlot
                 : undefined,
@@ -80,8 +80,8 @@ export default class GameStateBuilder {
 
     ofSeeingEnemy<A extends Action, C extends A extends NonCard ? undefined : CardType>(
         action: A,
-        card: A extends NonCard ? undefined : C,
-        hasTarget: A extends AttackerActions ? true : false,
+        card: C,
+        hasTarget: A extends AttackerActions ? true : A extends Action.TROCAR ? boolean : false,
         targetCard: A extends WithTargetCard ? CardSlot
             : C extends CardType.INQUISIDOR ? CardSlot
                 : undefined,
