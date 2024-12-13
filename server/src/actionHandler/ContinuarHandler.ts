@@ -1,5 +1,5 @@
 import { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import CardType from "@entitys/CardType";
 import Game from "@entitys/Game";
@@ -8,7 +8,18 @@ import Player, { CardSlot } from "@entitys/player";
 export default class ContinuarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
 
-    validate(): void {}
+    validate({
+        game
+    }: ActionRequest): void {
+        const turn = game.getLastTurn();
+
+        if (
+            [Action.CONTINUAR, Action.CONTESTAR].includes(turn.getLastAction() as Action)
+            &&
+            turn.getFirstAction() !== Action.INVESTIGAR
+        )
+            throw new Error(`Action ${turn.getLastAction()} cannot be accepted`);
+    }
 
     save({
         game,
@@ -23,7 +34,9 @@ export default class ContinuarHandler implements ActionHandler {
             case Action.EXTORQUIR: this.saveExtorquir(game, player, target as Player); break;
             case Action.ASSASSINAR: this.saveAssassinar(game, player); break;
             case Action.INVESTIGAR: this.saveInvestigar(); break;
+            case Action.CONTINUAR: this.saveContinuar(); break;
             case Action.BLOQUEAR: this.saveBloquear(game, player); break;
+            case Action.CONTESTAR: this.saveContestar(); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
         }
     }
@@ -44,6 +57,14 @@ export default class ContinuarHandler implements ActionHandler {
     }
 
     private saveInvestigar() {
+        this.isInvestigating = true;
+    }
+
+    private saveContinuar() {
+        this.isInvestigating = true;
+    }
+
+    private saveContestar() {
         this.isInvestigating = true;
     }
 
