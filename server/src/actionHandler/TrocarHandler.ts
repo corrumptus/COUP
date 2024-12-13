@@ -6,6 +6,8 @@ import Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class TrocarHandler implements ActionHandler {
+    private isInvestigating: boolean = false;
+
     validate({
         game,
         player,
@@ -68,6 +70,7 @@ export default class TrocarHandler implements ActionHandler {
 
         if (game.getLastTurn().getFirstAction() !== Action.TROCAR) {
             (target as Player).changeCard(targetCard as CardSlot);
+            this.isInvestigating = true;
             return;
         }
 
@@ -107,7 +110,7 @@ export default class TrocarHandler implements ActionHandler {
             card: card,
             target: target?.name,
             attackedCard: targetCard,
-            isInvestigating: false
+            isInvestigating: this.isInvestigating
         };
     }
 }
