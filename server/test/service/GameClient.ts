@@ -32,7 +32,14 @@ export default class GameClient {
         this.clearMocks();
     }
 
-    static async create(configs: [string[], number | boolean][] = [], createAnotherPlayer: boolean = false) {
+    static async create<B extends boolean>(
+        configs: [string[], number | boolean][],
+        createAnotherPlayer: B,
+        cards: B extends false ?
+            [CardType, CardType, CardType, CardType, ...CardType[]]
+            :
+            [CardType, CardType, CardType, CardType, CardType, CardType, ...CardType[]]
+    ) {
         const socket1 = createSocket(undefined);
         const socket2 = createSocket(0);
 
@@ -60,23 +67,20 @@ export default class GameClient {
             getSocketOnCB(socket3, "canReceive")();
         }
 
+        GameClient.createMockImplementations(cards);
+
         getSocketOnCB(socket1, "beginMatch")();
 
         return new this(socket1, socket2);
     }
 
-    static createMockImplementations(cards: CardType[] = []) {
+    private static createMockImplementations(cards: CardType[]) {
         let i = 0;
 
-        const randomCardTypeMock = jest.spyOn(CardTypeModule, "randomCardType")
+        jest.spyOn(CardTypeModule, "randomCardType")
             .mockImplementation(() => cards[i++]);
 
-        const randomMock = jest.spyOn(Math, "random").mockReturnValue(0);
-
-        return () => {
-            randomCardTypeMock.mockRestore();
-            randomMock.mockRestore();
-        }
+        jest.spyOn(Math, "random").mockReturnValue(0);
     }
 
     getGame() {

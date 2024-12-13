@@ -13,7 +13,8 @@ const config: Config = {
         "^@utils/(.*)$": "<rootDir>/src/utils/$1",
         "^@resources/(.*)$": "<rootDir>/resources/$1",
         "^@tests/(.*)$": "<rootDir>/test/$1"
-    }
+    },
+    clearMocks: true
 };
 
 export default config;
