@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { getChoosableCards } from "@utils/utils";
 import { newToaster } from "@utils/Toasters";
 import createContextNotification from "@utils/ContextNotification";
-import Config from "@type/config";
+import type Config from "@type/config";
 import {
     Action,
     Card,
@@ -17,7 +17,7 @@ import {
     ChangeRequest,
     MenuTypes
 } from "@type/gameUI";
-import { COUPSocket } from "@type/socket";
+import type { COUPSocket } from "@type/socket";
 
 export default function useUIChanger() {
     const [

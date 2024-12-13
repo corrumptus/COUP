@@ -1,7 +1,7 @@
-import { ActionInfos } from "@services/GameMessageService";
+import type { ActionInfos } from "@services/GameMessageService";
 import ActionHandler, { ValidActionRequest } from "@actionHandlers/ActionHandler";
-import Game from "@entitys/Game";
 import Action from "@entitys/Action";
+import type Game from "@entitys/Game";
 
 export default class AjudaExternaHandler implements ActionHandler {
     validate(): void {}

@@ -1,6 +1,6 @@
 import { AES } from "crypto-js";
 import { SignJWT, jwtVerify } from "jose";
-import { UserLogin, UserToken } from "@entitys/User";
+import type { UserLogin, UserToken } from "@entitys/User";
 import UserRepository from "@repositorys/UserRepository";
 
 export default class UserService {

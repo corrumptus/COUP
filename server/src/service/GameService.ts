@@ -1,10 +1,10 @@
-import { COUPSocket } from "@socket/socket";
+import type { COUPSocket } from "@socket/socket";
 import ActionService from "@services/ActionService";
 import GameMessageService from "@services/GameMessageService";
 import LobbyService from "@services/LobbyService";
 import PlayerService from "@services/PlayerService";
 import Action from "@entitys/Action";
-import Game from "@entitys/Game";
+import type Game from "@entitys/Game";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {

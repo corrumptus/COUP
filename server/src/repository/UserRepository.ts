@@ -1,5 +1,5 @@
-import { FieldPacket, ResultSetHeader, RowDataPacket } from "mysql2";
-import { UserLogin, UserProps } from "@entitys/User";
+import type { FieldPacket, ResultSetHeader, RowDataPacket } from "mysql2";
+import type { UserLogin, UserProps } from "@entitys/User";
 import pool from "@utils/connection";
 
 export default class UserRepository {

@@ -1,6 +1,6 @@
-import { Socket } from "socket.io-client";
-import LobbyState from "@type/lobby";
-import { Card, EnemyPlayer, GameState } from "@type/game";
+import type { Socket } from "socket.io-client";
+import type LobbyState from "@type/lobby";
+import type { Card, EnemyPlayer, GameState } from "@type/game";
 
 export type ResponseSocketEmitEvents = {
     "canReceive": () => void;

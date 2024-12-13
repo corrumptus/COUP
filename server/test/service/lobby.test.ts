@@ -3,7 +3,7 @@ import { ContextType } from "@services/GameMessageService";
 import LobbyService from "@services/LobbyService";
 import PlayerService from "@services/PlayerService";
 import SocketValidatorService from "@services/SocketValidatorService";
-import Game from "@entitys/Game";
+import type Game from "@entitys/Game";
 import { createSocket, getSocketOnCB } from "@tests/utils";
 
 describe("lobby interactions", () => {

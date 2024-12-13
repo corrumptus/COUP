@@ -1,4 +1,4 @@
-import Config from "@type/config";
+import type Config from "@type/config";
 
 type LobbyState = {
     player: {

@@ -8,7 +8,7 @@ import NextPerson from "@components/game/NextPerson";
 import Players from "@components/game/Players";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
-import { GameState } from "@type/game";
+import type { GameState } from "@type/game";
 import {
   ActionRequeriments,
   ChangeRequest,

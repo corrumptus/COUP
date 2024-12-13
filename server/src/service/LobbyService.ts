@@ -1,9 +1,9 @@
-import { COUPSocket } from "@socket/socket";
+import type { COUPSocket } from "@socket/socket";
 import GameService from "@services/GameService";
 import LobbyMessageService from "@services/LobbyMessageService";
 import PlayerService from "@services/PlayerService";
 import Lobby from "@entitys/Lobby";
-import Player from "@entitys/player";
+import type Player from "@entitys/player";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];

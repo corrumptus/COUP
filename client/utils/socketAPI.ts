@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 import { objectDiff } from "@utils/utils";
-import Config from "@type/config";
-import { COUPSocket } from "@type/socket";
-import { Differ } from "@type/utils";
+import type Config from "@type/config";
+import type { COUPSocket } from "@type/socket";
+import type { Differ } from "@type/utils";
 
 export default function useSocket(id?: string) {
   const [ error, setError ] = useState<string | undefined>("Loading...");

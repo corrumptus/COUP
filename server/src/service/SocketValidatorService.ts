@@ -1,4 +1,4 @@
-import { COUPSocket } from "@socket/socket";
+import type { COUPSocket } from "@socket/socket";
 import LobbyService from "@services/LobbyService";
 import PlayerService from "@services/PlayerService";
 

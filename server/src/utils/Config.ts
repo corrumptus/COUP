@@ -1,4 +1,4 @@
-import COUPDefaultConfigs from "@resources/COUPdefaultConfigs.json";
+import type COUPDefaultConfigs from "@resources/COUPdefaultConfigs.json";
 
 type Config = typeof COUPDefaultConfigs;
 

@@ -5,8 +5,8 @@ import GamePCView from "@pages/GamePCView";
 import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
 import { newToaster } from "@utils/Toasters";
-import { COUPSocket } from "@type/socket";
-import { EnemyPlayer, GameState } from "@type/game";
+import type { COUPSocket } from "@type/socket";
+import type { EnemyPlayer, GameState } from "@type/game";
 
 export default function GameView({
   gameState,

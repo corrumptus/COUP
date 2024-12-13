@@ -2,7 +2,7 @@ import LobbyService from "@services/LobbyService";
 import PlayerService from "@services/PlayerService";
 import Action from "@entitys/Action";
 import CardType from "@entitys/CardType";
-import { CardSlot } from "@entitys/player";
+import type { CardSlot } from "@entitys/player";
 import GameClient from "@tests/service/GameClient";
 import GameStateBuilder from "@tests/service/GameStateBuilder";
 

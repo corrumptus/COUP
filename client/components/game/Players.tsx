@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PlayerCard from "@components/game/PlayerCard";
-import { EnemyPlayer } from "@type/game";
-import { ChangeRequest } from "@type/gameUI";
+import type { EnemyPlayer } from "@type/game";
+import type { ChangeRequest } from "@type/gameUI";
 
 export default function Players({
   players,

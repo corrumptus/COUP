@@ -1,5 +1,5 @@
 import { createPool } from "mysql2";
-import { Pool } from "mysql2/typings/mysql/lib/Pool";
+import type { Pool } from "mysql2/typings/mysql/lib/Pool";
 
 let pool: Pool;
 

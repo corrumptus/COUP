@@ -1,5 +1,5 @@
-import { COUPSocket, ResponseSocketEmitEvents } from "@socket/socket";
-import Lobby from "@entitys/Lobby";
+import type { COUPSocket, ResponseSocketEmitEvents } from "@socket/socket";
+import type Lobby from "@entitys/Lobby";
 
 export default class MessageService {
     private static lobbys: {

@@ -1,7 +1,7 @@
-import { ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "@socket/socket";
+import type { ResponseSocketEmitEvents, SocketEmitLobbyEvents } from "@socket/socket";
 import MessageService from "@services/MessageService";
-import Lobby from "@entitys/Lobby";
-import Config from "@utils/Config";
+import type Lobby from "@entitys/Lobby";
+import type Config from "@utils/Config";
 
 export type LobbyState = {
     player: {

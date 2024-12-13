@@ -6,7 +6,7 @@ import { useState } from "react";
 import GameView from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
 import useSocket from "@utils/socketAPI";
-import { GameState } from "@type/game";
+import type { GameState } from "@type/game";
 
 export default function EntrarLobby() {
   const { id } = useParams() as { id: string };

@@ -1,6 +1,7 @@
-import Action from "@entitys/Action";
-import CardType from "@entitys/CardType";
-import Player, { CardSlot } from "@entitys/player";
+import type Action from "@entitys/Action";
+import type CardType from "@entitys/CardType";
+import type Player from "@entitys/player";
+import type { CardSlot } from "@entitys/player";
 
 export default class Turn {
     private player: Player;

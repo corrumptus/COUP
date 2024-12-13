@@ -1,8 +1,8 @@
-import { ActionInfos } from "@services/GameMessageService";
+import type { ActionInfos } from "@services/GameMessageService";
 import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import CardType from "@entitys/CardType";
-import Game from "@entitys/Game";
+import type CardType from "@entitys/CardType";
+import type Game from "@entitys/Game";
 import { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class CorrupcaoHandler implements ActionHandler {

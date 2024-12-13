@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Config from "@type/config";
+import type Config from "@type/config";
 
 type InfoType = "duque" | "capitão" | "assassino" | "condessa" | "embaixador" | "inquisidor" | "ações" | "contra-ações" | "açõesCartas" | "religião"
 

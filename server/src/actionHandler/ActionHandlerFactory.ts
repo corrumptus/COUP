@@ -1,4 +1,4 @@
-import ActionHandler from "@actionHandlers/ActionHandler";
+import type ActionHandler from "@actionHandlers/ActionHandler";
 import AjudaExternaHandler from "@actionHandlers/AjudaExternaHandler";
 import AssassinarHandler from "@actionHandlers/AssassinarHandler";
 import BloquearHandler from "@actionHandlers/BloquearHandler";

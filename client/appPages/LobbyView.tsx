@@ -4,9 +4,9 @@ import Configuracoes from "@components/game/Configuracoes";
 import Header from "@components/game/Header";
 import Player from "@components/game/Player";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import { GameState } from "@type/game";
-import LobbyState from "@type/lobby";
-import { COUPSocket } from "@type/socket";
+import type { GameState } from "@type/game";
+import type LobbyState from "@type/lobby";
+import type { COUPSocket } from "@type/socket";
 
 export default function LobbyView({
   initGame,

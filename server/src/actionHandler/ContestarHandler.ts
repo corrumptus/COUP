@@ -1,7 +1,7 @@
-import { ActionInfos } from "@services/GameMessageService";
+import type { ActionInfos } from "@services/GameMessageService";
 import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import Game from "@entitys/Game";
+import type Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class ContestarHandler implements ActionHandler {

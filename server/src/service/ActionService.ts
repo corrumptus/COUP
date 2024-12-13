@@ -1,13 +1,14 @@
-import { ActionInfos } from "@services/GameMessageService";
+import type { ActionInfos } from "@services/GameMessageService";
 import GameService from "@services/GameService";
 import PlayerService from "@services/PlayerService";
 import ActionHandler from "@actionHandlers/ActionHandler";
 import ActionHandlerFactory from "@actionHandlers/ActionHandlerFactory";
 import Action from "@entitys/Action";
-import CardType from "@entitys/CardType";
-import Game from "@entitys/Game";
-import Player, { CardSlot } from "@entitys/player";
-import Turn from "@entitys/Turn";
+import type CardType from "@entitys/CardType";
+import type Game from "@entitys/Game";
+import type Player from "@entitys/player";
+import type { CardSlot } from "@entitys/player";
+import type Turn from "@entitys/Turn";
 
 export default class ActionService {
     static lobbys: {

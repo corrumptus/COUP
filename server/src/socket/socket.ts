@@ -1,12 +1,12 @@
-import { Server as HTTPServer} from "http";
+import type { Server as HTTPServer} from "http";
 import { Server, Socket } from "socket.io";
 import GameService from "@services/GameService";
-import { GameState, EnemyPlayer } from "@services/GameMessageService";
+import type { GameState, EnemyPlayer } from "@services/GameMessageService";
 import LobbyService from "@services/LobbyService";
-import { LobbyState } from "@services/LobbyMessageService";
+import type { LobbyState } from "@services/LobbyMessageService";
 import PlayerService from "@services/PlayerService";
 import SocketValidatorService from "@services/SocketValidatorService";
-import CardType from "@entitys/CardType";
+import type CardType from "@entitys/CardType";
 
 export interface RequestSocketOnEvents {
     "canReceive": () => void;
