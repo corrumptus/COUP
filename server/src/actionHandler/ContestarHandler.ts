@@ -151,19 +151,18 @@ export default class ContestarHandler implements ActionHandler {
     private saveInvestigar(game: Game, player: Player, target: Player): void {
         const investigarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
-        const investigarCardType = player.getCard(investigarCard).getType();
-
-        if (!game.getConfigs().tiposCartas[investigarCardType].investigar) {
-            player.killCard(investigarCard);
-
-            return;
-        }
+        const investigarCardType = target.getCard(investigarCard).getType();
 
         const investigatedCard = game.getLastTurn().getLastCard() as CardSlot;
 
-        const cardKilledByContestar = (investigatedCard+1)%2 as CardSlot;
+        if (game.getConfigs().tiposCartas[investigarCardType].investigar) {
+            const cardKilledByContestar = (investigatedCard+1)%2 as CardSlot;
 
-        target.killCard(cardKilledByContestar);
+            player.killCard(cardKilledByContestar);
+
+            this.isInvestigating = true;
+        } else
+            target.killCard(investigarCard);
     }
 
     private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
@@ -274,6 +273,8 @@ export default class ContestarHandler implements ActionHandler {
             const cardKilledByContestar = (bloquearCard+1)%2 as CardSlot;
 
             target.killCard(cardKilledByContestar);
+
+            this.isInvestigating = true;
         }
     }
 
@@ -292,10 +293,8 @@ export default class ContestarHandler implements ActionHandler {
     }
 
     finish(game: Game): boolean {
-        if (this.isInvestigating)
-            return false;
-
-        game.getLastTurn().finish();
+        if (!this.isInvestigating)
+            game.getLastTurn().finish();
 
         return false;
     }
