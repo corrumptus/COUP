@@ -27,7 +27,8 @@ export default class RendaHandler implements ActionHandler {
             card: undefined,
             target: undefined,
             attackedCard: undefined,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         }
     }
 }

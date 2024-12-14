@@ -110,7 +110,8 @@ export default class TrocarHandler implements ActionHandler {
             card: card,
             target: target?.name,
             attackedCard: targetCard,
-            isInvestigating: this.isInvestigating
+            isInvestigating: this.isInvestigating,
+            winContesting: false
         };
     }
 }

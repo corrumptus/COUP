@@ -287,8 +287,11 @@ function contextToNotification(
     )
         message = `O player ${context.attacker} trocou a ${context.attackedCard + 1}º carta de ${context.target}`;
 
-    if (context.action === Action.CONTESTAR)
-        message = `O player ${context.attacker} contestou ${context.target}`;
+    if (context.action === Action.CONTESTAR && context.winContesting)
+        message = `O player ${context.attacker} contestou ${context.target} e venceu`;
+
+    if (context.action === Action.CONTESTAR && !context.winContesting)
+        message = `O player ${context.attacker} contestou ${context.target} e perdeu`;
 
     if (context.action === Action.BLOQUEAR) {
         message = `O player ${context.attacker} bloqueou ${context.target} com ${context.card}`;

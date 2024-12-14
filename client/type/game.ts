@@ -80,6 +80,7 @@ export type GameState = {
         card?: Card,
         target?: string,
         attackedCard?: number,
-        isInvestigating: boolean
+        isInvestigating: boolean,
+        winContesting: boolean
     }
 }

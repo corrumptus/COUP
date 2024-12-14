@@ -59,7 +59,8 @@ export type GameState = {
         card?: CardType,
         target?: string,
         attackedCard?: CardSlot,
-        isInvestigating: boolean
+        isInvestigating: boolean,
+        winContesting: boolean
     }
 }
 
@@ -69,7 +70,8 @@ export type ActionInfos = {
     card?: CardType,
     target?: string,
     attackedCard?: CardSlot,
-    isInvestigating: boolean
+    isInvestigating: boolean,
+    winContesting: boolean
 }
 
 export default class GameMessageService extends MessageService {
@@ -129,7 +131,8 @@ export default class GameMessageService extends MessageService {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: state.currentPlayer,
-                isInvestigating: false
+                isInvestigating: false,
+                winContesting: false
             }
         }
     }

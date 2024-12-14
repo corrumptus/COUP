@@ -48,7 +48,8 @@ export default class GameStateBuilder {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: gameState.currentPlayer,
-                isInvestigating: false
+                isInvestigating: false,
+                winContesting: true
             }
         }
     }
@@ -64,7 +65,8 @@ export default class GameStateBuilder {
         targetCard: A extends WithTargetCard ? CardSlot
             : C extends CardType.INQUISIDOR ? CardSlot
                 : undefined,
-        isInvestigating: A extends PosInvestigar ? boolean : false
+        isInvestigating: A extends PosInvestigar ? boolean : false,
+        winContesting: A extends Action.CONTESTAR ? boolean : false
     ): this {
         this.gameState.context = {
             type: ContextType.OBSERVING,
@@ -73,7 +75,8 @@ export default class GameStateBuilder {
             card: card,
             target: hasTarget ? this.gameState.game.players[0].name : undefined,
             attackedCard: targetCard,
-            isInvestigating: isInvestigating
+            isInvestigating: isInvestigating,
+            winContesting: winContesting
         };
 
         return this;
@@ -86,7 +89,8 @@ export default class GameStateBuilder {
         targetCard: A extends WithTargetCard ? CardSlot
             : C extends CardType.INQUISIDOR ? CardSlot
                 : undefined,
-        isInvestigating: A extends PosInvestigar ? boolean : false
+        isInvestigating: A extends PosInvestigar ? boolean : false,
+        winContesting: A extends Action.CONTESTAR ? boolean : false
     ): this {
         this.gameState.context = {
             type: ContextType.OBSERVING,
@@ -95,7 +99,8 @@ export default class GameStateBuilder {
             card: card,
             target: hasTarget ? this.gameState.player.name : undefined,
             attackedCard: targetCard,
-            isInvestigating: isInvestigating
+            isInvestigating: isInvestigating,
+            winContesting: winContesting
         };
 
         return this;

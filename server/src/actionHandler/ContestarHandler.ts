@@ -6,6 +6,7 @@ import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class ContestarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
+    private winContesting: boolean = false;
 
     validate({
         game,
@@ -90,6 +91,8 @@ export default class ContestarHandler implements ActionHandler {
         else {
             target.killCard(taxarCard);
             target.rollbackMoney();
+
+            this.winContesting = true;
         }
 
         game.getLastTurn().addCard(selfCard);
@@ -109,6 +112,8 @@ export default class ContestarHandler implements ActionHandler {
             const asilo = target.rollbackMoney();
 
             game.addAsylumCoins(asilo);
+
+            this.winContesting = true;
         }
 
         game.getLastTurn().addCard(selfCard);
@@ -126,8 +131,11 @@ export default class ContestarHandler implements ActionHandler {
             target.addMoney(extorquirAmount);
 
             player.killCard(selfCard);
-        } else
+        } else {
             target.killCard(extorquirCard);
+
+            this.winContesting = true;
+        }
 
         game.getLastTurn().addCard(selfCard);
     }
@@ -144,8 +152,11 @@ export default class ContestarHandler implements ActionHandler {
 
             player.killCard(cardKilledByKiller);
             player.killCard(cardKilledByContestar);
-        } else
+        } else {
             target.killCard(assassinarCard);
+
+            this.winContesting = true;
+        }
     }
 
     private saveInvestigar(game: Game, player: Player, target: Player): void {
@@ -161,8 +172,11 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(cardKilledByContestar);
 
             this.isInvestigating = true;
-        } else
+        } else {
             target.killCard(investigarCard);
+
+            this.winContesting = true;
+        }
     }
 
     private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
@@ -170,11 +184,13 @@ export default class ContestarHandler implements ActionHandler {
 
         const trocarCardType = player.getCard(trocarCard).getType();
 
-        if (game.getConfigs().tiposCartas[trocarCardType].trocar)
+        if (game.getConfigs().tiposCartas[trocarCardType].trocar) {
             target.killCard(selfCard);
-        else {
+        } else {
             player.rollbackCards();
             player.killCard(trocarCard);
+
+            this.winContesting = true;
         }
 
         game.getLastTurn().addCard(selfCard);
@@ -202,8 +218,11 @@ export default class ContestarHandler implements ActionHandler {
         if (game.getConfigs().tiposCartas[bloquearCardType].taxar) {
             player.rollbackMoney();
             player.killCard(selfCard);
-        } else
+        } else {
             target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
 
         game.getLastTurn().addCard(selfCard);
     }
@@ -218,8 +237,11 @@ export default class ContestarHandler implements ActionHandler {
         if (game.getConfigs().tiposCartas[bloquearCardType].bloquearTaxar) {
             player.rollbackMoney();
             player.killCard(taxarCard);
-        } else
+        } else {
             target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
     }
 
     private saveBloquearExtorquir(game: Game, player: Player, target: Player): void {
@@ -240,6 +262,8 @@ export default class ContestarHandler implements ActionHandler {
             player.addMoney(extorquirAmount);
 
             target.killCard(bloquearCard);
+
+            this.winContesting = true;
         }
     }
 
@@ -257,6 +281,8 @@ export default class ContestarHandler implements ActionHandler {
 
             target.killCard(bloquearCard);
             target.killCard(cardKilledByContestar);
+
+            this.winContesting = true;
         }
     }
 
@@ -275,6 +301,8 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(cardKilledByContestar);
 
             this.isInvestigating = true;
+
+            this.winContesting = true;
         }
     }
 
@@ -288,8 +316,11 @@ export default class ContestarHandler implements ActionHandler {
         if (game.getConfigs().tiposCartas[bloquearCardType].bloquearInvestigar) {
             player.rollbackCards();
             player.killCard(trocarCard);
-        } else
+        } else {
             target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
     }
 
     finish(game: Game): boolean {
@@ -309,7 +340,8 @@ export default class ContestarHandler implements ActionHandler {
             card: undefined,
             target: target?.name,
             attackedCard: undefined,
-            isInvestigating: this.isInvestigating
+            isInvestigating: this.isInvestigating,
+            winContesting: this.winContesting
         };
     }
 }

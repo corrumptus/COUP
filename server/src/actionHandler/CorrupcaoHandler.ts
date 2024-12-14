@@ -65,7 +65,8 @@ export default class CorrupcaoHandler implements ActionHandler {
             card: card,
             target: undefined,
             attackedCard: undefined,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         };
     }
 }

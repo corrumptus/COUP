@@ -59,7 +59,8 @@ export default class GolpeEstadoHandler implements ActionHandler {
             card: undefined,
             target: (target as Player).name,
             attackedCard: targetCard,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         }
     }
 }

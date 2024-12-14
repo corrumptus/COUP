@@ -61,7 +61,8 @@ export default class ExtorquirHandler implements ActionHandler {
             card: card,
             target: (target as Player).name,
             attackedCard: undefined,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         };
     }
 }

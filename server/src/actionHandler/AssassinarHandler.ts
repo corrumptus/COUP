@@ -77,7 +77,8 @@ export default class AssassinarHandler implements ActionHandler {
             card: card,
             target: (target as Player).name,
             attackedCard: targetCard,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         }
     }
 }

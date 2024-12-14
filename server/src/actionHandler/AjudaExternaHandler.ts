@@ -25,7 +25,8 @@ export default class AjudaExternaHandler implements ActionHandler {
             card: undefined,
             target: undefined,
             attackedCard: undefined,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         };
     }
 }

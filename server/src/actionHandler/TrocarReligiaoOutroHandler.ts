@@ -51,7 +51,8 @@ export default class trocarReligiaoOutroHandler implements ActionHandler {
             card: undefined,
             target: (target as Player).name,
             attackedCard: undefined,
-            isInvestigating: false
+            isInvestigating: false,
+            winContesting: false
         };
     }
 }

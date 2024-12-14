@@ -82,7 +82,8 @@ export default class GameStateBuilder {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: this.playerName,
-                isInvestigating: false
+                isInvestigating: false,
+                winContesting: false
             }
         }
     }
@@ -168,7 +169,8 @@ export default class GameStateBuilder {
         targetCard: A extends WithTargetCard ? number
             : C extends Card.INQUISIDOR ? number
                 : undefined,
-        isInvestigating: A extends PosInvestigar ? boolean : false
+        isInvestigating: A extends PosInvestigar ? boolean : false,
+        winContesting: A extends Action.CONTESTAR ? boolean : false
     ): this {
         this.gameState.context = {
             type: ContextType.OBSERVING,
@@ -177,7 +179,8 @@ export default class GameStateBuilder {
             card: card,
             target: this.gameState.player.name,
             attackedCard: targetCard,
-            isInvestigating: isInvestigating
+            isInvestigating: isInvestigating,
+            winContesting: winContesting
         };
 
         return this;

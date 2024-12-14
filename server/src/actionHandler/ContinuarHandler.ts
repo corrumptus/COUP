@@ -120,7 +120,8 @@ export default class ContinuarHandler implements ActionHandler {
             card: undefined,
             target: undefined,
             attackedCard: undefined,
-            isInvestigating: this.isInvestigating
+            isInvestigating: this.isInvestigating,
+            winContesting: false
         };
     }
 }
