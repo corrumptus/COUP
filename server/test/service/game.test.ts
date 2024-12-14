@@ -1623,6 +1623,34 @@ describe("game state in update", () => {
                     .create()
             );
     });
+
+    it("should send the correct game state for golpe de estado", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstSocket().emit).toHaveBeenCalledWith("updatePlayer",
+            new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                .ofSeeingSelf(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
+                .create()
+        );
+        expect(gameClient.secondSocket().emit).toHaveBeenCalledWith("updatePlayer",
+            new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
+                .create()
+        );
+    });
 });
 
 describe("game, turn and players state in update", () => {
@@ -2247,7 +2275,6 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2787,7 +2814,6 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3240,7 +3266,6 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3279,7 +3304,6 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3318,7 +3342,6 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3356,8 +3379,42 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should update target cards for using golpe de estado", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+        
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+    
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+    
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(7);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.GOLPE_ESTADO]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 });
