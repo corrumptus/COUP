@@ -754,7 +754,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses renda", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.RENDA, undefined, undefined, false)
+            .ofSeeingEnemy(Action.RENDA, undefined, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -767,7 +767,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses ajuda externa", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -782,7 +782,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses ajuda externa when no card can block it", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "taxar"], false)
-            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -796,7 +796,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses taxar", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -811,7 +811,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses taxar and a card can block it", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
             .newConfig(["tiposCartas", "capitao", "bloquearTaxar"], true)
-            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -825,7 +825,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses corrupcao", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -839,7 +839,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses extorquir", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -856,7 +856,7 @@ describe("Game View render in game update", () => {
             .newConfig(["tiposCartas", "capitao", "bloquearExtorquir"], false)
             .newConfig(["tiposCartas", "embaixador", "bloquearExtorquir"], false)
             .newConfig(["tiposCartas", "inquisidor", "bloquearExtorquir"], false)
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -870,7 +870,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses assassinar", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -885,7 +885,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses assassinar when no card can block it", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
             .newConfig(["tiposCartas", "condessa", "bloquearAssassinar"], false)
-            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -899,7 +899,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses investigar", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -914,7 +914,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses investigar and a card can block it", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
-            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -928,7 +928,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses golpe de estado", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, 0, false)
+            .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -942,7 +942,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses trocar with a card that can change all cards", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -957,7 +957,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses trocar with a card that can change all cards and a card can block it", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
-            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -971,7 +971,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses trocar with a card that can change only one card", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -986,7 +986,7 @@ describe("Game View render in game update", () => {
     it("should render correctly when a player uses trocar with a card that can change only one card and a card can block it", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
-            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1000,7 +1000,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses trocar after a investigar", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, true)
+            .ofSeeingEnemy(Action.TROCAR, Card.INQUISIDOR, 0, true, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1014,7 +1014,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses continuar after a investigar", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.CONTINUAR, undefined, undefined, true)
+            .ofSeeingEnemy(Action.CONTINUAR, undefined, undefined, true, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1028,7 +1028,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses self trocar religiao", () => {
         const { enemyPlayerName, gameView } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1042,7 +1042,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses trocar religiao", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1056,7 +1056,7 @@ describe("Game View render in game update", () => {
 
     it("should render correctly when a player uses bloquear", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.BLOQUEAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.BLOQUEAR, Card.DUQUE, undefined, false, false)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
@@ -1068,16 +1068,30 @@ describe("Game View render in game update", () => {
         expect(gameView.toasterContestButtons()[0]).toBeInTheDocument();
     });
 
-    it("should render correctly when a player uses contestar", () => {
+    it("should render correctly when a player uses contestar and win", () => {
         const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
-            .ofSeeingEnemy(Action.CONTESTAR, undefined, undefined, false)
+            .ofSeeingEnemy(Action.CONTESTAR, undefined, undefined, false, true)
         );
 
         expect(gameView.alltoasters().length).toBe(1);
 
         expect(gameView.alltoasters()[0]).toBeInTheDocument();
         expect(gameView.toasterContents()[0])
-            .toBe(`O player ${enemyPlayerName} contestou ${playerName}`);
+            .toBe(`O player ${enemyPlayerName} contestou ${playerName} e venceu`);
+        expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
+        expect(gameView.toasterContestButtons()[0]).toBe(undefined);
+    });
+
+    it("should render correctly when a player uses contestar and lose", () => {
+        const { enemyPlayerName, gameView, playerName } = initializeView(factory => factory
+            .ofSeeingEnemy(Action.CONTESTAR, undefined, undefined, false, false)
+        );
+
+        expect(gameView.alltoasters().length).toBe(1);
+
+        expect(gameView.alltoasters()[0]).toBeInTheDocument();
+        expect(gameView.toasterContents()[0])
+            .toBe(`O player ${enemyPlayerName} contestou ${playerName} e perdeu`);
         expect(gameView.toasterBlockButtons()[0]).toBe(undefined);
         expect(gameView.toasterContestButtons()[0]).toBe(undefined);
     });
@@ -1204,7 +1218,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using bloquear after ajuda externa when one card can block it", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1222,7 +1236,7 @@ describe("Game View interactivity in post game update when observing", () => {
     it("should render correctly when using bloquear after ajuda externa when more than one card can block it", async () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "capitao", "taxar"], true)
-            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false)
+            .ofSeeingEnemy(Action.AJUDA_EXTERNA, undefined, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1244,7 +1258,7 @@ describe("Game View interactivity in post game update when observing", () => {
     it("should render correctly when using bloquear after taxar when one card can block it", async () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTaxar"], true)
-            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1263,7 +1277,7 @@ describe("Game View interactivity in post game update when observing", () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTaxar"], true)
             .newConfig(["tiposCartas", "capitao", "bloquearTaxar"], true)
-            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1286,7 +1300,7 @@ describe("Game View interactivity in post game update when observing", () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "embaixador", "bloquearExtorquir"], false)
             .newConfig(["tiposCartas", "inquisidor", "bloquearExtorquir"], false)
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1303,7 +1317,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using bloquear after extorquir when more than one card can block it", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1324,7 +1338,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using bloquear after assassinar", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1337,7 +1351,7 @@ describe("Game View interactivity in post game update when observing", () => {
     it("should render correctly when using bloquear after investigar", async () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearInvestigar"], true)
-            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1350,7 +1364,7 @@ describe("Game View interactivity in post game update when observing", () => {
     it("should render correctly when using bloquear after trocar when one card can block it", async () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
-            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1369,7 +1383,7 @@ describe("Game View interactivity in post game update when observing", () => {
         const gameView = initializeView(factory => factory
             .newConfig(["tiposCartas", "duque", "bloquearTrocar"], true)
             .newConfig(["tiposCartas", "capitao", "bloquearTrocar"], true)
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.EMBAIXADOR, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.EMBAIXADOR, undefined, false, false)
         );
 
         await gameView.blockByToaster(0);
@@ -1390,7 +1404,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after taxar", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.TAXAR, Card.DUQUE, undefined, false, false)
         );
 
         await gameView.contestByToaster(0);
@@ -1406,7 +1420,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after corrupcao", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false)
+            .ofSeeingEnemy(Action.CORRUPCAO, Card.DUQUE, undefined, false, false)
         );
 
         await gameView.contestByToaster(0);
@@ -1422,7 +1436,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after extorquir", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false)
+            .ofSeeingEnemy(Action.EXTORQUIR, Card.CAPITAO, undefined, false, false)
         );
 
         await gameView.contestByToaster(0);
@@ -1438,7 +1452,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after assassinar", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false)
+            .ofSeeingEnemy(Action.ASSASSINAR, Card.ASSASSINO, 0, false, false)
         );
 
         await gameView.contestByToaster(0);
@@ -1450,7 +1464,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after investigar", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false)
+            .ofSeeingEnemy(Action.INVESTIGAR, Card.INQUISIDOR, 0, false, false)
         );
 
         await gameView.contestByToaster(0);
@@ -1462,7 +1476,7 @@ describe("Game View interactivity in post game update when observing", () => {
 
     it("should render correctly when using contestar after trocar", async () => {
         const gameView = initializeView(factory => factory
-            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false)
+            .ofSeeingEnemy(Action.TROCAR, Card.EMBAIXADOR, undefined, false, false)
         );
 
         await gameView.contestByToaster(0);
