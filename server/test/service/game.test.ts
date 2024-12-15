@@ -1640,16 +1640,268 @@ describe("game state in update", () => {
 
         gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstSocket().emit).toHaveBeenCalledWith("updatePlayer",
-            new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
-                .ofSeeingSelf(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
-                .create()
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for trocar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
         );
-        expect(gameClient.secondSocket().emit).toHaveBeenCalledWith("updatePlayer",
-            new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
-                .ofSeeingEnemy(Action.GOLPE_ESTADO, undefined, true, 0 as CardSlot, false, false)
-                .create()
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.TROCAR, CardType.EMBAIXADOR, false, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.TROCAR, CardType.EMBAIXADOR, false, undefined, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
         );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofBeingAttacked(Action.BLOQUEAR, CardType.DUQUE, undefined, Action.TROCAR)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.BLOQUEAR, CardType.DUQUE, true, undefined, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after bloquear after trocar when winning", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false, true)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false, true)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after bloquear after trocar when losing", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for continuar after bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.clearMocks();
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.CONTINUAR, undefined, false, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.CONTINUAR, undefined, false, undefined, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after trocar when winning", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false, true)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false, true)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for contestar after trocar when losing", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.EMBAIXADOR,
+                CardType.DUQUE,
+                CardType.CONDESSA
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.clearMocks();
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingEnemy(Action.CONTESTAR, undefined, true, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingSelf(Action.CONTESTAR, undefined, true, undefined, false, false)
+                    .create()
+            );
     });
 });
 
@@ -3396,12 +3648,12 @@ describe("game, turn and players state in update", () => {
                 CardType.DUQUE
             ]
         );
-        
+
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
-    
+
         gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
-    
+
         expect(gameClient.firstPlayer().getMoney()).toBe(0);
         expect(gameClient.secondPlayer().getMoney()).toBe(7);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
@@ -3414,6 +3666,311 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.GOLPE_ESTADO]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update target cards for using trocar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update target cards for using bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should update target cards for using contestar bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player cards for using contestar after bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should not update player cards for using continuar after bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearTrocar"], true ]
+            ],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player cards for using contestar after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.EMBAIXADOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should not update player cards for using contestar after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.CAPITAO,
+                CardType.EMBAIXADOR,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player card for using trocar with a card that can change only one card", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.ASSASSINO
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.firstPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
