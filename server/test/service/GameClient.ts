@@ -72,12 +72,22 @@ export default class GameClient {
     }
 
     private static createMockImplementations(cards: CardType[]) {
-        let i = 0;
+        let cardIndex = 0;
+        let randomIndex = 0;
 
         jest.spyOn(CardTypeModule, "randomCardType")
-            .mockImplementation(() => cards[i++]);
+            .mockImplementation(() => cards[cardIndex++]);
 
-        jest.spyOn(Math, "random").mockReturnValue(0);
+        jest.spyOn(Math, "random").mockImplementation(() => {
+            const cur = [
+                0,
+                0.9
+            ][randomIndex];
+
+            randomIndex = (randomIndex+1)%2;
+
+            return cur;
+        });
     }
 
     getGame() {
