@@ -25,18 +25,14 @@ export default class Player {
         this.moneyHistory = [];
     }
 
-    initRound(money: number) {
+    initRound(money: number, hasReligion: boolean) {
         const cards = this.newCards();
 
         this.cards = cards.map(c => new Card(c)) as [Card, Card];
         this.money = money;
-    }
 
-    initReligion() {
-        if (this.religion !== undefined)
-            return;
-
-        this.religion = randomReligion();
+        if(hasReligion)
+            this.religion = randomReligion();
     }
 
     changeReligion() {
