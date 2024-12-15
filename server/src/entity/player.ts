@@ -29,7 +29,6 @@ export default class Player {
         const cards = this.newCards();
 
         this.cards = cards.map(c => new Card(c)) as [Card, Card];
-        this.cardHistory.push(cards);
         this.money = money;
     }
 
@@ -93,30 +92,34 @@ export default class Player {
         return this.cards[position];
     }
 
-    changeCards() {
-        const newCards = this.newCards();
+    getPreviousCards(): [CardType, CardType] | undefined {
+        return this.cardHistory.at(-1);
+    }
 
+    changeCards() {
+        this.cardHistory.push(this.cards.map(c => c.getType()) as [CardType, CardType]);
+
+        const newCards = this.newCards();
         this.cards.forEach((c, i) => c.changeType(newCards[i]));
-        this.cardHistory.push(newCards);
     }
 
     changeCard(position: CardSlot) {
+        this.cardHistory.push(this.cards.map(c => c.getType()) as [CardType, CardType]);
+
         const newCard = randomCardType();
 
         this.cards[position].changeType(newCard);
-
-        const newCardHistory = this.cards.map(c => c.getType()) as [CardType, CardType];
-
-        this.cardHistory.push(newCardHistory);
     }
 
     rollbackCards() {
-        if (this.cardHistory.length === 1)
+        if (this.cardHistory.length === 0)
             return;
 
-        const lastCardTypes = this.cardHistory.at(-2) as [CardType, CardType];
+        const lastCardTypes = this.cardHistory.at(-1) as [CardType, CardType];
 
         this.cards.forEach((c, i) => c.changeType(lastCardTypes[i]));
+
+        this.cardHistory.pop();
     }
 
     killCard(position: CardSlot) {
