@@ -217,7 +217,8 @@ export default class GameMessageService extends MessageService {
                 undefined,
                 Action.CONTESTAR,
                 Action.GOLPE_ESTADO,
-                Action.TROCAR
+                Action.TROCAR,
+                Action.TROCAR_RELIGIAO_OUTRO
             ].includes(infos.action)
         )
             return {
