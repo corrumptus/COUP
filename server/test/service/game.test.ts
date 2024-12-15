@@ -3,6 +3,7 @@ import PlayerService from "@services/PlayerService";
 import Action from "@entitys/Action";
 import CardType from "@entitys/CardType";
 import type { CardSlot } from "@entitys/player";
+import Religion from "@entitys/Religion";
 import GameClient from "@tests/service/GameClient";
 import GameStateBuilder from "@tests/service/GameStateBuilder";
 
@@ -1903,6 +1904,70 @@ describe("game state in update", () => {
                     .create()
             );
     });
+
+    it("should send the correct game state for trocar propria religiao", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR_PROPRIA_RELIGIAO);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.TROCAR_PROPRIA_RELIGIAO, undefined, false, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.TROCAR_PROPRIA_RELIGIAO, undefined, false, undefined, false, false)
+                    .create()
+            );
+    });
+
+    it("should send the correct game state for trocar religiao outro", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        gameClient.firstPlayerDo(Action.TROCAR_RELIGIAO_OUTRO, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
+                    .ofSeeingSelf(Action.TROCAR_RELIGIAO_OUTRO, undefined, true, undefined, false, false)
+                    .create()
+            );
+        expect(gameClient.secondSocket().emit)
+            .toHaveBeenCalledWith(
+                "updatePlayer",
+                new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
+                    .ofSeeingEnemy(Action.TROCAR_RELIGIAO_OUTRO, undefined, true, undefined, false, false)
+                    .create()
+            );
+    });
 });
 
 describe("game, turn and players state in update", () => {
@@ -2412,8 +2477,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
-        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
-        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
         expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0]);
@@ -2450,8 +2515,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
-        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
-        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
@@ -2488,8 +2553,8 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
-        expect(gameClient.firstPlayer().getReligion()).not.toBe(undefined);
-        expect(gameClient.secondPlayer().getReligion()).not.toBe(undefined);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
@@ -3971,6 +4036,80 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player religion for using trocar propria religiao", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+
+        gameClient.firstPlayerDo(Action.TROCAR_PROPRIA_RELIGIAO);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR_PROPRIA_RELIGIAO]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player religion for using trocar religiao outro", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+
+        gameClient.firstPlayerDo(Action.TROCAR_RELIGIAO_OUTRO, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(1);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR_RELIGIAO_OUTRO]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
