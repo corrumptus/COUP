@@ -192,7 +192,8 @@ describe("lobby interactions", () => {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: gameState.currentPlayer,
-                isInvestigating: false
+                isInvestigating: false,
+                winContesting: false
             }
         };
 
@@ -205,7 +206,8 @@ describe("lobby interactions", () => {
             context: {
                 type: ContextType.OBSERVING,
                 attacker: gameState.currentPlayer,
-                isInvestigating: false
+                isInvestigating: false,
+                winContesting: false
             }
         };
 
