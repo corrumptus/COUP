@@ -75,6 +75,7 @@ export default class TrocarHandler implements ActionHandler {
         }
 
         game.getLastTurn().addCard(selfCard as CardSlot);
+        game.getLastTurn().addCardType(card as CardType);
 
         if (game.getConfigs().tiposCartas[card as CardType].quantidadeTrocar === 2) {
             player.changeCards();
@@ -108,7 +109,7 @@ export default class TrocarHandler implements ActionHandler {
             attacker: player.name,
             action: Action.TROCAR,
             card: card,
-            target: target?.name,
+            target: this.isInvestigating ? (target as Player).name : undefined,
             attackedCard: targetCard,
             isInvestigating: this.isInvestigating,
             winContesting: false

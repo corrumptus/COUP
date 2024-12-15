@@ -1,6 +1,7 @@
 import type { ActionInfos } from "@services/GameMessageService";
 import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
+import type CardType from "@entitys/CardType";
 import type Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
@@ -182,18 +183,19 @@ export default class ContestarHandler implements ActionHandler {
     private saveTrocar(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
         const trocarCard = game.getLastTurn().getFirstCard() as CardSlot;
 
-        const trocarCardType = player.getCard(trocarCard).getType();
+        const trocarCardType = (target.getPreviousCards() as [CardType, CardType])[0];
 
         if (game.getConfigs().tiposCartas[trocarCardType].trocar) {
-            target.killCard(selfCard);
-        } else {
-            player.rollbackCards();
-            player.killCard(trocarCard);
+            player.killCard(selfCard);
 
             this.winContesting = true;
+        } else {
+            target.rollbackCards();
+            target.killCard(trocarCard);
         }
 
         game.getLastTurn().addCard(selfCard);
+        game.getLastTurn().addTarget(player);
     }
 
     private saveBloquear(game: Game, player: Player, selfCard: CardSlot, target: Player): void {
@@ -313,7 +315,7 @@ export default class ContestarHandler implements ActionHandler {
 
         const bloquearCardType = target.getCard(bloquearCard).getType();
 
-        if (game.getConfigs().tiposCartas[bloquearCardType].bloquearInvestigar) {
+        if (game.getConfigs().tiposCartas[bloquearCardType].bloquearTrocar) {
             player.rollbackCards();
             player.killCard(trocarCard);
         } else {
