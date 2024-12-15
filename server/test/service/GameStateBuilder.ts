@@ -23,6 +23,7 @@ type AttackerActions = Action.EXTORQUIR |
     Action.ASSASSINAR |
     Action.INVESTIGAR |
     Action.GOLPE_ESTADO |
+    Action.TROCAR_RELIGIAO_OUTRO |
     Action.BLOQUEAR |
     Action.CONTESTAR;
 
