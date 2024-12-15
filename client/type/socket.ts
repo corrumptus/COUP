@@ -27,7 +27,7 @@ export type ResponseSocketEmitEvents = {
     "trocarReligiaoOutro": (target: string) => void;
     "trocarPropriaReligiao": () => void;
 
-    "trocar": (card: Card, selfCard: number, target: string, targetCard: number) => void;
+    "trocar": (card: Card, selfCard: number, target: string, targetCard?: number) => void;
 
     "contestar": (selfCard?: number) => void;
     "bloquear": (card: Card, selfCard?: number) => void;
