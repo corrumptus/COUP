@@ -301,6 +301,9 @@ function contextToNotification(
     if (context.action === Action.CONTINUAR && context.isInvestigating)
         message = `O player ${context.attacker} não trocou a carta de ${context.target}`;
 
+    if (context.action === Action.CONTINUAR && !context.isInvestigating)
+        message = `O player ${context.attacker} aceitou seu destino`;
+
     return createContextNotification(
         message,
         blockAble,
