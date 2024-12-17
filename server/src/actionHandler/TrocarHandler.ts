@@ -1,15 +1,14 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class TrocarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
 
     validate({
-        game,
+        configs,
         player,
         card,
         selfCard,
@@ -24,21 +23,21 @@ export default class TrocarHandler implements ActionHandler {
         if (!isCardSlot(selfCard))
             throw new Error("O index da carta do jogador deve ser 0 ou 1");
 
-        if (!game.getConfigs().tiposCartas[card].trocar)
+        if (!configs.tiposCartas[card].trocar)
             throw new Error("O tipo de carta escolhida não pode trocar");
 
         if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
         if (
-            game.getConfigs().tiposCartas[card].quantidadeTrocar === 1
+            configs.tiposCartas[card].quantidadeTrocar === 1
             &&
             targetCard === undefined
         )
             throw new Error("Uma carta deve ser escolhida");
 
         if (
-            game.getConfigs().tiposCartas[card].quantidadeTrocar === 1
+            configs.tiposCartas[card].quantidadeTrocar === 1
             &&
             targetCard !== undefined
             &&
@@ -47,7 +46,7 @@ export default class TrocarHandler implements ActionHandler {
             throw new Error("O index da carta escolhida deve ser 0 ou 1");
 
         if (
-            game.getConfigs().tiposCartas[card].quantidadeTrocar === 1
+            configs.tiposCartas[card].quantidadeTrocar === 1
             &&
             targetCard !== undefined
             &&
@@ -59,44 +58,39 @@ export default class TrocarHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         card,
         selfCard,
         target,
         targetCard
     }: ValidActionRequest) {
-        game.getLastTurn().addAction(Action.TROCAR);
+        turn.addAction(Action.TROCAR);
 
-        if (game.getLastTurn().getFirstAction() !== Action.TROCAR) {
+        if (turn.getFirstAction() !== Action.TROCAR) {
             (target as Player).changeCard(targetCard as CardSlot);
             this.isInvestigating = true;
             return;
         }
 
-        game.getLastTurn().addCard(selfCard as CardSlot);
-        game.getLastTurn().addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
+        turn.addCardType(card as CardType);
 
-        if (game.getConfigs().tiposCartas[card as CardType].quantidadeTrocar === 2) {
+        if (configs.tiposCartas[card as CardType].quantidadeTrocar === 2) {
             player.changeCards();
             return;
         }
 
         player.changeCard(targetCard as CardSlot);
-        game.getLastTurn().addCard(targetCard as CardSlot);
+        turn.addCard(targetCard as CardSlot);
     }
 
-    finish(game: Game): boolean {
-        const firstAction = game.getLastTurn().getFirstAction() as Action;
-
-        if (firstAction === Action.INVESTIGAR) {
-            game.getLastTurn().finish();
-            return false;
-        }
-
-        game.nextPlayer();
-
-        return true;
+    finish(): TurnState {
+        return this.isInvestigating ?
+            TurnState.TURN_FINISHED
+            :
+            TurnState.TURN_WAITING_TIMEOUT;
     }
 
     actionInfos({

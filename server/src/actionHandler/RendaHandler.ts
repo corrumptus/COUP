@@ -1,21 +1,18 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import type Game from "@entitys/Game";
 
 export default class RendaHandler implements ActionHandler {
     validate(): void {}
 
-    save({ game, player }: ValidActionRequest): void {
-        player.addMoney(game.getConfigs().renda);
+    save({ turn, configs, player }: ValidActionRequest): void {
+        player.addMoney(configs.renda);
 
-        game.getLastTurn().addAction(Action.RENDA);
+        turn.addAction(Action.RENDA);
     }
 
-    finish(game: Game): boolean {
-        game.getLastTurn().finish();
-
-        return false;
+    finish(): TurnState {
+        return TurnState.TURN_FINISHED;
     }
 
     actionInfos({

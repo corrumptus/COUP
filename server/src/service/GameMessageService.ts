@@ -140,6 +140,7 @@ export default class GameMessageService extends MessageService {
     static updatePlayers(
         lobbyId: number,
         game: Game,
+        turn: Turn,
         infos: ActionInfos
     ) {
         const lobby = super.getLobby(lobbyId);
@@ -152,7 +153,7 @@ export default class GameMessageService extends MessageService {
             undefined,
             "updatePlayer",
             (_, name: string) => [
-                GameMessageService.calculateNewGameState(lobbyId, game, name, infos)
+                GameMessageService.calculateNewGameState(lobbyId, game, turn, name, infos)
             ]
         );
     }
@@ -160,6 +161,7 @@ export default class GameMessageService extends MessageService {
     private static calculateNewGameState(
         lobbyId: number,
         game: Game,
+        turn: Turn,
         name: string,
         infos: ActionInfos
     ): GameState {
@@ -170,18 +172,17 @@ export default class GameMessageService extends MessageService {
         return {
             player: player.getState(),
             game: GameMessageService.gameStateForPlayer(gameState, name),
-            context: GameMessageService.calculateGameContext(game, name, infos)
+            context: GameMessageService.calculateGameContext(game, turn, name, infos)
         }
     }
 
     private static calculateGameContext(
         game: Game,
+        turn: Turn,
         name: string,
         infos: ActionInfos
     ): GameState["context"] {
         const gameState = game.getState();
-
-        const currentTurn = game.getTurn(-1) as Turn;
 
         if (
             name === gameState.currentPlayer
@@ -194,7 +195,7 @@ export default class GameMessageService extends MessageService {
                 (
                     infos.action === Action.CONTINUAR
                     &&
-                    currentTurn.getAllActions().length === 2
+                    turn.getAllActions().length === 2
                 )
                 ||
                 infos.action !== Action.CONTINUAR
@@ -202,12 +203,12 @@ export default class GameMessageService extends MessageService {
         )
             return {
                 type: ContextType.INVESTIGATING,
-                card: currentTurn.getFirstCardType() as CardType,
-                investigatedCard: (currentTurn.getTarget() as Player)
-                    .getCard(currentTurn.getLastCard() as CardSlot).getType(),
-                selfCard: currentTurn.getFirstCard() as CardSlot,
-                target: (currentTurn.getTarget() as Player).name,
-                targetCard: currentTurn.getLastCard() as CardSlot
+                card: turn.getFirstCardType() as CardType,
+                investigatedCard: (turn.getTarget() as Player)
+                    .getCard(turn.getLastCard() as CardSlot).getType(),
+                selfCard: turn.getFirstCard() as CardSlot,
+                target: (turn.getTarget() as Player).name,
+                targetCard: turn.getLastCard() as CardSlot
             }
 
         if (
@@ -227,7 +228,7 @@ export default class GameMessageService extends MessageService {
                 attackedCard: infos.attackedCard,
                 attacker: infos.attacker,
                 card: infos.card as CardType,
-                previousAction: currentTurn.getAllActions().at(-2)
+                previousAction: turn.getAllActions().at(-2)
             }
 
         return {

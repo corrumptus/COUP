@@ -1,12 +1,12 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class ExtorquirHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         card,
         selfCard,
@@ -24,30 +24,30 @@ export default class ExtorquirHandler implements ActionHandler {
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
-        if (!game.getConfigs().tiposCartas[card].extorquir)
+        if (!configs.tiposCartas[card].extorquir)
             throw new Error("O tipo de carta escolhida não pode extorquir");
 
         if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (target.getMoney() < game.getConfigs().tiposCartas[card].quantidadeExtorquir)
+        if (target.getMoney() < configs.tiposCartas[card].quantidadeExtorquir)
             throw new Error("O inimigo não tem dinheiro suficiente para ser extorquido");
     }
 
     save({
-        game,
+        turn,
         card,
         selfCard,
         target
     }: ValidActionRequest) {
-        game.getLastTurn().addAction(Action.EXTORQUIR);
-        game.getLastTurn().addTarget(target as Player);
-        game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
+        turn.addAction(Action.EXTORQUIR);
+        turn.addTarget(target as Player);
+        turn.addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
     }
 
-    finish(): boolean {
-        return false;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_REPLY;
     }
 
     actionInfos({

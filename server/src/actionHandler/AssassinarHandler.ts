@@ -1,12 +1,12 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class AssassinarHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         card,
         selfCard,
@@ -31,7 +31,7 @@ export default class AssassinarHandler implements ActionHandler {
         if (!isCardSlot(targetCard))
             throw new Error("O index da carta do inimigo deve ser 0 ou 1");
 
-        if (!game.getConfigs().tiposCartas[card].assassinar)
+        if (!configs.tiposCartas[card].assassinar)
             throw new Error("O tipo de carta escolhida não pode assassinar");
 
         if (player.getCard(selfCard).getIsKilled())
@@ -40,29 +40,30 @@ export default class AssassinarHandler implements ActionHandler {
         if (target.getCard(targetCard).getIsKilled())
             throw new Error("A carta do inimigo escolhida já está morta");
 
-        if (player.getMoney() < game.getConfigs().tiposCartas[card].quantidadeAssassinar)
+        if (player.getMoney() < configs.tiposCartas[card].quantidadeAssassinar)
             throw new Error("O player não tem dinheiro suficiente para assassinar");
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         card,
         selfCard,
         target,
         targetCard
     }: ValidActionRequest) {
-        player.removeMoney(game.getConfigs().tiposCartas[card as CardType].quantidadeAssassinar);
+        player.removeMoney(configs.tiposCartas[card as CardType].quantidadeAssassinar);
 
-        game.getLastTurn().addAction(Action.ASSASSINAR);
-        game.getLastTurn().addTarget(target as Player);
-        game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
-        game.getLastTurn().addCard(targetCard as CardSlot);
+        turn.addAction(Action.ASSASSINAR);
+        turn.addTarget(target as Player);
+        turn.addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
+        turn.addCard(targetCard as CardSlot);
     }
 
-    finish(): boolean {
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_REPLY;
     }
 
     actionInfos({

@@ -1,18 +1,17 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import Player, { CardSlot } from "@entitys/player";
+import Config from "@utils/Config";
+import Turn from "@entitys/Turn";
 
 export default class ContinuarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
 
     validate({
-        game
+        turn
     }: ActionRequest): void {
-        const turn = game.getLastTurn();
-
         if (
             [Action.CONTINUAR, Action.CONTESTAR].includes(turn.getLastAction() as Action)
             &&
@@ -22,36 +21,37 @@ export default class ContinuarHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         target
     }: ValidActionRequest) {
-        const action = game.getLastTurn().getLastAction();
-
-        game.getLastTurn().addAction(Action.CONTINUAR);
+        const action = turn.getLastAction();
 
         switch (action) {
-            case Action.EXTORQUIR: this.saveExtorquir(game, player, target as Player); break;
-            case Action.ASSASSINAR: this.saveAssassinar(game, player); break;
+            case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, target as Player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(turn, player); break;
             case Action.INVESTIGAR: this.saveInvestigar(); break;
             case Action.CONTINUAR: this.saveContinuar(); break;
-            case Action.BLOQUEAR: this.saveBloquear(game, player); break;
+            case Action.BLOQUEAR: this.saveBloquear(turn, configs, player); break;
             case Action.CONTESTAR: this.saveContestar(); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
         }
+
+        turn.addAction(Action.CONTINUAR);
     }
 
-    private saveExtorquir(game: Game, player: Player, target: Player) {
-        const cardType = game.getLastTurn().getFirstCardType() as CardType;
+    private saveExtorquir(turn: Turn, configs: Config, player: Player, target: Player) {
+        const cardType = turn.getFirstCardType() as CardType;
 
-        const extorquirAmount = game.getConfigs().tiposCartas[cardType].quantidadeExtorquir;
+        const extorquirAmount = configs.tiposCartas[cardType].quantidadeExtorquir;
 
         player.removeMoney(extorquirAmount);
         target.addMoney(extorquirAmount);
     }
 
-    private saveAssassinar(game: Game, player: Player) {
-        const card = game.getLastTurn().getLastCard() as CardSlot;
+    private saveAssassinar(turn: Turn, player: Player) {
+        const card = turn.getLastCard() as CardSlot;
 
         player.killCard(card);
     }
@@ -68,12 +68,12 @@ export default class ContinuarHandler implements ActionHandler {
         this.isInvestigating = true;
     }
 
-    private saveBloquear(game: Game, player: Player) {
-        const action = game.getLastTurn().getFirstAction() as Action;
+    private saveBloquear(turn: Turn, configs: Config, player: Player) {
+        const action = turn.getFirstAction() as Action;
 
         switch (action) {
-            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(game, player); break;
-            case Action.TAXAR: this.saveBloquearTaxar(game, player); break;
+            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(configs, player); break;
+            case Action.TAXAR: this.saveBloquearTaxar(turn, configs, player); break;
             case Action.EXTORQUIR: this.saveBloquearExtorquir(); break;
             case Action.ASSASSINAR: this.saveBloquearAssassinar(); break;
             case Action.INVESTIGAR: this.saveBloquearInvestigar(); break;
@@ -82,14 +82,14 @@ export default class ContinuarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearAjudaExterna(game: Game, player: Player) {
-        player.removeMoney(game.getConfigs().ajudaExterna);
+    private saveBloquearAjudaExterna(configs: Config, player: Player) {
+        player.removeMoney(configs.ajudaExterna);
     }
     
-    private saveBloquearTaxar(game: Game, player: Player) {
-        const cardType = game.getLastTurn().getFirstCardType() as CardType;
+    private saveBloquearTaxar(turn: Turn, configs: Config, player: Player) {
+        const cardType = turn.getFirstCardType() as CardType;
 
-        player.removeMoney(game.getConfigs().tiposCartas[cardType].quantidadeTaxar);
+        player.removeMoney(configs.tiposCartas[cardType].quantidadeTaxar);
     }
 
     private saveBloquearExtorquir() {}
@@ -102,13 +102,11 @@ export default class ContinuarHandler implements ActionHandler {
         player.rollbackCards();
     }
 
-    finish(game: Game): boolean {
-        if (this.isInvestigating)
-            return false;
-
-        game.getLastTurn().finish();
-
-        return false;
+    finish(): TurnState {
+        return this.isInvestigating ? 
+            TurnState.TURN_WAITING_REPLY
+            :
+            TurnState.TURN_FINISHED;
     }
 
     actionInfos({

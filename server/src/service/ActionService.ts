@@ -1,14 +1,17 @@
 import type { ActionInfos } from "@services/GameMessageService";
 import GameService from "@services/GameService";
 import PlayerService from "@services/PlayerService";
-import ActionHandler from "@actionHandlers/ActionHandler";
-import ActionHandlerFactory from "@actionHandlers/ActionHandlerFactory";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import type Player from "@entitys/player";
-import type { CardSlot } from "@entitys/player";
 import type Turn from "@entitys/Turn";
+import ActionHandlerFacade from "@actionHandlers/ActionHandlerFacade";
+import { TurnState } from "@actionHandlers/ActionHandler";
+
+export type ActionResults = {
+    turn: Turn,
+    actionInfos: ActionInfos
+}
 
 export default class ActionService {
     static lobbys: {
@@ -22,58 +25,42 @@ export default class ActionService {
         selfCard?: number,
         targetName?: string,
         targetCard?: number
-    ): ActionInfos {
+    ): ActionResults {
         const {
             lobbyId,
             game,
+            turn,
             player,
             target
-        } = ActionService.getInfosForAction(socketId, action, targetName);
+        } = ActionService.getInfosForAction(socketId, targetName);
 
-        ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), game.getLastTurn());
+        ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
-        const actionHandler: ActionHandler = ActionHandlerFactory.create(action);
-
-        actionHandler.validate({
+        const { actionInfos, turnState } = new ActionHandlerFacade(
             game,
+            turn,
+            action,
             player,
             card,
             selfCard,
             target,
             targetCard
-        });
+        ).handle();
 
-        actionHandler.save({
-            game,
-            player,
-            card,
-            selfCard: selfCard as CardSlot | undefined,
-            target,
-            targetCard: targetCard as CardSlot | undefined
-        });
-
-        if (
-            lobbyId in ActionService.lobbys
-            &&
-            game.getLastTurn() !== ActionService.lobbys[lobbyId]
-        ) {
-            ActionService.lobbys[lobbyId].finish(false);
-            delete ActionService.lobbys[lobbyId];
+        switch (turnState) {
+            case TurnState.TURN_FINISHED:
+                turn.finish();
+                break;
+            case TurnState.TURN_WAITING_REPLY: break;
+            case TurnState.TURN_WAITING_TIMEOUT:
+                ActionService.lobbys[lobbyId] = turn;
+                break;
         }
 
-        const needTowait = actionHandler.finish(game);
-
-        if (needTowait)
-            ActionService.lobbys[lobbyId] = game.getLastTurn();
-
-        return actionHandler.actionInfos({
-            game,
-            player,
-            card,
-            selfCard: selfCard as CardSlot | undefined,
-            target,
-            targetCard: targetCard as CardSlot | undefined
-        });
+        return {
+            turn: turn,
+            actionInfos: actionInfos
+        }
     }
 
     private static validateSocketTurn(socketPlayer: Player, turn: Turn) {
@@ -114,7 +101,7 @@ export default class ActionService {
         throw new Error("Não é a vez do player");
     }
 
-    private static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
+    private static getInfosForAction(socketId: string, targetName: string | undefined) {
         const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
 
         const game = GameService.getPlayersGame(socketId);
@@ -122,10 +109,12 @@ export default class ActionService {
         if (game === undefined)
             throw new Error("Player is not playing a game");
 
-        const turn = ActionService.getCorrectTurn(game, action);
+        let turn = ActionService.lobbys[lobbyId];
 
-        if (turn !== game.getLastTurn())
-            game.removeLastTurn();
+        if (turn === undefined)
+            turn = game.getLastTurn();
+        else
+            delete ActionService.lobbys[lobbyId];
 
         const player = PlayerService.getPlayer(socketId);
 
@@ -141,28 +130,9 @@ export default class ActionService {
         return {
             lobbyId,
             game,
+            turn,
             player,
             target
         }
-    }
-
-    private static getCorrectTurn(game: Game, action: Action): Turn {
-        const lastTurn = game.getLastTurn();
-        const preLastTurn = game.getTurn(-2);
-
-        if (
-            preLastTurn !== undefined
-            &&
-            !preLastTurn.isfinished
-            &&
-            ActionService.isDefenseAction(action)
-        )
-            return preLastTurn;
-
-        return lastTurn;
-    }
-
-    private static isDefenseAction(action: Action): boolean {
-        return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
     }
 }

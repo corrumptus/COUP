@@ -1,11 +1,14 @@
 import type { ActionInfos } from "@services/GameMessageService";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import type Player from "@entitys/player";
 import type { CardSlot } from "@entitys/player";
+import Config from "@utils/Config";
+import Turn from "@entitys/Turn";
 
 export type ActionRequest = {
-    game: Game,
+    turn: Turn,
+    configs: Config,
+    asylumCoins: number,
     player: Player,
     card?: CardType,
     selfCard?: number,
@@ -14,7 +17,13 @@ export type ActionRequest = {
 }
 
 export type ValidActionRequest = {
-    game: Game,
+    turn: Turn,
+    configs: Config,
+    asylumAPI: {
+        get: () => number,
+        reset: () => void,
+        add: (amount: number) => void
+    },
     player: Player,
     card?: CardType,
     selfCard?: CardSlot,
@@ -22,12 +31,18 @@ export type ValidActionRequest = {
     targetCard?: CardSlot
 }
 
+export enum TurnState {
+    TURN_FINISHED,
+    TURN_WAITING_REPLY,
+    TURN_WAITING_TIMEOUT
+}
+
 export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): void;
     /**
-     * @returns {boolean} return if the action needs to wait another player to act
+     * @returns {TurnState} return if the turn must be finished or waiting for something
      */
-    abstract finish(game: Game): boolean;
+    abstract finish(): TurnState;
     abstract actionInfos(request: ValidActionRequest): ActionInfos;
 }

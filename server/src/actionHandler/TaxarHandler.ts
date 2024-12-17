@@ -1,13 +1,12 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class TaxarHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         card,
         selfCard,
@@ -21,7 +20,7 @@ export default class TaxarHandler implements ActionHandler {
         if (!isCardSlot(selfCard))
             throw new Error("O index da carta do jogador deve ser 0 ou 1");
 
-        if (!game.getConfigs().tiposCartas[card].taxar)
+        if (!configs.tiposCartas[card].taxar)
             throw new Error("O tipo de carta escolhida não pode taxar");
 
         if (player.getCard(selfCard).getIsKilled())
@@ -29,22 +28,21 @@ export default class TaxarHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         card,
         selfCard
     }: ValidActionRequest) {
-        player.addMoney(game.getConfigs().tiposCartas[card as CardType].quantidadeTaxar);
+        player.addMoney(configs.tiposCartas[card as CardType].quantidadeTaxar);
 
-        game.getLastTurn().addAction(Action.TAXAR);
-        game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
+        turn.addAction(Action.TAXAR);
+        turn.addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
     }
 
-    finish(game: Game): boolean {
-        game.nextPlayer();
-
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_TIMEOUT;
     }
 
     actionInfos({

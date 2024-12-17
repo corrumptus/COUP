@@ -1,34 +1,32 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import type Game from "@entitys/Game";
 
 export default class trocarPropriaReligiaoHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player
     }: ActionRequest): void {
-        if (!game.getConfigs().religiao.reforma)
+        if (!configs.religiao.reforma)
             throw new Error("O jogo não passou pela reforma e não possui religião");
 
-        if (player.getMoney() < game.getConfigs().religiao.quantidadeTrocarPropria)
+        if (player.getMoney() < configs.religiao.quantidadeTrocarPropria)
             throw new Error("O player não tem dinheiro suficiente para trocar sua própria religião");
     }
 
     save({
-        game,
+        turn,
+        configs,
         player
     }: ValidActionRequest) {
-        player.removeMoney(game.getConfigs().religiao.quantidadeTrocarPropria);
+        player.removeMoney(configs.religiao.quantidadeTrocarPropria);
         player.changeReligion();
 
-        game.getLastTurn().addAction(Action.TROCAR_PROPRIA_RELIGIAO);
+        turn.addAction(Action.TROCAR_PROPRIA_RELIGIAO);
     }
 
-    finish(game: Game): boolean {
-        game.getLastTurn().finish();
-
-        return false;
+    finish(): TurnState {
+        return TurnState.TURN_FINISHED;
     }
 
     actionInfos({

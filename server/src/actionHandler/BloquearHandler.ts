@@ -1,27 +1,27 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 import type Config from "@utils/Config";
 
 export default class BloquearHandler implements ActionHandler {
     validate({
-        game,
+        turn,
+        configs,
         player,
         card,
         selfCard
     }: ActionRequest): void {
-        const action = game.getLastTurn().getFirstAction();
+        const action = turn.getFirstAction();
 
         if (action === undefined)
             throw new Error("Bloquear não pode ser a primeira ação");
 
         if (this.dontNeedSelfCard(action))
-            this.validateActionsDontNeedSelfCard(game, action, card);
+            this.validateActionsDontNeedSelfCard(configs, action, card);
         else
-            this.validateActionsNeedSelfCard(game, player, action, card, selfCard);
+            this.validateActionsNeedSelfCard(configs, player, action, card, selfCard);
     }
 
     private dontNeedSelfCard(action: Action): boolean {
@@ -29,7 +29,7 @@ export default class BloquearHandler implements ActionHandler {
     }
 
     private validateActionsDontNeedSelfCard(
-        game: Game,
+        configs: Config,
         action: Action,
         card: CardType | undefined
     ): void {
@@ -39,13 +39,13 @@ export default class BloquearHandler implements ActionHandler {
         if (!this.canBlock(
             action,
             card,
-            game.getConfigs()
+            configs
         ))
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
     }
 
     private validateActionsNeedSelfCard(
-        game: Game,
+        configs: Config,
         player: Player,
         action: Action,
         card: CardType | undefined,
@@ -63,7 +63,7 @@ export default class BloquearHandler implements ActionHandler {
         if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (!this.canBlock(action, card, game.getConfigs()))
+        if (!this.canBlock(action, card, configs))
             throw new Error("O tipo de carta escolhida não pode bloquear está ação");
     }
 
@@ -80,12 +80,12 @@ export default class BloquearHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
         player,
         card,
         selfCard
     }: ValidActionRequest): void {
-        const lastAction = game.getLastTurn().getLastAction() as Action;
+        const lastAction = turn.getLastAction() as Action;
 
         const dontNeedAddSelfCardActions = [
             Action.ASSASSINAR,
@@ -98,19 +98,19 @@ export default class BloquearHandler implements ActionHandler {
             Action.TROCAR
         ];
 
-        game.getLastTurn().addAction(Action.BLOQUEAR);
+        turn.addAction(Action.BLOQUEAR);
 
-        game.getLastTurn().addCardType(card as CardType);
+        turn.addCardType(card as CardType);
 
         if (!dontNeedAddSelfCardActions.includes(lastAction))
-            game.getLastTurn().addCard(selfCard as CardSlot);
+            turn.addCard(selfCard as CardSlot);
 
         if (needTargetActions.includes(lastAction))
-            game.getLastTurn().addTarget(player);
+            turn.addTarget(player);
     }
 
-    finish(): boolean {
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_REPLY;
     }
 
     actionInfos({

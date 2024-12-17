@@ -1,16 +1,15 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import type Game from "@entitys/Game";
 import type Player from "@entitys/player";
 
 export default class trocarReligiaoOutroHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         target
     }: ActionRequest): void {
-        if (!game.getConfigs().religiao.reforma)
+        if (!configs.religiao.reforma)
             throw new Error("O jogo não passou pela reforma e não possui religião");
 
         if (target === undefined)
@@ -19,26 +18,25 @@ export default class trocarReligiaoOutroHandler implements ActionHandler {
         if (!target.hasNonKilledCards)
             throw new Error("O inimigo já está morto");
 
-        if (player.getMoney() < game.getConfigs().religiao.quantidadeTrocarOutro)
+        if (player.getMoney() < configs.religiao.quantidadeTrocarOutro)
             throw new Error("O player não tem dinheiro suficiente para trocar a religião do inimigo");
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         target
     }: ValidActionRequest) {
-        player.removeMoney(game.getConfigs().religiao.quantidadeTrocarOutro);
+        player.removeMoney(configs.religiao.quantidadeTrocarOutro);
         (target as Player).changeReligion();
 
-        game.getLastTurn().addAction(Action.TROCAR_RELIGIAO_OUTRO);
-        game.getLastTurn().addTarget(target as Player);
+        turn.addAction(Action.TROCAR_RELIGIAO_OUTRO);
+        turn.addTarget(target as Player);
     }
 
-    finish(game: Game): boolean {
-        game.getLastTurn().finish();
-
-        return false;
+    finish(): TurnState {
+        return TurnState.TURN_FINISHED;
     }
 
     actionInfos({

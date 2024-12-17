@@ -1,12 +1,12 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class InvestigarHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         card,
         selfCard,
@@ -31,7 +31,7 @@ export default class InvestigarHandler implements ActionHandler {
         if (!isCardSlot(targetCard))
             throw new Error("O index da carta do inimigo deve ser 0 ou 1");
 
-        if (!game.getConfigs().tiposCartas[card].investigar)
+        if (!configs.tiposCartas[card].investigar)
             throw new Error("O tipo de carta escolhida não pode investigar");
 
         if (player.getCard(selfCard).getIsKilled())
@@ -42,21 +42,21 @@ export default class InvestigarHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
         card,
         selfCard,
         target,
         targetCard
     }: ValidActionRequest) {
-        game.getLastTurn().addAction(Action.INVESTIGAR);
-        game.getLastTurn().addTarget(target as Player);
-        game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
-        game.getLastTurn().addCard(targetCard as CardSlot);
+        turn.addAction(Action.INVESTIGAR);
+        turn.addTarget(target as Player);
+        turn.addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
+        turn.addCard(targetCard as CardSlot);
     }
 
-    finish(): boolean {
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_REPLY;
     }
 
     actionInfos({

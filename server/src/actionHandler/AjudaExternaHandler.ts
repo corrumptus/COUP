@@ -1,21 +1,18 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import type Game from "@entitys/Game";
 
 export default class AjudaExternaHandler implements ActionHandler {
     validate(): void {}
 
-    save({ game, player }: ValidActionRequest): void {
-        player.addMoney(game.getConfigs().ajudaExterna);
+    save({ turn, configs, player }: ValidActionRequest): void {
+        player.addMoney(configs.ajudaExterna);
 
-        game.getLastTurn().addAction(Action.AJUDA_EXTERNA);
+        turn.addAction(Action.AJUDA_EXTERNA);
     }
 
-    finish(game: Game): boolean {
-        game.nextPlayer();
-
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_TIMEOUT;
     }
 
     actionInfos({ player }: ValidActionRequest): ActionInfos {

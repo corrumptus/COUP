@@ -1,12 +1,11 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
-import type Game from "@entitys/Game";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class GolpeEstadoHandler implements ActionHandler {
     validate({
-        game,
+        configs,
         player,
         target,
         targetCard
@@ -20,7 +19,7 @@ export default class GolpeEstadoHandler implements ActionHandler {
         if (!isCardSlot(targetCard))
             throw new Error("O index da carta do inimigo deve ser 0 ou 1");
 
-        if (player.getMoney() < game.getConfigs().quantidadeMinimaGolpeEstado)
+        if (player.getMoney() < configs.quantidadeMinimaGolpeEstado)
             throw new Error("O player não tem dinheiro suficiente para dar um golpe de estado");
 
         if (target.getCard(targetCard).getIsKilled())
@@ -28,24 +27,23 @@ export default class GolpeEstadoHandler implements ActionHandler {
     }
 
     save({
-        game,
+        turn,
+        configs,
         player,
         target,
         targetCard
     }: ValidActionRequest) {
-        player.removeMoney(game.getConfigs().quantidadeMinimaGolpeEstado);
+        player.removeMoney(configs.quantidadeMinimaGolpeEstado);
 
         (target as Player).killCard(targetCard as CardSlot);
 
-        game.getLastTurn().addAction(Action.GOLPE_ESTADO);
-        game.getLastTurn().addTarget(target as Player);
-        game.getLastTurn().addCard(targetCard as CardSlot);
+        turn.addAction(Action.GOLPE_ESTADO);
+        turn.addTarget(target as Player);
+        turn.addCard(targetCard as CardSlot);
     }
 
-    finish(game: Game): boolean {
-        game.getLastTurn().finish();
-
-        return false;
+    finish(): TurnState {
+        return TurnState.TURN_FINISHED;
     }
 
     actionInfos({

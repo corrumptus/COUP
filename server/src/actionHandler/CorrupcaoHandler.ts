@@ -1,13 +1,13 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
-import type Game from "@entitys/Game";
 import { CardSlot, isCardSlot } from "@entitys/player";
 
 export default class CorrupcaoHandler implements ActionHandler {
     validate({
-        game,
+        configs,
+        asylumCoins,
         player,
         card,
         selfCard
@@ -21,38 +21,40 @@ export default class CorrupcaoHandler implements ActionHandler {
         if (!isCardSlot(selfCard))
             throw new Error("O index da carta do jogador deve ser 0 ou 1");
 
-        if (!game.getConfigs().religiao.reforma)
+        if (!configs.religiao.reforma)
             throw new Error("Não é possível usar corrupção sem ter religião habilitado");
 
-        if (!game.getConfigs().religiao.cartasParaCorrupcao[card])
+        if (!configs.religiao.cartasParaCorrupcao[card])
             throw new Error("O tipo de carta escolhida não pode corromper");
 
         if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
 
-        if (game.getAsylumCoins() === 0)
+        if (asylumCoins === 0)
             throw new Error("O asilo não possui moedas para serem pegas");
     }
 
     save({
-        game,
+        turn,
+        asylumAPI: {
+            get,
+            reset
+        },
         player,
         card,
         selfCard
     }: ValidActionRequest) {
-        player.addMoney(game.getAsylumCoins());
+        player.addMoney(get());
 
-        game.resetAsylumCoins();
+        reset();
 
-        game.getLastTurn().addAction(Action.CORRUPCAO);
-        game.getLastTurn().addCardType(card as CardType);
-        game.getLastTurn().addCard(selfCard as CardSlot);
+        turn.addAction(Action.CORRUPCAO);
+        turn.addCardType(card as CardType);
+        turn.addCard(selfCard as CardSlot);
     }
 
-    finish(game: Game): boolean {
-        game.nextPlayer();
-
-        return true;
+    finish(): TurnState {
+        return TurnState.TURN_WAITING_TIMEOUT;
     }
 
     actionInfos({
