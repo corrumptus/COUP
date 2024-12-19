@@ -67,9 +67,9 @@ export default class ContestarHandler implements ActionHandler {
         target,
         selfCard
     }: ValidActionRequest): void {
-        turn.addAction(Action.CONTESTAR);
-
         const action = turn.getLastAction();
+
+        turn.addAction(Action.CONTESTAR);
 
         switch (action) {
             case Action.TAXAR: this.saveTaxar(turn, configs, player, selfCard as CardSlot, target as Player); break;
