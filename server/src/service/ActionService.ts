@@ -15,7 +15,10 @@ export type ActionResults = {
 
 export default class ActionService {
     static lobbys: {
-        [id: number]: Turn
+        [id: number]: {
+            turn: Turn,
+            isWaitingTimeOut: boolean
+        }
     } = {};
 
     static makeAction(
@@ -32,7 +35,16 @@ export default class ActionService {
             turn,
             player,
             target
-        } = ActionService.getInfosForAction(socketId, targetName);
+        } = ActionService.getInfosForAction(socketId, action, targetName);
+
+        const preLastTurn = game.getTurn(-2);
+
+        if (
+            preLastTurn !== undefined
+            &&
+            turn !== preLastTurn
+        )
+            preLastTurn.finish(false);
 
         ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
@@ -51,9 +63,18 @@ export default class ActionService {
             case TurnState.TURN_FINISHED:
                 turn.finish();
                 break;
-            case TurnState.TURN_WAITING_REPLY: break;
+            case TurnState.TURN_WAITING_REPLY:
+                ActionService.lobbys[lobbyId] = {
+                    turn: turn,
+                    isWaitingTimeOut: false
+                };
+                break;
             case TurnState.TURN_WAITING_TIMEOUT:
-                ActionService.lobbys[lobbyId] = turn;
+                game.nextPlayer();
+                ActionService.lobbys[lobbyId] = {
+                    turn: turn,
+                    isWaitingTimeOut: true
+                };
                 break;
         }
 
@@ -101,7 +122,7 @@ export default class ActionService {
         throw new Error("Não é a vez do player");
     }
 
-    private static getInfosForAction(socketId: string, targetName: string | undefined) {
+    private static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
         const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
 
         const game = GameService.getPlayersGame(socketId);
@@ -109,12 +130,36 @@ export default class ActionService {
         if (game === undefined)
             throw new Error("Player is not playing a game");
 
-        let turn = ActionService.lobbys[lobbyId];
+        let turn: Turn = game.getLastTurn();
+        const cur = ActionService.lobbys[lobbyId];
 
-        if (turn === undefined)
-            turn = game.getLastTurn();
-        else
+        if (cur !== undefined) {
+            if (
+                cur.isWaitingTimeOut &&
+                ActionService.iswaitingTimeoutAction(cur.turn.getLastAction()) &&
+                ActionService.isCounterAction(action)
+            )
+                turn = cur.turn;
+
+            if (
+                !cur.isWaitingTimeOut &&
+                (
+                    (
+                        ActionService.isWaitingReplyAction(cur.turn.getLastAction()) &&
+                        ActionService.isReplyAction(action)
+                    )
+                    ||
+                    (
+                        cur.turn.getLastAction() === Action.INVESTIGAR
+                        &&
+                        ActionService.isWaitingInvestigarReplyAction(action)
+                    )
+                )
+            )
+                turn = cur.turn;
+
             delete ActionService.lobbys[lobbyId];
+        }
 
         const player = PlayerService.getPlayer(socketId);
 
@@ -134,5 +179,41 @@ export default class ActionService {
             player,
             target
         }
+    }
+
+    private static iswaitingTimeoutAction(action: Action | undefined): boolean {
+        return ([
+            Action.AJUDA_EXTERNA,
+            Action.TAXAR,
+            Action.CORRUPCAO,
+            Action.TROCAR
+        ] as (Action|undefined)[])
+            .includes(action);
+    }
+
+    private static isCounterAction(action: Action): boolean {
+        return [Action.CONTESTAR, Action.BLOQUEAR].includes(action);
+    }
+
+    private static isWaitingReplyAction(action: Action | undefined): boolean {
+        return ([
+            Action.EXTORQUIR,
+            Action.ASSASSINAR,
+            Action.INVESTIGAR,
+            Action.BLOQUEAR
+        ] as (Action|undefined)[])
+            .includes(action);
+    }
+
+    private static isReplyAction(action: Action): boolean {
+        return [Action.CONTESTAR, Action.BLOQUEAR, Action.CONTINUAR].includes(action);
+    }
+
+    private static isWaitingInvestigarReplyAction(action: Action | undefined): boolean {
+        return ([
+            Action.CONTESTAR,
+            Action.CONTINUAR,
+        ] as (Action|undefined)[])
+            .includes(action);
     }
 }

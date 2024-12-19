@@ -10,8 +10,8 @@ enum Action {
     TROCAR = "trocar",
     TROCAR_PROPRIA_RELIGIAO = "trocarPropriaReligiao",
     TROCAR_RELIGIAO_OUTRO = "trocarReligiaoOutro",
-    CONTESTAR = "contestar",
     BLOQUEAR = "bloquear",
+    CONTESTAR = "contestar",
     CONTINUAR = "continuar"
 }
 
