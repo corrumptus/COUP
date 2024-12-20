@@ -4232,6 +4232,10 @@ describe("turn update in action sequences", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
+        const turn3 = game.getLastTurn();
+
         expect(turn1.isfinished).toBe(true);
+        expect(turn3).not.toBe(turn1);
+        expect(turn3).not.toBe(turn2);
     });
 });
