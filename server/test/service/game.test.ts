@@ -4203,14 +4203,35 @@ describe("turn update in action sequences", () => {
         expect(turn1.isfinished).toBe(true);
         expect(turn2.isfinished).toBe(true);
     });
+
+    it("should remove new turn when using waiting timeout actions and using counter actions", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn1 = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        const turn2 = game.getLastTurn();
+
+        expect(turn2).not.toBe(turn1);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.getGame().getLastTurn()).toBe(turn1);
+        expect(gameClient.getGame().getLastTurn()).not.toBe(turn2);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        expect(turn1.isfinished).toBe(true);
+    });
 });
-
-/*
-1 0 1
-    - 1º(1): contrutor
-    - 2º(0): next turn    
-    - 3º(1): next turn 
-
-
-    falta um remove last turn quando usado o bloquear
-*/

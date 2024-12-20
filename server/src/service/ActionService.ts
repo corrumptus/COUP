@@ -46,6 +46,10 @@ export default class ActionService {
         )
             preLastTurn.finish(false);
 
+        if (
+            ActionService
+        )
+
         ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
         const { actionInfos, turnState } = new ActionHandlerFacade(
@@ -138,23 +142,22 @@ export default class ActionService {
                 cur.isWaitingTimeOut &&
                 ActionService.iswaitingTimeoutAction(cur.turn.getLastAction()) &&
                 ActionService.isCounterAction(action)
+            ) {
+                turn = cur.turn;
+                game.removeLastTurn();
+            }
+
+            if (
+                !cur.isWaitingTimeOut &&
+                ActionService.isWaitingReplyAction(cur.turn.getLastAction()) &&
+                ActionService.isReplyAction(action)
             )
                 turn = cur.turn;
 
             if (
                 !cur.isWaitingTimeOut &&
-                (
-                    (
-                        ActionService.isWaitingReplyAction(cur.turn.getLastAction()) &&
-                        ActionService.isReplyAction(action)
-                    )
-                    ||
-                    (
-                        cur.turn.getLastAction() === Action.INVESTIGAR
-                        &&
-                        ActionService.isWaitingInvestigarReplyAction(action)
-                    )
-                )
+                cur.turn.getLastAction() === Action.INVESTIGAR &&
+                ActionService.isWaitingInvestigarReplyAction(action)
             )
                 turn = cur.turn;
 
