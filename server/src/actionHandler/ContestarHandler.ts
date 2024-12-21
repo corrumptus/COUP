@@ -339,7 +339,7 @@ export default class ContestarHandler implements ActionHandler {
         return this.isInvestigating ?
             TurnState.TURN_WAITING_REPLY
             :
-            TurnState.TURN_WAITING_REPLY;
+            TurnState.TURN_FINISHED;
     }
 
     actionInfos({
