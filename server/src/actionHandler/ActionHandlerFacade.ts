@@ -60,9 +60,9 @@ export default class ActionHandlerFacade {
             turn: this.turn,
             configs: this.game.getConfigs(),
             asylumAPI: {
-                get: this.game.getAsylumCoins,
-                reset: this.game.resetAsylumCoins,
-                add: this.game.addAsylumCoins
+                get: () => this.game.getAsylumCoins(),
+                reset: () => this.game.resetAsylumCoins(),
+                add: (amount: number) => this.game.addAsylumCoins(amount)
             },
             player: this.player,
             card: this.cardType,

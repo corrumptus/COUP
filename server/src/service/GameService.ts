@@ -6,8 +6,6 @@ import PlayerService from "@services/PlayerService";
 import Action from "@entitys/Action";
 import type Game from "@entitys/Game";
 
-type ExcludeFirstIndex<A extends [...args: any[]]> = A extends [infer _, ...args: infer P] ? P : any;
-
 export default class GameService {
     static setListeners(socket: COUPSocket) {
         const lobbyId = PlayerService.getPlayersLobby(socket.id).id;
@@ -157,7 +155,7 @@ export default class GameService {
     private static socketEventHandler(
         lobbyId: number,
         socket: COUPSocket,
-        ...args: ExcludeFirstIndex<Parameters<typeof ActionService.makeAction>>
+        ...args: Parameters<typeof ActionService.makeAction> extends [infer _, ...args: infer P] ? P : any
     ) {
         try {
             const {
