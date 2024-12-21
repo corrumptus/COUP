@@ -4113,6 +4113,30 @@ describe("game, turn and players state in update", () => {
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
+
+    it("should have a winner when all players die", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
 });
 
 describe("turn update in action sequences", () => {
