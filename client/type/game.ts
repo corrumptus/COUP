@@ -57,7 +57,8 @@ export type GameState = {
         players: EnemyPlayer[],
         currentPlayer: string,
         asylum: number,
-        configs: Config
+        configs: Config,
+        winner?: string
     },
     context: {
         type: ContextType.INVESTIGATING,

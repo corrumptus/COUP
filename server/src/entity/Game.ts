@@ -1,5 +1,7 @@
-import Turn from "@entitys/Turn";
+import CardType from "@entitys/CardType";
 import type Player from "@entitys/player";
+import Religion from "@entitys/Religion";
+import Turn from "@entitys/Turn";
 import type Config from "@utils/Config";
 
 export default class Game {
@@ -31,6 +33,8 @@ export default class Game {
         if (hasPlayer)
             return;
 
+        player.onPlayerDie(() => this.signDie(player.name));
+
         this.players.push(player);
         this.nonKilledPlayers.push(player.name);
     }
@@ -52,6 +56,11 @@ export default class Game {
             this.turns.pop();
             this.nextPlayer();
         }
+
+        if (this.nonKilledPlayers.length === 1) {
+            this.winner = this.localizeWinner();
+            this.onWin();
+        }
     }
 
     private deliverCardsAndMoney() {
@@ -65,14 +74,12 @@ export default class Game {
     }
 
     private signDie(name: string): () => void {
-        return () => {
-            const index = this.nonKilledPlayers.indexOf(name);
+        const index = this.nonKilledPlayers.indexOf(name);
 
-            if (index === -1)
-                return;
+        if (index === -1)
+            return () => {};
 
-            this.nonKilledPlayers.splice(index, 1);
-        };
+        return () => this.nonKilledPlayers.splice(index, 1);
     }
 
     private get random(): number {
@@ -91,9 +98,7 @@ export default class Game {
         const player = this.players
             .find(p => p.name === this.nonKilledPlayers[this.currentPlayer]) as Player;
 
-        const newTurn = new Turn(player, () => this.nextPlayer());
-
-        this.turns.push(newTurn);
+        this.turns.push(new Turn(player, () => this.nextPlayer()));
     }
 
     get isEnded(): boolean {
@@ -149,8 +154,31 @@ export default class Game {
             % this.nonKilledPlayers.length;
     }
 
-    getState() {
-        return {
+    getState(): {
+        players: {
+            name: string;
+            cards: {
+                card: CardType | undefined;
+                isDead: boolean;
+            }[];
+            money: number;
+            religion: Religion | undefined;
+        }[],
+        currentPlayer: string,
+        asylum: number,
+        configs: Config,
+        winner?: string
+    } {
+        return this.winner !== undefined ?
+        {
+            players: this.players.map(p => p.toEnemyInfo()),
+            currentPlayer: this.players[this.currentPlayer].name,
+            asylum: this.asylum,
+            configs: this.configs,
+            winner: this.winner.name
+        }
+        :
+        {
             players: this.players.map(p => p.toEnemyInfo()),
             currentPlayer: this.players[this.currentPlayer].name,
             asylum: this.asylum,
