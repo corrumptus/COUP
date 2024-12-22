@@ -9,11 +9,11 @@ import type LobbyState from "@type/lobby";
 import type { COUPSocket } from "@type/socket";
 
 export default function LobbyView({
-  initGame,
+  goToGameView,
   socket,
   changeIdWhenCreating
 }: {
-  initGame: (gameState: GameState) => void,
+  goToGameView: () => void,
   socket: COUPSocket,
   changeIdWhenCreating: (id: number) => void
 }) {
@@ -100,11 +100,6 @@ export default function LobbyView({
       changeIdWhenCreating(lobbyId);
     });
 
-    socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
-      initGame(gameState);
-      localStorage.setItem("coup-sessionCode", sessionCode);
-    });
-
     socket.emit("canReceive");
 
     return () => {
@@ -117,7 +112,6 @@ export default function LobbyView({
       socket.removeAllListeners("leavingPlayer");
       socket.removeAllListeners("newOwner");
       socket.removeAllListeners("reconnectingLobby");
-      socket.removeAllListeners("beginMatch");
     };
   }, []);
 
@@ -133,7 +127,13 @@ export default function LobbyView({
         {canEdit ?
           <button
             className={`${lobbyState.lobby.players.length > 1 ? "bg-green-400" : "bg-stone-500"} text-white py-1 px-2 rounded-xl hover:shadow-md`}
-            onClick={() => lobbyState.lobby.players.length > 1 && socket.emit("beginMatch")}
+            onClick={() => {
+              if (lobbyState.lobby.players.length <= 1)
+                return;
+
+              goToGameView();
+              socket.emit("beginMatch");
+            }}
           >
             Começar
           </button>

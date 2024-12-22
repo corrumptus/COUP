@@ -1,22 +1,42 @@
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import GameMobileView from "@pages/GameMobileView";
 import GamePCView from "@pages/GamePCView";
 import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
 import { newToaster } from "@utils/Toasters";
 import type { COUPSocket } from "@type/socket";
-import type { EnemyPlayer, GameState } from "@type/game";
+import { ContextType, type EnemyPlayer, type GameState } from "@type/game";
+import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
 export default function GameView({
-  gameState,
-  socket,
-  changeGameState
+  goToLobbyView,
+  socket
 }: {
-  gameState: GameState,
-  socket: COUPSocket,
-  changeGameState: Dispatch<SetStateAction<GameState | undefined>>
+  goToLobbyView: () => void,
+  socket: COUPSocket
 }) {
+  const [ gameState, setGameState ] = useState<GameState>({
+    player: {
+      cards: [],
+      money: 0,
+      name: "PlayerName",
+      religion: undefined
+    },
+    game: {
+      asylum: 0,
+      configs: COUPDefaultConfigs,
+      currentPlayer: "CurrentPlayer",
+      players: [],
+      winner: undefined
+    },
+    context: {
+      type: ContextType.OBSERVING,
+      attacker: "attacker",
+      isInvestigating: false,
+      winContesting: false
+    }
+  });
   const [ menuType, requeriments, changeUI ] = useUIChanger();
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const [ isNextPersonVisible, setIsNextPersonVisible ] = useState(false);
@@ -24,16 +44,21 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
+    socket.on("beginMatch", (gameState: GameState, sessionCode: string) => {
+      setGameState(gameState);
+      localStorage.setItem("coup-sessionCode", sessionCode);
+    });
+
     socket.on("gameActionError", (message: string) => {
       newToaster(message);
     });
 
     socket.on("updatePlayer", (newGameState: GameState) => {
-      changeGameState(newGameState);
+      setGameState(newGameState);
     });
 
     socket.on("addPlayer", (player: EnemyPlayer) => {
-      changeGameState(prevGameState => {
+      setGameState(prevGameState => {
         const newGameState: GameState = JSON.parse(JSON.stringify(prevGameState));
 
         newGameState.game.players.push(player);
@@ -43,7 +68,7 @@ export default function GameView({
     });
 
     socket.on("leavingPlayer", (player: string) => {
-      changeGameState(prevGameState => {
+      setGameState(prevGameState => {
         const newGameState: GameState = JSON.parse(JSON.stringify(prevGameState));
 
         const index = newGameState.game.players.findIndex(p => p.name === player);
@@ -62,6 +87,7 @@ export default function GameView({
     return () => {
       socket.emit("cantReceive");
 
+      socket.removeAllListeners("beginMatch");
       socket.removeAllListeners("gameActionError");
       socket.removeAllListeners("updatePlayer");
       socket.removeAllListeners("addPlayer");

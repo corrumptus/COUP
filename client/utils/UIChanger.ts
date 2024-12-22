@@ -144,6 +144,9 @@ function performUIChange(
         return [ menuType, requeriments ];
     }
 
+    if (gameState.game.winner !== undefined)
+        return [ menuType, requeriments ];
+
     const requestProblems = getRequestProblems(gameState, request, requeriments);
 
     if (requestProblems !== undefined) {

@@ -6,19 +6,23 @@ import { useState } from "react";
 import GameView from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
 import useSocket from "@utils/socketAPI";
-import type { GameState } from "@type/game";
+
+enum PageState {
+  LOBBY,
+  GAME
+}
 
 export default function EntrarLobby() {
   const { id } = useParams() as { id: string };
 
-  const [ gameState, setGameState ] = useState<GameState>();
+  const [ pageState, setPageState ] = useState<PageState>(PageState.LOBBY);
   const { socket, error } = useSocket(id === "-1" ? undefined : id);
 
   if (error !== undefined) return <Error error={error}/>
 
-  return gameState === undefined ?
+  return pageState === PageState.LOBBY ?
     <LobbyView
-      initGame={setGameState}
+      goToGameView={() => setPageState(PageState.GAME)}
       socket={socket}
       changeIdWhenCreating={(lobbyId: number) => {
         if (Number(id) !== lobbyId)
@@ -27,9 +31,8 @@ export default function EntrarLobby() {
     />
     :
     <GameView
-      gameState={gameState}
+      goToLobbyView={() => setPageState(PageState.LOBBY)}
       socket={socket}
-      changeGameState={setGameState}
     />
 }
 
@@ -41,7 +44,7 @@ function Error({ error }: { error: string }) {
       <div
         className="absolute top-2 left-2 flex gap-3 items-center cursor-pointer"
         onClick={() => {
-          localStorage.removeItem("coup-sessionCode")
+          localStorage.removeItem("coup-sessionCode");
           router.push("/");
         }}
       >
