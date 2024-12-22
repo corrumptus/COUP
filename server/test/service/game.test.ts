@@ -3324,7 +3324,7 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toBe(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player cards for using contestar after bloquear after investigar", async () => {
@@ -3514,7 +3514,7 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toBe(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player cards for using contestar after investigar", async () => {
@@ -3697,7 +3697,7 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).toBe(turn);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update target cards for using golpe de estado", async () => {
@@ -4261,5 +4261,69 @@ describe("turn update in action sequences", () => {
         expect(turn1.isfinished).toBe(true);
         expect(turn3).not.toBe(turn1);
         expect(turn3).not.toBe(turn2);
+    });
+
+    it("should finish correctly turns with continuar when using contestar after bloquear after investigar and winning", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            false,
+            [
+                CardType.INQUISIDOR,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn1 = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        const turn2 = game.getLastTurn();
+
+        gameClient.secondPlayerDo(Action.RENDA);
+
+        expect(turn2).not.toBe(turn1);
+        expect(turn1.isfinished).toBe(true);
+        expect(turn2.isfinished).toBe(true);
+    });
+
+    it("should finish correctly turns with continuar when using continuar after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+    
+        const game = gameClient.getGame();
+        const turn1 = game.getLastTurn();
+    
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+    
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+    
+        gameClient.firstPlayerDo(Action.CONTINUAR);
+
+        const turn2 = game.getLastTurn();
+
+        gameClient.secondPlayerDo(Action.RENDA);
+
+        expect(turn2).not.toBe(turn1);
+        expect(turn1.isfinished).toBe(true);
+        expect(turn2.isfinished).toBe(true);
     });
 });
