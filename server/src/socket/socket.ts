@@ -38,6 +38,9 @@ export interface RequestSocketOnEvents {
     "contestar": (selfCard?: number) => void;
     "bloquear": (card: CardType, selfCard?: number) => void;
     "continuar": () => void;
+
+    "finishMatch": () => void;
+    "restartMatch": () => void;
 }
 
 export interface ResponseSocketEmitEvents {

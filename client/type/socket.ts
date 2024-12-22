@@ -32,6 +32,9 @@ export type ResponseSocketEmitEvents = {
     "contestar": (selfCard?: number) => void;
     "bloquear": (card: Card, selfCard?: number) => void;
     "continuar": () => void;
+
+    "finishMatch": () => void;
+    "restartMatch": () => void;
 }
 
 export type RequestSocketOnEvents = {
