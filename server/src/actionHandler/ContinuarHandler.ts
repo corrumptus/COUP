@@ -8,6 +8,7 @@ import Turn from "@entitys/Turn";
 
 export default class ContinuarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
+    private isLastActionFinisher: boolean = false;
 
     validate({
         turn
@@ -62,10 +63,12 @@ export default class ContinuarHandler implements ActionHandler {
 
     private saveContinuar() {
         this.isInvestigating = true;
+        this.isLastActionFinisher = true;
     }
 
     private saveContestar() {
         this.isInvestigating = true;
+        this.isLastActionFinisher = true;
     }
 
     private saveBloquear(turn: Turn, configs: Config, player: Player) {
@@ -103,7 +106,7 @@ export default class ContinuarHandler implements ActionHandler {
     }
 
     finish(): TurnState {
-        return this.isInvestigating ? 
+        return this.isInvestigating && !this.isLastActionFinisher ? 
             TurnState.TURN_WAITING_REPLY
             :
             TurnState.TURN_FINISHED;
