@@ -1,7 +1,21 @@
 import { useState } from "react"
 import type Config from "@type/config";
 
-type InfoType = "duque" | "capitão" | "assassino" | "condessa" | "embaixador" | "inquisidor" | "ações" | "contra-ações" | "açõesCartas" | "religião"
+type InfoType = "duque" |
+  "capitão" |
+  "assassino" |
+  "condessa" |
+  "embaixador" |
+  "inquisidor" |
+  "ações" |
+  "contra-ações" |
+  "açõesCartas" |
+  "religião" |
+  "taxar" |
+  "extorquir" |
+  "assassinar" |
+  "investigar" |
+  "trocar";
 
 export default function CardGameInfos({
   configs,
@@ -11,7 +25,8 @@ export default function CardGameInfos({
   customStyles?: string
 }) {
   const [ infoType, setInfoType ] = useState<InfoType>("ações");
-  let children: JSX.Element | null = null;
+  let children: JSX.Element |
+  null = null;
 
   if (infoType === "ações") children = (
     <div className="h-full overflow-auto">
@@ -434,6 +449,266 @@ export default function CardGameInfos({
     </div>
   );
 
+  if (infoType === "taxar") children = (
+    <div className="h-full overflow-auto">
+      <h3 className="text-xl font-bold">Taxar</h3>
+      <div>
+        <h4 className="text-xl text-zinc-600">Usam</h4>
+        <ul>
+          {configs.tiposCartas.duque.taxar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.taxar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.taxar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.taxar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.taxar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.taxar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+      <div className="pt-3">
+        <h4 className="text-xl text-violet-700">Bloqueiam</h4>
+        <ul>
+          {configs.tiposCartas.duque.bloquearTaxar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.bloquearTaxar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.bloquearTaxar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.bloquearTaxar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.bloquearTaxar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.bloquearTaxar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+
+  if (infoType === "extorquir") children = (
+    <div className="h-full overflow-auto">
+      <h3 className="text-xl font-bold">Extorquir</h3>
+      <div>
+        <h4 className="text-xl text-zinc-600">Usam</h4>
+        <ul>
+          {configs.tiposCartas.duque.extorquir &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.extorquir &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.extorquir &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.extorquir &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.extorquir &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.extorquir &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+      <div className="pt-3">
+        <h4 className="text-xl text-violet-700">Bloqueiam</h4>
+        <ul>
+          {configs.tiposCartas.duque.bloquearExtorquir &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.bloquearExtorquir &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.bloquearExtorquir &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.bloquearExtorquir &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.bloquearExtorquir &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.bloquearExtorquir &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+
+  if (infoType === "assassinar") children = (
+    <div className="h-full overflow-auto">
+      <h3 className="text-xl font-bold">Assassinar</h3>
+      <div>
+        <h4 className="text-xl text-zinc-600">Usam</h4>
+        <ul>
+          {configs.tiposCartas.duque.assassinar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.assassinar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.assassinar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.assassinar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.assassinar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.assassinar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+      <div className="pt-3">
+        <h4 className="text-xl text-violet-700">Bloqueiam</h4>
+        <ul>
+          {configs.tiposCartas.duque.bloquearAssassinar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.bloquearAssassinar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.bloquearAssassinar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.bloquearAssassinar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.bloquearAssassinar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.bloquearAssassinar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+
+  if (infoType === "investigar") children = (
+    <div className="h-full overflow-auto">
+      <h3 className="text-xl font-bold">Investigar</h3>
+      <div>
+        <h4 className="text-xl text-zinc-600">Usam</h4>
+        <ul>
+          {configs.tiposCartas.duque.investigar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.investigar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.investigar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.investigar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.investigar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.investigar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+      <div className="pt-3">
+        <h4 className="text-xl text-violet-700">Bloqueiam</h4>
+        <ul>
+          {configs.tiposCartas.duque.bloquearInvestigar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.bloquearInvestigar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.bloquearInvestigar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.bloquearInvestigar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.bloquearInvestigar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.bloquearInvestigar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+
+  if (infoType === "trocar") children = (
+    <div className="h-full overflow-auto">
+      <h3 className="text-xl font-bold">Trocar</h3>
+      <div>
+        <h4 className="text-xl text-zinc-600">Usam</h4>
+        <ul>
+          {configs.tiposCartas.duque.trocar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.trocar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.trocar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.trocar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.trocar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.trocar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+      <div className="pt-3">
+        <h4 className="text-xl text-violet-700">Bloqueiam</h4>
+        <ul>
+          {configs.tiposCartas.duque.bloquearTrocar &&
+            <li className="text-fuchsia-600">Duque</li>
+          }
+          {configs.tiposCartas.capitao.bloquearTrocar &&
+            <li className="text-green-600">Capitão</li>
+          }
+          {configs.tiposCartas.condessa.bloquearTrocar &&
+            <li className="text-rose-600">Condessa</li>
+          }
+          {configs.tiposCartas.assassino.bloquearTrocar &&
+            <li className="text-blue-700">Assassino</li>
+          }
+          {configs.tiposCartas.embaixador.bloquearTrocar &&
+            <li className="text-orange-500">Embaixador</li>
+          }
+          {configs.tiposCartas.inquisidor.bloquearTrocar &&
+            <li className="text-slate-500">Inquisidor</li>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+
   return (
     <div
       className={`h-[250px] w-[200px] p-4 bg-white rounded-2xl flex flex-col gap-1${" " + customStyles || ""}`}
@@ -456,6 +731,11 @@ export default function CardGameInfos({
         <option value="condessa">Condessa</option>
         <option value="embaixador">Embaixador</option>
         <option value="inquisidor">Inquisidor</option>
+        <option value="taxar">Taxar</option>
+        <option value="extorquir">Extorquir</option>
+        <option value="assassinar">Assassinar</option>
+        <option value="investigar">Investigar</option>
+        <option value="trocar">Trocar</option>
       </select>
       {children}
     </div>
