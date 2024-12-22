@@ -5,6 +5,7 @@ import LobbyService from "@services/LobbyService";
 import PlayerService from "@services/PlayerService";
 import Action from "@entitys/Action";
 import type Game from "@entitys/Game";
+import Lobby from "@entitys/Lobby";
 
 export default class GameService {
     static setListeners(socket: COUPSocket) {
@@ -177,8 +178,11 @@ export default class GameService {
         return lobby.getGame();
     }
 
-    static beginMatch(lobbyId: number) {
-        GameMessageService.beginMatch(lobbyId);
+    static beginMatch(lobby: Lobby) {
+        if (lobby.getState().players.length < 2)
+            return "Um jogo só pode ser criado com mais de 1 pessoa";
+
+        GameMessageService.beginMatch(lobby.id);
     }
 
     static addPlayer(lobbyId: number, socket: COUPSocket) {

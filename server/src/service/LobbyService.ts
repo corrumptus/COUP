@@ -65,9 +65,10 @@ export default class LobbyService {
             if (!lobby.isOwner(player))
                 return;
 
-            lobby.newGame();
+            const error = GameService.beginMatch(lobby);
 
-            GameService.beginMatch(lobby.id);
+            if (error !== undefined)
+                socket.emit("gameActionError", error);
         });
     }
 

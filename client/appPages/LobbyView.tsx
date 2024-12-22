@@ -132,8 +132,8 @@ export default function LobbyView({
       <Header leave={leave}>
         {canEdit ?
           <button
-            className="bg-green-400 text-white py-1 px-2 rounded-xl hover:shadow-md"
-            onClick={() => socket.emit("beginMatch")}
+            className={`${lobbyState.lobby.players.length > 1 ? "bg-green-400" : "bg-stone-500"} text-white py-1 px-2 rounded-xl hover:shadow-md`}
+            onClick={() => lobbyState.lobby.players.length > 1 && socket.emit("beginMatch")}
           >
             Começar
           </button>
