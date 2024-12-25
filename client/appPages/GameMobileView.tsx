@@ -6,6 +6,7 @@ import GameMobileMenu from "@components/game/GameMobileMenu";
 import Header from "@components/game/Header";
 import NextPerson from "@components/game/NextPerson";
 import Players from "@components/game/Players";
+import WinnerView from "@components/game/WinnerView";
 import { configDiff } from "@utils/socketAPI";
 import Toasters from "@utils/Toasters";
 import type { GameState } from "@type/game";
@@ -24,7 +25,9 @@ export default function GameMobileView({
   menuType,
   requeriments,
   performChange,
-  leave
+  leave,
+  goToLobbyView,
+  restartMatch
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
@@ -34,7 +37,9 @@ export default function GameMobileView({
   menuType: MenuTypes,
   requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
-  leave: () => void
+  leave: () => void,
+  goToLobbyView: () => void,
+  restartMatch: () => void
 }) {
   const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
 
@@ -82,6 +87,15 @@ export default function GameMobileView({
             gameState={gameState}
             requeriments={requeriments}
             performChange={performChange}
+          />
+        }
+        {gameState.game.winner !== undefined &&
+          <WinnerView
+            name={gameState.game.winner}
+            isOwner={true}
+            leave={leave}
+            goToLobbyView={goToLobbyView}
+            restartMatch={restartMatch}
           />
         }
       </main>

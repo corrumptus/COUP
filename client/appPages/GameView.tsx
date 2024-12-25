@@ -6,7 +6,7 @@ import { useDeviceWidth } from "@utils/utils";
 import useUIChanger from "@utils/UIChanger";
 import { newToaster } from "@utils/Toasters";
 import type { COUPSocket } from "@type/socket";
-import { ContextType, type EnemyPlayer, type GameState } from "@type/game";
+import { Card, ContextType, EnemyPlayer, GameState } from "@type/game";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
 export default function GameView({
@@ -18,7 +18,16 @@ export default function GameView({
 }) {
   const [ gameState, setGameState ] = useState<GameState>({
     player: {
-      cards: [],
+      cards: [
+        {
+          card: Card.ASSASSINO,
+          isDead: false
+        },
+        {
+          card: Card.CAPITAO,
+          isDead: false
+        }
+      ],
       money: 0,
       name: "PlayerName",
       religion: undefined
@@ -110,6 +119,15 @@ export default function GameView({
     router.push("/");
   }
 
+  function goToOtherView() {
+    goToLobbyView();
+    socket.emit("finishMatch");
+  }
+
+  function restartMatch() {
+    socket.emit("restartMatch");
+  }
+
   return width < 800 ?
     <GameMobileView
       isDiffsVisible={isDiffsVisible}
@@ -121,6 +139,8 @@ export default function GameView({
       requeriments={requeriments}
       performChange={changeRequest => changeUI(socket, gameState, changeRequest)}
       leave={leave}
+      goToLobbyView={goToOtherView}
+      restartMatch={restartMatch}
     />
     :
     <GamePCView
@@ -133,5 +153,7 @@ export default function GameView({
       requeriments={requeriments}
       performChange={changeRequest => changeUI(socket, gameState, changeRequest)}
       leave={leave}
+      goToLobbyView={goToOtherView}
+      restartMatch={restartMatch}
     />
 }

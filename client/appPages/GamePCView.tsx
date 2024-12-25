@@ -13,6 +13,7 @@ import {
   ChangeRequest,
   MenuTypes
 } from "@type/gameUI";
+import WinnerView from "@components/game/WinnerView";
 
 export default function GamePCView({
   isDiffsVisible,
@@ -23,7 +24,9 @@ export default function GamePCView({
   menuType,
   requeriments,
   performChange,
-  leave
+  leave,
+  goToLobbyView,
+  restartMatch
 }: {
   isDiffsVisible: boolean,
   closeDiffs: () => void,
@@ -31,9 +34,11 @@ export default function GamePCView({
   closeNextPerson: () => void,
   gameState: GameState,
   menuType: MenuTypes,
-  requeriments: ActionRequeriments
+  requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
-  leave: () => void
+  leave: () => void,
+  goToLobbyView: () => void,
+  restartMatch: () => void
 }) {
   return (
     <div
@@ -80,6 +85,15 @@ export default function GamePCView({
             gameState={gameState}
             requeriments={requeriments}
             performChange={performChange}
+          />
+        }
+        {gameState.game.winner !== undefined &&
+          <WinnerView
+            name={gameState.game.winner}
+            isOwner={true}
+            leave={leave}
+            goToLobbyView={goToLobbyView}
+            restartMatch={restartMatch}
           />
         }
       </main>
