@@ -20,9 +20,10 @@
     "paths": {
       "@pages/*": ["./appPages/*"],
       "@components/*": ["./components/*"],
+      "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
       "@type/*": ["./type/*"],
-      "@tests/*": ["./tests/game/*"],
+      "@tests/*": ["./tests/game/*"]
     },
     "target": "ES2017"
   },

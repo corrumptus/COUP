@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
 import type Config from "@type/config";
 import { Action, Card, ContextType, GameState } from "@type/game";
 import { MenuTypes } from "@type/gameUI";
 import type { Differ } from "@type/utils";
 
-export interface CardColors {
-    cardColor: string
-    nameColor: string
-    coinColor: string
-    minusColor: string
-}
-
-export function generateColorCard(isDead: boolean = false): CardColors {
+export function generateColorCard(isDead: boolean = false): {
+    cardColor: string,
+    nameColor: string,
+    coinColor: string,
+    minusColor: string,
+} {
     if (isDead) return {
         cardColor: "bg-slate-500",
         nameColor: "text-white",
@@ -19,7 +16,7 @@ export function generateColorCard(isDead: boolean = false): CardColors {
         minusColor: "bg-red-300"
     }
 
-    const colors: CardColors[] = [
+    const colors = [
         {
             cardColor: "bg-red-800",
             nameColor: "text-white",
@@ -86,25 +83,9 @@ export function generateColorCard(isDead: boolean = false): CardColors {
             coinColor: "text-yellow-200",
             minusColor: "bg-red-500"
         }
-    ]
+    ];
 
     return colors[Math.floor(Math.random() * colors.length)];
-}
-
-export function useDeviceWidth() {
-    const [width, setWidth] = useState(() => window.screen.width);
-
-    function resize() {
-        setWidth(window.screen.width);
-    }
-
-    useEffect(() => {
-        window.addEventListener('resize', resize);
-
-        return () => window.removeEventListener('resize', resize);
-    }, []);
-
-    return width;
 }
 
 export function objectDiff<T>(base: T, differ: T): Differ<T> {

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionIcon from "@components/game/ReligionIcon";
-import { CardColors, generateColorCard } from "@utils/utils";
+import { generateColorCard } from "@utils/utils";
 import { Action, EnemyPlayer } from "@type/game";
 import { ChangeRequest, MenuTypes } from "@type/gameUI";
 
@@ -13,7 +13,7 @@ export default function PlayerCard({
   player: EnemyPlayer,
   performChange: (changeRequest: ChangeRequest) => void
 }) {
-  const [ colors ] = useState<CardColors>(generateColorCard())
+  const [ colors ] = useState(generateColorCard());
 
   return (
     <div
