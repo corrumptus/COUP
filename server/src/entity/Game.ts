@@ -10,16 +10,14 @@ export default class Game {
     private nonKilledPlayers: string[];
     private turns: Turn[];
     private winner: Player | undefined = undefined;
-    private onWin: () => void;
     private asylum: number;
     private configs: Config;
 
-    constructor(players: Player[], onWin: () => void, configs: Config, currentPlayer?: number) {
+    constructor(players: Player[], configs: Config, currentPlayer?: number) {
         this.players = players;
         this.currentPlayer = currentPlayer || this.random;
         this.nonKilledPlayers = players.map(p => p.name);
         this.turns = [ new Turn(this.players[this.currentPlayer], () => this.nextPlayer()) ];
-        this.onWin = onWin;
         this.asylum = configs.religiao.moedasIniciaisAsilo;
         this.configs = configs;
 
@@ -57,10 +55,8 @@ export default class Game {
             this.nextPlayer();
         }
 
-        if (this.nonKilledPlayers.length === 1) {
+        if (this.nonKilledPlayers.length === 1)
             this.winner = this.localizeWinner();
-            this.onWin();
-        }
     }
 
     private deliverCardsAndMoney() {
@@ -89,7 +85,6 @@ export default class Game {
     nextPlayer() {
         if (this.nonKilledPlayers.length === 1) {
             this.winner = this.localizeWinner();
-            this.onWin();
             return;
         }
 

@@ -100,7 +100,6 @@ export default class Lobby {
         if (this.currentGame === undefined) {
             this.currentGame = new Game(
                 this.players,
-                this.currentGameAlreadyFinish,
                 { ...COUPdefaultConfigs, ...this.configs }
             );
 
@@ -116,14 +115,9 @@ export default class Lobby {
 
         this.currentGame = new Game(
             this.players.map(p => p),
-            this.currentGameAlreadyFinish,
             { ...COUPdefaultConfigs, ...this.configs },
             winnerPosition === -1 ? 0 : winnerPosition
         );
-    }
-
-    currentGameAlreadyFinish() {
-        this.currentGame = undefined;
     }
 
     get isRunningGame(): boolean {

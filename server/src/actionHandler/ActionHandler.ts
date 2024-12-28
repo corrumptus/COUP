@@ -40,9 +40,6 @@ export enum TurnState {
 export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): void;
-    /**
-     * @returns {TurnState} return if the turn must be finished or waiting for something
-     */
     abstract finish(): TurnState;
     abstract actionInfos(request: ValidActionRequest): ActionInfos;
 }

@@ -235,6 +235,10 @@ export default class LobbyService {
         return lobby.isRunningGame;
     }
 
+    static finishMatch(lobby: Lobby) {
+        LobbyMessageService.finishMatch(lobby.id);
+    }
+
     static get allLobbys() {
         return LobbyService.lobbys
             .filter(lobby => !lobby.isEmpty && !lobby.isRunningGame)

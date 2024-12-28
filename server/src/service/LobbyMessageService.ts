@@ -56,4 +56,20 @@ export default class LobbyMessageService extends MessageService {
             ...values
         );
     }
+
+    static finishMatch(lobbyId: number) {
+        const lobby = super.getLobby(lobbyId);
+
+        if (lobby === undefined)
+            return;
+
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "playerConnected",
+            (_, name) => [
+                LobbyMessageService.calculateLobbyState(lobby, name)
+            ]
+        );
+    }
 }

@@ -151,6 +151,31 @@ export default class GameService {
                 Action.CONTINUAR
             )
         );
+
+        socket.on("finishMatch", () => {
+            const lobby = PlayerService.getPlayersLobby(socket.id);
+            const player = PlayerService.getPlayer(socket.id);
+
+            if (!lobby.isOwner(player))
+                return;
+
+            LobbyService.finishMatch(lobby);
+        });
+
+        socket.on("restartMatch", () => {
+            const lobby = PlayerService.getPlayersLobby(socket.id);
+            const player = PlayerService.getPlayer(socket.id);
+
+            if (!lobby.isOwner(player))
+                return;
+
+            if (lobby.getGame() !== undefined || !(lobby.getGame() as Game).isEnded)
+                return;
+
+            lobby.newGame();
+
+            GameService.beginMatch(lobby);
+        });
     }
 
     private static socketEventHandler(
@@ -178,9 +203,11 @@ export default class GameService {
         return lobby.getGame();
     }
 
-    static beginMatch(lobby: Lobby) {
+    static beginMatch(lobby: Lobby): string | void {
         if (lobby.getState().players.length < 2)
             return "Um jogo só pode ser criado com mais de 1 pessoa";
+
+        lobby.newGame();
 
         GameMessageService.beginMatch(lobby.id);
     }
