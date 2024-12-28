@@ -15,7 +15,7 @@ export function newToaster(children: string | JSX.Element) {
     if (prev.length === 3)
       toasters.splice(0, 1);
 
-    return [...toasters, <Toaster children={children} key={id} removeToaster={removeToaster}/>];
+    return [ ...toasters, <Toaster children={children} key={id} removeToaster={removeToaster} /> ];
   });
 
   setTimeout(removeToaster, 3000);

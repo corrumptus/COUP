@@ -5,7 +5,7 @@ import Header from "@components/game/Header";
 import NextPerson from "@components/game/NextPerson";
 import Players from "@components/game/Players";
 import ReligionButton from "@components/game/ReligionIcon";
-import { configDiff } from "@utils/socketAPI";
+import { configDiff } from "@utils/utils";
 import Toasters from "@utils/Toasters";
 import { Action, GameState } from "@type/game";
 import {

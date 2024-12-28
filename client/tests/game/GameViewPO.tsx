@@ -18,9 +18,8 @@ export default class GameViewPO {
 
     render(
       <GameView
-        gameState={gameState}
         socket={this.socket}
-        changeGameState={jest.fn()}
+        gameState={gameState}
       />
     );
   }

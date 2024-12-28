@@ -1,5 +1,10 @@
 import type { Action, Card } from "@type/game";
 
+export enum PlayPageState {
+  LOBBY,
+  GAME
+}
+
 export enum MenuTypes {
     CLOSED,
     MONEY,

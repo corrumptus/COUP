@@ -1,119 +1,20 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Configuracoes from "@components/game/Configuracoes";
 import Header from "@components/game/Header";
 import Player from "@components/game/Player";
-import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
-import type { GameState } from "@type/game";
 import type LobbyState from "@type/lobby";
 import type { COUPSocket } from "@type/socket";
 
 export default function LobbyView({
-  goToGameView,
   socket,
-  changeIdWhenCreating
+  lobbyState
 }: {
-  goToGameView: () => void,
   socket: COUPSocket,
-  changeIdWhenCreating: (id: number) => void
+  lobbyState: LobbyState
 }) {
-  const [ lobbyState, setLobbyState ] = useState<LobbyState>({
-    player: {
-      name: "name"
-    },
-    lobby: {
-      id: -1,
-      players: [],
-      owner: "owner",
-      configs: COUPDefaultConfigs,
-      password: undefined
-    }
-  });
-
   const canEdit = lobbyState.player.name === lobbyState.lobby.owner;
 
   const router = useRouter();
-
-  useEffect(() => {
-    socket.on("playerConnected", (lobbyState: LobbyState) => {
-      setLobbyState(lobbyState);
-      changeIdWhenCreating(lobbyState.lobby.id);
-    });
-
-    socket.on("configsUpdated", (keys: string[], value: number | boolean) => {
-      setLobbyState(prevLobbyState => {
-        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
-        let configParam: any = newLobbyState.lobby.configs;
-
-        for (let i = 0; i < keys.length-1; i++)
-          configParam = configParam[keys[i]];
-
-        configParam[keys.at(-1) as string] = value;
-
-        return newLobbyState;
-      });
-    });
-
-    socket.on("passwordUpdated", (password: string | undefined) => {
-      setLobbyState(prevLobbyState => {
-        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
-
-        newLobbyState.lobby.password = password;
-
-        return newLobbyState;
-      });
-    });
-
-    socket.on("newPlayer", (player: string) => {
-      setLobbyState(prevLobbyState => {
-        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
-
-        newLobbyState.lobby.players.push(player);
-
-        return newLobbyState;
-      });
-    });
-
-    socket.on("leavingPlayer", (player: string) => {
-      setLobbyState(prevLobbyState => {
-        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
-
-        const index = newLobbyState.lobby.players.indexOf(player);
-
-        newLobbyState.lobby.players.splice(index, 1);
-
-        return newLobbyState;
-      });
-    });
-
-    socket.on("newOwner", (player: string) => {
-      setLobbyState(prevLobbyState => {
-        const newLobbyState: LobbyState = JSON.parse(JSON.stringify(prevLobbyState));
-
-        newLobbyState.lobby.owner = player;
-
-        return newLobbyState;
-      });
-    });
-
-    socket.on("reconnectingLobby", (lobbyId: number) => {
-      changeIdWhenCreating(lobbyId);
-    });
-
-    socket.emit("canReceive");
-
-    return () => {
-      socket.emit("cantReceive");
-
-      socket.removeAllListeners("playerConnected");
-      socket.removeAllListeners("configsUpdated");
-      socket.removeAllListeners("passwordUpdated");
-      socket.removeAllListeners("newPlayer");
-      socket.removeAllListeners("leavingPlayer");
-      socket.removeAllListeners("newOwner");
-      socket.removeAllListeners("reconnectingLobby");
-    };
-  }, []);
 
   function leave() {
     socket.disconnect();
@@ -131,7 +32,6 @@ export default function LobbyView({
               if (lobbyState.lobby.players.length <= 1)
                 return;
 
-              goToGameView();
               socket.emit("beginMatch");
             }}
           >

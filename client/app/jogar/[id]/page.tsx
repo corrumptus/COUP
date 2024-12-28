@@ -2,37 +2,42 @@
 
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
 import GameView from "@pages/GameView";
 import LobbyView from "@pages/LobbyView";
-import useSocket from "@utils/socketAPI";
-
-enum PageState {
-  LOBBY,
-  GAME
-}
+import useSocket from "@hooks/useSocket";
+import useSocketMessages from "@hooks/useSocketMessages";
+import usePlayPageState from "@hooks/usePlayPageState";
+import { PlayPageState } from "@type/gameUI";
+import LobbyState from "@type/lobby";
+import { GameState } from "@type/game";
 
 export default function EntrarLobby() {
   const { id } = useParams() as { id: string };
-
-  const [ pageState, setPageState ] = useState<PageState>(PageState.LOBBY);
   const { socket, error } = useSocket(id === "-1" ? undefined : id);
 
-  if (error !== undefined) return <Error error={error}/>
+  const { pageState, viewState, setViewState } = usePlayPageState();
 
-  return pageState === PageState.LOBBY ?
+  useSocketMessages(
+    socket,
+    pageState,
+    setViewState,
+    (lobbyId: number) => {
+      if (Number(id) !== lobbyId)
+        window.history.replaceState(null, "", `/jogar/${lobbyId}`);
+    }
+  );
+
+  if (error !== undefined) return <Error error={error} />
+
+  return pageState === PlayPageState.LOBBY ?
     <LobbyView
-      goToGameView={() => setPageState(PageState.GAME)}
       socket={socket}
-      changeIdWhenCreating={(lobbyId: number) => {
-        if (Number(id) !== lobbyId)
-          window.history.replaceState(null, "", `/jogar/${lobbyId}`);
-      }}
+      lobbyState={viewState as LobbyState}
     />
     :
     <GameView
-      goToLobbyView={() => setPageState(PageState.LOBBY)}
       socket={socket}
+      gameState={viewState as GameState}
     />
 }
 
