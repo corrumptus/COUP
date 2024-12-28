@@ -2,6 +2,7 @@ import type Config from "@type/config";
 import { Action, Card, ContextType, GameState } from "@type/game";
 import { MenuTypes } from "@type/gameUI";
 import type { Differ } from "@type/utils";
+import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
 export function generateColorCard(isDead: boolean = false): {
     cardColor: string,
@@ -104,6 +105,10 @@ export function objectDiff<T>(base: T, differ: T): Differ<T> {
     }
 
     return diff;
+}
+
+export function configDiff(configs: Config): Differ<Config> {
+  return objectDiff(COUPDefaultConfigs, configs);
 }
 
 export function getChoosableCards<T extends Action>(
