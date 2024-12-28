@@ -21,8 +21,9 @@ export default function GameView({
   const router = useRouter();
 
   useEffect(() => {
-    changeUI(socket, gameState, {});
-  }, [JSON.stringify(gameState.context)]);
+    if (width !== 0)
+      changeUI(socket, gameState, {});
+  }, [width, JSON.stringify(gameState.context)]);
 
   useEffect(() => {
     if (!isDiffsVisible)
