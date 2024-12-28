@@ -131,7 +131,7 @@ function performUIChange(
             gameState.context.attacker !== gameState.player.name
             &&
             gameState.context.action !== undefined
-        ) {
+        )
             newToaster(
                 contextToNotification(
                     gameState.context,
@@ -139,7 +139,6 @@ function performUIChange(
                     attackNotifiedAction
                 )
             );
-        }
 
         return [ menuType, requeriments ];
     }
