@@ -99,7 +99,7 @@ export default class Lobby {
     newGame() {
         if (this.currentGame === undefined) {
             this.currentGame = new Game(
-                this.players,
+                this.players.map(p => p),
                 this.configs
             );
 
