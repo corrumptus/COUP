@@ -50,7 +50,8 @@ export default class Game {
         this.nonKilledPlayers.splice(indexNP, 1);
 
         if (this.currentPlayer === indexNP) {
-            this.currentPlayer--;
+            this.currentPlayer = (this.currentPlayer - 1 + this.nonKilledPlayers.length)
+                % this.nonKilledPlayers.length;
             this.turns.pop();
             this.nextPlayer();
         }
