@@ -133,7 +133,7 @@ export default class PlayerService {
         delete PlayerService.reconnectionPlayers[sessionCode];
     }
 
-    static removePlayer(socketId: string) {
+    private static removePlayer(socketId: string) {
         const { sessionCode, socket: _, ...playerInfos } = PlayerService.players[socketId];
 
         delete PlayerService.players[socketId];
@@ -143,8 +143,8 @@ export default class PlayerService {
         LobbyService.removePlayer(playerInfos.lobbyId, playerInfos.player.name);
     }
 
-    static deletePlayer(socketId: string, disconnectReason: string) {
-        const { socket, lobbyId, player } = PlayerService.players[socketId];
+    private static deletePlayer(socketId: string, disconnectReason: string) {
+        const { socket, lobbyId, player: { name } } = PlayerService.players[socketId];
 
         socket.emit("disconnectReason", disconnectReason);
 
@@ -152,7 +152,7 @@ export default class PlayerService {
 
         delete PlayerService.players[socketId];
 
-        LobbyService.deletePlayer(lobbyId, player);
+        LobbyService.deletePlayer(lobbyId, name);
     }
 
     static deletePlayerByName(lobbyId: number, name: string, disconnectReason: string) {

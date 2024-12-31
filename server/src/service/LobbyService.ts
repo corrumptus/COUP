@@ -149,7 +149,33 @@ export default class LobbyService {
 
         const wasOwner = lobby.isOwnerName(playerName);
 
-        lobby.removePlayer(playerName);
+        LobbyService.removePlayerFromTheServer(lobby, playerName, false);
+
+        LobbyService.sendDeletionChanges(lobby, playerName, wasOwner);
+
+        LobbyService.removeLobbyIfEmpty(lobby);
+    }
+
+    static deletePlayer(lobbyId: number, playerName: string) {
+        const lobby = LobbyService.lobbys[lobbyId];
+
+        if (lobby === undefined)
+            return;
+
+        const wasOwner = lobby.isOwnerName(playerName);
+
+        LobbyService.removePlayerFromTheServer(lobby, playerName, true);
+
+        LobbyService.sendDeletionChanges(lobby, playerName, wasOwner);
+
+        LobbyService.removeLobbyIfEmpty(lobby);
+    }
+
+    private static removePlayerFromTheServer(lobby: Lobby, playerName: string, deleteFromLobby: boolean) {
+        if (deleteFromLobby)
+            lobby.deletePlayer(playerName);
+        else
+            lobby.removePlayer(playerName);
 
         LobbyMessageService.removePlayer(lobby.id, playerName);
 
@@ -157,62 +183,29 @@ export default class LobbyService {
             GameService.deletePlayer(lobby.id, playerName);
             return;
         }
-
-        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", playerName);
-
-        if (wasOwner)
-            LobbyMessageService.sendLobbyStateChanges(
-                lobbyId,
-                "newOwner",
-                (lobby.getOwner() as Player).name
-            );
-
-        if (!lobby.isEmpty)
-            return;
-
-        if (lobbyId === LobbyService.lobbys.length - 1) {
-            LobbyService.lobbys.pop();
-
-            LobbyMessageService.removeLobby(lobbyId);
-        } else
-            LobbyService.emptyLobbys.push(lobbyId);
     }
 
-    static deletePlayer(lobbyId: number, player: Player) {
-        const lobby = LobbyService.lobbys[lobbyId];
-
-        if (lobby === undefined)
-            return;
-
-        LobbyMessageService.removePlayer(lobby.id, player.name);
-
-        const wasOwner = lobby.isOwnerName(player.name);
-
-        lobby.deletePlayer(player.name);
-
-        if (lobby.isRunningGame) {
-            GameService.deletePlayer(lobby.id, player.name);
-            return;
-        }
-
-        LobbyMessageService.sendLobbyStateChanges(lobbyId, "leavingPlayer", player.name);
+    private static sendDeletionChanges(lobby: Lobby, playerName: string, wasOwner: boolean) {
+        LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", playerName);
 
         if (wasOwner && !lobby.isEmpty)
             LobbyMessageService.sendLobbyStateChanges(
-                lobbyId,
+                lobby.id,
                 "newOwner",
                 (lobby.getOwner() as Player).name
             );
+    }
 
+    private static removeLobbyIfEmpty(lobby: Lobby) {
         if (!lobby.isEmpty)
             return;
 
-        if (lobbyId === LobbyService.lobbys.length - 1) {
+        if (lobby.id === LobbyService.lobbys.length - 1) {
             LobbyService.lobbys.pop();
 
-            LobbyMessageService.removeLobby(lobbyId);
+            LobbyMessageService.removeLobby(lobby.id);
         } else
-            LobbyService.emptyLobbys.push(lobbyId);
+            LobbyService.emptyLobbys.push(lobby.id);
     }
 
     static getLobby(lobbyId: number): Lobby | undefined {
