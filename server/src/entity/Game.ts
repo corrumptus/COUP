@@ -56,7 +56,7 @@ export default class Game {
         }
 
         if (this.nonKilledPlayers.length === 1)
-            this.winner = this.localizeWinner();
+            this.localizeWinner();
     }
 
     private deliverCardsAndMoney() {
@@ -84,7 +84,7 @@ export default class Game {
 
     nextPlayer() {
         if (this.nonKilledPlayers.length === 1) {
-            this.winner = this.localizeWinner();
+            this.localizeWinner();
             return;
         }
 
@@ -100,8 +100,8 @@ export default class Game {
         return this.winner !== undefined;
     }
 
-    private localizeWinner(): Player {
-        return this.players.find(p => p.name === this.nonKilledPlayers[0]) as Player;
+    private localizeWinner() {
+        this.winner = this.players.find(p => p.name === this.nonKilledPlayers[0]);
     }
 
     getConfigs(): Config {
