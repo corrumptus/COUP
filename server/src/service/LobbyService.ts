@@ -73,17 +73,19 @@ export default class LobbyService {
     }
 
     private static declare(lobbyId: number, playerName: string, socket: COUPSocket) {
-        const gameAlreadyStarted = LobbyService.lobbyIsRunningGame(lobbyId);
+        const lobbyHasGame = LobbyService.lobbyIsRunningGame(lobbyId);
 
-        if (!gameAlreadyStarted)
+        if (lobbyHasGame) {
+            LobbyMessageService.newPlayer(lobbyId, playerName, socket);
+
+            GameService.reconnectGameState(lobbyId, playerName);
+        } else {
             LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
 
-        LobbyMessageService.newPlayer(lobbyId, playerName, socket);
+            LobbyMessageService.newPlayer(lobbyId, playerName, socket);
 
-        if (!gameAlreadyStarted)
             LobbyMessageService.sendLobbyState(lobbyId, playerName);
-        else
-            GameService.reconnectGameState(lobbyId, playerName);
+        }
     }
 
     static enterLobby(player: Player, lobbyId: number): number {
