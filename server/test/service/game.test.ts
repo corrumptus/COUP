@@ -4113,30 +4113,6 @@ describe("game, turn and players state in update", () => {
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
-
-    it("should have a winner when all players die", async () => {
-        const gameClient = await GameClient.create(
-            [],
-            false,
-            [
-                CardType.ASSASSINO,
-                CardType.CONDESSA,
-                CardType.CAPITAO,
-                CardType.DUQUE
-            ]
-        );
-
-        const game = gameClient.getGame();
-
-        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
-
-        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
-
-        gameClient.firstPlayerDo(Action.CONTESTAR);
-
-        expect(game.getWinner()).toBe(gameClient.firstPlayer());
-        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
-    });
 });
 
 describe("turn update in action sequences", () => {
@@ -4325,5 +4301,267 @@ describe("turn update in action sequences", () => {
         expect(turn2).not.toBe(turn1);
         expect(turn1.isfinished).toBe(true);
         expect(turn2.isfinished).toBe(true);
+    });
+});
+
+describe("game finish", () => {
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
+    it("should have a winner when all enemy players die when using one turn", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
+
+    it("should have a winner when all enemy players die when using more than one turn", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 14 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 0);
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 1);
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
+
+    it("should have a winner when the first player disconnects at the beginning", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.disconnectFirst();
+
+        expect(game.getWinner()).toBe(gameClient.secondPlayer());
+        expect(game.getState().winner).toBe(gameClient.secondPlayer().name);
+    });
+
+    it("should have a winner when the first player disconnects in the middle without card deaths", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.RENDA);
+
+        gameClient.secondPlayerDo(Action.RENDA);
+
+        gameClient.disconnectFirst();
+
+        expect(game.getWinner()).toBe(gameClient.secondPlayer());
+        expect(game.getState().winner).toBe(gameClient.secondPlayer().name);
+    });
+
+    it("should have a winner when the first player disconnects in the middle with card deaths", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.RENDA);
+
+        gameClient.disconnectFirst();
+
+        expect(game.getWinner()).toBe(gameClient.secondPlayer());
+        expect(game.getState().winner).toBe(gameClient.secondPlayer().name);
+    });
+
+    it("should have a winner when the first player disconnects in the middle with player deaths", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 14 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.thirdPlayer()!.name, 0);
+
+        gameClient.thirdPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 0);
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 1);
+
+        gameClient.disconnectFirst();
+
+        expect(game.getWinner()).toBe(gameClient.thirdPlayer());
+        expect(game.getState().winner).toBe(gameClient.thirdPlayer()!.name);
+    });
+
+    it("should have a winner when the second player disconnects at the beginning", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        
+        gameClient.disconnectSecond();
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
+
+    it("should have a winner when the second player disconnects in the middle without card deaths", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.RENDA);
+
+        gameClient.secondPlayerDo(Action.RENDA);
+
+        gameClient.disconnectSecond();
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
+
+    it("should have a winner when the second player disconnects in the middle with card deaths", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.RENDA);
+
+        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 0);
+
+        gameClient.disconnectSecond();
+
+        expect(game.getWinner()).toBe(gameClient.firstPlayer());
+        expect(game.getState().winner).toBe(gameClient.firstPlayer().name);
+    });
+
+    it("should have a winner when the second player disconnects in the middle with player deaths", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 7 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 0);
+
+        gameClient.disconnectSecond();
+
+        expect(game.getWinner()).toBe(gameClient.thirdPlayer());
+        expect(game.getState().winner).toBe(gameClient.thirdPlayer()!.name);
     });
 });

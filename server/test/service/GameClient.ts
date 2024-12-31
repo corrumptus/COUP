@@ -13,16 +13,20 @@ import { createSocket, getSocketOnCB } from "@tests/utils";
 export default class GameClient {
     private socket1: jest.Mocked<Socket>;
     private socket2: jest.Mocked<Socket>;
+    private socket3: jest.Mocked<Socket> | undefined;
     private player1: Player;
     private player2: Player;
+    private player3: Player | undefined;
     private game: Game;
 
-    private constructor(socket1: jest.Mocked<Socket>, socket2: jest.Mocked<Socket>) {
+    private constructor(socket1: jest.Mocked<Socket>, socket2: jest.Mocked<Socket>, socket3: jest.Mocked<Socket> | undefined) {
         this.socket1 = socket1;
         this.socket2 = socket2;
+        this.socket3 = socket3;
 
         this.player1 = PlayerService.getPlayer(socket1.id);
         this.player2 = PlayerService.getPlayer(socket2.id);
+        this.player3 = socket3 !== undefined ? PlayerService.getPlayer(socket3.id) : undefined;
 
         this.game = (LobbyService.getLobby(0) as Lobby).getGame() as Game;
 
@@ -54,8 +58,10 @@ export default class GameClient {
 
         configs.forEach(c => getSocketOnCB(socket1, "updateConfigs")(...c));
 
+        let socket3 = undefined;
+
         if (createAnotherPlayer) {
-            const socket3 = createSocket(0);
+            socket3 = createSocket(0);
 
             await PlayerService.setListeners(socket3);
             LobbyService.setListeners(socket3);
@@ -68,7 +74,7 @@ export default class GameClient {
 
         getSocketOnCB(socket1, "beginMatch")();
 
-        return new this(socket1, socket2);
+        return new this(socket1, socket2, socket3);
     }
 
     private static createMockImplementations(cards: CardType[]) {
@@ -120,8 +126,31 @@ export default class GameClient {
         getSocketOnCB(this.socket2, action)(...args);
     }
 
+    thirdSocket() {
+        return this.socket3;
+    }
+
+    thirdPlayer() {
+        return this.player3;
+    }
+
+    thirdPlayerDo<T extends Action>(action: T, ...args: Parameters<RequestSocketOnEvents[T]>) {
+        // @ts-ignore
+        getSocketOnCB(this.socket3, action)(...args);
+    }
+
     clearMocks() {
         this.socket1.emit.mockClear();
         this.socket2.emit.mockClear();
+        this.socket3?.emit.mockClear();
+    }
+
+    disconnectFirst() {
+        getSocketOnCB(this.socket1, "disconnect")("client namespace disconnect");
+        // this.socket1.disconnect();
+    }
+
+    disconnectSecond() {
+        getSocketOnCB(this.socket2, "disconnect")("client namespace disconnect");
     }
 }
