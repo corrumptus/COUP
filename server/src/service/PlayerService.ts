@@ -49,14 +49,15 @@ export default class PlayerService {
     private static async declare(socket: COUPSocket) {
         const { auth, headers: { ["user-agent"]: userAgent } } = socket.handshake;
 
-        if (
+        const isReconnectingPlayer =
             auth.sessionCode !== undefined
             &&
             PlayerService.reconnectionPlayers[auth.sessionCode] !== undefined
             &&
             PlayerService.reconnectionPlayers[auth.sessionCode].userAgent
-                === userAgent
-        ) {
+                === userAgent;
+
+        if (isReconnectingPlayer) {
             PlayerService.addPlayer(socket, auth.sessionCode);
             return;
         }
