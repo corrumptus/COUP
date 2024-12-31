@@ -7,7 +7,7 @@ export default class Lobby {
     readonly id: number;
     private currentGame: Game | undefined;
     private players: Player[];
-    private gamePlayers: string[] | undefined;
+    private gamePlayers: string[];
     private owner: Player | undefined;
     private password: string | undefined;
     private configs: Config;
@@ -15,32 +15,32 @@ export default class Lobby {
     constructor(id: number, owner: Player) {
         this.id = id;
         this.players = [owner];
-        this.gamePlayers = undefined;
+        this.gamePlayers = [owner.name];
         this.owner = owner;
         this.password = undefined;
         this.configs = JSON.parse(JSON.stringify(COUPdefaultConfigs));
     }
 
     addPlayer(player: Player) {
-        if (this.currentGame === undefined) {
+        if (this.players.find(p => p.name === player.name) !== undefined)
+            return;
+
+        if (this.isRunningGame) {
+            if (this.gamePlayers.find(p => p === player.name) === undefined)
+                this.gamePlayers.push(player.name);
+        } else {
             if (this.owner === undefined)
                 this.owner = player;
 
             this.players.push(player);
-            return;
         }
-
-        if (this.players.find(p => p.name === player.name) === undefined)
-            return;
-
-        (this.gamePlayers as string[]).push(player.name);
     }
 
     removePlayer(playerName: string) {
         if (
             this.currentGame === undefined ||
             this.currentGame.isEnded ||
-            this.gamePlayers === undefined
+            this.gamePlayers.length === 0
         )
             return;
 
@@ -85,7 +85,7 @@ export default class Lobby {
         if (
             this.currentGame === undefined ||
             this.currentGame.isEnded ||
-            this.gamePlayers === undefined
+            this.gamePlayers.length === 0
         )
             return;
 
@@ -100,7 +100,7 @@ export default class Lobby {
         if (this.currentGame === undefined) {
             this.currentGame = new Game(
                 this.players,
-                { ...COUPdefaultConfigs, ...this.configs }
+                this.configs
             );
 
             return;
@@ -111,12 +111,12 @@ export default class Lobby {
 
         const winner = this.currentGame.getWinner();
 
-        const winnerPosition = this.players.findIndex(p => p === winner);
+        const winnerIndex = this.players.findIndex(p => p === winner);
 
         this.currentGame = new Game(
             this.players.map(p => p),
-            { ...COUPdefaultConfigs, ...this.configs },
-            winnerPosition === -1 ? 0 : winnerPosition
+            this.configs,
+            winnerIndex === -1 ? 0 : winnerIndex
         );
     }
 
@@ -145,6 +145,9 @@ export default class Lobby {
     }
 
     updateConfigs(keys: string[], value: number | boolean) {
+        if (this.isRunningGame)
+            return;
+
         let config: any = this.configs;
 
         for (let i = 0; i < keys.length - 1; i++)
@@ -180,7 +183,7 @@ export default class Lobby {
     private resetLobby() {
         this.currentGame = undefined;
         this.players = [];
-        this.gamePlayers = undefined;
+        this.gamePlayers = [];
         this.owner = undefined;
         this.configs = COUPdefaultConfigs;
         this.password = undefined;
