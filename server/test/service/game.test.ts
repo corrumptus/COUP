@@ -4557,7 +4557,7 @@ describe("game finish", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 0);
+        gameClient.secondPlayerDo(Action.GOLPE_ESTADO, gameClient.firstPlayer().name, 1);
 
         gameClient.disconnectSecond();
 
