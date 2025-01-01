@@ -238,6 +238,8 @@ export default class GameService {
         if (lobby === undefined)
             return;
 
+        ActionService.revertTurn(lobbyId);
+
         GameMessageService.sendPlayerDisconnecting(lobbyId, playerName);
     }
 }

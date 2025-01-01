@@ -89,7 +89,7 @@ export default class GameMessageService extends MessageService {
             undefined,
             "beginMatch",
             (socket: COUPSocket, name: string) => [
-                GameMessageService.calculateGameState(game, name, lobbyId),
+                GameMessageService.calculateGameState(lobbyId, game, name),
                 PlayerService.getSessionCode(socket.id)
             ]
         );
@@ -115,13 +115,13 @@ export default class GameMessageService extends MessageService {
             name,
             "beginMatch",
             (socket: COUPSocket, name: string) => [
-                GameMessageService.calculateGameState(game, name, lobby.id),
+                GameMessageService.calculateGameState(lobby.id, game, name),
                 PlayerService.getSessionCode(socket.id)
             ]
         );
     }
 
-    private static calculateGameState(game: Game, name: string, lobbyId: number): GameState {
+    private static calculateGameState(lobbyId: number, game: Game, name: string): GameState {
         const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
 
         const state = game.getState();
@@ -271,5 +271,29 @@ export default class GameMessageService extends MessageService {
             "leavingPlayer",
             () => [player]
         );
+
+        super.sendDiscriminating(
+            lobbyId,
+            undefined,
+            "updatePlayer",
+            (_, name) => [
+                GameMessageService.disconnectedPlayerNewGameState(lobbyId, lobby.getGame() as Game, name)
+            ]
+        );
+    }
+
+    private static disconnectedPlayerNewGameState(lobbyId: number, game: Game, name: string): GameState {
+        const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
+
+        return {
+            player: player.getState(),
+            game: GameMessageService.gameStateForPlayer(game.getState(), name),
+            context: {
+                type: ContextType.OBSERVING,
+                attacker: name,
+                isInvestigating: false,
+                winContesting: false
+            }
+        }
     }
 }
