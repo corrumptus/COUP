@@ -172,10 +172,7 @@ export default class LobbyService {
     }
 
     private static removePlayerFromTheServer(lobby: Lobby, playerName: string, deleteFromLobby: boolean) {
-        if (deleteFromLobby)
-            lobby.deletePlayer(playerName);
-        else
-            lobby.removePlayer(playerName);
+        lobby.deletePlayer(playerName, deleteFromLobby);
 
         LobbyMessageService.removePlayer(lobby.id, playerName);
 

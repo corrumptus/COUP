@@ -15,7 +15,7 @@ export default class Lobby {
     constructor(id: number, owner: Player) {
         this.id = id;
         this.players = [owner];
-        this.gamePlayers = [owner.name];
+        this.gamePlayers = [];
         this.owner = owner;
         this.password = undefined;
         this.configs = JSON.parse(JSON.stringify(COUPdefaultConfigs));
@@ -36,68 +36,62 @@ export default class Lobby {
         }
     }
 
-    removePlayer(playerName: string) {
-        if (
-            this.currentGame === undefined ||
-            this.currentGame.isEnded ||
-            this.gamePlayers.length === 0
-        )
+    deletePlayer(playerName: string, deleteFromLobby: boolean) {
+        if (this.players.find(p => p.name === playerName) === undefined)
             return;
 
-        const index = this.gamePlayers.findIndex(p => p === playerName);
+        this.deleteFromGame(playerName, deleteFromLobby);
 
-        if (index === -1)
-            return;
+        const isLobbyEmpty = this.players.length === 0 ||
+            (
+                this.isRunningGame
+                &&
+                this.gamePlayers.length === 0
+            );
 
-        this.gamePlayers.splice(index, 1);
-
-        if (this.gamePlayers.length === 0) {
+        if (isLobbyEmpty) {
             this.resetLobby();
             return;
         }
 
-        if (this.owner !== undefined && this.owner.name === playerName) {
-            const name = this.gamePlayers[0];
+        if (this.owner !== undefined && this.owner.name === playerName)
+            this.assignNewOwner();
 
-            this.owner = this.players.find(p => p.name === name);
-        }
-
-        this.currentGame.deletePlayer(playerName);
+        if (this.isRunningGame)
+            (this.currentGame as Game).deletePlayer(playerName);
     }
 
-    deletePlayer(playerName: string) {
-        const indexP = this.players.findIndex(p => p.name === playerName);
+    private deleteFromGame(playerName: string, deleteFromLobby: boolean) {
+        const gamePlayerIndex = this.gamePlayers.findIndex(p => p === playerName);
 
-        if (indexP === -1)
-            return;
+        this.gamePlayers.splice(gamePlayerIndex, 1);
 
-        this.players.splice(indexP, 1);
+        if (deleteFromLobby) {
+            const playerIndex = this.players.findIndex(p => p.name === playerName);
 
-        if (this.players.length === 0) {
-            this.resetLobby();
+            this.players.splice(playerIndex, 1);
+        }
+    }
+
+    private assignNewOwner() {
+        if (this.isRunningGame) {
+            const firstGamePlayer = this.players.find(p => p.name === this.gamePlayers[0]) as Player;
+
+            this.owner = firstGamePlayer;
+
             return;
         }
 
-        if (this.owner !== undefined && this.owner.name === playerName) {
-            this.owner = this.players[0];
-        }
+        this.owner = this.players[0];
+    }
 
-        if (
-            this.currentGame === undefined ||
-            this.currentGame.isEnded ||
-            this.gamePlayers.length === 0
-        )
-            return;
-
-        const indexGP = this.gamePlayers.findIndex(p => p === playerName);
-
-        this.gamePlayers.splice(indexGP, 1);
-
-        this.currentGame.deletePlayer(playerName);
+    hasPlayer(playerName: string) {
+        return this.players.find(p => p.name === playerName) !== undefined;
     }
 
     newGame() {
         if (this.currentGame === undefined) {
+            this.gamePlayers = this.players.map(p => p.name);
             this.currentGame = new Game(
                 this.players.map(p => p),
                 this.configs
@@ -108,6 +102,8 @@ export default class Lobby {
 
         if (!this.currentGame.isEnded)
             return;
+
+        this.gamePlayers = this.players.map(p => p.name);
 
         const winner = this.currentGame.getWinner();
 
@@ -161,6 +157,9 @@ export default class Lobby {
     }
 
     newOwner(player: Player) {
+        if (!this.hasPlayer(player.name))
+            return;
+
         this.owner = player;
     }
 
