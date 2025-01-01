@@ -1,5 +1,5 @@
-export default function Tutorial() {
-  return (
-    <div>Tutorial</div>
-  )
+import Tutorial from "@pages/Tutorial";
+
+export default function TutorialPage() {
+  return <Tutorial />
 }
