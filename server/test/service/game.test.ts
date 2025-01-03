@@ -2189,6 +2189,88 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
+    it("should not use bloquear after ajuda externa when its the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.CATOLICA
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should use bloquear after ajuda externa when its not the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
     it("should update player money for using taxar", async () => {
         const gameClient = await GameClient.create(
             [],
@@ -2461,6 +2543,10 @@ describe("game, turn and players state in update", () => {
                 CardType.CAPITAO,
                 CardType.CONDESSA,
                 CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
             ]
         );
 
@@ -2499,6 +2585,10 @@ describe("game, turn and players state in update", () => {
                 CardType.ASSASSINO,
                 CardType.CAPITAO,
                 CardType.CONDESSA
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
             ]
         );
 
@@ -2537,6 +2627,10 @@ describe("game, turn and players state in update", () => {
                 CardType.CAPITAO,
                 CardType.CONDESSA,
                 CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
             ]
         );
 
@@ -2847,6 +2941,84 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
+    it("should not use extorquir when its the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.CATOLICA
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should use extorquir when its not the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
     it("should not update target cards for using assassinar", async () => {
         const gameClient = await GameClient.create(
             [],
@@ -3133,6 +3305,84 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should not use assassinar when its the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.CATOLICA
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.CAPITAO, 0, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should use assassinar when its not the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
     });
 
     it("should not update target cards for using investigar", async () => {
@@ -3735,6 +3985,86 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
+    it("should not use golpe de estado when its the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.CATOLICA
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(7);
+        expect(gameClient.secondPlayer().getMoney()).toBe(7);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([]);
+        expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should use golpe de estado when its not the same religion", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["moedasIniciais"], 7 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.GOLPE_ESTADO, gameClient.secondPlayer().name, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(7);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.GOLPE_ESTADO]);
+        expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
     it("should update target cards for using trocar", async () => {
         const gameClient = await GameClient.create(
             [],
@@ -4051,6 +4381,10 @@ describe("game, turn and players state in update", () => {
                 CardType.CAPITAO,
                 CardType.CONDESSA,
                 CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
             ]
         );
 
@@ -4088,6 +4422,10 @@ describe("game, turn and players state in update", () => {
                 CardType.CAPITAO,
                 CardType.CONDESSA,
                 CardType.DUQUE
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
             ]
         );
 

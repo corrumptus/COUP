@@ -5,6 +5,7 @@ import PlayerService from "@services/PlayerService";
 import type { RequestSocketOnEvents } from "@socket/socket";
 import type Action from "@entitys/Action";
 import CardType, * as CardTypeModule from "@entitys/CardType";
+import Religion, * as ReligionModule from "@entitys/Religion";
 import type Game from "@entitys/Game";
 import type Lobby from "@entitys/Lobby";
 import type Player from "@entitys/player";
@@ -39,7 +40,11 @@ export default class GameClient {
         cards: B extends false ?
             [CardType, CardType, CardType, CardType, ...CardType[]]
             :
-            [CardType, CardType, CardType, CardType, CardType, CardType, ...CardType[]]
+            [CardType, CardType, CardType, CardType, CardType, CardType, ...CardType[]],
+        religions?: B extends false ?
+            [Religion, Religion, ...Religion[]]
+            :
+            [Religion, Religion, Religion, ...Religion[]]
     ) {
         const socket1 = createSocket(undefined);
         const socket2 = createSocket(0);
@@ -70,19 +75,24 @@ export default class GameClient {
             getSocketOnCB(socket3, "canReceive")();
         }
 
-        GameClient.createMockImplementations(cards);
+        GameClient.createMockImplementations(cards, religions);
 
         getSocketOnCB(socket1, "beginMatch")();
 
         return new this(socket1, socket2, socket3);
     }
 
-    private static createMockImplementations(cards: CardType[]) {
+    private static createMockImplementations(cards: CardType[], religions?: Religion[]) {
         let cardIndex = 0;
+        let religionIndex = 0;
         let randomIndex = 0;
 
         jest.spyOn(CardTypeModule, "randomCardType")
             .mockImplementation(() => cards[cardIndex++]);
+
+        if (religions !== undefined)
+            jest.spyOn(ReligionModule, "randomReligion")
+                .mockImplementation(() => religions[religionIndex++]);
 
         jest.spyOn(Math, "random").mockImplementation(() => {
             const cur = [
