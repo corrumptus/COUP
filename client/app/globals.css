@@ -88,4 +88,19 @@ body {
   .game_scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+
+  .tutorial_sidebar_item_text_shadow {
+    color: #2d2d2d;
+    padding-inline: 8px;
+    cursor: pointer;
+  }
+
+  .tutorial_sidebar_item_text_shadow:hover {
+    text-shadow: 0px 0px 6px #4981ff;
+  }
+
+  .tutorial_sidebar_item_selected {
+    @apply bg-[#adadad] rounded-xl
+  }
 }
