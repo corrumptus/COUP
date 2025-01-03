@@ -33,6 +33,7 @@ export default class ActionService {
             lobbyId,
             game,
             turn,
+            isWaitingTimeOut,
             player,
             target
         } = ActionService.getInfosForAction(socketId, action, targetName);
@@ -46,22 +47,36 @@ export default class ActionService {
         )
             preLastTurn.finish(false);
 
-        if (
-            ActionService
-        )
-
         ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
-        const { actionInfos, turnState } = new ActionHandlerFacade(
-            game,
-            turn,
-            action,
-            player,
-            card,
-            selfCard,
-            target,
-            targetCard
-        ).handle();
+        let actionInfos, turnState;
+
+        try {
+            const handleResult = new ActionHandlerFacade(
+                game,
+                turn,
+                action,
+                player,
+                card,
+                selfCard,
+                target,
+                targetCard
+            ).handle();
+
+            actionInfos = handleResult.actionInfos;
+            turnState = handleResult.turnState;
+        } catch (error) {
+            if (isWaitingTimeOut !== undefined)
+                ActionService.lobbys[lobbyId] = {
+                    turn: turn,
+                    isWaitingTimeOut: isWaitingTimeOut
+                };
+
+            if (isWaitingTimeOut !== undefined && isWaitingTimeOut)
+                game.nextPlayer();
+
+            throw error;
+        }
 
         switch (turnState) {
             case TurnState.TURN_FINISHED:
@@ -136,6 +151,7 @@ export default class ActionService {
 
         let turn: Turn = game.getLastTurn();
         const cur = ActionService.lobbys[lobbyId];
+        let isWaitingTimeOut = undefined;
 
         if (cur !== undefined) {
             if (
@@ -161,6 +177,8 @@ export default class ActionService {
             )
                 turn = cur.turn;
 
+            isWaitingTimeOut = cur.isWaitingTimeOut;
+
             delete ActionService.lobbys[lobbyId];
         }
 
@@ -179,6 +197,7 @@ export default class ActionService {
             lobbyId,
             game,
             turn,
+            isWaitingTimeOut,
             player,
             target
         }
@@ -195,7 +214,7 @@ export default class ActionService {
     }
 
     private static isCounterAction(action: Action): boolean {
-        return [Action.CONTESTAR, Action.BLOQUEAR].includes(action);
+        return [Action.BLOQUEAR, Action.CONTESTAR].includes(action);
     }
 
     private static isWaitingReplyAction(action: Action | undefined): boolean {
@@ -218,5 +237,9 @@ export default class ActionService {
             Action.CONTINUAR,
         ] as (Action|undefined)[])
             .includes(action);
+    }
+
+    static revertTurn(lobbyId: number) {
+        lobbyId;
     }
 }

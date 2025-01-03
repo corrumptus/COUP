@@ -13,6 +13,13 @@ export default class GolpeEstadoHandler implements ActionHandler {
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
+        if (
+            configs.religiao.reforma &&
+            player.getReligion() === target.getReligion() &&
+            configs.religiao.deveres.golpeEstado
+        )
+            throw new Error(`O player ${target.name} tem a mesma religião. Não pode bloquear ajuda externa`);
+
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
 

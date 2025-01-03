@@ -24,6 +24,13 @@ export default class ExtorquirHandler implements ActionHandler {
         if (target === undefined)
             throw new Error("Um inimigo deve ser escolhido");
 
+        if (
+            configs.religiao.reforma &&
+            player.getReligion() === target.getReligion() &&
+            configs.religiao.deveres.extorquir
+        )
+            throw new Error(`O player ${target.name} tem a mesma religião. Não pode extorquir`);
+
         if (!configs.tiposCartas[card].extorquir)
             throw new Error("O tipo de carta escolhida não pode extorquir");
 

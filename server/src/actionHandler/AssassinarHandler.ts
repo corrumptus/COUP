@@ -28,7 +28,14 @@ export default class AssassinarHandler implements ActionHandler {
         if (targetCard === undefined)
             throw new Error("Uma das cartas do inimigo deve ser escolhida");
 
-        if (!isCardSlot(targetCard))
+        if (
+            configs.religiao.reforma &&
+            player.getReligion() === target.getReligion() &&
+            configs.religiao.deveres.assassinar
+        )
+            throw new Error(`O player ${target.name} tem a mesma religião. Não pode assassinar`);
+
+            if (!isCardSlot(targetCard))
             throw new Error("O index da carta do inimigo deve ser 0 ou 1");
 
         if (!configs.tiposCartas[card].assassinar)

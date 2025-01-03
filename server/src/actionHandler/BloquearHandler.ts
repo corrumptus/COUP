@@ -14,14 +14,18 @@ export default class BloquearHandler implements ActionHandler {
         selfCard
     }: ActionRequest): void {
         const action = turn.getFirstAction();
+        const target = turn.getPlayer();
 
         if (action === undefined)
             throw new Error("Bloquear não pode ser a primeira ação");
 
+        if (card === undefined)
+            throw new Error("Um tipo de carta deve ser escolhido");
+
         if (this.dontNeedSelfCard(action))
             this.validateActionsDontNeedSelfCard(configs, action, card);
         else
-            this.validateActionsNeedSelfCard(configs, player, action, card, selfCard);
+            this.validateActionsNeedSelfCard(configs, player, action, card, selfCard, target);
     }
 
     private dontNeedSelfCard(action: Action): boolean {
@@ -31,11 +35,8 @@ export default class BloquearHandler implements ActionHandler {
     private validateActionsDontNeedSelfCard(
         configs: Config,
         action: Action,
-        card: CardType | undefined
+        card: CardType
     ): void {
-        if (card === undefined)
-            throw new Error("Um tipo de carta deve ser escolhido");
-
         if (!this.canBlock(
             action,
             card,
@@ -48,11 +49,17 @@ export default class BloquearHandler implements ActionHandler {
         configs: Config,
         player: Player,
         action: Action,
-        card: CardType | undefined,
-        selfCard: number | undefined
+        card: CardType,
+        selfCard: number | undefined,
+        target: Player
     ): void {
-        if (card === undefined)
-            throw new Error("Um tipo de carta deve ser escolhido");
+        if (
+            action === Action.AJUDA_EXTERNA &&
+            configs.religiao.reforma &&
+            player.getReligion() === target.getReligion() &&
+            configs.religiao.deveres.taxar
+        )
+            throw new Error(`O player ${target.name} tem a mesma religião. Não pode bloquear ajuda externa`);
 
         if (selfCard === undefined)
             throw new Error("Uma das cartas do jogador deve ser escolhida");
