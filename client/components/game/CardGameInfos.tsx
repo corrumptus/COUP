@@ -25,8 +25,7 @@ export default function CardGameInfos({
   customStyles?: string
 }) {
   const [ infoType, setInfoType ] = useState<InfoType>("ações");
-  let children: JSX.Element |
-  null = null;
+  let children!: JSX.Element;
 
   if (infoType === "ações") children = (
     <div className="h-full overflow-auto">

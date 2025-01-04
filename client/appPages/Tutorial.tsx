@@ -14,7 +14,9 @@ export default function Tutorial() {
             <Header />
             <div className="h-full flex overflow-hidden">
                 <SideBar selectedTutorial={selectedTutorial} setTutorial={setTutorial} />
-                <SelectedTutorial tutorial={selectedTutorial} />
+                <div className="w-full bg-[#634c2b] p-4">
+                    <SelectedTutorial tutorial={selectedTutorial} />
+                </div>
             </div>
         </div>
     )
