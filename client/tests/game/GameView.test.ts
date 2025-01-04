@@ -349,6 +349,10 @@ describe("Game View interactivity for game actions", () => {
     it("should perform a corrupcao action correctly when one card can perform it", async () => {
         const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
+            .newConfig(["religiao", "cartasParaCorrupcao", "capitao"], false)
+            .newConfig(["religiao", "cartasParaCorrupcao", "condessa"], false)
+            .newConfig(["religiao", "cartasParaCorrupcao", "embaixador"], false)
+            .newConfig(["religiao", "cartasParaCorrupcao", "inquisidor"], false)
             .asylumCoins(1)
         );
 
@@ -366,13 +370,12 @@ describe("Game View interactivity for game actions", () => {
 
         expect(gameView.actionMenu()).not.toBeInTheDocument();
 
-        expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "duque", 0);
+        expect(socketEmitMock).toHaveBeenCalledWith("corrupcao", "assassino", 0);
     });
 
     it("should perform a corrupcao action correctly when more than one card can perform it", async () => {
         const { gameView } = await initializeView(factory => factory
             .newConfig(["religiao", "reforma"], true)
-            .newConfig(["religiao", "cartasParaCorrupcao", "capitao"], true)
             .asylumCoins(1)
         );
 
@@ -384,8 +387,11 @@ describe("Game View interactivity for game actions", () => {
 
         expect(gameView.moneyMenu()).not.toBeInTheDocument();
         expect(gameView.cardChooserMenu()).toBeInTheDocument();
-        expect(gameView.duqueChoosableCard()).toBeInTheDocument();
+        expect(gameView.assassinoChoosableCard()).toBeInTheDocument();
         expect(gameView.capitaoChoosableCard()).toBeInTheDocument();
+        expect(gameView.condessaChoosableCard()).toBeInTheDocument();
+        expect(gameView.embaixadorChoosableCard()).toBeInTheDocument();
+        expect(gameView.inquisidorChoosableCard()).toBeInTheDocument();
 
         await gameView.selectCapitaoChoosableCard();
 

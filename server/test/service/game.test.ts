@@ -479,20 +479,20 @@ describe("game state in update", () => {
             ]
         );
 
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
 
         expect(gameClient.firstSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
                 new GameStateBuilder(gameClient.getGame(), gameClient.firstPlayer())
-                    .ofSeeingSelf(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false, false)
+                    .ofSeeingSelf(Action.CORRUPCAO, CardType.ASSASSINO, false, undefined, false, false)
                     .create()
             );
         expect(gameClient.secondSocket().emit)
             .toHaveBeenCalledWith(
                 "updatePlayer",
                 new GameStateBuilder(gameClient.getGame(), gameClient.secondPlayer())
-                    .ofSeeingEnemy(Action.CORRUPCAO, CardType.DUQUE, false, undefined, false, false)
+                    .ofSeeingEnemy(Action.CORRUPCAO, CardType.ASSASSINO, false, undefined, false, false)
                     .create()
             );
     });
@@ -505,14 +505,14 @@ describe("game state in update", () => {
             ],
             false,
             [
-                CardType.DUQUE,
                 CardType.ASSASSINO,
                 CardType.CAPITAO,
-                CardType.CONDESSA
+                CardType.CONDESSA,
+                CardType.DUQUE
             ]
         );
 
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
 
         gameClient.clearMocks();
 
@@ -542,14 +542,14 @@ describe("game state in update", () => {
             ],
             false,
             [
+                CardType.DUQUE,
                 CardType.ASSASSINO,
                 CardType.CAPITAO,
                 CardType.CONDESSA,
-                CardType.DUQUE
             ]
         );
 
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
 
         gameClient.clearMocks();
 
@@ -2571,7 +2571,7 @@ describe("game, turn and players state in update", () => {
 
         expect(game.getAsylumCoins()).toBe(1);
 
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
 
         expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
@@ -2584,54 +2584,12 @@ describe("game, turn and players state in update", () => {
         expect(turn.getTarget()).toBe(undefined);
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0]);
-        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
     it("should update player money for using contestar after corrupcao", async () => {
-        const gameClient = await GameClient.create(
-            [
-                [ ["religiao", "reforma"], true ],
-                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
-            ],
-            false,
-            [
-                CardType.DUQUE,
-                CardType.ASSASSINO,
-                CardType.CAPITAO,
-                CardType.CONDESSA
-            ],
-            [
-                Religion.CATOLICA,
-                Religion.PROTESTANTE
-            ]
-        );
-
-        const game = gameClient.getGame();
-        const turn = game.getLastTurn();
-
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
-
-        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
-
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(2);
-        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
-        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
-        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
-        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
-        expect(turn.getAllCards()).toStrictEqual([0, 0]);
-        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
-        expect(game.getAsylumCoins()).toBe(0);
-        expect(game.getLastTurn()).not.toBe(turn);
-    });
-
-    it("should not update player money for using contestar after corrupcao", async () => {
         const gameClient = await GameClient.create(
             [
                 [ ["religiao", "reforma"], true ],
@@ -2653,14 +2611,14 @@ describe("game, turn and players state in update", () => {
         const game = gameClient.getGame();
         const turn = game.getLastTurn();
 
-        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
-        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
@@ -2668,7 +2626,49 @@ describe("game, turn and players state in update", () => {
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
-        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should not update player money for using contestar after corrupcao", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["religiao", "reforma"], true ],
+                [ ["religiao", "moedasIniciaisAsilo" ], 1 ]
+            ],
+            false,
+            [
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA
+            ],
+            [
+                Religion.CATOLICA,
+                Religion.PROTESTANTE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.ASSASSINO, 0);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
+        expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(game.getAsylumCoins()).toBe(1);
         expect(game.getLastTurn()).not.toBe(turn);
     });

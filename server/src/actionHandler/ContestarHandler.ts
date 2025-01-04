@@ -120,9 +120,9 @@ export default class ContestarHandler implements ActionHandler {
             player.killCard(selfCard);
         else {
             target.killCard(corrupcaoCard);
-            const asilo = target.rollbackMoney();
+            const asiloMoney = target.rollbackMoney();
 
-            addAsylumCoins(asilo);
+            addAsylumCoins(asiloMoney);
 
             this.winContesting = true;
         }

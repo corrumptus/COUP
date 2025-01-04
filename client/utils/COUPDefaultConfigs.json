@@ -16,12 +16,12 @@
             "taxar": true
         },
         "cartasParaCorrupcao": {
-            "duque": true,
-            "capitao": false,
-            "assassino": false,
-            "condessa": false,
-            "embaixador": false,
-            "inquisidor": false
+            "duque": false,
+            "capitao": true,
+            "assassino": true,
+            "condessa": true,
+            "embaixador": true,
+            "inquisidor": true
         }
     },
     "tiposCartas": {
