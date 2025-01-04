@@ -443,7 +443,7 @@ export default function SelectedTutorial({
     if (tutorial === TutorialType.CORRUPCAO) return (
         <SelectedTutorialLayout title="Corrupção">
             <p>A ação Corrupção é uma ação que pega todas as moedas do asilo
-            sob o pretexto de que o jogador não possui uma influência Duque
+            sob o pretexto de que o jogador não possui a influência Duque
             na carta indicada.</p>
 
             <p>Não pode ser bloqueado.</p>

@@ -141,6 +141,11 @@ export default function SideBar({
                         onClick={e => handleSelection((e.target as HTMLLIElement).id)}
                     >Religião</li>
                     <li
+                        id={TutorialType.TROCAR_RELIGIAO}
+                        className={itemStyle(TutorialType.TROCAR_RELIGIAO)}
+                        onClick={e => handleSelection((e.target as HTMLLIElement).id)}
+                    >Trocar religião</li>
+                    <li
                         id={TutorialType.CORRUPCAO}
                         className={itemStyle(TutorialType.CORRUPCAO)}
                         onClick={e => handleSelection((e.target as HTMLLIElement).id)}

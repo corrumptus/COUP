@@ -18,6 +18,7 @@ export enum TutorialType {
     CONTESTAR = "contestar",
     CONTINUAR = "continuar",
     RELIGIAO = "religiao",
+    TROCAR_RELIGIAO = "trocar_religiao",
     CORRUPCAO = "corrupcao",
     DEVERES = "deveres"
 }
