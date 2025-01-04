@@ -2957,6 +2957,119 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
+    it("should update player money for using contestar after bloquear after extorquir when the player have less than the extorquir amount", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 1, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.firstPlayerDo(Action.CONTESTAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([1, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player money for using contestar after extorquir when the player have less than the extorquir amount", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 1, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllCards()).toStrictEqual([1, 0]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should update player money for using continuar after extorquir when the player have less than the extorquir amount", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 1 ]
+            ],
+            false,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 1, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.CONTINUAR);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
+        expect(turn.getAllCards()).toStrictEqual([1]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
     it("should not use extorquir when its the same religion", async () => {
         const gameClient = await GameClient.create(
             [

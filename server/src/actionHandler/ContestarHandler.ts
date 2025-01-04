@@ -136,10 +136,12 @@ export default class ContestarHandler implements ActionHandler {
         const extorquirCardType = target.getCard(extorquirCard).getType();
 
         if (configs.tiposCartas[extorquirCardType].extorquir) {
-            const extorquirAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+            const extorquirMaxAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
 
-            player.removeMoney(extorquirAmount);
-            target.addMoney(extorquirAmount);
+            const actualAmount = Math.min(player.getMoney(), extorquirMaxAmount);
+
+            player.removeMoney(actualAmount);
+            target.addMoney(actualAmount);
 
             player.killCard(selfCard);
         } else {
@@ -268,10 +270,12 @@ export default class ContestarHandler implements ActionHandler {
         if (configs.tiposCartas[bloquearCardType].bloquearExtorquir)
             player.killCard(extorquirCard);
         else {
-            const extorquirAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+            const extorquirMaxAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
 
-            target.removeMoney(extorquirAmount);
-            player.addMoney(extorquirAmount);
+            const actualAmount = Math.min(target.getMoney(), extorquirMaxAmount);
+
+            target.removeMoney(actualAmount);
+            player.addMoney(actualAmount);
 
             target.killCard(bloquearCard);
 

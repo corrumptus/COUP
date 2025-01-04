@@ -36,9 +36,6 @@ export default class ExtorquirHandler implements ActionHandler {
 
         if (player.getCard(selfCard).getIsKilled())
             throw new Error("A sua carta escolhida já está morta");
-
-        if (target.getMoney() < configs.tiposCartas[card].quantidadeExtorquir)
-            throw new Error("O inimigo não tem dinheiro suficiente para ser extorquido");
     }
 
     save({
