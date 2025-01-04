@@ -80,7 +80,7 @@ describe("Game view render in game init", () => {
 
         const expectedConfigDiffs = [
             "Renda: 1 -> 2",
-            "Moedas iniciais: 3 -> 4",
+            "Moedas iniciais: 2 -> 3",
             "Ajuda externa: 2 -> 1"
         ];
 
@@ -180,7 +180,7 @@ describe("Game view render in game init", () => {
 
         const expectedConfigDiffs = [
             "Ajuda externa: 2 -> 1",
-            "Moedas iniciais: 3 -> 4",
+            "Moedas iniciais: 2 -> 3",
             "Renda: 1 -> 2"
         ];
 

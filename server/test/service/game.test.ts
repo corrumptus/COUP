@@ -847,7 +847,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -877,7 +879,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -911,7 +915,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for contestar after bloquear after assassinar when winning", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -947,7 +953,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for contestar after bloquear after assassinar when losing", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -983,7 +991,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for continuar after bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -1019,7 +1029,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for contestar after assassinar when winning", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -1053,7 +1065,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for contestar after assassinar when losing", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.CAPITAO,
@@ -1087,7 +1101,9 @@ describe("game state in update", () => {
 
     it("should send the correct game state for continuar after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -1994,8 +2010,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.RENDA);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(4);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2027,8 +2043,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2062,8 +2078,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2099,8 +2115,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2136,8 +2152,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2173,8 +2189,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2214,8 +2230,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2255,8 +2271,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2288,8 +2304,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(6);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2326,8 +2342,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(6);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2366,8 +2382,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(6);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2405,8 +2421,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2445,8 +2461,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2480,8 +2496,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(6);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
@@ -2515,8 +2531,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2557,8 +2573,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CORRUPCAO, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(4);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2599,8 +2615,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(4);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(3);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
@@ -2641,8 +2657,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2674,8 +2690,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2709,8 +2725,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2746,8 +2762,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
@@ -2783,8 +2799,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
@@ -2820,8 +2836,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2855,8 +2871,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
@@ -2890,8 +2906,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
@@ -2925,8 +2941,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(5);
-        expect(gameClient.secondPlayer().getMoney()).toBe(1);
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -2964,8 +2980,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3003,8 +3019,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3021,7 +3037,9 @@ describe("game, turn and players state in update", () => {
 
     it("should not update target cards for using assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -3054,7 +3072,9 @@ describe("game, turn and players state in update", () => {
 
     it("should not update target cards for using bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -3089,7 +3109,9 @@ describe("game, turn and players state in update", () => {
 
     it("should update target cards for using contestar after bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             true,
             [
                 CardType.ASSASSINO,
@@ -3128,7 +3150,9 @@ describe("game, turn and players state in update", () => {
 
     it("should not update target cards for using contestar after bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.CAPITAO,
@@ -3165,7 +3189,9 @@ describe("game, turn and players state in update", () => {
 
     it("should not update target cards for using continuar after bloquear after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -3202,7 +3228,9 @@ describe("game, turn and players state in update", () => {
 
     it("should update target cards for using contestar after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             true,
             [
                 CardType.ASSASSINO,
@@ -3239,7 +3267,9 @@ describe("game, turn and players state in update", () => {
 
     it("should not update target cards for using contestar after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.CAPITAO,
@@ -3274,7 +3304,9 @@ describe("game, turn and players state in update", () => {
 
     it("should update target cards for using continuar after assassinar", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
@@ -3330,8 +3362,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.CAPITAO, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3349,7 +3381,9 @@ describe("game, turn and players state in update", () => {
     it("should use assassinar when its not the same religion", async () => {
         const gameClient = await GameClient.create(
             [
-                [ ["religiao", "reforma"], true ]
+                [ ["religiao", "reforma"], true ],
+                [ ["moedasIniciais"], 3 ]
+            
             ],
             false,
             [
@@ -3402,8 +3436,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3439,8 +3473,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3478,8 +3512,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
@@ -3520,8 +3554,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
@@ -3561,8 +3595,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
@@ -3600,8 +3634,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
@@ -3639,8 +3673,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3676,8 +3710,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
@@ -3714,8 +3748,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
@@ -3751,8 +3785,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CONDESSA]);
@@ -3786,8 +3820,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3821,8 +3855,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -3859,8 +3893,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
@@ -3897,8 +3931,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
@@ -3934,8 +3968,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -4084,8 +4118,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
@@ -4123,8 +4157,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
@@ -4164,8 +4198,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
@@ -4205,8 +4239,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTESTAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
@@ -4246,8 +4280,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.CONTINUAR);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
@@ -4283,8 +4317,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
@@ -4320,8 +4354,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.secondPlayerDo(Action.CONTESTAR, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
@@ -4354,8 +4388,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR, CardType.INQUISIDOR, 0, gameClient.firstPlayer().name, 0);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(3);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -4395,8 +4429,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR_PROPRIA_RELIGIAO);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(2);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(1);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -4411,7 +4445,7 @@ describe("game, turn and players state in update", () => {
         expect(game.getLastTurn()).not.toBe(turn);
     });
 
-    it("should update player religion for using trocar religiao outro", async () => {
+    it("should update enemy religion for using trocar religiao outro", async () => {
         const gameClient = await GameClient.create(
             [
                 [ ["religiao", "reforma"], true ]
@@ -4436,8 +4470,8 @@ describe("game, turn and players state in update", () => {
 
         gameClient.firstPlayerDo(Action.TROCAR_RELIGIAO_OUTRO, gameClient.secondPlayer().name);
 
-        expect(gameClient.firstPlayer().getMoney()).toBe(1);
-        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
@@ -4651,7 +4685,9 @@ describe("game finish", () => {
 
     it("should have a winner when all enemy players die when using one turn", async () => {
         const gameClient = await GameClient.create(
-            [],
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
             false,
             [
                 CardType.ASSASSINO,
