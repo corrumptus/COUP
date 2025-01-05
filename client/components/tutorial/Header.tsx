@@ -2,12 +2,19 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import HamburgerIcon from "@components/tutorial/HamburgerIcon";
 
-export default function Header() {
+export default function Header({
+    isOpened,
+    change
+}: {
+    isOpened: boolean | undefined,
+    change: () => void
+}) {
     const router = useRouter();
 
     return (
-        <header className="w-full p-3 bg-[#eaaf73]">
+        <header className="w-full p-3 bg-[#eaaf73] flex items-center justify-between">
             <button
                 className="w-fit flex gap-3 items-center"
                 onClick={() => router.push("/")}
@@ -20,6 +27,7 @@ export default function Header() {
                 />
                 Início
             </button>
+            {isOpened !== undefined && <HamburgerIcon isOpened={isOpened} change={change} />}
         </header>
     )
 }
