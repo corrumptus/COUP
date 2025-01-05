@@ -4,7 +4,7 @@ export default function useDeviceWidth() {
     const [width, setWidth] = useState(0);
 
     function resize() {
-        setWidth(window.screen.width);
+        setWidth(window.innerWidth);
     }
 
     useEffect(() => {
