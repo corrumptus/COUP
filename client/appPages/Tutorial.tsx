@@ -36,7 +36,7 @@ export default function Tutorial() {
                     selectedTutorial={selectedTutorial}
                     goTo={goToTutorial}
                 />
-                <div className="w-full bg-[#634c2b] p-4 overflow-auto">
+                <div className="w-full bg-[#634c2b] p-4 overflow-auto font-['augusta'] text-2xl">
                     <SelectedTutorial
                         tutorial={selectedTutorial}
                         goTo={goToTutorial}
