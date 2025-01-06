@@ -29,7 +29,7 @@ export default function Tutorial() {
     return (
         <div className="h-screen flex flex-col">
             <Header isOpened={isOpen} change={() => setIsOpen(prev => !prev)} />
-            <div className="h-full grid grid-cols-[auto_auto] overflow-hidden relative">
+            <div className="h-full grid grid-cols-[max-content_auto] overflow-hidden relative">
                 <SideBar
                     isMobile={isMobileDevice}
                     isOpen={isOpen !== undefined ? isOpen : true}
