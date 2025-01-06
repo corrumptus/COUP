@@ -1,0 +1,400 @@
+{
+    "moedasIniciais": {
+        "type": "number",
+        "minValue": 0,
+        "maxValue": 100
+    },
+    "renda": {
+        "type": "number",
+        "minValue": 0,
+        "maxValue": 100,
+        "minByOperation": {
+            "reference": ["quantidadeMaximaGolpeEstado"],
+            "operation": "divide",
+            "operand": 10
+        }
+    },
+    "ajudaExterna": {
+        "type": "number",
+        "minValue": 0,
+        "maxValue": 100
+    },
+    "quantidadeMinimaGolpeEstado": {
+        "type": "number",
+        "minValue": 0,
+        "maxValue": 100
+    },
+    "quantidadeMaximaGolpeEstado": {
+        "type": "number",
+        "minValue": 0,
+        "maxValue": 100
+    },
+    "religiao": {
+        "reforma": {
+            "type": "boolean"
+        },
+        "quantidadeTrocarPropria": {
+            "type": "number",
+            "minValue": 0,
+            "maxValue": 100
+        },
+        "quantidadeTrocarOutro": {
+            "type": "number",
+            "minValue": 0,
+            "maxValue": 100
+        },
+        "moedasIniciaisAsilo": {
+            "type": "number",
+            "minValue": 0,
+            "maxValue": 100
+        },
+        "deveres": {
+            "golpeEstado": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "taxar": {
+                "type": "boolean"
+            }
+        },
+        "cartasParaCorrupcao": {
+            "duque": {
+                "type": "boolean"
+            },
+            "capitao": {
+                "type": "boolean"
+            },
+            "assassino": {
+                "type": "boolean"
+            },
+            "condessa": {
+                "type": "boolean"
+            },
+            "embaixador": {
+                "type": "boolean"
+            },
+            "inquisidor": {
+                "type": "boolean"
+            }
+        }
+    },
+    "tiposCartas": {
+        "duque": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        },
+        "capitao": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        },
+        "assassino": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        },
+        "condessa": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        },
+        "embaixador": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        },
+        "inquisidor": {
+            "taxar": {
+                "type": "boolean"
+            },
+            "extorquir": {
+                "type": "boolean"
+            },
+            "assassinar": {
+                "type": "boolean"
+            },
+            "trocar": {
+                "type": "boolean"
+            },
+            "investigar": {
+                "type": "boolean"
+            },
+            "quantidadeTaxar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeExtorquir": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeAssassinar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 100
+            },
+            "quantidadeTrocar": {
+                "type": "number",
+                "minValue": 0,
+                "maxValue": 2
+            },
+            "bloquearTaxar": {
+                "type": "boolean"
+            },
+            "bloquearExtorquir": {
+                "type": "boolean"
+            },
+            "bloquearAssassinar": {
+                "type": "boolean"
+            },
+            "bloquearTrocar": {
+                "type": "boolean"
+            },
+            "bloquearInvestigar": {
+                "type": "boolean"
+            }
+        }
+    }
+}

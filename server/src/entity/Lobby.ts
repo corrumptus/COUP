@@ -140,6 +140,10 @@ export default class Lobby {
         }
     }
 
+    getConfigs() {
+        return this.configs;
+    }
+
     updateConfigs(keys: string[], value: number | boolean) {
         if (this.isRunningGame)
             return;

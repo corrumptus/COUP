@@ -4,6 +4,8 @@ import LobbyMessageService from "@services/LobbyMessageService";
 import PlayerService from "@services/PlayerService";
 import Lobby from "@entitys/Lobby";
 import type Player from "@entitys/player";
+import COUPMatchBalancing from "@resources/COUPMatchBalancing.json";
+import Config from "@utils/Config";
 
 export default class LobbyService {
     private static lobbys: Lobby[] = [];
@@ -18,6 +20,9 @@ export default class LobbyService {
 
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
             if (!lobby.isOwner(player))
+                return;
+
+            if (!LobbyService.validateNewConfigs(lobby.getConfigs(), keys, value))
                 return;
 
             lobby.updateConfigs(keys, value);
@@ -203,6 +208,60 @@ export default class LobbyService {
             LobbyMessageService.removeLobby(lobby.id);
         } else
             LobbyService.emptyLobbys.push(lobby.id);
+    }
+
+    private static validateNewConfigs(configs: Config, keys: string[], value: number | boolean): false | void {
+        let config: any = COUPMatchBalancing;
+
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!(keys[i] in config))
+                return false;
+
+            config = config[keys[i]];
+        }
+
+        const validations: {
+            type: string,
+            minValue?: number,
+            maxValue?: number,
+            minByOperation?: {
+                reference: string[],
+                operation: "add" | "subtract" | "multiply" | "divide",
+                operand: number
+            }
+        } = config[keys[keys.length - 1]];
+
+        if (typeof value !== validations.type)
+            return false;
+
+        if (validations["minValue"] !== undefined && (value as number) < validations.minValue)
+            return false;
+
+        if (validations["maxValue"] !== undefined && (value as number) > validations.maxValue)
+            return false;
+
+        if (validations["minByOperation"] !== undefined) {
+            config = configs;
+
+            for (let i = 0; i < validations.minByOperation.reference.length; i++)
+                config = config[validations.minByOperation.reference[i]];
+
+            if (validations.minByOperation.operation === "add") 
+                if ((value as number) < config + validations.minByOperation.operand)
+                    return false;
+
+            if (validations.minByOperation.operation === "subtract") 
+                if ((value as number) < config - validations.minByOperation.operand)
+                    return false;
+
+            if (validations.minByOperation.operation === "multiply") 
+                if ((value as number) < config * validations.minByOperation.operand)
+                    return false;
+
+            if (validations.minByOperation.operation === "divide") 
+                if ((value as number) < config / validations.minByOperation.operand)
+                    return false;
+        }
     }
 
     static getLobby(lobbyId: number): Lobby | undefined {
