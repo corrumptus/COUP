@@ -10,8 +10,14 @@ export default function SelectedTutorial({
 }) {
     if (tutorial === TutorialType.ASSASSINO) return (
         <SelectedTutorialLayout title="Assassino">
-            <p>A carta Assassino é uma influência que irá eleminar a carta
-            escolhida pelo jogador pelo preço de 3 moedas.</p>
+            <p>
+                A carta Assassino é uma influência que irá
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Assassinar">
+                    eleminar a carta escolhida pelo jogador pelo preço de 3 moedas
+                </span>
+                .
+            </p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -45,7 +51,15 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.CAPITAO) return (
         <SelectedTutorialLayout title="Capitão">
-            <p>A carta Capitão é uma influência que irá roubar até 2 moedas e também pode bloquear uma extorção.</p>
+            <p>
+                A carta Capitão é uma influência que irá
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Extorquir">
+                    roubar até 2 moedas de outro jogador
+                </span>
+                {" "}
+                e também pode bloquear uma extorção.
+            </p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -79,9 +93,7 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.CONDESSA) return (
         <SelectedTutorialLayout title="Condessa">
-            <p>A carta Condessa é uma influência que irá bloquear a ação assassinar(
-                <span onClick={() => goTo(TutorialType.ASSASSINO)}>assassino</span>
-            ).</p>
+            <p>A carta Condessa é uma influência que irá bloquear a ação assassinar.</p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -112,7 +124,15 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.DUQUE) return (
         <SelectedTutorialLayout title="Duque">
-            <p>A carta Duque é uma influência que irá pegar 3 moedas do banco e pode bloquear o uso de ajuda externa.</p>
+            <p>
+                A carta Duque é uma influência que irá
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Taxar">
+                    pegar 3 moedas do banco
+                </span>
+                {" "}
+                e pode bloquear o uso de ajuda externa.
+            </p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -146,8 +166,15 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.EMBAIXADOR) return (
         <SelectedTutorialLayout title="Embaixador">
-            <p>A carta Embaixador é uma influência que trocar as 2 influências do jogador
-            (somente as que estiverem vivas) e pode bloquear uma extorção.</p>
+            <p>
+                A carta Embaixador é uma influência que irá
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Trocar">
+                    trocar as 2 influências do jogador
+                </span>
+                {" "}
+                e pode bloquear uma extorção.
+            </p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -181,9 +208,20 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.INQUISIDOR) return (
         <SelectedTutorialLayout title="Inquisidor">
-            <p>A carta Inquisidor é uma influência que pode trocar uma influência do jogador,
-            pode ver uma influência de outro jogador e descidir se irá trocar ou manter ela e
-            pode bloquear uma extorção.</p>
+            <p>
+                A carta Inquisidor é uma influência que irá
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Trocar">
+                    trocar uma influência do jogador
+                </span>
+                ,
+                {" "}
+                <span className="border-b border-black border-dotted cursor-help" title="ação Investigar">
+                    pode ver uma influência de outro jogador e descidir se irá trocar ou mante-la
+                </span>
+                {" "}
+                ou bloquear uma extorção.
+            </p>
 
             <div className="flex flex-wrap gap-3">
                 <Image
@@ -240,11 +278,17 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.GOLPE_ESTADO) return (
         <SelectedTutorialLayout title="Golpe de estado">
-            <p>A ação Golpe de estado é uma ação que o jogador elimina 1 influência
-            escolhida de outro jogador pelo preço de 7 moedas.</p>
+            <p>
+                A ação Golpe de estado é uma ação que o jogador elimina 1 influência
+                {" "}
+                escolhida de outro jogador pelo preço de 7 moedas.
+            </p>
 
-            <p>Se um jogador iniciar um turno com 10 ou mais moedas ele é obrigado
-            a dar um golpe de estado.</p>
+            <p>
+                Se um jogador iniciar um turno com 10 ou mais moedas ele é obrigado
+                {" "}
+                a dar um golpe de estado.
+            </p>
 
             <p>Não pode ser bloqueado ou contestado.</p>
         </SelectedTutorialLayout>
@@ -252,8 +296,11 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.ASSASSINAR) return (
         <SelectedTutorialLayout title="Assassinar">
-            <p>A ação Assassinar é uma ação que elimina uma influência escolhida
-                pelo jogador pelo preço de 3 moedas.</p>
+            <p>
+                A ação Assassinar é uma ação que elimina uma influência escolhida
+                {" "}
+                pelo jogador pelo preço de 3 moedas.
+            </p>
 
             <div>
                 <p>Cartas que usam</p>
@@ -295,8 +342,11 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.TAXAR) return (
         <SelectedTutorialLayout title="Taxar">
-            <p>A ação Taxar é uma ação que pega 3 moedas do banco e pode bloquear a
-            ação Ajuda externa.</p>
+            <p>
+                A ação Taxar é uma ação que pega 3 moedas do banco e pode bloquear a
+                {" "}
+                ação Ajuda externa.
+            </p>
 
             <div>
                 <p>Cartas que usam</p>
@@ -331,9 +381,13 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.INVESTIGAR) return (
         <SelectedTutorialLayout title="Investigar">
-            <p>A ação Investigar é uma ação que permite ao jogador ver que influência
-            outro jogador possui e ainda se ele gostaria de manter ou de trocar a
-            a influência do outro jogador.</p>
+            <p>
+                A ação Investigar é uma ação que permite ao jogador ver que influência
+                {" "}
+                outro jogador possui e ainda se ele gostaria de manter ou de trocar a
+                {" "}
+                a influência do outro jogador.
+            </p>
 
             <div>
                 <p>Cartas que usam</p>
@@ -350,8 +404,11 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.BLOQUEAR) return (
         <SelectedTutorialLayout title="Bloquear">
-            <p>A ação Bloquear é uma contra-ação que cancela a ação bloqueada e, se aceita,
-            faz o turno acabar.</p>
+            <p>
+                A ação Bloquear é uma contra-ação que cancela a ação bloqueada e, se aceita,
+                {" "}
+                faz o turno acabar.
+            </p>
 
             <div>
                 <p>Ações bloqueáveis</p>
@@ -366,20 +423,35 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.CONTESTAR) return (
         <SelectedTutorialLayout title="Contestar">
-            <p>A ação Contestar é uma contra-ação que verifica se a ação anterior
-            realmente pode ser feita pela influência indicada pelo jogador que
-            realizou a ação.</p>
+            <p>
+                A ação Contestar é uma contra-ação que verifica se a ação anterior
+                {" "}
+                realmente pode ser feita pela influência indicada pelo jogador que
+                {" "}
+                realizou a ação.
+            </p>
 
-            <p>Se o jogador que realizou a ação não estava mentindo, o jogador que
-            contestou perderá a influência indicada para a contestação. Caso contrário
-            o jogador que realizou a ação perderá a ação e a influência indicada.</p>
+            <p>
+                Se o jogador que realizou a ação não estava mentindo, o jogador que
+                {" "}
+                contestou perderá a influência indicada para a contestação. Caso contrário
+                {" "}
+                o jogador que realizou a ação perderá a ação e a influência indicada.
+            </p>
 
-            <p>Quando um jogador contesta uma ação que envolve uma de suas influências,
-            está será a influência que será perdida caso o jogador que foi contestado
-            esteja falando a verdade.</p>
+            <p>
+                Quando um jogador contesta uma ação que envolve uma de suas influências,
+                {" "}
+                está será a influência que será perdida caso o jogador que foi contestado
+                {" "}
+                esteja falando a verdade.
+            </p>
 
-            <p>Embora A escolha de trocar quando se usa a ação investigar seja retratada
-            como a ação trocar, ela não é contestável.</p>
+            <p>
+                Embora A escolha de trocar quando se usa a ação investigar seja retratada
+                {" "}
+                como a ação trocar, ela não é contestável.
+            </p>
 
             <div>
                 <p>Ações contestáveis</p>
@@ -398,8 +470,10 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.CONTINUAR) return (
         <SelectedTutorialLayout title="Aceitar">
-            <p>A ação Aceitar é a contra-ação que indica que o jogador não bloqueou ou
-            contestou uma ação.</p>
+            <p>
+                A ação Aceitar é a contra-ação que indica que o jogador não bloqueou ou
+                contestou uma ação.
+            </p>
 
             <div>
                 <p>Ações aceitáveis</p>
@@ -416,25 +490,39 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.RELIGIAO) return (
         <SelectedTutorialLayout title="Religião">
-            <p>Quando o dono do servidor decide instaurar A Reforma, os jogadores
-            recebem uma denominação religiosa aleatória sendo elas Católica ou Protestante.
-            Os jogadores agora podem usar 2 novas ações: Trocar Religião e Corrupção.</p>
+            <p>
+                Quando o dono do servidor decide instaurar A Reforma, os jogadores
+                {" "}
+                recebem uma denominação religiosa aleatória sendo elas Católica ou Protestante.
+                {" "}
+                Os jogadores agora podem usar 2 novas ações: Trocar Religião e Corrupção.
+            </p>
 
             <p>Jogadores que tem a mesma religião tem o dever de não se atacarem.</p>
 
-            <p>A Reforma cria uma entedidade fictícia que guarda moedas de ações de troca
-            de religião. No jogo físico o banco também é o asilo, porém nessa edição virtual
-            ele também não possui nenhuma representação.</p>
+            <p>
+                A Reforma cria uma entedidade fictícia que guarda moedas de ações de troca
+                {" "}
+                de religião. No jogo físico o banco também é o asilo, porém nessa edição virtual
+                {" "}
+                ele também não possui nenhuma representação.
+            </p>
 
-            <p>Para resgatar as moedas guardadas dentro do asilo é preciso que o jogador
-            use corrupção.</p>
+            <p>
+                Para resgatar as moedas guardadas dentro do asilo é preciso que o jogador
+                {" "}
+                use corrupção.
+            </p>
         </SelectedTutorialLayout>
     )
 
     if (tutorial === TutorialType.TROCAR_RELIGIAO) return (
         <SelectedTutorialLayout title="Trocar religião">
-            <p>A ação Trocar Religião é uma ação que troca a religião do próprio jogador
-            pelo preço de 1 moeda ou troca a religião de outro jogador pelo preço de 2 moedas.</p>
+            <p>
+                A ação Trocar Religião é uma ação que troca a religião do próprio jogador
+                {" "}
+                pelo preço de 1 moeda ou troca a religião de outro jogador pelo preço de 2 moedas.
+            </p>
 
             <p>Não pode ser bloqueada ou contestada.</p>
         </SelectedTutorialLayout>
@@ -442,9 +530,13 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.CORRUPCAO) return (
         <SelectedTutorialLayout title="Corrupção">
-            <p>A ação Corrupção é uma ação que pega todas as moedas do asilo
-            sob o pretexto de que o jogador não possui a influência Duque
-            na carta indicada.</p>
+            <p>
+                A ação Corrupção é uma ação que pega todas as moedas do asilo
+                {" "}
+                sob o pretexto de que o jogador não possui a influência Duque
+                {" "}
+                na carta indicada.
+            </p>
 
             <p>Não pode ser bloqueado.</p>
         </SelectedTutorialLayout>
@@ -452,11 +544,15 @@ export default function SelectedTutorial({
 
     if (tutorial === TutorialType.DEVERES) return (
         <SelectedTutorialLayout title="Deveres">
-            <p>Os Deveres são as ações que não podem ser feitas a outros jogadores que
-            que tem a mesma religião que o jogador.</p>
+            <p>
+                Os Deveres são as ações que não podem ser feitas a outros jogadores que
+                que tem a mesma religião que o jogador.
+            </p>
 
-            <p>Caso todos os jogadores possuam a mesma religião, ela pode ou não
-            ser ignorada.</p>
+            <p>
+                Caso todos os jogadores possuam a mesma religião, ela pode ou não
+                ser ignorada.
+            </p>
 
             <div>
                 <p>Deveres</p>
@@ -472,19 +568,34 @@ export default function SelectedTutorial({
 
     return (
         <SelectedTutorialLayout title="Introdução">
-            <p>O COUP é um jogo de cartas onde cada jogador recebe 2 cartas e
-            2 moedas e seu objetivo é eliminar as cartas de outros jogadores
-            até ser o último no jogador com cartas vivas.</p>
+            <p>
+                O COUP é um jogo de cartas onde cada jogador recebe 2 cartas e
+                {" "}
+                2 moedas e seu objetivo é eliminar as cartas de outros jogadores
+                {" "}
+                até ser o último jogador com cartas vivas.
+            </p>
 
-            <p>Cada jogador possui 2 cartas(influências) que fazem ações únicas,
-            mas se ninguém sabe as suas cartas, elas são de qualquer tipo.</p>
+            <p>
+                Cada jogador possui 2 cartas(influências) que fazem ações únicas,
+                {" "}
+                mas se ninguém sabe quais são as suas cartas, elas são de qualquer tipo.
+                {" "}
+            </p>
 
-            <p>As cartas são: assassino, capitão, condessa, duque, embaixador e
-            inquisidor.</p>
+            <p>
+                As cartas são: assassino, capitão, condessa, duque, embaixador e
+                {" "}
+                inquisidor.
+            </p>
 
-            <p>Todo jogador começa com 2 moedas e pode obter mais pegando do banco ou roubando.
-            O banco é uma entidade fictícia que guarda as moedas no jogo físico, porém não possui
-            uma representação nessa edição virtual.</p>
+            <p>
+                Todo jogador começa com 2 moedas e pode obter mais pegando do banco ou roubando.
+                {" "}
+                O banco é uma entidade fictícia que guarda as moedas no jogo físico, porém não possui
+                {" "}
+                uma representação nessa edição virtual.
+            </p>
 
             <p>Cada turno começa com um jogador e ele é obrigado a fazer uma ação (se puder pagar).</p>
         </SelectedTutorialLayout>
