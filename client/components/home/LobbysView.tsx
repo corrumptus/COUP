@@ -4,6 +4,12 @@ import { useEffect, useState } from "react"
 import { newToaster } from "@utils/Toasters";
 import type { Lobby } from "@type/lobby";
 
+async function fetchLobbys() {
+  const response = await fetch("http://localhost:5000/lobby");
+
+  return await response.json();
+}
+
 export default function LobbysView({
   closeView
 }: {
@@ -23,17 +29,21 @@ export default function LobbysView({
 
     (async () => {
       try {
-        const response = await fetch("http://localhost:5000/lobby");
-
-        const lobbys = await response.json();
-
-        setLobbys(lobbys);
+        setLobbys(await fetchLobbys());
       } catch (e) {
         newToaster("Não foi possível carregar os servidores");
       }
 
       setLoading(false);
     })();
+
+    const timeout = setTimeout(async () => {
+      try {
+        setLobbys(await fetchLobbys());
+      } catch (_) {}
+    }, 6000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   async function enter(i: number) {
