@@ -54,7 +54,7 @@ export default function Form({
     <form
       className={formClassName + " text-white"}
       onSubmit={e => {
-        e.preventDefault;
+        e.preventDefault();
 
         loginHandler(name, password, cPassword);
       }}

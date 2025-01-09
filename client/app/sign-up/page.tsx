@@ -27,8 +27,11 @@ export default function SignUp() {
       return;
     }
 
-    const response = await fetch("http://localhost:5000/sign-up", {
+    const response = await fetch("http://localhost:5000/signup", {
       method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
       body: JSON.stringify({ name: name, password: password })
     });
 
