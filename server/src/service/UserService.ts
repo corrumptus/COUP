@@ -1,26 +1,35 @@
 import { AES } from "crypto-js";
 import { SignJWT, jwtVerify } from "jose";
-import type { UserLogin, UserToken } from "@entitys/User";
+import type { UserLoginProps, UserLoginToken } from "@entitys/User";
 import UserRepository from "@repositorys/UserRepository";
+import { isObject, isString } from "@utils/utils";
 
 export default class UserService {
     private static mySecret: Uint8Array = new TextEncoder().encode(process.env.SECRET_KEY);
 
-    static async login(user: UserLogin): Promise<string> {
-        return await UserService.verifyFromProps(user);
+    static async login(user: any): Promise<UserLoginToken> {        
+        UserService.isLoginOrThrows(user);
+
+        await UserService.verifyLogin(user);
+
+        return await UserService.generateToken(user.name);
     }
 
-    static async loginByToken(token: UserToken): Promise<string> {
-        return await UserService.verifyFromToken(token);
+    static async loginByToken(token: any): Promise<UserLoginToken> {
+        UserService.isTokenOrThrows(token);
+
+        return await UserService.verifyToken(token);
     }
 
-    static async signup(user: UserLogin): Promise<string> {
-        if (await UserService.verifyFromProps(user))
-            throw new Error("User already exists: " + user.name);
+    static async signup(user: any): Promise<UserLoginToken> {
+        UserService.isLoginOrThrows(user);
 
-        user.password = UserService.encryptPassword(user.password);
+        await UserService.verifySignUp(user);
 
-        const newUser = await UserRepository.addUser(user);
+        const newUser = await UserRepository.addUser({
+            name: user.name,
+            password: UserService.encryptPassword(user.password)
+        });
 
         if (newUser === null)
             throw new Error("Failed to add user: " + user.name + ". Try again later.");
@@ -28,7 +37,7 @@ export default class UserService {
         return await UserService.generateToken(newUser.name);
     }
 
-    private static async verifyFromToken(token: UserToken): Promise<string> {
+    private static async verifyToken(token: UserLoginToken): Promise<UserLoginToken> {
         let name: string | undefined;
 
         try {
@@ -46,7 +55,7 @@ export default class UserService {
         }
 
         if (name === undefined)
-            throw new Error("Invalid Token");
+            throw new Error("Invalid Token: " + token);
 
         if (await UserRepository.getUser(name) === null)
             throw new Error("User not found: " + name);
@@ -54,7 +63,7 @@ export default class UserService {
         return await UserService.generateToken(name);
     }
 
-    private static async verifyFromProps(user: UserLogin): Promise<string> {
+    private static async verifyLogin(user: UserLoginProps) {
         const { name, password } = user;
 
         const userDB = await UserRepository.getUser(name);
@@ -66,11 +75,18 @@ export default class UserService {
 
         if (UserService.encryptPassword(password) !== spectedPassword)
             throw new Error("Invalid login or password");
-
-        return await UserService.generateToken(name);
     }
 
-    private static async generateToken(name: string): Promise<string> {
+    private static async verifySignUp(user: UserLoginProps) {
+        const userDB = await UserRepository.getUser(user.name);
+
+        console.log("select");
+
+        if (userDB !== null)
+            throw new Error("User already exists: " + user.name);
+    }
+
+    private static async generateToken(name: string): Promise<UserLoginToken> {
         return await new SignJWT()
             .setProtectedHeader({ alg: "HS256" })
             .setIssuer("COUP Game")
@@ -97,5 +113,36 @@ export default class UserService {
         } catch (error) {
             return undefined;
         }
+    }
+
+    static isLoginOrThrows(obj: any): asserts obj is UserLoginProps {
+        if (!isObject(obj))
+            throw new Error("The parameter must be a Object");
+
+        if (!("name" in obj) || !("password" in obj))
+            throw new Error("The object must have the following properties: name, password");
+
+        if (!isString(obj.name))
+            throw new Error("Name cannot be a blank string");
+
+        if (obj.name.trim() === "")
+            throw new Error("Name cannot be a blank string");
+
+        if (!isString(obj.password))
+            throw new Error("Password cannot be a blank string");
+
+        if (obj.password.trim() === "")
+            throw new Error("Password cannot be a blank string");
+    }
+
+    static isTokenOrThrows(token: any): asserts token is UserLoginToken {
+        if (token === undefined)
+            throw new Error("Token must be provided");
+
+        if (!isString(token))
+            throw new Error("Token must be a string");
+
+        if (token.trim() === "")
+            throw new Error("Token cannot be blank");
     }
 }
