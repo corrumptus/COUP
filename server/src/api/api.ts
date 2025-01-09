@@ -2,8 +2,6 @@ import express, { Express } from "express";
 import cors from "cors";
 import LobbyService from "@services/LobbyService";
 import UserService from "@services/UserService";
-import type { UserLogin, UserToken } from "@entitys/User";
-import UserValidator from "@utils/UserValidator";
 
 const api: Express = express();
 
@@ -13,12 +11,7 @@ api.use(cors());
 
 api.post("/login", async (req, res) => {
     try {
-        if (!UserValidator.isLogin(req.body))
-            return;
-
-        const user: UserLogin = req.body;
-
-        const newToken = await UserService.login(user);
+        const newToken = await UserService.login(req.body);
 
         res.status(200).send({ token: newToken });
     } catch (error) {
@@ -28,12 +21,7 @@ api.post("/login", async (req, res) => {
 
 api.post("/login/token", async (req, res) => {
     try {
-        if (!UserValidator.isToken(req.body))
-            return;
-
-        const token: UserToken = req.body;
-
-        const newToken = await UserService.loginByToken(token);
+        const newToken = await UserService.loginByToken(req.body);
 
         res.status(200).send({ token: newToken });
     } catch (error) {
@@ -43,12 +31,7 @@ api.post("/login/token", async (req, res) => {
 
 api.post("/signup", async (req, res) => {
     try {
-        if (!UserValidator.isLogin(req.body))
-            return;
-
-        const user: UserLogin = req.body;
-
-        const newToken = await UserService.signup(user);
+        const newToken = await UserService.signup(req.body);
 
         res.status(200).send({ token: newToken });
     } catch (error) {
