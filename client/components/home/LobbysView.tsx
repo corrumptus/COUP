@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react"
+import { useEffect, useState, KeyboardEvent, useRef, Ref } from "react"
 import { newToaster } from "@utils/Toasters";
 import type { Lobby } from "@type/lobby";
 
@@ -17,11 +17,11 @@ export default function LobbysView({
 }) {
   const router = useRouter();
   const token = localStorage.getItem("coup-token");
-  const [ loading, setLoading ] = useState(true);
+  const [ loading, setLoading ] = useState(false);
   const [ lobbys, setLobbys ] = useState<Lobby[]>([]);
   const [ selected, setSelected ] = useState(-1);
   const [ name, setName ] = useState("");
-  const [ senha, setSenha ] = useState("");
+  const passwordInputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
     if (sessionStorage.getItem("coup-name") !== undefined)
@@ -46,7 +46,7 @@ export default function LobbysView({
     return () => clearTimeout(timeout);
   }, []);
 
-  async function enter(i: number) {
+  async function enter() {
     if (token === null && name.trim() === "") {
       newToaster("Coloque um nome ou faça login");
       return;
@@ -60,9 +60,9 @@ export default function LobbysView({
       &&
       !lobbys[selected].aberto
     )
-      sessionStorage.setItem("coup-lobbyPassword", senha);
+      sessionStorage.setItem("coup-lobbyPassword", passwordInputRef.current?.value as string);
 
-    router.push(`/jogar/${i}`);
+    router.push(`/jogar/${selected}`);
   }
 
   async function create() {
@@ -79,9 +79,26 @@ export default function LobbysView({
       &&
       !lobbys[selected].aberto
     )
-      sessionStorage.setItem("coup-lobbyPassword", senha);
+      sessionStorage.setItem("coup-lobbyPassword", passwordInputRef.current?.value as string);
 
     router.push("/jogar/-1");
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== "Enter")
+      return;
+
+    if (selected === -1) {
+      create();
+      return;
+    }
+
+    if (lobbys[selected].aberto) {
+      enter();
+      return;
+    }
+
+    passwordInputRef.current?.select();
   }
 
   return (
@@ -138,11 +155,12 @@ export default function LobbysView({
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             }
             <button
               className={`${selected !== -1 ? "bg-lime-500" : "bg-gray-400 cursor-default"} border-none rounded-lg text-white text-2xl font-bold py-1 px-2`}
-              onClick={() => selected !== -1 && enter(selected)}
+              onClick={() => selected !== -1 && enter()}
             >
               Entrar
             </button>
@@ -157,8 +175,8 @@ export default function LobbysView({
                 className="rounded-lg pl-2"
                 placeholder="Senha"
                 type="text"
-                value={senha}
-                onChange={e => setSenha(e.target.value)}
+                ref={passwordInputRef as Ref<HTMLInputElement>}
+                onKeyDown={e => e.key === "Enter" && enter()}
               />
             }
           </div>
