@@ -1,38 +1,24 @@
-import type { FieldPacket, ResultSetHeader, RowDataPacket } from "mysql2";
-import type { UserLogin, UserProps } from "@entitys/User";
-import pool from "@utils/connection";
+import User, { UserLoginProps } from "@entitys/User";
+import AppDataSource from "../database/dataSource";
 
 export default class UserRepository {
-    static async getUser(name: string): Promise<UserProps | null> {
+    private static repository = AppDataSource.getRepository(User);
+
+    static async addUser(newUser: UserLoginProps): Promise<User | null> {
         try {
-            const [ user ] = await pool.query(`
-                SELECT *
-                FROM USER
-                WHERE ID = ?
-            `, [name]);
+            await UserRepository.repository.insert(newUser);
 
-            const userResult = (user as RowDataPacket[])[0];
-
-            return userResult as UserProps;
-        } catch (e) {
+            return UserRepository.getUser(newUser.name);
+        } catch (error) {
             return null;
         }
     }
 
-    static async addUser(user: UserLogin): Promise<UserProps | null> {
-        try {
-            const [ { insertId } ]: [ ResultSetHeader, FieldPacket[] ] = await pool.query(`
-                INSERT INTO
-                USER (NAME, PASSWORD)
-                VALUES (?, ?)
-            `, [user.name, user.password]);
-
-            if (insertId === undefined || insertId === null)
-                return null;
-
-            return UserRepository.getUser(user.name);
-        } catch (e) {
-            return null;
-        }
+    static async getUser(userName: string): Promise<User | null> {
+        return UserRepository.repository.findOne({
+            where: {
+                name: userName
+            }
+        });
     }
 }
