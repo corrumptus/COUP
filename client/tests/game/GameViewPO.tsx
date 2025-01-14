@@ -10,11 +10,7 @@ export default class GameViewPO {
   constructor(gameState: GameState, width: number = 800) {
     this.socket = io();
 
-    Object.defineProperty(window, "screen", {
-      value: {
-        width: width
-      }
-    });
+    window.innerWidth = width;
 
     render(
       <GameView
