@@ -1,5 +1,7 @@
 import type { Action, Card } from "@type/game";
 
+export type CardVersion = 0 | 1 | 2;
+
 export enum PlayPageState {
   LOBBY,
   GAME

@@ -4,15 +4,17 @@ import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionIcon from "@components/game/ReligionIcon";
 import type Config from "@type/config";
 import { Action, SelfPlayer } from "@type/game";
-import { ChangeRequest, MenuTypes } from "@type/gameUI";
+import { CardVersion, ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function GameMobileMenu({
   player,
+  playerCardVersions,
   performChange,
   configs,
   isOpen
 }: {
   player: SelfPlayer,
+  playerCardVersions: [CardVersion, CardVersion],
   performChange: (changeRequest: ChangeRequest) => void,
   configs: Config,
   isOpen: boolean
@@ -66,6 +68,7 @@ export default function GameMobileMenu({
       >
         <InfluenceCard
           card={player.cards[0].card}
+          cardVersion={playerCardVersions[0]}
           className={`group-hover:-rotate-[30deg]${player.cards[0].isDead ? " brightness-50" : ""} duration-700`}
         />
       </span>
@@ -75,6 +78,7 @@ export default function GameMobileMenu({
       >
         <InfluenceCard
           card={player.cards[1].card}
+          cardVersion={playerCardVersions[1]}
           className={`group-hover:rotate-[30deg]${player.cards[1].isDead ? " brightness-50" : ""} duration-700`}
         />
       </span>

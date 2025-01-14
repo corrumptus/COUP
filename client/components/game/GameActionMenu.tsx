@@ -6,15 +6,18 @@ import {
   ChangeRequest,
   MenuTypes
 } from "@type/gameUI";
+import { GameCardVersions, useRandomCardVersion } from "@hooks/useCardVersions";
 
 export default function GameActionMenu({
   type,
   gameState,
+  gameCardVersions,
   requeriments,
   performChange,
 }: {
   type: MenuTypes,
   gameState: GameState,
+  gameCardVersions: GameCardVersions,
   requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
 }) {
@@ -157,6 +160,7 @@ export default function GameActionMenu({
             >
               <InfluenceCard
                 card={card}
+                cardVersion={useRandomCardVersion()}
                 className="hover:scale-110 cursor:pointer"
               />
             </button>
@@ -185,6 +189,7 @@ export default function GameActionMenu({
           >
             <InfluenceCard
               card={gameState.player.cards[0].card}
+              cardVersion={gameCardVersions.player[0]}
               className="hover:scale-110 cursor-pointer"
             />
           </button>
@@ -200,6 +205,7 @@ export default function GameActionMenu({
           >
             <InfluenceCard
               card={gameState.player.cards[1].card}
+              cardVersion={gameCardVersions.player[1]}
               className="hover:scale-110 cursor-pointer"
             />
           </button>
@@ -226,6 +232,7 @@ export default function GameActionMenu({
         >
           <InfluenceCard
             card={gameState.player.cards[0].card}
+            cardVersion={gameCardVersions.player[0]}
             className="hover:scale-110 cursor-pointer"
           />
         </button>
@@ -239,6 +246,7 @@ export default function GameActionMenu({
         >
           <InfluenceCard
             card={gameState.player.cards[1].card}
+            cardVersion={gameCardVersions.player[1]}
             className="hover:scale-110 cursor-pointer"
           />
         </button>
@@ -366,7 +374,12 @@ export default function GameActionMenu({
         id="gameView-investigatedCard"
         data-testid="gameView-investigatedCard"
       >
-        <InfluenceCard card={gameState.context.investigatedCard} />
+        <InfluenceCard
+          card={gameState.context.investigatedCard}
+          cardVersion={gameCardVersions
+            .gamePlayers[gameState.context.target][gameState.context.targetCard]
+          }
+        />
       </span>
       <h3 className="text-center text-2xl">Escolha a próxima ação</h3>
       <div className="flex gap-4 items-center">

@@ -6,6 +6,7 @@ import useDeviceWidth from "@hooks/useDeviceWidth";
 import useUIChanger from "@hooks/useUIChanger";
 import type { COUPSocket } from "@type/socket";
 import { GameState } from "@type/game";
+import useCardVersions from "@hooks/useCardVersions";
 
 export default function GameView({
   socket,
@@ -15,6 +16,7 @@ export default function GameView({
   gameState: GameState
 }) {
   const [ menuType, requeriments, changeUI ] = useUIChanger();
+  const gameCardVersions = useCardVersions(gameState.game.players.map(p => p.name));
   const [ isDiffsVisible, setIsDiffsVisible ] = useState(true);
   const [ isNextPersonVisible, setIsNextPersonVisible ] = useState(false);
   const width = useDeviceWidth();
@@ -51,6 +53,7 @@ export default function GameView({
       isNextPersonVisible={isNextPersonVisible}
       closeNextPerson={() => setIsNextPersonVisible(false)}
       gameState={gameState}
+      gameCardVersions={gameCardVersions}
       menuType={menuType}
       requeriments={requeriments}
       performChange={changeRequest => changeUI(socket, gameState, changeRequest)}
@@ -65,6 +68,7 @@ export default function GameView({
       isNextPersonVisible={isNextPersonVisible}
       closeNextPerson={() => setIsNextPersonVisible(false)}
       gameState={gameState}
+      gameCardVersions={gameCardVersions}
       menuType={menuType}
       requeriments={requeriments}
       performChange={changeRequest => changeUI(socket, gameState, changeRequest)}

@@ -4,13 +4,15 @@ import InfluenceCard from "@components/game/InfluenceCard";
 import ReligionIcon from "@components/game/ReligionIcon";
 import { generateColorCard } from "@utils/utils";
 import { Action, EnemyPlayer } from "@type/game";
-import { ChangeRequest, MenuTypes } from "@type/gameUI";
+import { CardVersion, ChangeRequest, MenuTypes } from "@type/gameUI";
 
 export default function PlayerCard({
   player,
+  playerCardVersions,
   performChange
 }: {
   player: EnemyPlayer,
+  playerCardVersions: [CardVersion, CardVersion],
   performChange: (changeRequest: ChangeRequest) => void
 }) {
   const [ colors ] = useState(generateColorCard());
@@ -77,6 +79,7 @@ export default function PlayerCard({
         >
           <InfluenceCard
             card={player.cards[0].card}
+            cardVersion={playerCardVersions[0]}
             className={`cursor-pointer${player.cards[0].isDead ? " brightness-50" : ""} hover:scale-110`}
           />
         </button>
@@ -91,6 +94,7 @@ export default function PlayerCard({
         >
           <InfluenceCard
             card={player.cards[1].card}
+            cardVersion={playerCardVersions[1]}
             className={`cursor-pointer${player.cards[1].isDead ? " brightness-50" : ""} hover:scale-110`}
           />
         </button>

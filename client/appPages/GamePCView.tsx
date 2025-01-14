@@ -14,6 +14,7 @@ import {
   MenuTypes
 } from "@type/gameUI";
 import WinnerView from "@components/game/WinnerView";
+import { GameCardVersions } from "@hooks/useCardVersions";
 
 export default function GamePCView({
   isDiffsVisible,
@@ -21,6 +22,7 @@ export default function GamePCView({
   isNextPersonVisible,
   closeNextPerson,
   gameState,
+  gameCardVersions,
   menuType,
   requeriments,
   performChange,
@@ -33,6 +35,7 @@ export default function GamePCView({
   isNextPersonVisible: boolean,
   closeNextPerson: () => void,
   gameState: GameState,
+  gameCardVersions: GameCardVersions,
   menuType: MenuTypes,
   requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
@@ -62,10 +65,12 @@ export default function GamePCView({
         }
         <Players
           players={gameState.game.players}
+          playersCardVersions={gameCardVersions.gamePlayers}
           performChange={performChange}
         />
         <GamePcFooter
           player={gameState.player}
+          playerCardVersions={gameCardVersions.player}
           performChange={performChange}
           configs={gameState.game.configs}
         />
@@ -83,6 +88,7 @@ export default function GamePCView({
           <GameActionMenu
             type={menuType}
             gameState={gameState}
+            gameCardVersions={gameCardVersions}
             requeriments={requeriments}
             performChange={performChange}
           />

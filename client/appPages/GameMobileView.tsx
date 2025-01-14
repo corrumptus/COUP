@@ -15,6 +15,7 @@ import {
   ChangeRequest,
   MenuTypes
 } from "@type/gameUI";
+import { GameCardVersions } from "@hooks/useCardVersions";
 
 export default function GameMobileView({
   isDiffsVisible,
@@ -22,6 +23,7 @@ export default function GameMobileView({
   isNextPersonVisible,
   closeNextPerson,
   gameState,
+  gameCardVersions,
   menuType,
   requeriments,
   performChange,
@@ -34,6 +36,7 @@ export default function GameMobileView({
   isNextPersonVisible: boolean,
   closeNextPerson: () => void,
   gameState: GameState,
+  gameCardVersions: GameCardVersions,
   menuType: MenuTypes,
   requeriments: ActionRequeriments,
   performChange: (changeRequest: ChangeRequest) => void,
@@ -63,12 +66,14 @@ export default function GameMobileView({
       <main className="h-full flex flex-col relative overflow-hidden bg-[url(../public/game-page.png)] bg-cover bg-bottom">
         <GameMobileMenu
           player={gameState.player}
+          playerCardVersions={gameCardVersions.player}
           performChange={performChange}
           configs={gameState.game.configs}
           isOpen={isMobileMenuOpen}
         />
         <Players
           players={gameState.game.players}
+          playersCardVersions={gameCardVersions.gamePlayers}
           performChange={performChange}
         />
         {isDiffsVisible &&
@@ -85,6 +90,7 @@ export default function GameMobileView({
           <GameActionMenu
             type={menuType}
             gameState={gameState}
+            gameCardVersions={gameCardVersions}
             requeriments={requeriments}
             performChange={performChange}
           />

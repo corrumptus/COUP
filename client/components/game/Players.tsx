@@ -1,13 +1,15 @@
 import { useState } from "react";
 import PlayerCard from "@components/game/PlayerCard";
 import type { EnemyPlayer } from "@type/game";
-import type { ChangeRequest } from "@type/gameUI";
+import type { CardVersion, ChangeRequest } from "@type/gameUI";
 
 export default function Players({
   players,
+  playersCardVersions,
   performChange
 }: {
   players: EnemyPlayer[],
+  playersCardVersions: { [n in EnemyPlayer["name"]]: [CardVersion, CardVersion] },
   performChange: (changeRequest: ChangeRequest) => void
 }) {
   const [ isMouseDown, setIsMouseDown ] = useState(false);
@@ -41,6 +43,7 @@ export default function Players({
         <PlayerCard
           key={p.name}
           player={p}
+          playerCardVersions={playersCardVersions[p.name]}
           performChange={performChange}
         />
       )}
