@@ -22,7 +22,7 @@ export default class LobbyService {
             if (!lobby.isOwner(player))
                 return;
 
-            if (!LobbyService.validateNewConfigs(lobby.getConfigs(), keys, value))
+            if (!LobbyService.isValidNewConfigs(lobby.getConfigs(), keys, value))
                 return;
 
             lobby.updateConfigs(keys, value);
@@ -210,7 +210,7 @@ export default class LobbyService {
             LobbyService.emptyLobbys.push(lobby.id);
     }
 
-    private static validateNewConfigs(configs: Config, keys: string[], value: number | boolean): false | void {
+    private static isValidNewConfigs(configs: Config, keys: string[], value: number | boolean): boolean {
         let config: any = COUPMatchBalancing;
 
         for (let i = 0; i < keys.length - 1; i++) {
@@ -262,6 +262,8 @@ export default class LobbyService {
                 if ((value as number) < config / validations.minByOperation.operand)
                     return false;
         }
+
+        return true;
     }
 
     static getLobby(lobbyId: number): Lobby | undefined {
