@@ -9,6 +9,8 @@ export default class Turn {
     private actions: Action[];
     private cardTypes: CardType[];
     private cards: CardSlot[];
+    private globallyConstester: Player | undefined;
+    private globallyBlockConstester: Player | undefined;
     private finished: boolean;
     private onFinish: () => void;
 
@@ -18,6 +20,8 @@ export default class Turn {
         this.actions = [];
         this.cardTypes = [];
         this.cards = [];
+        this.globallyConstester = undefined;
+        this.globallyBlockConstester = undefined;
         this.finished = false;
         this.onFinish = onFinish;
     }
@@ -37,6 +41,14 @@ export default class Turn {
 
     addCard(card: CardSlot) {
         this.cards.push(card);
+    }
+
+    addGlobalConstester(player: Player) {
+        this.globallyConstester = player;
+    }
+
+    addGlobalBlockConstester(player: Player) {
+        this.globallyBlockConstester = player;
     }
 
     finish(shouldCallOnFinish: boolean = true) {
@@ -88,6 +100,14 @@ export default class Turn {
 
     getLastCardType(): CardType | undefined {
         return this.cardTypes.at(-1);
+    }
+
+    getGloballyConstester(): Player | undefined {
+        return this.globallyConstester;
+    }
+
+    getGloballyBlockConstester(): Player | undefined {
+        return this.globallyBlockConstester;
     }
 
     get hasBeenStarted(): boolean {

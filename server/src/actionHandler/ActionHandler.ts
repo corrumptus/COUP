@@ -13,7 +13,8 @@ export type ActionRequest = {
     card?: CardType,
     selfCard?: number,
     target?: Player,
-    targetCard?: number
+    targetCard?: number,
+    globalThirdPerson?: Player
 }
 
 export type ValidActionRequest = {
@@ -28,7 +29,8 @@ export type ValidActionRequest = {
     card?: CardType,
     selfCard?: CardSlot,
     target?: Player,
-    targetCard?: CardSlot
+    targetCard?: CardSlot,
+    globalThirdPerson?: Player
 }
 
 export enum TurnState {

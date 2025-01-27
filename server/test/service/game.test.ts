@@ -4119,7 +4119,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(0);
         expect(gameClient.secondPlayer().getMoney()).toBe(7);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4234,7 +4234,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4273,7 +4273,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4314,7 +4314,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4355,7 +4355,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4396,7 +4396,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4433,7 +4433,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.INQUISIDOR]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4470,7 +4470,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4504,7 +4504,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(2);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
@@ -4545,7 +4545,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(1);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.PROTESTANTE);
@@ -4586,7 +4586,7 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getMoney()).toBe(0);
         expect(gameClient.secondPlayer().getMoney()).toBe(2);
         expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
-        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())). toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
         expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
@@ -5050,5 +5050,833 @@ describe("game finish", () => {
 
         expect(game.getWinner()).toBe(gameClient.thirdPlayer());
         expect(game.getState().winner).toBe(gameClient.thirdPlayer()!.name);
+    });
+});
+
+describe("globally contestable actions must be globally contested", () => {
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
+    it("should loose contesting when third player use contestar after extorquir", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after extorquir", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after assassinar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after assassinar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
+            true,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.EMBAIXADOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getGloballyBlockConstester()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after ajuda externa", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after ajuda externa", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.AJUDA_EXTERNA);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after taxar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearTaxar"], true ]
+            ],
+            true,
+            [
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after taxar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearTaxar"], true ]
+            ],
+            true,
+            [
+                CardType.DUQUE,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TAXAR, CardType.DUQUE, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(5);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.CAPITAO]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.EMBAIXADOR,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.EMBAIXADOR, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.CAPITAO,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.EMBAIXADOR, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(4);
+        expect(gameClient.secondPlayer().getMoney()).toBe(0);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.CONDESSA,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CONDESSA);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, true]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearInvestigar"], true ]
+            ],
+            true,
+            [
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.EMBAIXADOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearInvestigar"], true ]
+            ],
+            true,
+            [
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, true]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.INQUISIDOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.CAPITAO]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.EMBAIXADOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should loose contesting when third player use contestar after bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearTrocar"], true ]
+            ],
+            true,
+            [
+                CardType.EMBAIXADOR,
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.ASSASSINO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
+    });
+
+    it("should win contesting when third player use contestar after bloquear after trocar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "capitao", "bloquearTrocar"], true ]
+            ],
+            true,
+            [
+                CardType.EMBAIXADOR,
+                CardType.ASSASSINO,
+                CardType.CONDESSA,
+                CardType.CAPITAO,
+                CardType.DUQUE,
+                CardType.INQUISIDOR,
+                CardType.ASSASSINO,
+                CardType.CAPITAO
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.TROCAR, CardType.EMBAIXADOR, 0, gameClient.firstPlayer().name, undefined);
+
+        gameClient.secondPlayerDo(Action.BLOQUEAR, CardType.CAPITAO, 0);
+
+        gameClient.thirdPlayerDo(Action.CONTESTAR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([true, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.CAPITAO]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getGloballyConstester()).toBe(undefined);
+        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).not.toBe(turn);
     });
 });

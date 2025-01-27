@@ -21,6 +21,7 @@ export default class ActionHandlerFacade {
     private card: number | undefined;
     private target: Player | undefined;
     private targetCard: number | undefined;
+    private globalThirdPerson: Player | undefined;
 
     constructor(
         game: Game,
@@ -30,7 +31,8 @@ export default class ActionHandlerFacade {
         cardType: CardType | undefined,
         card: number | undefined,
         target: Player | undefined,
-        targetCard: number | undefined
+        targetCard: number | undefined,
+        globalThirdPerson: Player | undefined,
     ) {
         this.game = game;
         this.turn = turn;
@@ -40,6 +42,7 @@ export default class ActionHandlerFacade {
         this.card = card;
         this.target = target;
         this.targetCard = targetCard;
+        this.globalThirdPerson = globalThirdPerson;
     }
 
     handle(): HandleResult {
@@ -53,7 +56,8 @@ export default class ActionHandlerFacade {
             card: this.cardType,
             selfCard: this.card,
             target: this.target,
-            targetCard: this.targetCard
+            targetCard: this.targetCard,
+            globalThirdPerson: this.globalThirdPerson
         });
 
         actionHandler.save({
@@ -68,7 +72,8 @@ export default class ActionHandlerFacade {
             card: this.cardType,
             selfCard: this.card as CardSlot | undefined,
             target: this.target,
-            targetCard: this.targetCard as CardSlot | undefined
+            targetCard: this.targetCard as CardSlot | undefined,
+            globalThirdPerson: this.globalThirdPerson
         });
 
         const turnState = actionHandler.finish();
@@ -85,7 +90,8 @@ export default class ActionHandlerFacade {
             card: this.cardType,
             selfCard: this.card as CardSlot | undefined,
             target: this.target,
-            targetCard: this.targetCard as CardSlot | undefined
+            targetCard: this.targetCard as CardSlot | undefined,
+            globalThirdPerson: this.globalThirdPerson
         });
 
         return {

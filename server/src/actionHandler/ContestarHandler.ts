@@ -9,21 +9,57 @@ import Config from "@utils/Config";
 export default class ContestarHandler implements ActionHandler {
     private isInvestigating: boolean = false;
     private winContesting: boolean = false;
+    private isGlobalContesting: boolean = false;
 
     validate({
         turn,
         player,
-        selfCard
+        selfCard,
+        globalThirdPerson
     }: ActionRequest): void {
         const action = turn.getLastAction();
 
         if (action === undefined)
             throw new Error("Contestar não pode ser a primeira ação");
 
+        if (!this.isContestableAction(action))
+            throw new Error(`A ação ${action} não pode ser contestada`);
+
+        if (globalThirdPerson !== undefined) {
+            this.validateGlobalThirdPerson(globalThirdPerson, selfCard);
+
+            this.isGlobalContesting = true;
+
+            return;
+        }
+
         if (action === Action.BLOQUEAR)
             this.validateBloquear(turn, player, selfCard);
         else
             this.validateNonBloquear(player, action, selfCard);
+    }
+
+    private isContestableAction(action: Action): boolean {
+        return [
+            Action.TAXAR,
+            Action.CORRUPCAO,
+            Action.EXTORQUIR,
+            Action.ASSASSINAR,
+            Action.INVESTIGAR,
+            Action.TROCAR,
+            Action.BLOQUEAR,
+        ].includes(action);
+    }
+
+    private validateGlobalThirdPerson(player: Player, selfCard: number | undefined) {
+        if (selfCard === undefined)
+            throw new Error("Uma das cartas do jogador deve ser escolhida");
+
+        if (!isCardSlot(selfCard))
+            throw new Error("O index da carta do jogador deve ser 0 ou 1");
+
+        if (player.getCard(selfCard).getIsKilled())
+            throw new Error("A sua carta escolhida já está morta");
     }
 
     private validateBloquear(turn: Turn, player: Player, selfCard: number | undefined): void {
@@ -65,7 +101,8 @@ export default class ContestarHandler implements ActionHandler {
         asylumAPI,
         player,
         target,
-        selfCard
+        selfCard,
+        globalThirdPerson
     }: ValidActionRequest): void {
         const action = turn.getLastAction();
 
@@ -74,12 +111,11 @@ export default class ContestarHandler implements ActionHandler {
         switch (action) {
             case Action.TAXAR: this.saveTaxar(turn, configs, player, selfCard as CardSlot, target as Player); break;
             case Action.CORRUPCAO: this.saveCorrupcao(turn, configs, asylumAPI.add, player, selfCard as CardSlot, target as Player); break;
-            case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, selfCard as CardSlot, target as Player); break;
-            case Action.ASSASSINAR: this.saveAssassinar(turn, configs, player, target as Player); break;
-            case Action.INVESTIGAR: this.saveInvestigar(turn, configs, player, target as Player); break;
+            case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, selfCard as CardSlot, target as Player, globalThirdPerson as Player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(turn, configs, player, target as Player, globalThirdPerson as Player, selfCard as CardSlot); break;
+            case Action.INVESTIGAR: this.saveInvestigar(turn, configs, player, target as Player, globalThirdPerson as Player, selfCard as CardSlot); break;
             case Action.TROCAR: this.saveTrocar(turn, configs, player, selfCard as CardSlot, target as Player); break;
-            case Action.BLOQUEAR: this.saveBloquear(turn, configs, player, selfCard as CardSlot, target as Player); break;
-            default: throw new Error(`Action ${action} cannot be contested`);
+            case Action.BLOQUEAR: this.saveBloquear(turn, configs, player, selfCard as CardSlot, target as Player, globalThirdPerson as Player); break;
         }
     }
 
@@ -87,7 +123,7 @@ export default class ContestarHandler implements ActionHandler {
         const taxarCard = turn.getFirstCard() as CardSlot;
 
         const taxarCardType = target.getCard(taxarCard).getType();
-        
+
         turn.addTarget(player);
 
         if (configs.tiposCartas[taxarCardType].taxar)
@@ -130,7 +166,38 @@ export default class ContestarHandler implements ActionHandler {
         turn.addCard(selfCard);
     }
 
-    private saveExtorquir(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player): void {
+    private saveExtorquir(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player, thirdPerson: Player): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalExtorquir(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalExtorquir(turn, configs, player, selfCard, target);
+    }
+
+    private saveGlobalExtorquir(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const extorquirCard = turn.getFirstCard() as CardSlot;
+
+        const extorquirCardType = player.getCard(extorquirCard).getType();
+
+        if (configs.tiposCartas[extorquirCardType].extorquir) {
+            const extorquirMaxAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+
+            const actualAmount = Math.min(player.getMoney(), extorquirMaxAmount);
+
+            target.removeMoney(actualAmount);
+            player.addMoney(actualAmount);
+
+            thirdPerson.killCard(selfCard);
+        } else {
+            player.killCard(extorquirCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalConstester(thirdPerson);
+    }
+
+    private saveNormalExtorquir(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player): void {
         const extorquirCard = turn.getFirstCard() as CardSlot;
 
         const extorquirCardType = target.getCard(extorquirCard).getType();
@@ -153,7 +220,35 @@ export default class ContestarHandler implements ActionHandler {
         turn.addCard(selfCard);
     }
 
-    private saveAssassinar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveAssassinar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalAssassinar(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalAssassinar(turn, configs, player, target);
+    }
+
+    private saveGlobalAssassinar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const assassinarCard = turn.getFirstCard() as CardSlot;
+
+        const assassinarCardType = player.getCard(assassinarCard).getType();
+
+        if (configs.tiposCartas[assassinarCardType].assassinar) {
+            const cardKilledByKiller = turn.getLastCard() as CardSlot;
+
+            target.killCard(cardKilledByKiller);
+
+            thirdPerson.killCard(selfCard);
+        } else {
+            player.killCard(assassinarCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalConstester(thirdPerson);
+    }
+
+    private saveNormalAssassinar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const assassinarCard = turn.getFirstCard() as CardSlot;
 
         const assassinarCardType = target.getCard(assassinarCard).getType();
@@ -172,7 +267,33 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveInvestigar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveInvestigar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalInvestigar(turn, configs, player, thirdPerson, selfCard);
+        else
+            this.saveNormalInvestigar(turn, configs, player, target);
+    }
+
+    private saveGlobalInvestigar(turn: Turn, configs: Config, player: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const investigarCard = turn.getFirstCard() as CardSlot;
+
+        const investigarCardType = player.getCard(investigarCard).getType();
+
+        if (configs.tiposCartas[investigarCardType].investigar) {
+            thirdPerson.killCard(selfCard);
+
+            this.isInvestigating = true;
+        } else {
+            player.killCard(investigarCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalConstester(thirdPerson);
+    }
+
+    private saveNormalInvestigar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const investigarCard = turn.getFirstCard() as CardSlot;
 
         const investigarCardType = target.getCard(investigarCard).getType();
@@ -210,22 +331,47 @@ export default class ContestarHandler implements ActionHandler {
         turn.addTarget(player);
     }
 
-    private saveBloquear(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player): void {
+    private saveBloquear(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player, thirdPerson: Player): void {
         const action = turn.getFirstAction();
 
         switch (action) {
-            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(turn, configs, player, selfCard, target); break;
-            case Action.TAXAR: this.saveBloquearTaxar(turn, configs, player, target); break;
-            case Action.EXTORQUIR: this.saveBloquearExtorquir(turn, configs, player, target); break;
-            case Action.ASSASSINAR: this.saveBloquearAssassinar(turn, configs, player, target); break;
-            case Action.INVESTIGAR: this.saveBloquearInvestigar(turn, configs, player, target); break;
-            case Action.TROCAR: this.saveBloquearTrocar(turn, configs, player, target); break;
-            default: throw new Error(`Cannot contest the blocked action ${action}`);
+            case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(turn, configs, player, selfCard, target, thirdPerson); break;
+            case Action.TAXAR: this.saveBloquearTaxar(turn, configs, player, target, thirdPerson, selfCard); break;
+            case Action.EXTORQUIR: this.saveBloquearExtorquir(turn, configs, player, target, thirdPerson, selfCard); break;
+            case Action.ASSASSINAR: this.saveBloquearAssassinar(turn, configs, player, target, thirdPerson, selfCard); break;
+            case Action.INVESTIGAR: this.saveBloquearInvestigar(turn, configs, player, target, thirdPerson, selfCard); break;
+            case Action.TROCAR: this.saveBloquearTrocar(turn, configs, player, target, thirdPerson, selfCard); break;
         }
     }
 
-    private saveBloquearAjudaExterna(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player): void {
-        const bloquearCard = turn.getFirstCard() as CardSlot;
+    private saveBloquearAjudaExterna(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player, thirdPerson: Player): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearAjudaExterna(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearAjudaExterna(turn, configs, player, selfCard, target);
+    }
+
+    private saveGlobalBloquearAjudaExterna(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].taxar) {
+            player.rollbackMoney();
+
+            thirdPerson.killCard(selfCard);
+        } else {
+            target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearAjudaExterna(turn: Turn, configs: Config, player: Player, selfCard: CardSlot, target: Player): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
 
         const bloquearCardType = target.getCard(bloquearCard).getType();
 
@@ -241,7 +387,33 @@ export default class ContestarHandler implements ActionHandler {
         turn.addCard(selfCard);
     }
 
-    private saveBloquearTaxar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveBloquearTaxar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearTaxar(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearTaxar(turn, configs, player, target);
+    }
+
+    private saveGlobalBloquearTaxar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].bloquearTaxar) {
+            player.rollbackMoney();
+
+            thirdPerson.killCard(selfCard);
+        } else {
+            target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearTaxar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const taxarCard = turn.getFirstCard() as CardSlot;
 
         const bloquearCard = turn.getLastCard() as CardSlot;
@@ -258,7 +430,42 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearExtorquir(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveBloquearExtorquir(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearExtorquir(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearExtorquir(turn, configs, player, target);
+    }
+
+    private saveGlobalBloquearExtorquir(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const extorquirCard = turn.getFirstCard() as CardSlot;
+
+        const extorquirCardType = player.getCard(extorquirCard).getType();
+
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].bloquearExtorquir)
+            thirdPerson.killCard(selfCard);
+        else {
+            const extorquirMaxAmount = configs.tiposCartas[extorquirCardType].quantidadeExtorquir;
+
+            const actualAmount = Math.min(target.getMoney(), extorquirMaxAmount);
+
+            target.removeMoney(actualAmount);
+            player.addMoney(actualAmount);
+
+            target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearExtorquir(turn: Turn, configs: Config, player: Player, target: Player): void {
         const extorquirCard = turn.getFirstCard() as CardSlot;
 
         const extorquirCardType = player.getCard(extorquirCard).getType();
@@ -283,7 +490,34 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearAssassinar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveBloquearAssassinar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearAssassinar(turn, configs, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearAssassinar(turn, configs, player, target);
+    }
+
+    private saveGlobalBloquearAssassinar(turn: Turn, configs: Config, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].bloquearAssassinar)
+            thirdPerson.killCard(selfCard);
+        else {
+            const cardKilledByContestar = (bloquearCard+1)%2 as CardSlot;
+
+            target.killCard(bloquearCard);
+            target.killCard(cardKilledByContestar);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearAssassinar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const assassinarCard = turn.getFirstCard() as CardSlot;
 
         const bloquearCard = turn.getLastCard() as CardSlot;
@@ -302,7 +536,34 @@ export default class ContestarHandler implements ActionHandler {
         }
     }
 
-    private saveBloquearInvestigar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveBloquearInvestigar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearInvestigar(turn, configs, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearInvestigar(turn, configs, player, target);
+    }
+
+    private saveGlobalBloquearInvestigar(turn: Turn, configs: Config, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].bloquearInvestigar)
+            thirdPerson.killCard(selfCard);
+        else {
+            const cardKilledByContestar = (bloquearCard+1)%2 as CardSlot;
+
+            target.killCard(cardKilledByContestar);
+
+            this.isInvestigating = true;
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearInvestigar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const investigarCard = turn.getFirstCard() as CardSlot;
 
         const bloquearCard = turn.getLastCard() as CardSlot;
@@ -317,12 +578,37 @@ export default class ContestarHandler implements ActionHandler {
             target.killCard(cardKilledByContestar);
 
             this.isInvestigating = true;
-
             this.winContesting = true;
         }
     }
 
-    private saveBloquearTrocar(turn: Turn, configs: Config, player: Player, target: Player): void {
+    private saveBloquearTrocar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        if (this.isGlobalContesting)
+            this.saveGlobalBloquearTrocar(turn, configs, player, target, thirdPerson, selfCard);
+        else
+            this.saveNormalBloquearTrocar(turn, configs, player, target);
+    }
+
+    private saveGlobalBloquearTrocar(turn: Turn, configs: Config, player: Player, target: Player, thirdPerson: Player, selfCard: CardSlot): void {
+        const bloquearCard = turn.getLastCard() as CardSlot;
+
+        const bloquearCardType = target.getCard(bloquearCard).getType();
+
+        if (configs.tiposCartas[bloquearCardType].bloquearTrocar) {
+            player.rollbackCards();
+
+            thirdPerson.killCard(selfCard);
+        } else {
+            target.killCard(bloquearCard);
+
+            this.winContesting = true;
+        }
+
+        turn.addCard(selfCard);
+        turn.addGlobalBlockConstester(thirdPerson);
+    }
+
+    private saveNormalBloquearTrocar(turn: Turn, configs: Config, player: Player, target: Player): void {
         const trocarCard = turn.getFirstCard() as CardSlot;
 
         const bloquearCard = turn.getLastCard() as CardSlot;

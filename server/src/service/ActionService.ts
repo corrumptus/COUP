@@ -35,7 +35,8 @@ export default class ActionService {
             turn,
             isWaitingTimeOut,
             player,
-            target
+            target,
+            globalThirdPerson
         } = ActionService.getInfosForAction(socketId, action, targetName);
 
         const preLastTurn = game.getTurn(-2);
@@ -60,7 +61,8 @@ export default class ActionService {
                 card,
                 selfCard,
                 target,
-                targetCard
+                targetCard,
+                globalThirdPerson
             ).handle();
 
             actionInfos = handleResult.actionInfos;
@@ -103,6 +105,79 @@ export default class ActionService {
         }
     }
 
+    private static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
+        const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
+
+        const game = GameService.getPlayersGame(socketId);
+
+        if (game === undefined)
+            throw new Error("Player is not playing a game");
+
+        let turn: Turn = game.getLastTurn();
+        const cur = ActionService.lobbys[lobbyId];
+        let isWaitingTimeOut = undefined;
+        let globalThirdPerson = undefined;
+
+        if (cur !== undefined) {
+            if (
+                cur.isWaitingTimeOut &&
+                ActionService.iswaitingTimeoutAction(cur.turn.getLastAction()) &&
+                ActionService.isCounterAction(action)
+            ) {
+                turn = cur.turn;
+                game.removeLastTurn();
+            }
+
+            if (
+                !cur.isWaitingTimeOut &&
+                ActionService.isWaitingReplyAction(cur.turn.getLastAction()) &&
+                ActionService.isReplyAction(action)
+            )
+                turn = cur.turn;
+
+            if (
+                !cur.isWaitingTimeOut &&
+                cur.turn.getLastAction() === Action.INVESTIGAR &&
+                ActionService.isWaitingInvestigarReplyAction(action)
+            )
+                turn = cur.turn;
+
+            isWaitingTimeOut = cur.isWaitingTimeOut;
+
+            delete ActionService.lobbys[lobbyId];
+        }
+
+        let player = PlayerService.getPlayer(socketId);
+        let target: Player | undefined = undefined;
+
+        if (
+            player !== turn.getPlayer() &&
+            turn.getTarget() !== undefined &&
+            player !== turn.getTarget() &&
+            action === Action.CONTESTAR
+        ) {
+            globalThirdPerson = player;
+            player = turn.getPlayer();
+        }
+
+        if (player !== turn.getPlayer())
+            target = turn.getPlayer();
+        else if (turn.getTarget() === undefined)
+            target = PlayerService.getPlayerByName(targetName as string, lobbyId);
+        else
+            target = turn.getTarget();
+
+        return {
+            lobbyId,
+            game,
+            turn,
+            isWaitingTimeOut,
+            player,
+            target,
+            globalThirdPerson
+        }
+    }
+
     private static validateSocketTurn(socketPlayer: Player, turn: Turn) {
         const [ player, target ] = [ turn.getPlayer(), turn.getTarget() ];
 
@@ -138,69 +213,13 @@ export default class ActionService {
         )
             return;
 
+        if (
+            socketPlayer !== player &&
+            socketPlayer !== target
+        )
+            return;
+
         throw new Error("Não é a vez do player");
-    }
-
-    private static getInfosForAction(socketId: string, action: Action, targetName: string | undefined) {
-        const { id: lobbyId } = PlayerService.getPlayersLobby(socketId);
-
-        const game = GameService.getPlayersGame(socketId);
-
-        if (game === undefined)
-            throw new Error("Player is not playing a game");
-
-        let turn: Turn = game.getLastTurn();
-        const cur = ActionService.lobbys[lobbyId];
-        let isWaitingTimeOut = undefined;
-
-        if (cur !== undefined) {
-            if (
-                cur.isWaitingTimeOut &&
-                ActionService.iswaitingTimeoutAction(cur.turn.getLastAction()) &&
-                ActionService.isCounterAction(action)
-            ) {
-                turn = cur.turn;
-                game.removeLastTurn();
-            }
-
-            if (
-                !cur.isWaitingTimeOut &&
-                ActionService.isWaitingReplyAction(cur.turn.getLastAction()) &&
-                ActionService.isReplyAction(action)
-            )
-                turn = cur.turn;
-
-            if (
-                !cur.isWaitingTimeOut &&
-                cur.turn.getLastAction() === Action.INVESTIGAR &&
-                ActionService.isWaitingInvestigarReplyAction(action)
-            )
-                turn = cur.turn;
-
-            isWaitingTimeOut = cur.isWaitingTimeOut;
-
-            delete ActionService.lobbys[lobbyId];
-        }
-
-        const player = PlayerService.getPlayer(socketId);
-
-        let target: Player | undefined = undefined;
-
-        if (player !== turn.getPlayer())
-            target = turn.getPlayer();
-        else if (turn.getTarget() === undefined)
-            target = PlayerService.getPlayerByName(targetName as string, lobbyId);
-        else
-            target = turn.getTarget();
-
-        return {
-            lobbyId,
-            game,
-            turn,
-            isWaitingTimeOut,
-            player,
-            target
-        }
     }
 
     private static iswaitingTimeoutAction(action: Action | undefined): boolean {
