@@ -1,5 +1,5 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, RequestInfos, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type Player from "@entitys/player";
 
@@ -42,7 +42,7 @@ export default class trocarReligiaoOutroHandler implements ActionHandler {
     actionInfos({
         player,
         target
-    }: ValidActionRequest): ActionInfos {
+    }: RequestInfos): ActionInfos {
         return {
             attacker: player.name,
             action: Action.TROCAR_RELIGIAO_OUTRO,

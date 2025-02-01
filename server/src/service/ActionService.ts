@@ -7,6 +7,7 @@ import type Player from "@entitys/player";
 import type Turn from "@entitys/Turn";
 import ActionHandlerFacade from "@actionHandlers/ActionHandlerFacade";
 import { TurnState } from "@actionHandlers/ActionHandler";
+import Game from "@entitys/Game";
 
 export type ActionResults = {
     turn: Turn,
@@ -46,7 +47,7 @@ export default class ActionService {
             &&
             turn !== preLastTurn
         )
-            preLastTurn.finish(false);
+            ActionService.nextPlayer(undefined, preLastTurn);
 
         ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
 
@@ -75,14 +76,14 @@ export default class ActionService {
                 };
 
             if (isWaitingTimeOut !== undefined && isWaitingTimeOut)
-                game.nextPlayer();
+                ActionService.nextPlayer(game, undefined);
 
             throw error;
         }
 
         switch (turnState) {
             case TurnState.TURN_FINISHED:
-                turn.finish();
+                ActionService.nextPlayer(game, turn);
                 break;
             case TurnState.TURN_WAITING_REPLY:
                 ActionService.lobbys[lobbyId] = {
@@ -91,7 +92,7 @@ export default class ActionService {
                 };
                 break;
             case TurnState.TURN_WAITING_TIMEOUT:
-                game.nextPlayer();
+                ActionService.nextPlayer(game, undefined);
                 ActionService.lobbys[lobbyId] = {
                     turn: turn,
                     isWaitingTimeOut: true
@@ -256,6 +257,11 @@ export default class ActionService {
             Action.CONTINUAR,
         ] as (Action|undefined)[])
             .includes(action);
+    }
+
+    private static nextPlayer(game: Game | undefined, turn: Turn | undefined) {
+        turn?.finish();
+        game?.nextPlayer();
     }
 
     static revertTurn(lobbyId: number) {

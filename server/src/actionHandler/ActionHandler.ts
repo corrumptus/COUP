@@ -30,7 +30,15 @@ export type ValidActionRequest = {
     selfCard?: CardSlot,
     target?: Player,
     targetCard?: CardSlot,
-    globalThirdPerson?: Player
+    globalThirdPerson?: Player,
+    playerDied: (name: string) => void
+}
+
+export type RequestInfos = {
+    player: Player,
+    card?: CardType,
+    target?: Player,
+    targetCard?: CardSlot
 }
 
 export enum TurnState {
@@ -43,5 +51,5 @@ export default abstract class ActionHandler {
     abstract validate(request: ActionRequest): void;
     abstract save(request: ValidActionRequest): void;
     abstract finish(): TurnState;
-    abstract actionInfos(request: ValidActionRequest): ActionInfos;
+    abstract actionInfos(request: RequestInfos): ActionInfos;
 }

@@ -1,5 +1,5 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { TurnState, ValidActionRequest, RequestInfos } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 
 export default class AjudaExternaHandler implements ActionHandler {
@@ -15,7 +15,7 @@ export default class AjudaExternaHandler implements ActionHandler {
         return TurnState.TURN_WAITING_TIMEOUT;
     }
 
-    actionInfos({ player }: ValidActionRequest): ActionInfos {
+    actionInfos({ player }: RequestInfos): ActionInfos {
         return {
             attacker: player.name,
             action: Action.AJUDA_EXTERNA,

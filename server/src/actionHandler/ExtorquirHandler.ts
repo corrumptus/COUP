@@ -1,5 +1,5 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, RequestInfos, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import Player, { CardSlot, isCardSlot } from "@entitys/player";
@@ -58,7 +58,7 @@ export default class ExtorquirHandler implements ActionHandler {
         player,
         card,
         target
-    }: ValidActionRequest): ActionInfos {
+    }: RequestInfos): ActionInfos {
         return {
             attacker: player.name,
             action: Action.EXTORQUIR,

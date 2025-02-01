@@ -1,5 +1,5 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, RequestInfos, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import Player, { CardSlot } from "@entitys/player";
@@ -25,13 +25,14 @@ export default class ContinuarHandler implements ActionHandler {
         turn,
         configs,
         player,
-        target
+        target,
+        playerDied
     }: ValidActionRequest) {
         const action = turn.getLastAction();
 
         switch (action) {
             case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, target as Player); break;
-            case Action.ASSASSINAR: this.saveAssassinar(turn, player); break;
+            case Action.ASSASSINAR: this.saveAssassinar(turn, player, playerDied); break;
             case Action.INVESTIGAR: this.saveInvestigar(); break;
             case Action.CONTINUAR: this.saveContinuar(); break;
             case Action.BLOQUEAR: this.saveBloquear(turn, configs, player); break;
@@ -53,10 +54,13 @@ export default class ContinuarHandler implements ActionHandler {
         target.addMoney(actualAmount);
     }
 
-    private saveAssassinar(turn: Turn, player: Player) {
+    private saveAssassinar(turn: Turn, player: Player, playerDied: (name: string) => void) {
         const card = turn.getLastCard() as CardSlot;
 
-        player.killCard(card);
+        const playerIsDead = player.killCard(card);
+
+        if (playerIsDead)
+            playerDied(player.name);
     }
 
     private saveInvestigar() {
@@ -116,7 +120,7 @@ export default class ContinuarHandler implements ActionHandler {
 
     actionInfos({
         player
-    }: ValidActionRequest): ActionInfos {
+    }: RequestInfos): ActionInfos {
         return {
             attacker: player.name,
             action: Action.CONTINUAR,

@@ -17,12 +17,11 @@ export default class Game {
         this.players = players;
         this.currentPlayer = currentPlayer || this.random;
         this.nonKilledPlayers = players.map(p => p.name);
-        this.turns = [ new Turn(this.players[this.currentPlayer], () => this.nextPlayer()) ];
+        this.turns = [ new Turn(this.players[this.currentPlayer]) ];
         this.asylum = configs.religiao.moedasIniciaisAsilo;
         this.configs = configs;
 
         this.deliverCardsAndMoney();
-        this.tellPlayers();
     }
 
     addPlayer(player: Player) {
@@ -30,8 +29,6 @@ export default class Game {
 
         if (hasPlayer)
             return;
-
-        player.onPlayerDie(() => this.signDie(player.name));
 
         this.players.push(player);
         this.nonKilledPlayers.push(player.name);
@@ -66,17 +63,10 @@ export default class Game {
         this.players.forEach(p => p.initRound(this.configs.moedasIniciais, reforma));
     }
 
-    private tellPlayers() {
-        this.players.forEach(p => p.onPlayerDie(this.signDie(p.name)));
-    }
-
-    private signDie(name: string): () => void {
+    public signDie(name: string) {
         const index = this.nonKilledPlayers.indexOf(name);
 
-        if (index === -1)
-            return () => {};
-
-        return () => this.nonKilledPlayers.splice(index, 1);
+        this.nonKilledPlayers.splice(index, 1);
     }
 
     private get random(): number {
@@ -94,7 +84,7 @@ export default class Game {
         const player = this.players
             .find(p => p.name === this.nonKilledPlayers[this.currentPlayer]) as Player;
 
-        this.turns.push(new Turn(player, () => this.nextPlayer()));
+        this.turns.push(new Turn(player));
     }
 
     get isEnded(): boolean {

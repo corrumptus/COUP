@@ -73,25 +73,17 @@ export default class ActionHandlerFacade {
             selfCard: this.card as CardSlot | undefined,
             target: this.target,
             targetCard: this.targetCard as CardSlot | undefined,
-            globalThirdPerson: this.globalThirdPerson
+            globalThirdPerson: this.globalThirdPerson,
+            playerDied: (name: string) => this.game.signDie(name)
         });
 
         const turnState = actionHandler.finish();
 
         const actionInfos = actionHandler.actionInfos({
-            turn: this.turn,
-            configs: this.game.getConfigs(),
-            asylumAPI: {
-                get: this.game.getAsylumCoins,
-                reset: this.game.resetAsylumCoins,
-                add: this.game.addAsylumCoins
-            },
             player: this.player,
             card: this.cardType,
-            selfCard: this.card as CardSlot | undefined,
             target: this.target,
-            targetCard: this.targetCard as CardSlot | undefined,
-            globalThirdPerson: this.globalThirdPerson
+            targetCard: this.targetCard as CardSlot | undefined
         });
 
         return {

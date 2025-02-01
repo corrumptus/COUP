@@ -1,5 +1,5 @@
 import type { ActionInfos } from "@services/GameMessageService";
-import ActionHandler, { ActionRequest, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
+import ActionHandler, { ActionRequest, RequestInfos, TurnState, ValidActionRequest } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import { CardSlot, isCardSlot } from "@entitys/player";
@@ -60,7 +60,7 @@ export default class CorrupcaoHandler implements ActionHandler {
     actionInfos({
         player,
         card
-    }: ValidActionRequest): ActionInfos {
+    }: RequestInfos): ActionInfos {
         return {
             attacker: player.name,
             action: Action.CORRUPCAO,

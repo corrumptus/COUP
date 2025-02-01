@@ -17,7 +17,6 @@ export default class Player {
     private religion: Religion | undefined;
     private money!: number;
     private moneyHistory: number[];
-    private handlerDieEvent: () => void = () => {};
 
     constructor(name: string) {
         this.name = name;
@@ -118,15 +117,10 @@ export default class Player {
         this.cardHistory.pop();
     }
 
-    killCard(position: CardSlot) {
+    killCard(position: CardSlot): boolean {
         this.cards[position].kill();
 
-        if (!this.hasNonKilledCards)
-            this.handlerDieEvent();
-    }
-
-    onPlayerDie(handler: () => void) {
-        this.handlerDieEvent = handler;
+        return !this.hasNonKilledCards;
     }
 
     get hasNonKilledCards(): boolean {

@@ -12,9 +12,8 @@ export default class Turn {
     private globallyConstester: Player | undefined;
     private globallyBlockConstester: Player | undefined;
     private finished: boolean;
-    private onFinish: () => void;
 
-    constructor(player: Player, onFinish: () => void) {
+    constructor(player: Player) {
         this.player = player;
         this.target = undefined;
         this.actions = [];
@@ -23,7 +22,6 @@ export default class Turn {
         this.globallyConstester = undefined;
         this.globallyBlockConstester = undefined;
         this.finished = false;
-        this.onFinish = onFinish;
     }
 
     addAction(action: Action) {
@@ -51,11 +49,8 @@ export default class Turn {
         this.globallyBlockConstester = player;
     }
 
-    finish(shouldCallOnFinish: boolean = true) {
+    finish() {
         this.finished = true;
-
-        if (shouldCallOnFinish)
-            this.onFinish();
     }
 
     getPlayer(): Player {
