@@ -2022,6 +2022,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.RENDA]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2055,6 +2058,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2087,9 +2093,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2124,9 +2133,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2161,9 +2173,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2198,9 +2213,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2242,6 +2260,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2280,9 +2301,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
         expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2316,6 +2340,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2351,9 +2378,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2391,9 +2421,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2430,9 +2463,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2470,9 +2506,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2504,10 +2543,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2539,10 +2581,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2585,6 +2630,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2623,10 +2671,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
         expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2665,10 +2716,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CAPITAO, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(Religion.CATOLICA);
         expect(gameClient.secondPlayer().getReligion()).toBe(Religion.PROTESTANTE);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.CORRUPCAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(1);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2702,6 +2756,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2734,9 +2791,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -2771,9 +2831,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2808,9 +2871,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2845,9 +2911,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2880,9 +2949,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2915,9 +2987,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2953,6 +3028,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -2989,9 +3067,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([1, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3026,9 +3107,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([1, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3066,6 +3150,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([1]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3105,6 +3192,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3144,6 +3234,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3179,6 +3272,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3213,9 +3309,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3254,9 +3353,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3293,9 +3395,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3332,9 +3437,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3371,9 +3479,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3408,9 +3519,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3448,6 +3562,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3487,6 +3604,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3528,6 +3648,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3561,6 +3684,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3595,9 +3721,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3634,9 +3763,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3676,9 +3808,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR, Action.TROCAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3717,9 +3852,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3756,9 +3894,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3795,9 +3936,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3832,9 +3976,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -3870,9 +4017,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR, Action.TROCAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3907,9 +4057,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3942,9 +4095,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -3980,6 +4136,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -4018,6 +4177,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4056,6 +4218,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.TROCAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4093,6 +4258,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTINUAR, Action.CONTINUAR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4128,6 +4296,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.GOLPE_ESTADO]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4168,6 +4339,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -4208,6 +4382,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.GOLPE_ESTADO]);
         expect(turn.getAllCards()).toStrictEqual([0]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4243,6 +4420,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
         expect(turn.getAllCards()).toStrictEqual([0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4279,9 +4459,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -4320,9 +4503,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4361,9 +4547,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.firstPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4402,9 +4591,12 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTINUAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.CONTINUAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4438,10 +4630,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4475,10 +4670,13 @@ describe("game, turn and players state in update", () => {
         expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.DUQUE, CardType.CONDESSA]);
         expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
-        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.CONTESTAR]);
+        expect(turn.getTarget()).toBe(undefined);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4513,6 +4711,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4554,6 +4755,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TROCAR_PROPRIA_RELIGIAO]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -4595,6 +4799,9 @@ describe("game, turn and players state in update", () => {
         expect(turn.getAllActions()).toStrictEqual([Action.TROCAR_RELIGIAO_OUTRO]);
         expect(turn.getAllCardTypes()).toStrictEqual([]);
         expect(turn.getAllCards()).toStrictEqual([]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5094,11 +5301,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5137,11 +5345,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5182,11 +5391,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5227,11 +5437,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5270,11 +5481,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -5313,11 +5525,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getGloballyBlockConstester()).toBe(undefined);
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlocker()).toBe(undefined);
+        expect(turn.getBlockContester()).toBe(undefined);
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5358,11 +5571,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5403,11 +5617,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.AJUDA_EXTERNA]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE]);
         expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5450,11 +5665,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5497,11 +5713,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TAXAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.DUQUE, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5542,11 +5759,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5587,11 +5805,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5634,11 +5853,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5681,11 +5901,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5728,11 +5949,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5775,11 +5997,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).toBe(turn);
     });
@@ -5822,11 +6045,12 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
     });
@@ -5871,12 +6095,157 @@ describe("globally contestable actions must be globally contested", () => {
         expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
         expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
         expect(turn.getTarget()).toBe(gameClient.secondPlayer());
-        expect(turn.getGloballyConstester()).toBe(undefined);
-        expect(turn.getGloballyBlockConstester()).toBe(gameClient.thirdPlayer());
-        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR, Action.BLOQUEAR, Action.CONTESTAR]);
+        expect(turn.getAllActions()).toStrictEqual([Action.TROCAR]);
         expect(turn.getAllCardTypes()).toStrictEqual([CardType.EMBAIXADOR, CardType.CAPITAO]);
         expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.secondPlayer());
+        expect(turn.getBlockContester()).toBe(gameClient.thirdPlayer());
         expect(game.getAsylumCoins()).toBe(0);
         expect(game.getLastTurn()).not.toBe(turn);
+    });
+});
+
+describe("globally blockable actions must be globally blocked", () => {
+    afterEach(() => {
+        LobbyService.getLobby(0)?.getState().players.forEach(p => {
+            PlayerService.deletePlayerByName(0, p, "");
+        });
+    });
+
+    it("should block when third player use bloquear after extorquir", async () => {
+        const gameClient = await GameClient.create(
+            [],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.EXTORQUIR, CardType.CAPITAO, 0, gameClient.secondPlayer().name);
+
+        gameClient.thirdPlayerDo(Action.BLOQUEAR, CardType.EMBAIXADOR, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.EXTORQUIR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.CAPITAO, CardType.EMBAIXADOR]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should block when third player use bloquear after assassinar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["moedasIniciais"], 3 ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.ASSASSINAR, CardType.ASSASSINO, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.BLOQUEAR, CardType.CONDESSA, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(0);
+        expect(gameClient.secondPlayer().getMoney()).toBe(3);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(3);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.ASSASSINAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.ASSASSINO, CardType.CONDESSA]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
+    });
+
+    it("should block when third player use bloquear after investigar", async () => {
+        const gameClient = await GameClient.create(
+            [
+                [ ["tiposCartas", "duque", "bloquearInvestigar"], true ]
+            ],
+            true,
+            [
+                CardType.ASSASSINO,
+                CardType.CAPITAO,
+                CardType.CONDESSA,
+                CardType.DUQUE,
+                CardType.EMBAIXADOR,
+                CardType.INQUISIDOR
+            ]
+        );
+
+        const game = gameClient.getGame();
+        const turn = game.getLastTurn();
+
+        gameClient.firstPlayerDo(Action.INVESTIGAR, CardType.INQUISIDOR, 0, gameClient.secondPlayer().name, 0);
+
+        gameClient.thirdPlayerDo(Action.BLOQUEAR, CardType.DUQUE, 0);
+
+        expect(gameClient.firstPlayer().getMoney()).toBe(2);
+        expect(gameClient.secondPlayer().getMoney()).toBe(2);
+        expect(gameClient.thirdPlayer()!.getMoney()).toBe(2);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getIsKilled())).toStrictEqual([false, false]);
+        expect(gameClient.firstPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.ASSASSINO, CardType.CAPITAO]);
+        expect(gameClient.secondPlayer().getCards().map(c => c.getType())).toStrictEqual([CardType.CONDESSA, CardType.DUQUE]);
+        expect(gameClient.thirdPlayer()!.getCards().map(c => c.getType())).toStrictEqual([CardType.EMBAIXADOR, CardType.INQUISIDOR]);
+        expect(gameClient.firstPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.secondPlayer().getReligion()).toBe(undefined);
+        expect(gameClient.thirdPlayer()!.getReligion()).toBe(undefined);
+        expect(turn.getTarget()).toBe(gameClient.secondPlayer());
+        expect(turn.getAllActions()).toStrictEqual([Action.INVESTIGAR]);
+        expect(turn.getAllCardTypes()).toStrictEqual([CardType.INQUISIDOR, CardType.DUQUE]);
+        expect(turn.getAllCards()).toStrictEqual([0, 0, 0]);
+        expect(turn.getContester()).toBe(undefined);
+        expect(turn.getBlocker()).toBe(gameClient.thirdPlayer());
+        expect(turn.getBlockContester()).toBe(undefined);
+        expect(game.getAsylumCoins()).toBe(0);
+        expect(game.getLastTurn()).toBe(turn);
     });
 });

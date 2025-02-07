@@ -28,15 +28,17 @@ export default class ContinuarHandler implements ActionHandler {
         target,
         playerDied
     }: ValidActionRequest) {
-        const action = turn.getLastAction();
+        const action = turn.getBlocker() !== undefined ?
+            Action.BLOQUEAR
+            :
+            turn.getLastAction();
 
         switch (action) {
             case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, target as Player); break;
             case Action.ASSASSINAR: this.saveAssassinar(turn, player, playerDied); break;
-            case Action.INVESTIGAR: this.saveInvestigar(); break;
+            case Action.INVESTIGAR: this.saveInvestigar(turn); break;
             case Action.CONTINUAR: this.saveContinuar(); break;
             case Action.BLOQUEAR: this.saveBloquear(turn, configs, player); break;
-            case Action.CONTESTAR: this.saveContestar(); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
         }
 
@@ -63,16 +65,14 @@ export default class ContinuarHandler implements ActionHandler {
             playerDied(player.name);
     }
 
-    private saveInvestigar() {
+    private saveInvestigar(turn: Turn) {
         this.isInvestigating = true;
+
+        if (turn.getContester() !== undefined)
+            this.isLastActionFinisher = true;
     }
 
     private saveContinuar() {
-        this.isInvestigating = true;
-        this.isLastActionFinisher = true;
-    }
-
-    private saveContestar() {
         this.isInvestigating = true;
         this.isLastActionFinisher = true;
     }
@@ -83,9 +83,9 @@ export default class ContinuarHandler implements ActionHandler {
         switch (action) {
             case Action.AJUDA_EXTERNA: this.saveBloquearAjudaExterna(configs, player); break;
             case Action.TAXAR: this.saveBloquearTaxar(turn, configs, player); break;
-            case Action.EXTORQUIR: this.saveBloquearExtorquir(); break;
-            case Action.ASSASSINAR: this.saveBloquearAssassinar(); break;
-            case Action.INVESTIGAR: this.saveBloquearInvestigar(); break;
+            case Action.EXTORQUIR: break;
+            case Action.ASSASSINAR: break;
+            case Action.INVESTIGAR: this.saveBloquearInvestigar(turn); break;
             case Action.TROCAR: this.saveBloquearTrocar(player); break;
             default: throw new Error(`Cannot accept blocked action ${action}`);
         }
@@ -101,11 +101,12 @@ export default class ContinuarHandler implements ActionHandler {
         player.removeMoney(configs.tiposCartas[cardType].quantidadeTaxar);
     }
 
-    private saveBloquearExtorquir() {}
-
-    private saveBloquearAssassinar() {}
-
-    private saveBloquearInvestigar() {}
+    private saveBloquearInvestigar(turn: Turn) {
+        if (turn.getBlockContester() !== undefined) {
+            this.isInvestigating = true;
+            this.isLastActionFinisher = true;
+        }
+    }
 
     private saveBloquearTrocar(player: Player) {
         player.rollbackCards();

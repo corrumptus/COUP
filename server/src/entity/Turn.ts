@@ -9,8 +9,9 @@ export default class Turn {
     private actions: Action[];
     private cardTypes: CardType[];
     private cards: CardSlot[];
-    private globallyConstester: Player | undefined;
-    private globallyBlockConstester: Player | undefined;
+    private contester: Player | undefined;
+    private blocker: Player | undefined;
+    private blockContester: Player | undefined;
     private finished: boolean;
 
     constructor(player: Player) {
@@ -19,8 +20,9 @@ export default class Turn {
         this.actions = [];
         this.cardTypes = [];
         this.cards = [];
-        this.globallyConstester = undefined;
-        this.globallyBlockConstester = undefined;
+        this.contester = undefined;
+        this.blocker = undefined;
+        this.blockContester = undefined;
         this.finished = false;
     }
 
@@ -41,12 +43,16 @@ export default class Turn {
         this.cards.push(card);
     }
 
-    addGlobalConstester(player: Player) {
-        this.globallyConstester = player;
+    addContester(player: Player) {
+        this.contester = player;
     }
 
-    addGlobalBlockConstester(player: Player) {
-        this.globallyBlockConstester = player;
+    addBlocker(player: Player) {
+        this.blocker = player;
+    }
+
+    addBlockContester(player: Player) {
+        this.blockContester = player;
     }
 
     finish() {
@@ -97,12 +103,16 @@ export default class Turn {
         return this.cardTypes.at(-1);
     }
 
-    getGloballyConstester(): Player | undefined {
-        return this.globallyConstester;
+    getContester(): Player | undefined {
+        return this.contester;
     }
 
-    getGloballyBlockConstester(): Player | undefined {
-        return this.globallyBlockConstester;
+    getBlocker(): Player | undefined {
+        return this.blocker;
+    }
+
+    getBlockContester(): Player | undefined {
+        return this.blockContester;
     }
 
     get hasBeenStarted(): boolean {

@@ -18,11 +18,12 @@ export default class ContestarHandler implements ActionHandler {
         globalThirdPerson
     }: ActionRequest): void {
         const action = turn.getLastAction();
+        const isBloquear = turn.getBlocker() !== undefined;
 
         if (action === undefined)
             throw new Error("Contestar não pode ser a primeira ação");
 
-        if (!this.isContestableAction(action))
+        if (!isBloquear && !this.isContestableAction(action))
             throw new Error(`A ação ${action} não pode ser contestada`);
 
         if (globalThirdPerson !== undefined) {
@@ -33,7 +34,7 @@ export default class ContestarHandler implements ActionHandler {
             return;
         }
 
-        if (action === Action.BLOQUEAR)
+        if (isBloquear)
             this.validateBloquear(turn, player, selfCard);
         else
             this.validateNonBloquear(player, action, selfCard);
@@ -47,7 +48,6 @@ export default class ContestarHandler implements ActionHandler {
             Action.ASSASSINAR,
             Action.INVESTIGAR,
             Action.TROCAR,
-            Action.BLOQUEAR,
         ].includes(action);
     }
 
@@ -74,14 +74,12 @@ export default class ContestarHandler implements ActionHandler {
     }
 
     private validateNonBloquear(player: Player, action: Action, selfCard: number | undefined): void {
-        if (this.contestarNonBloquearDontNeedSelfCard(action))
-            return;
-
-        this.validateSelfCard(player, selfCard);
+        if (this.contestarNonBloquearNeedSelfCard(action))
+            this.validateSelfCard(player, selfCard);
     }
 
-    private contestarNonBloquearDontNeedSelfCard(action: Action): boolean {
-        return [Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
+    private contestarNonBloquearNeedSelfCard(action: Action): boolean {
+        return ![Action.ASSASSINAR, Action.INVESTIGAR].includes(action);
     }
 
     private validateSelfCard(player: Player, selfCard: number | undefined): void {
@@ -105,13 +103,15 @@ export default class ContestarHandler implements ActionHandler {
         globalThirdPerson,
         playerDied
     }: ValidActionRequest): void {
-        const action = turn.getLastAction();
-
-        turn.addAction(Action.CONTESTAR);
+        const action = turn.getBlocker() !== undefined ?
+            Action.BLOQUEAR
+            :
+            turn.getLastAction();
 
         switch (action) {
             case Action.TAXAR:
-                this.saveTaxar(turn,
+                this.saveTaxar(
+                    turn,
                     configs,
                     player,
                     selfCard as CardSlot,
@@ -120,7 +120,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.CORRUPCAO:
-                this.saveCorrupcao(turn,
+                this.saveCorrupcao(
+                    turn,
                     configs,
                     asylumAPI.add,
                     player,
@@ -130,7 +131,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.EXTORQUIR:
-                this.saveExtorquir(turn,
+                this.saveExtorquir(
+                    turn,
                     configs,
                     player,
                     selfCard as CardSlot,
@@ -140,7 +142,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.ASSASSINAR:
-                this.saveAssassinar(turn,
+                this.saveAssassinar(
+                    turn,
                     configs,
                     player,
                     target as Player,
@@ -150,7 +153,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.INVESTIGAR:
-                this.saveInvestigar(turn,
+                this.saveInvestigar(
+                    turn,
                     configs,
                     player,
                     target as Player,
@@ -160,7 +164,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.TROCAR:
-                this.saveTrocar(turn,
+                this.saveTrocar(
+                    turn,
                     configs,
                     player,
                     selfCard as CardSlot,
@@ -169,7 +174,8 @@ export default class ContestarHandler implements ActionHandler {
                 );
                 break;
             case Action.BLOQUEAR:
-                this.saveBloquear(turn,
+                this.saveBloquear(
+                    turn,
                     configs,
                     player,
                     selfCard as CardSlot,
@@ -193,8 +199,6 @@ export default class ContestarHandler implements ActionHandler {
 
         const taxarCardType = target.getCard(taxarCard).getType();
 
-        turn.addTarget(player);
-
         if (configs.tiposCartas[taxarCardType].taxar) {
             const playerIsDead = player.killCard(selfCard);
 
@@ -212,6 +216,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
+        turn.addContester(player);
     }
 
     private saveCorrupcao(
@@ -226,8 +231,6 @@ export default class ContestarHandler implements ActionHandler {
         const corrupcaoCard = turn.getFirstCard() as CardSlot;
 
         const corrupcaoCardType = target.getCard(corrupcaoCard).getType();
-        
-        turn.addTarget(player);
 
         if (configs.religiao.cartasParaCorrupcao[corrupcaoCardType]) {
             const playerIsDead = player.killCard(selfCard);
@@ -248,6 +251,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
+        turn.addContester(player);
     }
 
     private saveExtorquir(
@@ -300,7 +304,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalConstester(thirdPerson);
+        turn.addContester(thirdPerson);
     }
 
     private saveNormalExtorquir(
@@ -337,6 +341,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
+        turn.addContester(player);
     }
 
     private saveAssassinar(
@@ -389,7 +394,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalConstester(thirdPerson);
+        turn.addContester(thirdPerson);
     }
 
     private saveNormalAssassinar(
@@ -420,6 +425,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addContester(player);
     }
 
     private saveInvestigar(
@@ -466,7 +473,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalConstester(thirdPerson);
+        turn.addContester(thirdPerson);
     }
 
     private saveNormalInvestigar(
@@ -499,6 +506,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addContester(player);
     }
 
     private saveTrocar(
@@ -530,7 +539,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addTarget(player);
+        turn.addContester(player);
     }
 
     private saveBloquear(
@@ -659,7 +668,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearAjudaExterna(
@@ -691,6 +700,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
+        turn.addBlockContester(player);
     }
 
     private saveBloquearTaxar(
@@ -738,7 +748,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearTaxar(
@@ -769,6 +779,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addBlockContester(player);
     }
 
     private saveBloquearExtorquir(
@@ -825,7 +837,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearExtorquir(
@@ -863,6 +875,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addBlockContester(player);
     }
 
     private saveBloquearAssassinar(
@@ -909,7 +923,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearAssassinar(
@@ -940,6 +954,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addBlockContester(player);
     }
 
     private saveBloquearInvestigar(
@@ -987,7 +1003,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearInvestigar(
@@ -1019,6 +1035,8 @@ export default class ContestarHandler implements ActionHandler {
             this.isInvestigating = true;
             this.winContesting = true;
         }
+
+        turn.addBlockContester(player);
     }
 
     private saveBloquearTrocar(
@@ -1066,7 +1084,7 @@ export default class ContestarHandler implements ActionHandler {
         }
 
         turn.addCard(selfCard);
-        turn.addGlobalBlockConstester(thirdPerson);
+        turn.addBlockContester(thirdPerson);
     }
 
     private saveNormalBloquearTrocar(
@@ -1097,6 +1115,8 @@ export default class ContestarHandler implements ActionHandler {
 
             this.winContesting = true;
         }
+
+        turn.addBlockContester(player);
     }
 
     finish(): TurnState {

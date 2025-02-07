@@ -99,21 +99,21 @@ export default class BloquearHandler implements ActionHandler {
             Action.INVESTIGAR
         ];
 
-        const needTargetActions = [
+        const actionsNeedAddTarget = [
             Action.AJUDA_EXTERNA,
             Action.TAXAR,
             Action.TROCAR
         ];
 
-        turn.addAction(Action.BLOQUEAR);
-
         turn.addCardType(card as CardType);
 
-        if (!dontNeedAddSelfCardActions.includes(lastAction))
-            turn.addCard(selfCard as CardSlot);
+        turn.addBlocker(player);
 
-        if (needTargetActions.includes(lastAction))
+        if (actionsNeedAddTarget.includes(lastAction))
             turn.addTarget(player);
+
+        if (!dontNeedAddSelfCardActions.includes(lastAction) || player !== turn.getTarget())
+            turn.addCard(selfCard as CardSlot);
     }
 
     finish(): TurnState {

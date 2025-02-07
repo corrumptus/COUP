@@ -196,7 +196,7 @@ export default class GameMessageService extends MessageService {
                 (
                     infos.action === Action.CONTINUAR
                     &&
-                    turn.getAllActions().length === 2
+                    infos.attacker !== turn.getPlayer().name
                 )
                 ||
                 infos.action !== Action.CONTINUAR
@@ -210,6 +210,20 @@ export default class GameMessageService extends MessageService {
                 selfCard: turn.getFirstCard() as CardSlot,
                 target: (turn.getTarget() as Player).name,
                 targetCard: turn.getLastCard() as CardSlot
+            }
+
+        if (
+            name === infos.target
+            &&
+            infos.action === Action.BLOQUEAR
+        )
+            return {
+                type: ContextType.BEING_ATTACKED,
+                action: infos.action as Action,
+                attackedCard: infos.attackedCard,
+                attacker: infos.attacker,
+                card: infos.card as CardType,
+                previousAction: turn.getAllActions().at(-1)
             }
 
         if (
