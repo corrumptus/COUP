@@ -36,7 +36,7 @@ export default class ContinuarHandler implements ActionHandler {
         switch (action) {
             case Action.EXTORQUIR: this.saveExtorquir(turn, configs, player, target as Player); break;
             case Action.ASSASSINAR: this.saveAssassinar(turn, player, playerDied); break;
-            case Action.INVESTIGAR: this.saveInvestigar(turn); break;
+            case Action.INVESTIGAR: this.saveInvestigar(turn, player, target as Player); break;
             case Action.CONTINUAR: this.saveContinuar(); break;
             case Action.BLOQUEAR: this.saveBloquear(turn, configs, player); break;
             default: throw new Error(`Action ${action} cannot be accepted`);
@@ -65,11 +65,14 @@ export default class ContinuarHandler implements ActionHandler {
             playerDied(player.name);
     }
 
-    private saveInvestigar(turn: Turn) {
+    private saveInvestigar(turn: Turn, player: Player, target: Player) {
         this.isInvestigating = true;
 
-        if (turn.getContester() !== undefined)
+        if (turn.getContester() !== undefined) {
             this.isLastActionFinisher = true;
+            turn.setCurrentPlayer(player);
+        } else
+            turn.setCurrentPlayer(target);
     }
 
     private saveContinuar() {

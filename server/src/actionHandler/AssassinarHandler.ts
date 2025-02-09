@@ -67,6 +67,8 @@ export default class AssassinarHandler implements ActionHandler {
         turn.addCardType(card as CardType);
         turn.addCard(selfCard as CardSlot);
         turn.addCard(targetCard as CardSlot);
+
+        turn.setCurrentPlayer(target as Player);
     }
 
     finish(): TurnState {

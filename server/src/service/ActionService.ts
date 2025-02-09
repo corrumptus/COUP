@@ -49,7 +49,7 @@ export default class ActionService {
         )
             ActionService.nextPlayer(undefined, preLastTurn);
 
-        ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn);
+        ActionService.validateSocketTurn(PlayerService.getPlayer(socketId), turn, action);
 
         let actionInfos, turnState;
 
@@ -179,45 +179,32 @@ export default class ActionService {
         }
     }
 
-    private static validateSocketTurn(socketPlayer: Player, turn: Turn) {
-        const [ player, target ] = [ turn.getPlayer(), turn.getTarget() ];
-
-        if (
-            socketPlayer === player
-            &&
-            turn.getAllActions().length%2 === 0
-        )
+    private static validateSocketTurn(socketPlayer: Player, turn: Turn, action: Action) {
+        if (socketPlayer === turn.getCurrentPlayer())
             return;
 
-        if (
-            target !== undefined
-            &&
-            socketPlayer === target
-            &&
-            turn.getAllActions().length%2 === 1
-        )
+        const isGlobalContester =
+            turn.getContester() === undefined &&
+            socketPlayer !== turn.getPlayer() &&
+            action === Action.CONTESTAR
+
+        if (isGlobalContester)
             return;
 
-        if (
-            target === undefined
-            &&
-            socketPlayer !== player
-            &&
-            turn.getAllActions().length%2 === 1
-        )
+        const isGlobalBlocker =
+            turn.getBlocker() === undefined &&
+            socketPlayer !== turn.getPlayer() &&
+            action === Action.BLOQUEAR
+
+        if (isGlobalBlocker)
             return;
 
-        if (
-            turn.getAllActions().length === 3
-            &&
-            socketPlayer === turn.getPlayer()
-        )
-            return;
+        const isGlobalBlockContester =
+            turn.getBlockContester() === undefined &&
+            socketPlayer !== turn.getTarget() &&
+            action === Action.CONTESTAR
 
-        if (
-            socketPlayer !== player &&
-            socketPlayer !== target
-        )
+        if (isGlobalBlockContester)
             return;
 
         throw new Error("Não é a vez do player");

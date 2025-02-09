@@ -498,6 +498,8 @@ export default class ContestarHandler implements ActionHandler {
                 playerDied(player.name);
 
             this.isInvestigating = true;
+
+            turn.setCurrentPlayer(target);
         } else {
             const targetIsDead = target.killCard(investigarCard);
 

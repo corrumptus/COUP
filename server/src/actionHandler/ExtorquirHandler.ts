@@ -48,6 +48,8 @@ export default class ExtorquirHandler implements ActionHandler {
         turn.addTarget(target as Player);
         turn.addCardType(card as CardType);
         turn.addCard(selfCard as CardSlot);
+
+        turn.setCurrentPlayer(target as Player);
     }
 
     finish(): TurnState {

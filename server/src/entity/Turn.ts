@@ -13,6 +13,7 @@ export default class Turn {
     private blocker: Player | undefined;
     private blockContester: Player | undefined;
     private finished: boolean;
+    private currentPlayer: Player;
 
     constructor(player: Player) {
         this.player = player;
@@ -24,6 +25,7 @@ export default class Turn {
         this.blocker = undefined;
         this.blockContester = undefined;
         this.finished = false;
+        this.currentPlayer = player;
     }
 
     addAction(action: Action) {
@@ -113,6 +115,14 @@ export default class Turn {
 
     getBlockContester(): Player | undefined {
         return this.blockContester;
+    }
+
+    getCurrentPlayer(): Player {
+        return this.currentPlayer;
+    }
+
+    setCurrentPlayer(player: Player) {
+        this.currentPlayer = player;
     }
 
     get hasBeenStarted(): boolean {
