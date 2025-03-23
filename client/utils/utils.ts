@@ -4,12 +4,14 @@ import { MenuTypes } from "@type/gameUI";
 import type { Differ } from "@type/utils";
 import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
 
-export function generateColorCard(isDead: boolean = false): {
+export type PlayerCardColor = {
     cardColor: string,
     nameColor: string,
     coinColor: string,
     minusColor: string,
-} {
+}
+
+export function generateColorCard(isDead: boolean = false): PlayerCardColor {
     if (isDead) return {
         cardColor: "bg-slate-500",
         nameColor: "text-white",

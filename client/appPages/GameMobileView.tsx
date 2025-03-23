@@ -10,11 +10,7 @@ import WinnerView from "@components/game/WinnerView";
 import { configDiff } from "@utils/utils";
 import Toasters from "@utils/Toasters";
 import type { GameState } from "@type/game";
-import {
-  ActionRequeriments,
-  ChangeRequest,
-  MenuTypes
-} from "@type/gameUI";
+import { ActionRequeriments, ChangeRequest, MenuTypes } from "@type/gameUI";
 import { GameCardVersions } from "@hooks/useCardVersions";
 
 export default function GameMobileView({

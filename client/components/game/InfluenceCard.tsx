@@ -5,14 +5,18 @@ import { CardVersion } from "@type/gameUI";
 export default function InfluenceCard({
   card,
   cardVersion,
-  className
+  className,
+  width,
+  height
 }: {
   card: Card | undefined,
   cardVersion: CardVersion,
-  className?: string
+  className?: string,
+  width?: number,
+  height?: number
 }) {
-  const cardWidth = 100;
-  const cardHeight = 130;
+  const cardWidth = width === undefined || width < 0 ? 100 : width;
+  const cardHeight = height === undefined || height < 0 ? 130 : height;
 
   if (card === Card.DUQUE && cardVersion === 0) return (
     <Image

@@ -2,18 +2,15 @@ import Image from "next/image";
 import { Religion } from "@type/game";
 
 export default function ReligionIcon({
-  religion,
-  className
+  religion
 }: {
-  religion: Religion,
-  className?: string
+  religion: Religion
 }) {
   return religion === Religion.CATOLICA ?
     <Image
       src="/catolico-icon.png"
       alt="cruz católica"
       title="católico"
-      className={className}
       width={40}
       height={40}
     />
@@ -22,7 +19,6 @@ export default function ReligionIcon({
       src="/protestante-icon.png"
       alt="biblia"
       title="protestante"
-      className={className}
       width={40}
       height={40}
     />

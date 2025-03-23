@@ -1,15 +1,28 @@
-import { TutorialType } from "@type/tutorial"
-import Image from "next/image"
+import Image from "next/image";
+import TutorialLayout from "@components/tutorial/TutorialLayout";
+import TutorialType from "@type/tutorial";
+import GameViewTutorial from "./gameView/GameViewTutorial";
+import COUPDefaultConfigs from "@utils/COUPDefaultConfigs.json";
+import { Action, Card, Religion } from "@type/game";
+import { PlayerCardColor } from "@utils/utils";
+import { CardVersion } from "@type/gameUI";
 
 export default function SelectedTutorial({
     tutorial,
-    goTo
+    goTo,
+    colors,
+    cardVersions
 }: {
     tutorial: TutorialType,
-    goTo: (tutorialType: TutorialType) => void
+    goTo: (tutorialType: TutorialType) => void,
+    colors: PlayerCardColor,
+    cardVersions: {
+        player: { first: CardVersion, second: CardVersion },
+        players: { first: CardVersion, second: CardVersion }[]
+    }
 }) {
     if (tutorial === TutorialType.ASSASSINO) return (
-        <SelectedTutorialLayout title="Assassino">
+        <TutorialLayout title="Assassino">
             <p>
                 A carta Assassino é uma influência que irá
                 {" "}
@@ -43,14 +56,35 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.ASSASSINAR)}>Assassinar</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINAR)}
+                    >
+                        Assassinar
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.INTRODUCAO)}
+                >
+                    Anterior(Introdução)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CAPITAO)}
+                >
+                    Próximo(Capitão)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.CAPITAO) return (
-        <SelectedTutorialLayout title="Capitão">
+        <TutorialLayout title="Capitão">
             <p>
                 A carta Capitão é uma influência que irá
                 {" "}
@@ -85,14 +119,35 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.EXTORQUIR)}>Extorquir</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EXTORQUIR)}
+                    >
+                        Extorquir
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.ASSASSINO)}
+                >
+                    Anterior(Assassino)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONDESSA)}
+                >
+                    Próximo(Condessa)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.CONDESSA) return (
-        <SelectedTutorialLayout title="Condessa">
+        <TutorialLayout title="Condessa">
             <p>A carta Condessa é uma influência que irá bloquear a ação assassinar.</p>
 
             <div className="flex flex-wrap gap-3">
@@ -119,11 +174,27 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CAPITAO)}
+                >
+                    Anterior(Capitão)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.DUQUE)}
+                >
+                    Próximo(Duque)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.DUQUE) return (
-        <SelectedTutorialLayout title="Duque">
+        <TutorialLayout title="Duque">
             <p>
                 A carta Duque é uma influência que irá
                 {" "}
@@ -158,14 +229,35 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.TAXAR)}>Taxar</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TAXAR)}
+                    >
+                        Taxar
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONDESSA)}
+                >
+                    Anterior(Condessa)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.EMBAIXADOR)}
+                >
+                    Próximo(Embaixador)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.EMBAIXADOR) return (
-        <SelectedTutorialLayout title="Embaixador">
+        <TutorialLayout title="Embaixador">
             <p>
                 A carta Embaixador é uma influência que irá
                 {" "}
@@ -200,14 +292,35 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.TROCAR)}>Trocar(2 cartas)</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TROCAR)}
+                    >
+                            Trocar(2 cartas)
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.DUQUE)}
+                >
+                    Anterior(Duque)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.INQUISIDOR)}
+                >
+                    Próximo(Inquisidor)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.INQUISIDOR) return (
-        <SelectedTutorialLayout title="Inquisidor">
+        <TutorialLayout title="Inquisidor">
             <p>
                 A carta Inquisidor é uma influência que irá
                 {" "}
@@ -247,37 +360,95 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações usadas</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.TROCAR)}>Trocar(1 carta)</li>
-                    <li onClick={() => goTo(TutorialType.INVESTIGAR)}>Investigar</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TROCAR)}
+                    >
+                        Trocar(1 carta)
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INVESTIGAR)}
+                    >
+                        Investigar
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout> 
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.EMBAIXADOR)}
+                >
+                    Anterior(Embaixador)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.RENDA)}
+                >
+                    Próximo(Renda)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout> 
     )
 
     if (tutorial === TutorialType.RENDA) return (
-        <SelectedTutorialLayout title="Renda">
-            <p>A ação Renda é uma ação que o jogador pega 1 moeda do banco.</p>
+        <TutorialLayout title="Renda">
+            <p>A ação Renda é uma ação em que o jogador pega 1 moeda do banco.</p>
 
             <p>Não pode ser bloqueada ou contestada.</p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.INQUISIDOR)}
+                >
+                    Anterior(Inquisidor)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.AJUDA_EXTERNA)}
+                >
+                    Próximo(Ajuda externa)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     
 
     if (tutorial === TutorialType.AJUDA_EXTERNA) return (
-        <SelectedTutorialLayout title="Ajuda externa">
+        <TutorialLayout title="Ajuda externa">
             <p>A ação Ajuda externa é uma ação que o jogador pega 2 moedas do banco.</p>
 
             <p>Pode ser bloqueada pelo Duque.</p>
 
             <p>Não pode ser contestada.</p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.RENDA)}
+                >
+                    Anterior(Renda)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.GOLPE_ESTADO)}
+                >
+                    Próximo(Golpe de Estado)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     
 
     if (tutorial === TutorialType.GOLPE_ESTADO) return (
-        <SelectedTutorialLayout title="Golpe de estado">
+        <TutorialLayout title="Golpe de estado">
             <p>
                 A ação Golpe de estado é uma ação que o jogador elimina 1 influência
                 {" "}
@@ -291,11 +462,27 @@ export default function SelectedTutorial({
             </p>
 
             <p>Não pode ser bloqueado ou contestado.</p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.AJUDA_EXTERNA)}
+                >
+                    Anterior(Ajuda externa)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.ASSASSINAR)}
+                >
+                    Próximo(Assassinar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.ASSASSINAR) return (
-        <SelectedTutorialLayout title="Assassinar">
+        <TutorialLayout title="Assassinar">
             <p>
                 A ação Assassinar é uma ação que elimina uma influência escolhida
                 {" "}
@@ -305,43 +492,191 @@ export default function SelectedTutorial({
             <div>
                 <p>Cartas que usam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.ASSASSINO)}>Assassino</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINO)}
+                    >
+                        Assassino
+                    </li>
                 </ul>
             </div>
 
             <div>
                 <p>Cartas que bloqueiam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.CONDESSA)}>Condessa</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.CONDESSA)}
+                    >
+                        Condessa
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="grid place-items-center">
+                <div className="w-[80%]">
+                    <GameViewTutorial
+                        isDiffsVisible={false}
+                        isNextPersonVisible={false}
+                        gameState={{
+                            player: {
+                                name: "playerName",
+                                money: 2,
+                                cards: [
+                                    {
+                                        card: Card.ASSASSINO,
+                                        isDead: false,
+                                    },
+                                    {
+                                        card: Card.DUQUE,
+                                        isDead: false,
+                                    }
+                                ],
+                                religion: Religion.PROTESTANTE
+                            },
+                            game: {
+                                asylum: 0,
+                                playerOfTurn: "playerName",
+                                currentPlayer: "playerName",
+                                players: [
+                                    {
+                                        name: "firstEnemy",
+                                        money: 2,
+                                        cards: [
+                                            {
+                                                card: undefined,
+                                                isDead: false,
+                                            },
+                                            {
+                                                card: undefined,
+                                                isDead: false,
+                                            }
+                                        ],
+                                        religion: Religion.CATOLICA
+                                    },
+                                    {
+                                        name: "secondEnemy",
+                                        money: 2,
+                                        cards: [
+                                            {
+                                                card: undefined,
+                                                isDead: false,
+                                            },
+                                            {
+                                                card: undefined,
+                                                isDead: false,
+                                            }
+                                        ],
+                                        religion: Religion.CATOLICA
+                                    }
+                                ],
+                                configs: COUPDefaultConfigs
+                            },
+                            context: {
+                                lastAction: {
+                                    player: "playerName",
+                                    action: Action.CONTINUAR,
+                                    isInvestigating: false,
+                                    winContesting: false
+                                },
+                                allowedActions: {
+                                    player: [],
+                                    enemys: [
+                                        {
+                                            name: "firstenemy",
+                                            actions: [Action.ASSASSINAR]
+                                        }
+                                    ],
+                                    defense: []
+                                },
+                                previousAction: Action.CONTINUAR
+                            }
+                        }}
+                        requeriments={{}}
+                        colors={colors}
+                        cardVersions={cardVersions}
+                    />
+                </div>
+            </div>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.GOLPE_ESTADO)}
+                >
+                    Anterior(Golpe de estado)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.EXTORQUIR)}
+                >
+                    Próximo(Extorquir)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.EXTORQUIR) return (
-        <SelectedTutorialLayout title="Extorquir">
+        <TutorialLayout title="Extorquir">
             <p>A ação Extorquir é uma ação que rouba até 2 moedas de outro jogador.</p>
 
             <div>
                 <p>Cartas que usam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.CAPITAO)}>Capitão</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.CAPITAO)}
+                    >
+                        Capitão
+                    </li>
                 </ul>
             </div>
 
             <div>
                 <p>Cartas que bloqueiam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.CAPITAO)}>Capitão</li>
-                    <li onClick={() => goTo(TutorialType.EMBAIXADOR)}>Embaixador</li>
-                    <li onClick={() => goTo(TutorialType.INQUISIDOR)}>Inquisidor</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.CAPITAO)}
+                    >
+                        Capitão
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EMBAIXADOR)}
+                    >
+                        Embaixador
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INQUISIDOR)}
+                    >
+                        Inquisidor
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.ASSASSINAR)}
+                >
+                    Anterior(Assassinar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TAXAR)}
+                >
+                    Próximo(Taxar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.TAXAR) return (
-        <SelectedTutorialLayout title="Taxar">
+        <TutorialLayout title="Taxar">
             <p>
                 A ação Taxar é uma ação que pega 3 moedas do banco e pode bloquear a
                 {" "}
@@ -351,36 +686,83 @@ export default function SelectedTutorial({
             <div>
                 <p>Cartas que usam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.DUQUE)}>Duque</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.DUQUE)}
+                    >
+                        Duque
+                    </li>
                 </ul>
             </div>
 
             <div>
                 <p>Cartas que bloqueiam</p>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.EXTORQUIR)}
+                >
+                    Anterior(Extorquir)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TROCAR)}
+                >
+                    Próximo(Trocar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.TROCAR) return (
-        <SelectedTutorialLayout title="Trocar">
+        <TutorialLayout title="Trocar">
             <p>A ação Trocar é uma ação que pode trocar as influências do jogador.</p>
 
             <div>
                 <p>Cartas que usam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.EMBAIXADOR)}>Embaixador(2 cartas)</li>
-                    <li onClick={() => goTo(TutorialType.INQUISIDOR)}>Inquisidor(1 carta)</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EMBAIXADOR)}
+                    >
+                        Embaixador(2 cartas)
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INQUISIDOR)}
+                    >
+                        Inquisidor(1 carta)
+                    </li>
                 </ul>
             </div>
 
             <div>
                 <p>Cartas que bloqueiam</p>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TAXAR)}
+                >
+                    Anterior(Taxar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.INVESTIGAR)}
+                >
+                    Próximo(Investigar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.INVESTIGAR) return (
-        <SelectedTutorialLayout title="Investigar">
+        <TutorialLayout title="Investigar">
             <p>
                 A ação Investigar é uma ação que permite ao jogador ver que influência
                 {" "}
@@ -392,18 +774,39 @@ export default function SelectedTutorial({
             <div>
                 <p>Cartas que usam</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.INQUISIDOR)}>Inquisidor</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INQUISIDOR)}
+                    >
+                        Inquisidor
+                    </li>
                 </ul>
             </div>
 
             <div>
                 <p>Cartas que bloqueiam</p>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TROCAR)}
+                >
+                    Anterior(Trocar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.BLOQUEAR)}
+                >
+                    Próximo(Bloquear)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.BLOQUEAR) return (
-        <SelectedTutorialLayout title="Bloquear">
+        <TutorialLayout title="Bloquear">
             <p>
                 A ação Bloquear é uma contra-ação que cancela a ação bloqueada e, se aceita,
                 {" "}
@@ -413,16 +816,47 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações bloqueáveis</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.AJUDA_EXTERNA)}>Ajuda externa</li>
-                    <li onClick={() => goTo(TutorialType.EXTORQUIR)}>Extorquir</li>
-                    <li onClick={() => goTo(TutorialType.ASSASSINAR)}>Assassinar</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.AJUDA_EXTERNA)}
+                    >Ajuda 
+                    externa
+                </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EXTORQUIR)}
+                    >
+                        Extorquir
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINAR)}
+                    >
+                        Assassinar
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.INVESTIGAR)}
+                >
+                    Anterior(Investigar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONTESTAR)}
+                >
+                    Próximo(Contestar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.CONTESTAR) return (
-        <SelectedTutorialLayout title="Contestar">
+        <TutorialLayout title="Contestar">
             <p>
                 A ação Contestar é uma contra-ação que verifica se a ação anterior
                 {" "}
@@ -456,40 +890,126 @@ export default function SelectedTutorial({
             <div>
                 <p>Ações contestáveis</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.TAXAR)}>Taxar</li>
-                    <li onClick={() => goTo(TutorialType.CORRUPCAO)}>Corrupção</li>
-                    <li onClick={() => goTo(TutorialType.EXTORQUIR)}>Extorquir</li>
-                    <li onClick={() => goTo(TutorialType.ASSASSINAR)}>Assassinar</li>
-                    <li onClick={() => goTo(TutorialType.INVESTIGAR)}>Investigar</li>
-                    <li onClick={() => goTo(TutorialType.TROCAR)}>Trocar</li>
-                    <li onClick={() => goTo(TutorialType.BLOQUEAR)}>Bloquear</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TAXAR)}
+                    >
+                        Taxar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.CORRUPCAO)}
+                    >
+                        Corrupção
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EXTORQUIR)}
+                    >
+                        Extorquir
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINAR)}
+                    >
+                        Assassinar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INVESTIGAR)}
+                    >
+                        Investigar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TROCAR)}
+                    >
+                        Trocar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.BLOQUEAR)}
+                    >
+                        Bloquear
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.BLOQUEAR)}
+                >
+                    Anterior(Bloquear)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONTINUAR)}
+                >
+                    Próximo(Continuar)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.CONTINUAR) return (
-        <SelectedTutorialLayout title="Aceitar">
+        <TutorialLayout title="Continuar">
             <p>
-                A ação Aceitar é a contra-ação que indica que o jogador não bloqueou ou
+                A ação Continuar é a contra-ação que indica que o jogador não bloqueou ou
                 contestou uma ação.
             </p>
 
             <div>
                 <p>Ações aceitáveis</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.EXTORQUIR)}>Extorquir</li>
-                    <li onClick={() => goTo(TutorialType.ASSASSINAR)}>Assassinar</li>
-                    <li onClick={() => goTo(TutorialType.INVESTIGAR)}>Investigar</li>
-                    <li onClick={() => goTo(TutorialType.BLOQUEAR)}>Bloquear</li>
-                    <li onClick={() => goTo(TutorialType.CONTESTAR)}>Contestar</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EXTORQUIR)}
+                    >
+                        Extorquir
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINAR)}
+                    >
+                        Assassinar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.INVESTIGAR)}
+                    >
+                        Investigar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.BLOQUEAR)}
+                    >
+                        Bloquear
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONTESTAR)}
+                >
+                    Anterior(Contestar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.RELIGIAO)}
+                >
+                    Próximo(Religiao)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.RELIGIAO) return (
-        <SelectedTutorialLayout title="Religião">
+        <TutorialLayout title="Religião">
             <p>
                 Quando o dono do servidor decide instaurar A Reforma, os jogadores
                 {" "}
@@ -513,11 +1033,27 @@ export default function SelectedTutorial({
                 {" "}
                 use corrupção.
             </p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CONTINUAR)}
+                >
+                    Anterior(Continuar)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TROCAR_RELIGIAO)}
+                >
+                    Próximo(Trocar Religião)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.TROCAR_RELIGIAO) return (
-        <SelectedTutorialLayout title="Trocar religião">
+        <TutorialLayout title="Trocar religião">
             <p>
                 A ação Trocar Religião é uma ação que troca a religião do próprio jogador
                 {" "}
@@ -525,11 +1061,27 @@ export default function SelectedTutorial({
             </p>
 
             <p>Não pode ser bloqueada ou contestada.</p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.RELIGIAO)}
+                >
+                    Anterior(Religião)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CORRUPCAO)}
+                >
+                    Próximo(Corrupção)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.CORRUPCAO) return (
-        <SelectedTutorialLayout title="Corrupção">
+        <TutorialLayout title="Corrupção">
             <p>
                 A ação Corrupção é uma ação que pega todas as moedas do asilo
                 {" "}
@@ -539,11 +1091,27 @@ export default function SelectedTutorial({
             </p>
 
             <p>Não pode ser bloqueado.</p>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.TROCAR_RELIGIAO)}
+                >
+                    Anterior(Trocar Religião)
+                </button>
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.DEVERES)}
+                >
+                    Próximo(Deveres)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     if (tutorial === TutorialType.DEVERES) return (
-        <SelectedTutorialLayout title="Deveres">
+        <TutorialLayout title="Deveres">
             <p>
                 Os Deveres são as ações que não podem ser feitas a outros jogadores que
                 que tem a mesma religião que o jogador.
@@ -557,17 +1125,47 @@ export default function SelectedTutorial({
             <div>
                 <p>Deveres</p>
                 <ul className="pl-4">
-                    <li onClick={() => goTo(TutorialType.TAXAR)}>Bloquear Ajuda externa(Taxar)</li>
-                    <li onClick={() => goTo(TutorialType.EXTORQUIR)}>Extorquir</li>
-                    <li onClick={() => goTo(TutorialType.ASSASSINAR)}>Assassinar</li>
-                    <li onClick={() => goTo(TutorialType.GOLPE_ESTADO)}>Golpe de Estado</li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.TAXAR)}
+                    >
+                        Bloquear Ajuda externa(Taxar)
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.EXTORQUIR)}
+                    >
+                        Extorquir
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.ASSASSINAR)}
+                    >
+                        Assassinar
+                    </li>
+                    <li
+                        className="italic cursor-pointer text-blue-800 hover:text-blue-600"
+                        onClick={() => goTo(TutorialType.GOLPE_ESTADO)}
+                    >
+                        Golpe de Estado
+                    </li>
                 </ul>
             </div>
-        </SelectedTutorialLayout>
+
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-1 hover:scale-110"
+                    onClick={() => goTo(TutorialType.CORRUPCAO)}
+                >
+                    Anterior(Corrupção)
+                </button>
+                <div className="absolute left-1/2 w-px h-full bg-slate-950"></div>
+            </div>
+        </TutorialLayout>
     )
 
     return (
-        <SelectedTutorialLayout title="Introdução">
+        <TutorialLayout title="Introdução">
             <p>
                 O COUP é um jogo de cartas onde cada jogador recebe 2 cartas e
                 {" "}
@@ -598,25 +1196,18 @@ export default function SelectedTutorial({
             </p>
 
             <p>Cada turno começa com um jogador e ele é obrigado a fazer uma ação (se puder pagar).</p>
-        </SelectedTutorialLayout>
-    )
-}
 
-function SelectedTutorialLayout({
-    title,
-    children
-}: {
-    title: string,
-    children: React.ReactNode
-}) {
-    return (
-        <main className="h-full bg-[url(../public/papiro.png)] bg-[length:100%_100%] bg-no-repeat px-[5%] pc:px-[4%] pt-[55px] pb-[65px] pc:pt-[calc(((100vh-52px-5rem)/2)*0.2)] pc:pb-[calc(((100vh-52px-5rem)/2)*0.24)] overflow-hidden">
-            <div className="h-full flex flex-col gap-1 overflow-auto">
-                <header className="text-3xl font-extrabold">{title}</header>
-                <div className="flex flex-col gap-4">
-                    {children}
-                </div>
+            <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
+                <button
+                    className="h-10 col-start-2 hover:scale-110"
+                    onClick={() => goTo(TutorialType.ASSASSINO)}
+                >
+                    Próximo(Assassino)
+                </button>
+                <div
+                    className="absolute left-1/2 w-px h-full bg-slate-950"
+                ></div>
             </div>
-        </main>
+        </TutorialLayout>
     )
 }

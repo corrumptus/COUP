@@ -1,6 +1,6 @@
 "use client";
 
-import { TutorialType } from "@type/tutorial";
+import TutorialType from "@type/tutorial";
 
 export default function SideBar({
     isOpen,

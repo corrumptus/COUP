@@ -8,11 +8,7 @@ import ReligionButton from "@components/game/ReligionIcon";
 import { configDiff } from "@utils/utils";
 import Toasters from "@utils/Toasters";
 import { Action, GameState } from "@type/game";
-import {
-  ActionRequeriments,
-  ChangeRequest,
-  MenuTypes
-} from "@type/gameUI";
+import { ActionRequeriments, ChangeRequest, MenuTypes } from "@type/gameUI";
 import WinnerView from "@components/game/WinnerView";
 import { GameCardVersions } from "@hooks/useCardVersions";
 
