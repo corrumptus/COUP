@@ -4,10 +4,8 @@ import initSocket from '@socket/socket';
 
 require('dotenv').config();
 
-const PORT: number = Number(process.env.PORT);
-
 const server: Server = http.createServer(api);
 
-server.listen(PORT);
+server.listen(5000);
 
 initSocket(server);
