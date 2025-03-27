@@ -513,7 +513,7 @@ export default function SelectedTutorial({
                 </ul>
             </div>
 
-            <div className="grid place-items-center">
+            {/* <div className="grid place-items-center">
                 <div className="w-[80%]">
                     <GameViewTutorial
                         isDiffsVisible={false}
@@ -597,7 +597,7 @@ export default function SelectedTutorial({
                         cardVersions={cardVersions}
                     />
                 </div>
-            </div>
+            </div> */}
 
             <div className="w-full grid grid-cols-2 h-12 relative overflow-hidden">
                 <button
