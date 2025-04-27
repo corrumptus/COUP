@@ -1,163 +1,110 @@
 import type { COUPSocket, ResponseSocketEmitEvents } from "@socket/socket";
-import type Lobby from "@entitys/Lobby";
+import Lobby from "@entitys/Lobby";
+import Player from "@entitys/player";
+import SocketStoreService from "./SocketStoreService";
+
+type Message<T extends keyof ResponseSocketEmitEvents> = [T, ...Parameters<ResponseSocketEmitEvents[T]>];
 
 export default class MessageService {
-    private static lobbys: {
-        [lobbyId: number]: {
-            lobby: Lobby,
-            players: {
-                socket: COUPSocket,
-                name: string,
-                canReceive: boolean,
-                messageBuffer: {
-                    messageType: keyof ResponseSocketEmitEvents,
-                    messages: Parameters<ResponseSocketEmitEvents[keyof ResponseSocketEmitEvents]>
-                }[]
-            }[]
-        }
-    } = {}
+    private static messagesNotSent: {
+        [socketId: COUPSocket["id"]]: Message<keyof ResponseSocketEmitEvents>[]
+    } = {};
 
-    static newLobby(lobby: Lobby) {
-        if (lobby.id in MessageService.lobbys)
-            return;
-
-        MessageService.lobbys[lobby.id] = {
-            lobby: lobby,
-            players: []
-        }
-    }
-
-    static removeLobby(lobbyId: number) {
-        delete MessageService.lobbys[lobbyId];
-    }
-
-    static newPlayer(lobbyId: number, name: string, socket: COUPSocket) {
-        if (!(lobbyId in MessageService.lobbys))
-            return;
-
-        MessageService.lobbys[lobbyId].players.push({
-            socket: socket,
-            name: name,
-            canReceive: false,
-            messageBuffer: []
-        });
+    static newSocket(socket: COUPSocket) {
+        socket.data.canReceive = false;
 
         socket.on("canReceive", () => {
-            const player = MessageService.lobbys[lobbyId]
-                .players.find(p => p.socket === socket);
+            socket.data.canReceive = true;
 
-            if (player === undefined)
+            if (MessageService.messagesNotSent[socket.id] === undefined)
                 return;
 
-            player.canReceive = true;
+            // @ts-ignore
+            MessageService.messagesNotSent[socket.id].forEach(m => socket.emit(...m));
 
-            player.messageBuffer
-                .forEach(m => player.socket.emit(
-                    m.messageType,
-                    ...m.messages
-                ));
-
-            player.messageBuffer.splice(0);
+            delete MessageService.messagesNotSent[socket.id];
         });
 
         socket.on("cantReceive", () => {
-            const player = MessageService.lobbys[lobbyId]
-                .players.find(p => p.socket === socket);
-
-            if (player !== undefined)
-                player.canReceive = false;
+            socket.data.canReceive = false;
         });
     }
 
-    static removePlayer(lobbyId: number, name: string) {
-        if (!(lobbyId in MessageService.lobbys))
-            return;
+    static removeListeners(socket: COUPSocket) {
+        socket.removeAllListeners("canReceive");
+        socket.removeAllListeners("cantReceive");
 
-        const playerIndex = MessageService.lobbys[lobbyId].players
-            .findIndex(p => p.name === name);
-
-        if (playerIndex === -1)
-            return;
-
-        MessageService.lobbys[lobbyId].players.splice(playerIndex, 1);
+        delete MessageService.messagesNotSent[socket.id]
     }
 
-    static send(
-        lobbyId: number,
-        name: string | undefined,
-        messageType: keyof ResponseSocketEmitEvents,
-        ...messages: Parameters<ResponseSocketEmitEvents[typeof messageType]>
+    static sendToLobby<M extends keyof ResponseSocketEmitEvents>(
+        lobbyId: Lobby["id"],
+        message: Message<M>
     ) {
-        const lobby = MessageService.lobbys[lobbyId];
+        const sockets = SocketStoreService.getLobbySockets(lobbyId);
 
-        if (lobby === undefined)
+        sockets.forEach(s => MessageService.emit(s, message));
+    }
+
+    static sendToPlayerInLobby<M extends keyof ResponseSocketEmitEvents>(
+        lobbyId: Lobby["id"],
+        name: Player["name"],
+        message: Message<M>
+    ) {
+        const socket = SocketStoreService.getSocketInLobbyByName(lobbyId, name);
+
+        if (socket === undefined)
             return;
 
-        if (name === undefined) {
-            lobby.players
-                .forEach(p => MessageService.emit(p, messageType, messages));
+        MessageService.emit(socket, message);
+    }
+
+    static sendToLobbyDiscriminating<M extends keyof ResponseSocketEmitEvents>(
+        lobbyId: Lobby["id"],
+        messager: (socket: COUPSocket) => Message<M>
+    ) {
+        const sockets = SocketStoreService.getLobbySockets(lobbyId);
+
+        sockets.forEach(s => MessageService.emit(s, messager(s)));
+    }
+
+    static sendToPlayerInLobbyDiscriminating<M extends keyof ResponseSocketEmitEvents>(
+        lobbyId: Lobby["id"],
+        name: Player["name"],
+        messager: (socket: COUPSocket) => Message<M>
+    ) {
+        const socket = SocketStoreService.getSocketInLobbyByName(lobbyId, name);
+
+        if (socket === undefined)
+            return;
+
+        MessageService.emit(socket, messager(socket));
+    }
+
+    static sendToLobbyExcludingPlayer<M extends keyof ResponseSocketEmitEvents>(
+        lobbyId: Lobby["id"],
+        name: Player["name"],
+        message: Message<M>
+    ) {
+        const sockets = SocketStoreService.getLobbySockets(lobbyId);
+
+        sockets.forEach(s => s.data.player.name !== name && MessageService.emit(s, message));
+    }
+
+    private static emit<M extends keyof ResponseSocketEmitEvents>(
+        socket: COUPSocket,
+        message: Message<M>
+    ) {
+        if (socket.data.canReceive) {
+            // @ts-ignore
+            socket.emit(...message);
             return;
         }
 
-        const player = lobby.players.find(p => p.name === name);
+        if (MessageService.messagesNotSent[socket.id] === undefined)
+            MessageService.messagesNotSent[socket.id] = [];
 
-        if (player === undefined)
-            return;
-
-        player.socket.emit(messageType, ...messages);
-
-        MessageService.emit(player, messageType, messages);
-    }
-
-    static sendDiscriminating<T extends keyof ResponseSocketEmitEvents>(
-        lobbyId: number,
-        name: string | undefined,
-        messageType: T,
-        messager: (socket: COUPSocket, name: string) =>
-            Parameters<ResponseSocketEmitEvents[T]>
-    ) {
-        const lobby = MessageService.lobbys[lobbyId];
-
-        if (lobby === undefined)
-            return;
-
-        if (name === undefined) {
-            lobby.players
-                .forEach(p => MessageService.emit(p, messageType, messager(p.socket, p.name)));
-            return;
-        }
-
-        const player = lobby.players.find(p => p.name === name);
-
-        if (player === undefined)
-            return;
-
-        MessageService.emit(player, messageType, messager(player.socket, player.name));
-    }
-
-    private static emit<T extends keyof ResponseSocketEmitEvents>(player: {
-            socket: COUPSocket,
-            canReceive: boolean,
-            messageBuffer: {
-                messageType: keyof ResponseSocketEmitEvents,
-                messages: Parameters<ResponseSocketEmitEvents[keyof ResponseSocketEmitEvents]>
-            }[]
-        },
-        messageType: T,
-        messages: Parameters<ResponseSocketEmitEvents[T]>
-    ) {
-        if (player.canReceive) {
-            player.socket.emit(messageType, ...messages);
-            return;
-        }
-
-        player.messageBuffer.push({
-            messageType: messageType,
-            messages: messages
-        });
-    }
-
-    static getLobby(lobbyId: number): Lobby | undefined {
-        return MessageService.lobbys[lobbyId].lobby;
+        // @ts-ignore
+        MessageService.messagesNotSent[socket.id].push(message);
     }
 }

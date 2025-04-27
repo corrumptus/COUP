@@ -1,6 +1,4 @@
-import type { COUPSocket } from "@socket/socket";
-import MessageService from "@services/MessageService";
-import PlayerService from "@services/PlayerService";
+import PlayerService from "@services/SocketConnectionService";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import type Game from "@entitys/Game";
@@ -8,6 +6,7 @@ import type Player from "@entitys/player";
 import type { CardSlot } from "@entitys/player";
 import type Religion from "@entitys/Religion";
 import type Turn from "@entitys/Turn";
+import type Lobby from "@entitys/Lobby";
 import type Config from "@utils/Config";
 
 type PlayerBase = {
@@ -75,55 +74,23 @@ export type ActionInfos = {
     winContesting: boolean
 }
 
-export default class GameMessageService extends MessageService {
-    static beginMatch(lobbyId: number) {
-        const lobby = super.getLobby(lobbyId);
+export default class GameMessageService {
+    static calculateBeginGameState(game: Game, player: Player): GameState {
+        const state = game.getState();
 
-        if (lobby === undefined)
-            return;
-
-        const game = lobby.getGame() as Game;
-
-        super.sendDiscriminating(
-            lobbyId,
-            undefined,
-            "beginMatch",
-            (socket: COUPSocket, name: string) => [
-                GameMessageService.calculateGameState(lobbyId, game, name),
-                PlayerService.getSessionCode(socket.id)
-            ]
-        );
+        return {
+            player: player.getState(),
+            game: GameMessageService.gameStateForPlayer(state, player.name),
+            context: {
+                type: ContextType.OBSERVING,
+                attacker: state.currentPlayer,
+                isInvestigating: false,
+                winContesting: false
+            }
+        }
     }
 
-    static reconnectGameState(lobbyId: number, name: string) {
-        const lobby = super.getLobby(lobbyId);
-
-        if (lobby === undefined)
-            return;
-
-        const game = lobby.getGame() as Game;
-
-        super.send(
-            lobbyId,
-            name,
-            "reconnectingLobby",
-            lobbyId
-        );
-
-        super.sendDiscriminating(
-            lobbyId,
-            name,
-            "beginMatch",
-            (socket: COUPSocket, name: string) => [
-                GameMessageService.calculateGameState(lobby.id, game, name),
-                PlayerService.getSessionCode(socket.id)
-            ]
-        );
-    }
-
-    private static calculateGameState(lobbyId: number, game: Game, name: string): GameState {
-        const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
-
+    static reconnectGameState(game: Game, player: Player): GameState {
         const state = game.getState();
 
         return {
@@ -139,7 +106,7 @@ export default class GameMessageService extends MessageService {
     }
 
     static updatePlayers(
-        lobbyId: number,
+        lobbyId: Lobby["id"],
         game: Game,
         turn: Turn,
         infos: ActionInfos
@@ -160,7 +127,7 @@ export default class GameMessageService extends MessageService {
     }
 
     private static calculateNewGameState(
-        lobbyId: number,
+        lobbyId: Lobby["id"],
         game: Game,
         turn: Turn,
         name: string,
@@ -259,52 +226,13 @@ export default class GameMessageService extends MessageService {
         return { ...gameState, players: gameState.players.filter(p => p.name !== playerName) }
     }
 
-    static sendPlayerReconnecting(lobbyId: number, player: EnemyPlayer) {
-        const lobby = super.getLobby(lobbyId);
-
-        if (lobby === undefined)
-            return;
-
-        super.sendDiscriminating(
-            lobbyId,
-            undefined,
-            "addPlayer",
-            () => [player]
-        );
-    }
-
-    static sendPlayerDisconnecting(lobbyId: number, player: string) {
-        const lobby = super.getLobby(lobbyId);
-
-        if (lobby === undefined)
-            return;
-
-        super.sendDiscriminating(
-            lobbyId,
-            undefined,
-            "leavingPlayer",
-            () => [player]
-        );
-
-        super.sendDiscriminating(
-            lobbyId,
-            undefined,
-            "updatePlayer",
-            (_, name) => [
-                GameMessageService.disconnectedPlayerNewGameState(lobbyId, lobby.getGame() as Game, name)
-            ]
-        );
-    }
-
-    private static disconnectedPlayerNewGameState(lobbyId: number, game: Game, name: string): GameState {
-        const player = PlayerService.getPlayerByName(name, lobbyId) as Player;
-
+    static disconnectedPlayerNewGameState(lobby: Lobby, player: Player): GameState {
         return {
             player: player.getState(),
-            game: GameMessageService.gameStateForPlayer(game.getState(), name),
+            game: GameMessageService.gameStateForPlayer((lobby.getGame() as Game).getState(), player.name),
             context: {
                 type: ContextType.OBSERVING,
-                attacker: name,
+                attacker: player.name,
                 isInvestigating: false,
                 winContesting: false
             }

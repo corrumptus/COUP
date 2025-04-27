@@ -1,20 +1,19 @@
 import type { Server as HTTPServer} from "http";
 import { Server, Socket } from "socket.io";
-import GameService from "@services/GameService";
 import type { GameState, EnemyPlayer } from "@services/GameMessageService";
-import LobbyService from "@services/LobbyService";
-import type { LobbyState } from "@services/LobbyMessageService";
-import PlayerService from "@services/PlayerService";
-import SocketValidatorService from "@services/SocketValidatorService";
+import SocketConnectionService from "@services/SocketConnectionService";
 import type CardType from "@entitys/CardType";
+import Player from "@entitys/player";
+import Lobby from "@entitys/Lobby";
+import type { LobbyState } from "@utils/LobbyStateCalculator";
 
 export interface RequestSocketOnEvents {
     "canReceive": () => void;
     "cantReceive": () => void;
 
     "updateConfigs": (keys: string[], value: number | boolean) => void;
-    "newOwner": (name: string) => void;
-    "removePlayer": (name: string) => void;
+    "newOwner": (player: string) => void;
+    "removePlayer": (player: string) => void;
     "changePassword": (password: string) => void;
     "removePassword": () => void;
     "beginMatch": () => void;
@@ -51,9 +50,10 @@ export interface ResponseSocketEmitEvents {
     "passwordUpdated": (password?: string) => void;
     "newPlayer": (player: string) => void;
     "leavingPlayer": (player: string) => void;
-    "newOwner": (name: string) => void;
-    "reconnectingLobby": (id: number) => void;
-    "beginMatch": (gameState: GameState, sessionCode: string) => void;
+    "newOwner": (player: string) => void;
+    "reconnectingLobby": (id: Lobby["id"]) => void;
+    "beginMatch": (gameState: GameState) => void;
+    "reconnectionCode": (code: number) => void;
 
     "updatePlayer": (updates: GameState) => void;
     "addPlayer": (player: EnemyPlayer) => void;
@@ -69,7 +69,14 @@ export type SocketEmitLobbyEvents =
     "newOwner" |
     "beginMatch";
 
-export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents>;
+export type SocketData = {
+    player: Player,
+    canReceive: boolean,
+    lobbyId: Lobby["id"],
+    reconnectionCode: number
+}
+
+export type COUPSocket = Socket<RequestSocketOnEvents, ResponseSocketEmitEvents, {}, SocketData>;
 
 export default function initSocket(server: HTTPServer) {
     const serverSocket: Server = new Server(server, {
@@ -78,19 +85,5 @@ export default function initSocket(server: HTTPServer) {
         }
     });
 
-    serverSocket.on("connection", async (socket: COUPSocket) => {
-        const error = SocketValidatorService.validate(socket);
-
-        if (error !== undefined) {
-            socket.emit("disconnectReason", error);
-            socket.disconnect();
-            return;
-        }
-
-        await PlayerService.setListeners(socket);
-
-        LobbyService.setListeners(socket);
-
-        GameService.setListeners(socket);
-    });
+    serverSocket.on("connection", SocketConnectionService.connectSocket);
 }

@@ -4,18 +4,16 @@ import type Config from "@utils/Config";
 import COUPdefaultConfigs from "@resources/COUPdefaultConfigs.json";
 
 export default class Lobby {
-    readonly id: number;
+    readonly id: string;
     private currentGame: Game | undefined;
     private players: Player[];
-    private gamePlayers: string[];
-    private owner: Player | undefined;
+    private owner: Player;
     private password: string | undefined;
     private configs: Config;
 
-    constructor(id: number, owner: Player) {
+    constructor(id: string, owner: Player) {
         this.id = id;
         this.players = [owner];
-        this.gamePlayers = [];
         this.owner = owner;
         this.password = undefined;
         this.configs = JSON.parse(JSON.stringify(COUPdefaultConfigs));
@@ -24,65 +22,26 @@ export default class Lobby {
     addPlayer(player: Player) {
         if (this.players.find(p => p.name === player.name) !== undefined)
             return;
-
-        if (this.isRunningGame) {
-            if (this.gamePlayers.find(p => p === player.name) === undefined)
-                this.gamePlayers.push(player.name);
-        } else {
-            if (this.owner === undefined)
-                this.owner = player;
-
-            this.players.push(player);
-        }
-    }
-
-    deletePlayer(playerName: string, deleteFromLobby: boolean) {
-        if (this.players.find(p => p.name === playerName) === undefined)
-            return;
-
-        this.deleteFromGame(playerName, deleteFromLobby);
-
-        const isLobbyEmpty = this.players.length === 0 ||
-            (
-                this.isRunningGame
-                &&
-                this.gamePlayers.length === 0
-            );
-
-        if (isLobbyEmpty) {
-            this.resetLobby();
-            return;
-        }
-
-        if (this.owner !== undefined && this.owner.name === playerName)
-            this.assignNewOwner();
+        
+        this.players.push(player);
 
         if (this.isRunningGame)
-            (this.currentGame as Game).deletePlayer(playerName);
+            (this.currentGame as Game).addPlayer(player);
     }
 
-    private deleteFromGame(playerName: string, deleteFromLobby: boolean) {
-        const gamePlayerIndex = this.gamePlayers.findIndex(p => p === playerName);
+    removePlayer(player: Player) {
+        const index = this.players.indexOf(player);
 
-        this.gamePlayers.splice(gamePlayerIndex, 1);
-
-        if (deleteFromLobby) {
-            const playerIndex = this.players.findIndex(p => p.name === playerName);
-
-            this.players.splice(playerIndex, 1);
-        }
-    }
-
-    private assignNewOwner() {
-        if (this.isRunningGame) {
-            const firstGamePlayer = this.players.find(p => p.name === this.gamePlayers[0]) as Player;
-
-            this.owner = firstGamePlayer;
-
+        if (index === -1)
             return;
-        }
 
-        this.owner = this.players[0];
+        this.players.splice(index, 1);
+
+        if (this.owner === player)
+            this.owner = this.players[0];
+
+        if (this.isRunningGame)
+            (this.currentGame as Game).deletePlayer(player);
     }
 
     hasPlayer(playerName: string) {
@@ -91,9 +50,8 @@ export default class Lobby {
 
     newGame() {
         if (this.currentGame === undefined) {
-            this.gamePlayers = this.players.map(p => p.name);
             this.currentGame = new Game(
-                this.players.map(p => p),
+                [...this.players],
                 this.configs
             );
 
@@ -103,14 +61,12 @@ export default class Lobby {
         if (!this.currentGame.isEnded)
             return;
 
-        this.gamePlayers = this.players.map(p => p.name);
-
         const winner = this.currentGame.getWinner();
 
         const winnerIndex = this.players.findIndex(p => p === winner);
 
         this.currentGame = new Game(
-            this.players.map(p => p),
+            [...this.players],
             this.configs,
             winnerIndex === -1 ? 0 : winnerIndex
         );
@@ -120,16 +76,16 @@ export default class Lobby {
         return this.currentGame !== undefined && !this.currentGame.isEnded;
     }
 
-    get isEmpty(): boolean {
-        return this.players.length === 0;
-    }
-
     getGame(): Game | undefined {
         return this.currentGame;
     }
 
-    getPassword(): string | undefined {
-        return this.password;
+    hasPassword(): boolean {
+        return this.password !== undefined;
+    }
+
+    isLobbyPassword(password: string) {
+        return this.password === password;
     }
 
     toLobbyFinder() {
@@ -156,7 +112,7 @@ export default class Lobby {
         config[keys[keys.length - 1]] = value;
     }
 
-    getOwner(): Player | undefined {
+    getOwner(): Player {
         return this.owner;
     }
 
@@ -171,24 +127,11 @@ export default class Lobby {
         return player === this.owner;
     }
 
-    isOwnerName(name: string): boolean {
-        return name === this.owner?.name;
-    }
-
     newPassword(password: string) {
         this.password = password;
     }
 
     removePassword() {
-        this.password = undefined;
-    }
-
-    private resetLobby() {
-        this.currentGame = undefined;
-        this.players = [];
-        this.gamePlayers = [];
-        this.owner = undefined;
-        this.configs = COUPdefaultConfigs;
         this.password = undefined;
     }
 

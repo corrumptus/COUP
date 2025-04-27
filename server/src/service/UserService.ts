@@ -5,7 +5,7 @@ import UserRepository from "@repositorys/UserRepository";
 import { isObject, isString } from "@utils/utils";
 
 export default class UserService {
-    private static mySecret: Uint8Array = new TextEncoder().encode(process.env.SECRET_KEY);
+    private static mySecret = new TextEncoder().encode(process.env.SECRET_KEY);
 
     static async login(user: any): Promise<UserLoginToken> {        
         UserService.isLoginOrThrows(user);
@@ -16,9 +16,9 @@ export default class UserService {
     }
 
     static async loginByToken(token: any): Promise<UserLoginToken> {
-        UserService.isTokenOrThrows(token);
+        await UserService.isValidToken(token);
 
-        return await UserService.verifyToken(token);
+        return UserService.generateToken(await UserService.getName(token));
     }
 
     static async signup(user: any): Promise<UserLoginToken> {
@@ -37,11 +37,9 @@ export default class UserService {
         return await UserService.generateToken(newUser.name);
     }
 
-    private static async verifyToken(token: UserLoginToken): Promise<UserLoginToken> {
-        let name: string | undefined;
-
+    static async isValidToken(token: any): Promise<boolean> {
         try {
-            name = (await jwtVerify(
+            const name = (await jwtVerify(
                 token,
                 UserService.mySecret,
                 {
@@ -50,17 +48,11 @@ export default class UserService {
                     clockTolerance: "30 day"
                 }
             )).payload.sub;
+
+            return name !== undefined;
         } catch (error) {
-            throw new Error("Invalid token: " + token);
+            return false;
         }
-
-        if (name === undefined)
-            throw new Error("Invalid Token: " + token);
-
-        if (await UserRepository.getUser(name) === null)
-            throw new Error("User not found: " + name);
-
-        return await UserService.generateToken(name);
     }
 
     private static async verifyLogin(user: UserLoginProps) {
@@ -106,8 +98,8 @@ export default class UserService {
                 UserService.mySecret,
                 {
                     issuer: "COUP Game",
-                    maxTokenAge: "2 days",
-                    clockTolerance: "30 day"
+                    maxTokenAge: "1 year",
+                    clockTolerance: "30 days"
                 }
             )).payload.sub;
         } catch (error) {
@@ -115,7 +107,7 @@ export default class UserService {
         }
     }
 
-    static isLoginOrThrows(obj: any): asserts obj is UserLoginProps {
+    private static isLoginOrThrows(obj: any): asserts obj is UserLoginProps {
         if (!isObject(obj))
             throw new Error("The parameter must be a Object");
 
@@ -135,7 +127,7 @@ export default class UserService {
             throw new Error("Password cannot be a blank string");
     }
 
-    static isTokenOrThrows(token: any): asserts token is UserLoginToken {
+    private static isTokenOrThrows(token: any): asserts token is UserLoginToken {
         if (token === undefined)
             throw new Error("Token must be provided");
 

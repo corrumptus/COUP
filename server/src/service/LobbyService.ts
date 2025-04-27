@@ -1,25 +1,23 @@
 import type { COUPSocket } from "@socket/socket";
 import GameService from "@services/GameService";
-import LobbyMessageService from "@services/LobbyMessageService";
-import PlayerService from "@services/PlayerService";
+import MessageService from "@services/MessageService";
+import SocketConnectionService from "@services/SocketConnectionService";
+import SocketStoreService from "@services/SocketStoreService";
 import Lobby from "@entitys/Lobby";
 import type Player from "@entitys/player";
 import COUPMatchBalancing from "@resources/COUPMatchBalancing.json";
 import Config from "@utils/Config";
+import LobbyStateCalculator from "@utils/LobbyStateCalculator";
 
 export default class LobbyService {
-    private static lobbys: Lobby[] = [];
-    private static emptyLobbys: number[] = [];
-
     static setListeners(socket: COUPSocket) {
-        const lobby = PlayerService.getPlayersLobby(socket.id);
-
-        const player = PlayerService.getPlayer(socket.id);
-
-        LobbyService.declare(lobby.id, player.name, socket);
-
         socket.on("updateConfigs", (keys: string[], value: number | boolean) => {
-            if (!lobby.isOwner(player))
+            const lobby = SocketStoreService.getLobby(socket.data.lobbyId);
+
+            if (lobby === undefined)
+                return;
+
+            if (!lobby.isOwner(socket.data.player))
                 return;
 
             if (!LobbyService.isValidNewConfigs(lobby.getConfigs(), keys, value))
@@ -27,187 +25,152 @@ export default class LobbyService {
 
             lobby.updateConfigs(keys, value);
 
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "configsUpdated", keys, value);
+            MessageService.sendToLobby(lobby.id, [ "configsUpdated", keys, value ]);
         });
 
         socket.on("newOwner", (name: string) => {
-            if (PlayerService.getPlayerByName(name, lobby.id) === undefined)
+            const lobby = SocketStoreService.getLobby(socket.data.lobbyId);
+
+            if (lobby === undefined)
                 return;
 
-            const otherPlayer = PlayerService.getPlayerByName(name, lobby.id) as Player;
+            if (!lobby.isOwner(socket.data.player))
+                return;
 
-            lobby.newOwner(otherPlayer);
+            const otherSocket = SocketStoreService.getSocketInLobbyByName(socket.data.lobbyId, name);
 
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "newOwner", name);
+            if (otherSocket === undefined)
+                return;
+
+            lobby.newOwner(otherSocket.data.player);
+
+            MessageService.sendToLobby(lobby.id, [ "newOwner", name ]);
         });
 
         socket.on("removePlayer", (name: string) => {
-            if (PlayerService.getPlayerByName(name, lobby.id) === undefined)
+            const lobby = SocketStoreService.getLobby(socket.data.lobbyId);
+
+            if (lobby === undefined)
                 return;
 
-            PlayerService.deletePlayerByName(lobby.id, name, "Jogador removido pelo dono do jogo");
+            if (!lobby.isOwner(socket.data.player))
+                return;
+
+            const otherSocket = SocketStoreService.getSocketInLobbyByName(lobby.id, name);
+
+            if (otherSocket === undefined)
+                return;
+
+            SocketConnectionService.deleteSocket(otherSocket, false, "Jogador removido pelo dono do jogo");
         });
 
         socket.on("changePassword", (password: string) => {
-            if (!lobby.isOwner(player))
+            const lobby = SocketStoreService.getLobby(socket.data.lobbyId);
+
+            if (lobby === undefined)
+                return;
+
+            if (!lobby.isOwner(socket.data.player))
                 return;
 
             lobby.newPassword(password);
 
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "passwordUpdated", password);
+            MessageService.sendToLobby(lobby.id, [ "passwordUpdated", password ]);
         });
 
         socket.on("removePassword", () => {
-            if (!lobby.isOwner(player))
+            const lobby = SocketStoreService.getLobby(socket.data.lobbyId);
+
+            if (lobby === undefined)
+                return;
+
+            if (!lobby.isOwner(socket.data.player))
                 return;
 
             lobby.removePassword();
 
-            LobbyMessageService.sendLobbyStateChanges(lobby.id, "passwordUpdated");
-        });
-
-        socket.on("beginMatch", () => {
-            if (!lobby.isOwner(player))
-                return;
-
-            const error = GameService.beginMatch(lobby);
-
-            if (error !== undefined)
-                socket.emit("gameActionError", error);
+            MessageService.sendToLobby(lobby.id, [ "passwordUpdated", undefined ]);
         });
     }
 
-    private static declare(lobbyId: number, playerName: string, socket: COUPSocket) {
-        const lobbyHasGame = LobbyService.lobbyIsRunningGame(lobbyId);
+    static setLobbyId(socket: COUPSocket, lobbyId: Lobby["id"] | undefined) {
+        const isNewLobby = lobbyId === undefined;
 
-        if (lobbyHasGame) {
-            LobbyMessageService.newPlayer(lobbyId, playerName, socket);
+        if (lobbyId === undefined)
+            lobbyId = SocketStoreService.newLobby(socket);
 
-            GameService.reconnectGameState(lobbyId, playerName);
-        } else {
-            LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
+        socket.data.lobbyId = lobbyId;
 
-            LobbyMessageService.newPlayer(lobbyId, playerName, socket);
+        const lobby = SocketStoreService.getLobby(lobbyId) as Lobby;
 
-            LobbyMessageService.sendLobbyState(lobbyId, playerName);
+        if (!isNewLobby)
+            lobby.addPlayer(socket.data.player);
+
+        MessageService.newSocket(socket);
+
+        LobbyService.messageNewPlayer(lobby, socket);
+    }
+
+    private static messageNewPlayer(lobby: Lobby, socket: COUPSocket) {
+        if (LobbyService.isRunningGame(lobby.id)) {
+            GameService.reconnectGameState(lobby, socket.data.player);
+            return;
         }
+
+        const newPlayerName = socket.data.player.name;
+
+        MessageService.sendToLobbyExcludingPlayer(
+            lobby.id,
+            newPlayerName,
+            [ "newPlayer", newPlayerName ]
+        );
+
+        MessageService.sendToPlayerInLobby(
+            lobby.id,
+            newPlayerName,
+            [ "playerConnected", new LobbyStateCalculator(lobby, newPlayerName).calculate() ]
+        );
     }
 
-    static enterLobby(player: Player, lobbyId: number): number {
-        const lobby = LobbyService.lobbys[lobbyId];
+    static isRunningGame(lobbyId: Lobby["id"]): boolean {
+        const lobby = SocketStoreService.getLobby(lobbyId);
 
         if (lobby === undefined)
-            throw new Error("Lobby não encontrado");
-
-        lobby.addPlayer(player);
-
-        return lobbyId;
+            return false;
+        
+        return lobby.isRunningGame;
     }
 
-    static enterNewLobby(player: Player): number {
-        const lobbyId: number =
-            LobbyService.emptyLobbys.length > 0 ?
-                LobbyService.enterEmptyLobby(player)
-                :
-                LobbyService.createNewLobby(player);
+    static reconnectPlayer(socket: COUPSocket, lobbyId: Lobby["id"]) {
+        socket.data.lobbyId = lobbyId;
 
-        return lobbyId;
+        SocketStoreService.addSocket(socket);
+
+        GameService.addPlayer(socket);
     }
 
-    private static enterEmptyLobby(player: Player): number {
-        const lobbyId = LobbyService.emptyLobbys.at(-1) as number;
-
-        LobbyService.lobbys[lobbyId].addPlayer(player);
-
-        LobbyService.emptyLobbys.pop();
-
-        return lobbyId;
-    }
-
-    private static createNewLobby(player: Player): number {
-        const newLobby: Lobby = new Lobby(LobbyService.lobbys.length, player);
-
-        LobbyService.lobbys.push(newLobby);
-
-        LobbyMessageService.newLobby(newLobby);
-
-        return LobbyService.lobbys.length - 1;
-    }
-
-    static addPlayer(lobbyId: number, playerName: string, socket: COUPSocket) {
-        const lobby = LobbyService.lobbys[lobbyId];
+    static removePlayer(lobbyId: Lobby["id"], player: Player) {
+        const lobby = SocketStoreService.getLobby(lobbyId);
 
         if (lobby === undefined)
             return;
 
-        if (lobby.isRunningGame)
-            GameService.addPlayer(lobby.id, socket);
-        else
-            LobbyMessageService.sendLobbyStateChanges(lobbyId, "newPlayer", playerName);
-    }
+        const wasOwner = lobby.isOwner(player);
 
-    static removePlayer(lobbyId: number, playerName: string) {
-        const lobby = LobbyService.lobbys[lobbyId];
-
-        if (lobby === undefined)
-            return;
-
-        const wasOwner = lobby.isOwnerName(playerName);
-
-        LobbyService.removePlayerFromTheServer(lobby, playerName, false);
-
-        LobbyService.sendDeletionChanges(lobby, playerName, wasOwner);
-
-        LobbyService.removeLobbyIfEmpty(lobby);
-    }
-
-    static deletePlayer(lobbyId: number, playerName: string) {
-        const lobby = LobbyService.lobbys[lobbyId];
-
-        if (lobby === undefined)
-            return;
-
-        const wasOwner = lobby.isOwnerName(playerName);
-
-        LobbyService.removePlayerFromTheServer(lobby, playerName, true);
-
-        LobbyService.sendDeletionChanges(lobby, playerName, wasOwner);
-
-        LobbyService.removeLobbyIfEmpty(lobby);
-    }
-
-    private static removePlayerFromTheServer(lobby: Lobby, playerName: string, deleteFromLobby: boolean) {
-        lobby.deletePlayer(playerName, deleteFromLobby);
-
-        LobbyMessageService.removePlayer(lobby.id, playerName);
+        lobby.removePlayer(player);
 
         if (lobby.isRunningGame) {
-            GameService.deletePlayer(lobby.id, playerName);
+            GameService.removePlayer(lobby, player);
             return;
         }
-    }
 
-    private static sendDeletionChanges(lobby: Lobby, playerName: string, wasOwner: boolean) {
-        LobbyMessageService.sendLobbyStateChanges(lobby.id, "leavingPlayer", playerName);
+        MessageService.sendToLobby(lobby.id, [ "leavingPlayer", player.name ]);
 
-        if (wasOwner && !lobby.isEmpty)
-            LobbyMessageService.sendLobbyStateChanges(
+        if (wasOwner)
+            MessageService.sendToLobby(
                 lobby.id,
-                "newOwner",
-                (lobby.getOwner() as Player).name
+                [ "newOwner", lobby.getOwner().name ]
             );
-    }
-
-    private static removeLobbyIfEmpty(lobby: Lobby) {
-        if (!lobby.isEmpty)
-            return;
-
-        if (lobby.id === LobbyService.lobbys.length - 1) {
-            LobbyService.lobbys.pop();
-
-            LobbyMessageService.removeLobby(lobby.id);
-        } else
-            LobbyService.emptyLobbys.push(lobby.id);
     }
 
     private static isValidNewConfigs(configs: Config, keys: string[], value: number | boolean): boolean {
@@ -266,35 +229,51 @@ export default class LobbyService {
         return true;
     }
 
-    static getLobby(lobbyId: number): Lobby | undefined {
-        return LobbyService.lobbys[lobbyId];
-    }
-
-    static isPasswordFromLobby(password: string | undefined, lobbyId: number): boolean {
-        const lobby = LobbyService.lobbys[lobbyId];
+    static hasPasswordInLobby(lobbyId: Lobby["id"]): boolean {
+        const lobby = SocketStoreService.getLobby(lobbyId);
 
         if (lobby === undefined)
             return false;
 
-        return lobby.getPassword() === password;
+        return lobby.hasPassword();
     }
 
-    static lobbyIsRunningGame(lobbyId: number): boolean {
-        const lobby = LobbyService.lobbys[lobbyId];
+    static isLobbyPassword(lobbyId: Lobby["id"], password: string | undefined): boolean {
+        const lobby = SocketStoreService.getLobby(lobbyId);
 
         if (lobby === undefined)
             return false;
 
-        return lobby.isRunningGame;
+        if (!lobby.hasPassword())
+            return password === undefined;
+
+        if (password === undefined)
+            return false;
+
+        return lobby.isLobbyPassword(password);
     }
 
     static finishMatch(lobby: Lobby) {
-        LobbyMessageService.finishMatch(lobby.id);
+        MessageService.sendToLobbyDiscriminating(
+            lobby.id,
+            socket => [
+                "playerConnected",
+                new LobbyStateCalculator(lobby, socket.data.player.name).calculate()
+            ]
+        );
+    }
+
+    static removeListeners(socket: COUPSocket) {
+        socket.removeAllListeners("updateConfigs");
+        socket.removeAllListeners("newOwner");
+        socket.removeAllListeners("removePlayer");
+        socket.removeAllListeners("changePassword");
+        socket.removeAllListeners("removePassword");
     }
 
     static get allLobbys() {
-        return LobbyService.lobbys
-            .filter(lobby => !lobby.isEmpty && !lobby.isRunningGame)
+        return SocketStoreService.getAllLobbys()
+            .filter(lobby => !lobby.isRunningGame)
             .map(lobby => lobby.toLobbyFinder());
     }
 }

@@ -1,13 +1,14 @@
 import type { ActionInfos } from "@services/GameMessageService";
 import GameService from "@services/GameService";
-import PlayerService from "@services/PlayerService";
+import PlayerService from "@services/SocketConnectionService";
+import ActionHandlerFacade from "@actionHandlers/ActionHandlerFacade";
+import { TurnState } from "@actionHandlers/ActionHandler";
 import Action from "@entitys/Action";
 import type CardType from "@entitys/CardType";
 import type Player from "@entitys/player";
 import type Turn from "@entitys/Turn";
-import ActionHandlerFacade from "@actionHandlers/ActionHandlerFacade";
-import { TurnState } from "@actionHandlers/ActionHandler";
-import Game from "@entitys/Game";
+import type Game from "@entitys/Game";
+import type Lobby from "@entitys/Lobby";
 
 export type ActionResults = {
     turn: Turn,
@@ -251,7 +252,7 @@ export default class ActionService {
         game?.nextPlayer();
     }
 
-    static revertTurn(lobbyId: number) {
+    static revertTurn(lobbyId: Lobby["id"]) {
         lobbyId;
     }
 }
